@@ -1,0 +1,260 @@
+<div class="helpDijit">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="containerNode" class="helpContainer">
+        <div class="helpNode">
+            <div data-dojo-type="dijit/layout/TabContainer" class="helpTabContainer">
+
+
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Welcome">
+
+                     <div class="htabContBG">
+                     </div>
+
+                    <div class="htabContent htabContMain">
+                      <div  class="htabContent htabContMain">
+                       <br>
+
+
+                       <div style="position:absolute;top:35%;left:10%">
+						   <div style="margin:1px;">
+							   <span style="font-size: 17px;font-weight: bold; z-index: 900;">Welcome to the Okaloosa County County Map Viewer</span>
+						   </div>
+
+						   <div style="padding:2px;margin:1px;">
+							  <span style="padding:10px;margin:10px;font-size: 14px;z-index: 900;">Version 0.9</span>
+						   </div>
+                       </div>
+
+
+                       <div style="padding:2px;margin:1px; z-index: 900;">
+
+                       </div>
+
+                       <!--<div style="padding:2px;margin:1px; z-index: 1;">
+                             <img src="http://gisvm109/viewer_dev/images/okaloosa.jpg" style="position: absolute; z-index: 1; width: 316px; height: 311px; opacity: 0.2; left: 20%; top: 5%;"></img>
+                       </div>-->
+
+
+                    </div>
+                    <div style="color: red;position: absolute; z-index: 900; left: 0%; bottom: 15px;">
+                        <hr style="border-color: red"><hr style="border-color: red">
+                        This application is a work in progress, but it does work on mobile devices.
+                        You are seeing it even though it is new and lacks many of the features of our
+                        desktop application.  Please be patient as we test and enhance it.
+                        <hr style="border-color: red"><hr style="border-color: red">
+                    </div>
+                  </div>
+
+                </div>
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Disclaimer">
+
+
+				  <div class="htabContBG"> </div>
+
+                   <div class="htabContent htabContMain">
+                      <div  class="htabContent htabContMain">
+                       <br>
+                       <div style="position:absolute;top:5%;left:0px;text-align: justify;display: inline-block;margin:40px 10px 20px 10px">
+
+							<p>The data on this site is provided as a public service and no guarantees or certifications, expressed or implied, are provided regarding accuracy of information herein, its use, or its interpretation.</p><br>
+
+							<p>The information you are about to access was derived from data compiled by Okaloosa County Public Offices, including, but not limited to, Property Appraiser's and GIS Offices. Statistics are provided solely for the purpose of gathering geographically dependent information. Derived information can only be used for unofficial purposes.</p><br>
+
+							<p>Please direct all inquiries concerning mapping issues related to this site to the County GIS Division at (850) 651-7570. For all issues dealing with assessment information please contact the County Property Appraiser's office at (850) 651-7240. Please see the main HELP tab within the WebGIS site for additional information. </p><br>
+							</p>
+
+                       </div>
+
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Help">
+				  <div class="htabContBG"> </div>
+
+                   <div class="htabContent htabContMain">
+                      <div  class="htabContent htabContMain">
+                       <br>
+                       <div style="padding:1px;margin:1px;font-size: 10px;font-weight: normal; ">
+
+
+                    <div class="helpIntro">
+                        Help is organized by function and by Widget.  Help for each Widget is also available from the
+                        Quick Help button (<div style="background-color:#DDDDDD; display:inline;">
+                                               <img src='images/w_question.png' height='12px' width='12px'></img>
+                                           </div>) on the Widget.  The Quick Help will close after a few seconds if
+                        the cursor is not over it.  Close it at any time by clicking on it.<br>
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="navigateHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/navigate.html', title:'Navigation'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="searchHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/search.html', title:'Search'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="basemapsHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/basemaps.html', title:'Basemaps'">
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                       </div>
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="About">
+				  <div class="htabContBG"> </div>
+
+                   <div class="htabContent htabContMain">
+                      <div  class="htabContent htabContMain">
+                       <br>
+                       <div style="padding:1px;margin:1px;font-size: 10px;font-weight: normal; ">
+
+							 <p>About</p><br>
+                       </div>
+
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+<!--
+                <div data-dojo-type="dijit/layout/ContentPane" title="Navigation">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Map navigation using mouse and keyboard:
+                                    <ul class="listdbootstrapFix">
+                                        <li>
+                                            Drag to pan
+                                        </li>
+                                        <li>
+                                            SHIFT + Click to recenter
+                                        </li>
+                                        <li>
+                                            SHIFT + Drag to zoom in
+                                        </li>
+                                        <li>
+                                            SHIFT + CTRL + Drag to zoom out
+                                        </li>
+                                        <li>
+                                            Mouse Scroll Forward to zoom in
+                                        </li>
+                                        <li>
+                                            Mouse Scroll Backward to zoom out
+                                        </li>
+                                        <li>
+                                            Use Arrow keys to pan
+                                        </li>
+                                        <li>
+                                            + key to zoom in a level
+                                        </li>
+                                        <li>
+                                            - key to zoom out a level
+                                        </li>
+                                        <li>
+                                            Double Click to Center and Zoom in
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+                <div data-dojo-type="dijit/layout/ContentPane" title="Search">
+                    A variety of searches can be performed in the search box:
+                    <ul class="listdbootstrapFix">
+                        <li>
+                            Search by Address
+                        </li>
+                        <li>
+                            Search by Place Name
+                        </li>
+                        <li>
+                            Search By Zip Code, County, etc.
+                        </li>
+                    </ul>
+                </div>
+                <div data-dojo-type="dijit/layout/ContentPane" title="Tools">
+                    In addition to Search capabilities, the following tools are provided:
+                    <ul class="listdbootstrapFix">
+                        <li>
+                            Measure
+                        </li>
+                        <div>
+                            The measure tool provides the capabilities to draw a point, line, or polygon
+                            on the map and specify the unit of measurement.
+                        </div>
+                        <li>
+                            Print
+                        </li>
+                        <div>
+                            This map can be exported to varouis formats and layouts
+                        </div>
+                    </ul>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+            <div class="dijitDialogPaneActionBar htabActnBar" >
+
+	             <div class="progressButton" data-dojo-type="dijit.form.DropDownButton" data-dojo-attach-point="progressDropDownDijit"
+	                 data-dojo-attach-event="onClick:stopTimer" data-dojo-props="iconClass:'progressIcon',showLabel:false, dropDownPosition:['above']">
+
+	                <span>Startup Metrics</span>
+	                <div class="progressDialog" data-dojo-type="dijit.TooltipDialog" data-dojo-attach-point="progressDijit" style="width:560px;">
+	                    <div class="progressTitle" data-dojo-attach-point="progressTitle">
+	                    </div>
+	                    <div style="text-align:center; align:center; width:100%;">
+	                        <table class="progressTable" data-dojo-attach-point="progressTable" style="width:100%;"></table>
+	                    </div>
+	                     <h2>X</h2>
+	                    <div class="showMetricsAtStartup">
+	                        Show Metrics at Startup:
+	                        <input type="checkbox"  data-dojo-type="dijit.form.CheckBox"  data-dojo-props="name:'startupMetrics'"
+	                               data-dojo-attach-point="startupMetricsDijit" data-dojo-attach-event="onChange:_onStartupMetricsChange"/>
+	                    </div>
+	                    <button class="sendButton" data-dojo-type="dijit.form.Button" data-dojo-attach-event="onClick:sendToDeveloper">
+	                        Send to Developer
+	                    </button>
+	                </div>
+	            </div>
+
+
+
+	            <div  class="closeButton" data-dojo-attach-point="closebtnDijitDiv" >
+	                   <input id="helpclosebtn"  type="button" style="z-index: 900;font-size:9px;" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Close" iconClass="dijitNoIcon"    data-dojo-attach-event="onClick:close">
+                       </input>
+	            </div>
+
+	            <div class="showAtStartup" data-dojo-attach-point="startupDijitDiv" >
+	                Show at Startup: <input id="showAtStartup" type="checkbox" checked data-dojo-type="dijit.form.CheckBox" data-dojo-props="name:'startup'"
+	                       data-dojo-attach-point="startupDijit" data-dojo-attach-event="onChange:_onStartupChange"/>
+	            </div>
+        </div>
+</div>

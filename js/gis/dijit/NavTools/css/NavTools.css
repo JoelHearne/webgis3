@@ -1,0 +1,79 @@
+.gis_NavToolsDijit {
+	height: 15px;
+}
+
+.gis_NavToolsDijit .zoominIcon {
+    /*background-image: url(../images/nav_zoomin.png);
+    width: 16px;
+    height: 16px; */
+}
+
+ .gis_NavToolsDijit .zoomoutIcon {
+	/*background-image: url(../images/nav_zoomout.png);
+	width: 16px;
+	height: 16px;*/
+}
+
+.gis_NavToolsDijit .zoomfullextIcon {
+	/*background-image: url(../images/nav_fullextent.png);
+	width: 16px;
+	height: 16px;*/
+}
+
+.gis_NavToolsDijit .zoomprevIcon {
+	/*background-image: url(../images/nav_previous.png);
+	width: 16px;
+	height: 16px;*/
+}
+
+ .gis_NavToolsDijit .zoomnextIcon {
+	/*background-image: url(../images/nav_next.png);
+	width: 16px;
+	height: 16px;*/
+}
+
+.gis_NavToolsDijit .panIcon {
+	/*background-image: url(../images/nav_pan.png);
+	width: 16px;
+	height: 16px;*/
+}
+
+.gis_NavToolsDijit .deactivateIcon {
+	/*background-image: url(../images/nav_decline.png);
+	width: 16px;
+	height: 16px;*/
+}
+.gis_NavToolsDijit .formContainer {
+    /*border: 1px solid #bbb;*/
+    //width: 100%;
+    position: absolute;
+    top: 10px;
+    //left: 85%;
+    width: 145px;
+    float: right;
+     padding: 2px;
+    //margin: 70px 0px 0px 80px;
+    margin: 4px 0px 0px 75px;
+    z-index:999;
+    //background: rgb(250,250,250);
+    background: rgb(90,90,90);
+    border:  1px solid rgb(150,150,50); 
+    border-radius:  4px;
+     /*
+     display: block;
+     left: auto;
+	right: 0;
+    	outline: 0;
+    	display: block;
+    	border: 0;
+    	border-collapse: collapse;
+    	vertical-align: middle;
+    	font-size: 9px;
+    	height: 16px;
+    	padding: 0px 0;
+    	float: right;
+    	color: #444;
+    	background: none;
+	margin: 0 0 0 0;
+	*/
+}
