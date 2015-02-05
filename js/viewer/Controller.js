@@ -447,6 +447,7 @@ define([
 				wmts: 'WMTS' //untested
 				,mapserv: 'mapservLayer' //untested
 			};
+			//console.log("controller","loading all the required modules first ensures the layer order is maintained");
 			// loading all the required modules first ensures the layer order is maintained
 			var modules = [];
 			array.forEach(this.config.operationalLayers, function (layer) {
@@ -533,6 +534,9 @@ define([
 			}
 		},
 		initWidgets: function () {
+
+			//console.log("controller","initwidgets");
+
 			var widgets = [],
 				paneWidgets;
 
@@ -587,6 +591,9 @@ define([
 			}
 		},
 		positionSideBarToggle: function (id) {
+
+			//console.log("controller","positionSideBarToggle");
+
 			var pane = this.panes[id];
 			var btn = this.collapseButtons[id];
 			if (!pane || !btn) {
@@ -632,6 +639,9 @@ define([
 		},
 
 		_createTitlePaneWidget: function (parentId, title, position, open, canFloat, placeAt) {
+
+			//console.log("controller","_createTitlePaneWidget");
+
 			var tp, options = {
 					title: title || 'Widget',
 					open: open || false,
@@ -654,6 +664,8 @@ define([
 			return tp;
 		},
 		_createFloatingWidget: function (parentId, title) {
+			//console.log("controller","_createFloatingWidget");
+
 			var options = {
 				title: title
 			};
@@ -687,6 +699,9 @@ define([
 			return cp;
 		},
 		widgetLoader: function (widgetConfig, position) {
+
+			//console.log("controller","widgetLoader");
+
 			var parentId, pnl;
 
 			// only proceed for valid widget types
@@ -720,6 +735,9 @@ define([
 			}
 		},
 		createWidget: function (widgetConfig, options, WidgetClass) {
+
+			//console.log("controller","createWidget","widgetConfig ",widgetConfig );
+
 			// set any additional options
 			options.id = widgetConfig.id + '_widget';
 			options.parentWidget = widgetConfig.parentWidget;
@@ -756,6 +774,7 @@ define([
 			}
 
 			// create the widget
+			//console.log("controller","createWidget","1");
 			var pnl = options.parentWidget;
 			if ((widgetConfig.type === 'titlePane' || widgetConfig.type === 'contentPane' || widgetConfig.type === 'floating')) {
 				this[widgetConfig.id] = new WidgetClass(options, put('div')).placeAt(pnl.containerNode);
@@ -764,6 +783,8 @@ define([
 			} else {
 				this[widgetConfig.id] = new WidgetClass(options);
 			}
+
+			//console.log("controller","createWidget","2");
 
 			// start up the widget
 			if (this[widgetConfig.id] && this[widgetConfig.id].startup && !this[widgetConfig.id]._started) {

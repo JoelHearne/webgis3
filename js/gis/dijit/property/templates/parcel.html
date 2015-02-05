@@ -1,0 +1,17 @@
+ <div id="psFormParcel"    >
+	 <p>Parcel Number:</p>
+	   <!--<input id="tbPIN" type="text" data-dojo-type="dijit/form/TextBox" style=" width: 219px;"></input>-->
+
+	  <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPINDijit" data-dojo-props="name:'searchPIN',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"  style=" width: 219px;"></input>
+
+     <!--<div id="tbPIN"></div>-->
+
+
+	 <br>
+		<p>Owner:</p>
+	   <input id="tbOwner"  type="text" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchTextDijit" data-dojo-props="name:'searchText',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"   style="width: 219px;"></input>
+	  <br>
+		<p>Address or Street Name:</p>
+	   <input id="tbAddr"  type="text" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchTextDijit" data-dojo-props="name:'searchText',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"   style="width: 219px;"></input>
+	 <br>
+ </div>

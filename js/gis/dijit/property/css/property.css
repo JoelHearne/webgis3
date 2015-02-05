@@ -1,0 +1,289 @@
+
+
+select {
+  font-size:10px;
+  font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
+
+}
+
+
+
+
+.propertyDijit .listdbootstrapFix{
+    padding: 0 0 0 25px;
+}
+
+.propertyDijit .propertyContainer {
+	padding: 0px;
+	font-size: 11px;
+	font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
+
+}
+.floatingWidget .propertyDijit .propertyContainer {
+	padding: 5px;
+}
+.propertyDijit .propertyNode {
+    width: 98%;
+    height: 575px;
+    
+}
+.floatingWidget .propertyDijit .propertyNode {
+    width: 350px;
+     	
+}
+.propertyDijit .propertyTabContainer {
+	width: 100%;
+	height: 100%;
+	//position: absolute;
+	//top:0px;
+	//left:0px;
+}
+
+#property_parent {
+    position: absolute !important;
+    top:50px !important;
+    left:550px !important;
+
+}
+
+#property_parent_title {
+    font-size: 11px  !important;
+    font-weight: bold  !important;
+    margin: 0px;
+}
+ 
+.propertyDijit .progressIcon {
+    background-image: url("../images/clock.png");
+    background-repeat: no-repeat;
+    background-size: 95% auto;
+    height: 24px;
+    //margin: 0px -10px;
+    transition-duration: .3s;
+    transition-timing-function: linear;
+    transition-property: height width margin;
+    width: 24px;
+}
+.propertyDijit .progressButton {
+    bottom: 0px;
+    left: 6px;
+    position: absolute;
+}
+.propertyDijit .progressIcon:hover {
+    background-image: url("../images/clock.png");
+    background-repeat: no-repeat;
+    height: 36px;
+    //margin: -6px -16px;
+    width: 36px;
+    
+}
+.propertyDijit .progressButton .dijitButtonNode {
+    background-color: rgba(0, 0, 0, 0) !important;
+    background-image: none !important;
+    border-style: none !important;
+    box-shadow: none !important;
+    bottom: -10px;
+    //left: 6px;
+    position: absolute;
+}
+.propertyDijit .closeButton {
+    //bottom: -2px;
+    left: 45%;
+    position: absolute;
+    font-size: 9px  !important;
+}
+
+.propertyDijit .dijitInline .dijitButtonNode {
+     font-size: 9px  !important;
+     margin: 0px 2px 1px 3px !important;
+     padding: 0px 2px 1px 3px !important;
+
+}
+
+.propertyDijit .dijitArrowButtonInner {
+    display: none;
+}
+.propertyDijit .icon-caret-up:before, .dbootstrap .dijitUpArrowButton:before, .dbootstrap .dgrid-sort-up .dgrid-sort-arrow:before  {
+    display: none;
+    content:"";
+}
+
+
+
+.propertyDijit .propertyError {
+    color: #FF0000;
+    font-size: 12px;
+    font-weight: normal;
+    margin: 5px 15px;
+}
+.propertyDijit .dijitTitlePane .dijitTitlePaneContentInner {
+    font-size: 10px;
+    margin: 5px 15px;
+    padding: 0;
+}
+.propertyDijit .dijitTitlePane .dijitTitlePaneTitle {
+    font-size: 11px;
+    font-weight: bold;
+}
+.propertyDijit .dijitDialogPaneActionBar {
+    padding: 5px;
+    text-align: center;
+}
+.propertyDijit .dijitTitlePane .dijitTitlePaneContentInner UL {
+    margin-left: -10px;
+}
+.propertyDijit .propertyIntro {
+    margin: 0 10px 10px;
+    font-size: 11px;
+}
+
+
+
+
+
+
+
+
+
+.showAtStartup {
+    bottom: 10px;
+    position: absolute;
+    right: 15px;
+    font-size: 9px;
+}
+
+
+
+.ptabContBG {
+  background: url(http://gisvm109/viewer_dev/images/okaloosa.jpg);
+  opacity: 0.2;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0px;
+  left:22%;
+  background-repeat: no-repeat;
+  background-size: 55% auto;
+}
+
+.ptabContMain {
+  opacity: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top:0px;
+  left:0%;
+
+}
+.ptabActnBar {
+ 
+  height: 25px;
+  //padding: 0px 0px 0px 0px;
+ padding: 0px !important;
+
+}
+#property_parent_underlay {
+     
+}
+
+ 
+
+.dbootstrap .dijitDialogUnderlay {
+     //background-color: rgb(0, 0, 0);
+     background-color: transparent;
+     opacity: 0.0 !important;
+}
+.dijitDialogUnderlay {
+     //background: none repeat scroll 0% 0% rgb(238, 238, 238);
+     //opacity: 1.0  !important;
+}
+
+
+
+
+.progressDialog h2 {
+    color: #000000;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    opacity: 0.5;
+    position: absolute;
+    right: 7px;
+    top: -25px;
+}
+.progressTitle {
+    text-align: center;
+}
+ 
+.progressTable {
+    border-collapse: collapse;
+}
+.progressTable td {
+    background-color: #E5E5E5;
+    border: 1px solid #000000;
+    padding: 0 5px;
+}
+.progressDialog div {
+    margin: 0px;
+}
+.progressDialog div + div {
+    padding: 5px 0 30px;
+}
+.showMetricsAtStartup {
+    bottom: 15px;
+    left: 20px;
+    position: absolute;
+}
+.sendButton {
+    bottom: 9px;
+    position: absolute;
+    right: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.ptabContent {
+    text-align: center ;
+    font-size: 11px;
+    //margin: 8px;
+    margin-left: auto ;
+    margin-right: auto ;
+    padding: 0px;
+   //background-color: #CACACA;
+    //background-image: url("../images/clock.png");
+    //background-repeat: no-repeat;
+    //background-size: 95% auto;
+    //height: 100%;
+    //width: 100%;
+   
+    transition-duration: 4.9s;
+    transition-timing-function: linear;
+    transition-property: height width margin;
+    line-height: 14px;
+
+}
+
+.ptabContent hr {
+  
+    margin: 0px !important;
+    padding: 0px !important;
+ 
+
+}
+/*
+.ptabContent img {
+  
+    margin: 10px 15px 20px 140px !important;
+    //padding: 0px !important;
+ 
+
+}*/

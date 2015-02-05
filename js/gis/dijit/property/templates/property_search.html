@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<title>Untitled</title>
+<script type="text/javascript" src="lib/dojo/dojo/dojo.js" data-dojo-config="'parseOnLoad':true,'async':true,'packages':[{'name':'gridx','location':'../gridx'},{'name':'clipart','location':'../../clipart'},{'name':'maqettaSamples','location':'../../../samples'},{'name':'maqetta','location':'../../maqetta'},{'name':'shapes','location':'../../shapes'},{'name':'zazl','location':'../../zazl'},{'name':'widgets','location':'../../custom'}],'themeMap':[['Android','',['themes/android/android.css']],['BlackBerry','',['themes/blackberry/blackberry.css']],['iPad','',['themes/ipad/ipad.css']],['iPhone','',['themes/iphone/iphone.css']],['.*','',['themes/iphone/iphone.css']]],'mblThemeFiles':[],'mblLoadCompatPattern':''"></script>
+<script type="text/javascript">
+require([
+  "dijit/dijit",
+  "dojo/parser",
+  "maqetta/space",
+  "maqetta/AppStates",
+  "dijit/layout/TabContainer",
+  "dijit/layout/ContentPane",
+  "dijit/form/Button",
+  "dijit/form/ToggleButton",
+  "dijit/form/CheckBox",
+  "dojox/mobile",
+  "dojox/mobile/deviceTheme",
+  "dijit/form/Form",
+  "dijit/form/TextBox"
+]);
+</script>
+<style>@import "themes/sketch/sketch.css";@import "app.css";
+</style>
+<script type="text/javascript" src="app.js"></script>
+</head>
+<body data-maq-flow-layout="absolute" data-maq-comptype="sketchhifi" class="claro" data-maq-ws="collapse" data-maq-appstates="{}" id="myapp">
+
+ <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="position: absolute; z-index: 900; left: 318px; top: 116px; width: 254px; height: 231px;">
+  <div data-dojo-type="dijit/form/Form" style="font-size: 10px; min-width: 1em; min-height: 1em; position: absolute; z-index: 900; width: 254px; left: 11px; top: 4px; height: 238px;">
+
+   <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+
+     <div style="float:left; padding:0px;margin;0px;">search type:
+    </div>
+ <div style="padding: 0px; float: right; padding:0px;margin;0px;">
+   <select style="font-size:9pt; width: 120px; padding:0px;margin;0px">
+     <option value="property" selected="true">property</option>
+     <option value="salesdata">sales data</option>
+     <option value="saleslist">sales list</option>
+     <option value="sub">subdivision</option>
+     <option value="business">business</option>
+      <option value="map">map</option>
+   </select>
+    </div>
+
+   </div>
+
+ <div style="margin: 33px 5px 2px 7px; font-size: 9px;">
+ <p>Parcel Number:</p>
+   <input type="text" data-dojo-type="dijit/form/TextBox" style=" width: 219px;"></input>
+ <br>
+    <p>Owner:</p>
+   <input type="text" data-dojo-type="dijit/form/TextBox" style="width: 219px;"></input>
+  <br>
+    <p>Address or Street Name:</p>
+   <input type="text" data-dojo-type="dijit/form/TextBox" style="width: 219px;"></input>
+ <br>
+
+  <div style="width:48%;margin: 3px 3px 5px 50px; font-size: 9px;">
+     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;"></input>
+      <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
+   </div>
+
+</br>
+</br>
+</br>
+
+   </div>
+ </div>
+</div>
+
+
+</body></html>

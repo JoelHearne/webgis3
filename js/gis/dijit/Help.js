@@ -95,7 +95,7 @@ define([
 		postCreate: function () {
 			this.inherited(arguments);
 
-			console.log("jquery",$);
+			//console.log("jquery",$);
 		   //$("div").click(function(){
 		   //    alert("clicked p jquery");
 		   //});
@@ -136,16 +136,22 @@ define([
             if (!this.hasCookie)
                  this._writeCookie();
 
+            // uncomment to open at startup
+            /*
             if (this.userPreferences.showWelcome==true)
                                    this.parentWidget.show();
 
             if (this.showAtStartup) { this.openProgress(); }
+            */
 
 		}, startup: function() {
 		            this.inherited(arguments);
 
 
+		            // uncomment to open at startup
+
 		            // Set the startup checkboxes to agree with the parameters
+		            /*
 		            this.startupMetricsDijit.set('value', this.showStartupMetrics);
 		            this.startupMetricsDijit.set('checked', this.showStartupMetrics);
 
@@ -161,6 +167,7 @@ define([
 							opacity: 1
 						}, 500);
 				    }
+				    */
 
 		            return this.showAtStartup;
         }
