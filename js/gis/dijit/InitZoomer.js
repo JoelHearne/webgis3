@@ -43,6 +43,8 @@ define([
         startup: function () {
 			 this.inherited(arguments);
 
+			 var _this=this;
+
              // get the GET querystring params from the url
              var query = document.location.search.substring(document.location.search.indexOf("?") + 1, document.location.search.length);
 			 var qo = dojo.queryToObject(query);
@@ -51,7 +53,7 @@ define([
 				    // TODO: Add options for setting up query parameters
 					var findParams = new FindParameters();
 					findParams.returnGeometry = true;
-					findParams.layerIds = [1]; //query.layerIds;
+					findParams.layerIds = [11]; //query.layerIds;
 					findParams.searchFields = ["PATPCL_PIN"];
 					findParams.searchText = qo.pin.trim();
 					findParams.contains = false;
@@ -100,8 +102,34 @@ define([
               this.map.setExtent(extnt);
 		    }
 
+
+		    topic.subscribe('InitZoomer/ZoomParcel', function (pin) {
+				 console.log("InitZoomer/ZoomParcel request received",pin);
+							_this.zoom2Parcel(pin.pin) ;
+			});
+
         },
-        identifyResult: function(results){
+        zoom2Parcel: function(pin){
+           console.log("zoom2Parcel",pin);
+			// TODO: Add options for setting up query parameters
+			var findParams = new FindParameters();
+			findParams.returnGeometry = true;
+			findParams.layerIds = [11]; //query.layerIds;
+			findParams.searchFields = ["PATPCL_PIN"];
+			findParams.searchText = pin ;
+			findParams.contains = false;
+
+			findParams.outSpatialReference = {
+				wkid: app.map.spatialReference.wkid
+			};
+
+			// TODO: make the AGS mapservice to query an option/parameter
+			var findTask = new FindTask("http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer");
+			findTask.execute(findParams,lang.hitch(this, 'findRes') )
+
+
+		}
+        ,identifyResult: function(results){
 			 console.log("identifyResult");
 			 //this.map.infoWindow.setContent('<div class="loading"></div>');
 		}

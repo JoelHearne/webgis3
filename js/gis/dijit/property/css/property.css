@@ -167,11 +167,14 @@ select {
 
 .ptabContMain {
   opacity: 1;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top:0px;
-  left:0%;
+  //background: url(http://gisvm109/viewer_dev/images/okaloosa_fade.png);
+    background-repeat: no-repeat;
+  //background-size: 85% auto;
+  //width: 100%;
+  //height: 100%;
+  //position: absolute;
+  //top:0px;
+  //left:0%;
 
 }
 .ptabActnBar {
@@ -287,3 +290,101 @@ select {
  
 
 }*/
+
+
+.jumplistheader  {font-weight: bold;text-align: left; background-color="#ADC8D9";}
+.jumplistvalue     {border-style: solid; border-color: "#15157f";}
+.jumplisttable {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: x-small;
+    width:300px;
+ }
+ 
+
+.CSSTableGenerator {
+	margin:0px;padding:0px;
+	width:100%;
+	box-shadow: 10px 10px 5px #888888;
+	border:1px solid #15157f;
+	
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+	
+	-moz-border-radius-bottomright:0px;
+	-webkit-border-bottom-right-radius:0px;
+	border-bottom-right-radius:0px;
+	
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+	
+	-moz-border-radius-topleft:0px;
+	-webkit-border-top-left-radius:0px;
+	border-top-left-radius:0px; 
+	border-top-left-radius:0px;
+}
+.CSSTableGenerator table tr:first-child td:last-child {
+	-moz-border-radius-topright:0px;
+	-webkit-border-top-right-radius:0px;
+	border-top-right-radius:0px;
+}.CSSTableGenerator tr:last-child td:first-child{
+	-moz-border-radius-bottomleft:0px;
+	-webkit-border-bottom-left-radius:0px;
+	border-bottom-left-radius:0px;
+}.CSSTableGenerator tr:hover td{
+	
+}
+.CSSTableGenerator tr:nth-child(odd){ background-color:#e7f9d4; }
+.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
+	vertical-align:middle;
+	border:1px solid #15157f;
+	border-width:0px 1px 1px 0px;
+	text-align:left;
+	padding:0px;
+	font-size:9px;
+	font-family:Arial;
+	font-weight:normal;
+	color:#000000;
+}.CSSTableGenerator tr:last-child td{
+	border-width:0px 1px 0px 0px;
+}.CSSTableGenerator tr td:last-child{
+	border-width:0px 0px 1px 0px;
+}.CSSTableGenerator tr:last-child td:last-child{
+	border-width:0px 0px 0px 0px;
+}
+
+.CSSTableGenerator tr:first-child td{
+	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
+	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	
+	background: -o-linear-gradient(top,#3f7f00,ffffaa);
+
+	background-color:#3f7f00;
+	border:0px solid #15157f;
+	text-align:center;
+
+	/*border-width:0px 0px 1px 1px;*/
+	border-width:0px 0px 0px 0px;
+	font-size:10px;
+	font-family:Arial;
+	font-weight:bold;
+	color:#050404;
+}
+.CSSTableGenerator tr:first-child:hover td{
+	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
+	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	background: -o-linear-gradient(top,#3f7f00,ffffaa);
+
+	background-color:#3f7f00;
+}
+.CSSTableGenerator tr:first-child td:first-child{
+	
+	/* border-width:0px 0px 1px 0px; */
+	 border-width:0px 0px 0px 0px; 
+}
+.CSSTableGenerator tr:first-child td:last-child{
+	/*border-width:0px 0px 1px 1px;*/
+        border-width:0px 0px 0px 0px;	
+}

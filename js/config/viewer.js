@@ -424,6 +424,27 @@ define([
 				}
 			}
 /*
+           ,prc: {
+				include: true,
+				id: 'prc',
+				//type: 'titlePane',
+				//canFloat: false,
+			    type: 'domNode',
+				srcNodeRef: 'testDijit',
+				path: 'gis/dijit/prc',
+				title: 'PRC',
+				//open: false,
+				//position: 0,
+				//placeAt: 'right',
+				options: {
+					map: true
+				}
+			}
+*/
+
+
+
+/*
              ,share: {
                 include: true,
                 title: "Share the Map",

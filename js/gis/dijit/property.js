@@ -27,6 +27,7 @@ define([
     'dijit/form/DropDownButton',
     "dijit/form/ComboBox",
     'dijit/TooltipDialog',
+    'dijit/form/Form',
     'dojo/_base/array',
     'dojo/io-query',
     'dojox/lang/functional',
@@ -36,6 +37,7 @@ define([
      'dijit/form/FilteringSelect',
 	'dijit/form/ValidationTextBox',
 	'dojo/store/Cache', 'dojo/store/JsonRest',
+	'./prc',
     //'jquery',
 	'xstyle/css!./property/css/property.css'
 	 ,'dojo/domReady!'
@@ -58,6 +60,7 @@ define([
 ,DropDownButton
 ,ComboBox
 ,TooltipDialog
+,Form
 ,array
 ,ioQuery
 ,functional
@@ -66,6 +69,7 @@ define([
 ,parser
 ,FilteringSelect,validationtextBox
 ,Cache,JsonRest
+,prc
 //,$
 ) {
 
@@ -162,6 +166,35 @@ define([
 			    //this.testautofill();
 
 			    //console.log("propertyFormDijit",this.propertyFormDijit);
+/*
+		             var mainTab = dijit.byId("pSearchTabs"); //Tr
+					 var subTab = dijit.byId("pResultsTab"); //tab Id which you want to show
+					 mainTab.selectChild(subTab); //Show the selected Tab
+
+				     var tprc =new prc(
+						 {
+						   pin:"23-2S-14-00000-00",
+						   owner:"BillyBob",
+						   address:"368 Schneider",
+                           homestead:"Y"
+						 });
+
+				     tprc.startup();
+
+				     console.log("tprc",tprc);
+				     var srd=dom.byId("pSearchResults");
+
+				     //dojo.place( srd,tprc );
+				     //domConstruct.place(tprc, srd );
+				      //domConstruct.place( srd,tprc );
+				     //var form = new Form();
+				     //tprc.placeAt(form.containerNode);
+				     //form.placeAt(srd);
+
+				     tprc.placeAt(srd);
+*/
+
+
 
 
                 // add a generic onchange event listener to the search type selection dropdown
@@ -209,7 +242,7 @@ define([
 
 					this.afStore_list.push(afStore);
 
-					 var tbID="el_id_" + flidx;
+					 var tbID="af_" + inputobj_key
 
 					 //tbID="tbPIN";
 					 //ready(function(){
@@ -263,11 +296,8 @@ define([
  								 dijit.byId(  tbID).set('store', testStore);
  								 //dijit.byId(tbID).set('value', '');
 
- 								 console.log("setting evt",dijit.byId( inputobj_key));
-
  								 this.own(on(dijit.byId( tbID), 'keyup', lang.hitch(this, function (evt) {
-                                      console.log("keyupppppp");
- 									 console.log("dijit keyup", dojo.byId( tbID).value,_this.queries[qryidx].minChars);
+
  									 //console.log("dijit keyup dojo.byId(tbID)",dojo.byId(tbID) );
 
  									 if(dojo.byId( tbID).value.length > _this.queries[qryidx].minChars )
@@ -283,8 +313,7 @@ define([
 
  		}
         ,changeSearchForm:function(evt){
-           console.log("changeSearchForm" );
-			console.log("changeSearchForm",evt);
+
 			var SearchPane  = registry.byId("psearchForm");
 
 			var selForm=evt.target.value;
@@ -312,7 +341,7 @@ define([
 
 		,getQueryObj: function(frmfldid){
 			var qo="";
-			console.log("getAutoFillURL",frmfldid);
+			//console.log("getAutoFillURL",frmfldid);
 
 			if (frmfldid=="property"){
 				qo=this.queries[0];
@@ -334,33 +363,249 @@ define([
 			}
 		}
 		,doSearch: function(){
-			console.log("doSearch");
+			//console.log("doSearch");
 
-			var tbObj = registry.byId("tbPIN");
-			console.log("tbpin",tbObj);
+            var startrec = 1;
+            var endrec = 50;
+            var sval;
+            var stype;
 
-			//this.setautofill("tbAddr");
-         // this.setautofill("tbAddr");
-         //  this.setautofill("tbOwner");
-          // this.setautofill("tbPIN");
+			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
+			          //console.log("addre",registry.byId("af_tbAddr").textbox.value);
+			          stype="address";
+			          sval=registry.byId("af_tbAddr").textbox.value;
+			} else  if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
+			          //console.log("owner",registry.byId("af_tbOwner").textbox.value);
+			          stype="owner";
+			          sval=registry.byId("af_tbOwner").textbox.value;
+			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
+			          //console.log("pin",registry.byId("af_tbPIN").textbox.value);
+			          stype="pin";
+			          sval=registry.byId("af_tbPIN").textbox.value;
+			} else if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
+			          //console.log("bus",registry.byId("af_tbBus").textbox.value);
+			          stype="bus";
+			          sval=registry.byId("af_tbBus").textbox.value;
+			} else if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
+			          //console.log("sub",registry.byId("af_tbSub").textbox.value);
+			          stype="sub";
+			          sval=registry.byId("af_tbSub").textbox.value;
+			}
 
-			//var tb = dijit.byId("tbPIN");
-			//console.log("tb ",tb );
+			var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=' + stype + '&searchString=' + sval + '&startrec=' + startrec + '&endrec=' + endrec;
 
-			if (registry.byId("tbPIN") && registry.byId("tbPIN").value && (registry.byId("tbPIN").value !="")){
-                 console.log("pin",registry.byId("tbPIN").value);
+            //console.log("got property query url",iurl);
+
+            var _this=this;
+            request.get(iurl,{ handleAs: "json" }).then(
+
+                function (data){
+                    //console.log(  data);
+                    _this.showResults(data);
+
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+
+
+
+
+
+
+			// TODO /////////////////////////////////////
+
+			// Prep query json
+
+			// Send AJAX request to Central_GIS
+
+			// Switch to results tab
+
+			// Draw result form
+
+			///////////////////////////////////////////
+
+
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+
+		}
+		,handlePRCevent: function(actntype,pcObj,prcID) {
+			 //console.log("handling prc event",pcObj,"  ",actntype);
+
+			 var prcob=registry.byId(prcID);
+
+
+
+
+			//var _this=this;
+			if (actntype == "pc_zoom") {
+				//console.log("zooming "," map ",this.map);
+
+               topic.publish('InitZoomer/ZoomParcel', {
+			 		 pin:pcObj.pin
+               });
+
+			} else if (actntype == "pc_fulldet") {
+
+			} else if (actntype == "pc_mindet") {
+				prcob.expand_detail();
+
+			} else if (actntype == "pc_save") {
+				this.addPRC2Saved(pcObj,prcID);
+
+				// if action card is minimal detail then ...
+
+			} else if (actntype == "pc_print") {
+
 			}
 
 
 
 		}
+		,addPRC2Saved:function(pcObj,widgetID){
+
+			 var _this=this;
+             var srd=dom.byId("pSearchSaved");
+
+
+			 var prcob=registry.byId(widgetID);
+
+
+			 var tprc =new prc(
+			    {
+						   pin: pcObj.pin,
+						   owner: pcObj.owner,
+						   address: pcObj.addr,
+						   homestead:pcObj.hstead
+			    });
+
+			 tprc.on("click", function (e) {
+			     var actntype=e.target.id;
+			     if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
+												   || (actntype == "pc_print")) {
+
+				     //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
+				     var pin=prcob.pin.trim();
+				     if (pin) {
+					 //pin=pin.replace(/(\r\n|\n|\r)/gm,"").trim();
+
+					 //var ownr=this.childNodes[1].childNodes[1].children[0].children[0].children[4].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+					 //var addrr=this.childNodes[1].childNodes[1].children[0].children[0].children[6].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+					 //var hmstd=this.childNodes[1].childNodes[1].children[0].children[0].children[8].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+					 var ownr=prcob.owner.trim();
+					 var addrr=prcob.address.trim();
+					 var hmstd=prcob.homestead.trim();
+					 var pcObj={
+						 pin:pin,
+						 owner:ownr,
+						 address:addrr,
+						 homestead:hmstd
+
+					 };
+
+					 _this.handlePRCevent(actntype,pcObj);
+				 }
+			 }
+		    });
+
+			  tprc.startup();
+			  tprc.placeAt(srd);
+
+
+		}
+		,showResults: function (results){
+
+             var _this=this;
+             var srd=dom.byId("pSearchResults");
+			 var dlgcont = "";
+			 var dobj=results;
+			 var pobj = results.ps_res;
+
+			 domConstruct.empty("pSearchResults");
+
+			 if (!pobj) {
+				 console.log("error getting results",results);
+			 }
+
+
+			 for (var i = 0; i < pobj.length; i++) {
+					 var tprc =new prc(
+						 {
+						   pin: pobj[i].pin,
+						   owner: pobj[i].owner,
+						   address: pobj[i].addr,
+						   homestead:pobj[i].hstead
+						 });
+
+						 tprc.on("click", function (e) {
+							 var actntype=e.target.id;
+							 if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
+									|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
+
+								  console.log("click...",e," ",this);
+
+								 // get the prc id, get the widget, fire widget method
+								  var prcob=registry.byId(this.id);
+								  //prcob.expand_detail();
+
+
+								 //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
+                                 var pin=prcob.pin.trim();
+								 console.log(" pinclick...",pin);
+								 if (pin) {
+									 //pin=pin.replace(/(\r\n|\n|\r)/gm,"").trim();
+
+									 //var ownr=this.childNodes[1].childNodes[1].children[0].children[0].children[4].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+									 //var addrr=this.childNodes[1].childNodes[1].children[0].children[0].children[6].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+									 //var hmstd=this.childNodes[1].childNodes[1].children[0].children[0].children[8].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
+									 var ownr=prcob.owner.trim();
+									 var addrr=prcob.address.trim();
+									 var hmstd=prcob.homestead.trim();
+
+
+									 var pcObj={
+										 pin:pin,
+										 owner:ownr,
+										 address:addrr,
+										 homestead:hmstd
+
+									 };
+
+									 //console.log("pcObj",pcObj);
+									 _this.handlePRCevent(actntype,pcObj,this.id);
+								 }
+							 }
+						 });
+
+					 tprc.startup();
+
+				     tprc.placeAt(srd);
+			 }
+
+		}
+		,PclCardClck: function(){
+			console.log("PclCardClck");
+
+
+		}
 		,clearSearch: function(){
-			 console.log("clearSearch");
+			//console.log("clearSearch");
 			var selSearchType = dom.byId("selSearchType");
 			//console.log("selSearchType",selSearchType);
 
 			 //this.setautofill("tbOwner");
-
+			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
+			           registry.byId("af_tbAddr").textbox.value="";
+			} else  if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
+			           registry.byId("af_tbOwner").textbox.value="";
+			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
+			           registry.byId("af_tbPIN").textbox.value="";
+			} else if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
+			           registry.byId("af_tbBus").textbox.value="";
+			} else if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
+			           registry.byId("af_tbSub").textbox.value="";
+			}
 		}
 
 	});
