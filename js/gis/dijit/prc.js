@@ -6,6 +6,7 @@ define([
     'dijit/_WidgetsInTemplateMixin',
     'esri/toolbars/navigation',
     'dijit/form/Button',
+    "dijit/form/TextBox",
     'dijit/Menu',
     'dijit/MenuItem',
     'dijit/PopupMenuItem',
@@ -22,7 +23,7 @@ define([
     'dojo/ready',
     'dijit/registry',
     'xstyle/css!./prc/css/prc.css'
-], function (declare, _WidgetBase, _TemplatedMixin,_AttachMixin, _WidgetsInTemplateMixin, Navigation, Button, Menu, MenuItem, PopupMenuItem, MenuSeparator, lang, on, PRCTemplate
+], function (declare, _WidgetBase, _TemplatedMixin,_AttachMixin, _WidgetsInTemplateMixin, Navigation, Button,TextBox, Menu, MenuItem, PopupMenuItem, MenuSeparator, lang, on, PRCTemplate
 , topic
 ,domConstruct
 ,dom
@@ -60,11 +61,11 @@ define([
 
 	    }
 	    ,expand_detail:function(){
-			console.log('------expand_detail' );
+			//console.log('------expand_detail' );
 
 
             // How to add a row to the card
-            /*
+/*
             var tr = domConstruct.create("tr", {}, this.pcTable),
                 td = domConstruct.create("td", {"colspan":"5"}, tr),
                 l = domConstruct.create("label", {
@@ -77,7 +78,7 @@ define([
                    name: 'gooooooo' ,
                    title: 'gooooooo'
                 }).placeAt(td, 'last');
-             */
+*/
 
              ///// Expand to minimal detail
              // 1- Make AJAX request to get minimal detail JSON
@@ -101,20 +102,45 @@ define([
              // 2- Parse JSON and add additional rows
 
 		}
+		,addTableRow(fld,val){
+
+           /*var tr = domConstruct.create("tr", {}, this.pcTable),
+                td = domConstruct.create("td", {"colspan":"5"}, tr),
+                l = domConstruct.create("label", {
+                   innerHTML: fld + ': ',
+                   'class': 'jumplistheader',
+                   'for': fld
+                }, td, 'first').placeAt(td, 'last');
+                */
+            var tr = domConstruct.create("tr", {}, this.pcTable);
+            var td = domConstruct.create("td", {"colspan":"5",'class': 'jumplistheader'}, tr);
+            td.innerHTML= fld;
+            //td.placeAt(td, 'last');
+
+		}
 		 ,expand_detail_procres:function(results){
              var _this=this;
 
-             console.log("proc results",results);
+             //console.log("proc results",results);
 
 			 var dobj=results;
-			 var pobj = results ;
 
-			 if (!pobj) {
+			 if (!dobj) {
 				 console.log("error getting results",results);
 			 }
 
 			 // loop each field and add to the form
+			 for(var key in dobj){
+			       var attrName = key;
+			      if (dobj.hasOwnProperty(key)) {
+			        var attrValue = dobj[key];
+			        this.addTableRow(attrName,"");
+                    this.addTableRow(attrValue,"");
+			      }
+             }
 
+			 //this.addTableRow("Property Use",pobj.propertyuse);
+             //this.addTableRow( pobj.propertyuse,"");
 
 
 		 }

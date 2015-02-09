@@ -1,122 +1,187 @@
 <div class="propertyDijit">
+
+
+
     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="containerNode" class="propertyContainer">
         <div class="propertyNode">
+
             <div id="pSearchTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer">
 
-                <div id="pSearchTab"  data-dojo-type="dijit/layout/ContentPane" title="Search">
-                     <div class="ptabContBG">
-                     </div>
+                <div id="pSearchTab" data-dojo-type="dijit/layout/ContentPane" title="Search">
+                    <div class="ptabContBG">
+                    </div>
 
                     <div class="ptabContent ptabContMain">
-                      <div  class="ptabContent ptabContMain">
+                        <div class="ptabContent ptabContMain">
 
-                       <div id="pSearchForm" style="position:absolute;top:1%;left:1%">
-						   <!--put content here -->
-						    <div id="pane1" data-dojo-type="dijit/layout/ContentPane"   >
+                            <div id="pSearchForm" style="position:absolute;top:1%;left:1%">
+                                <!--put content here -->
+                                <div id="pane1" data-dojo-type="dijit/layout/ContentPane">
 
-									 <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false"   style="width:320px;height:500px">
-									  <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="propertyFormDijit" style="font-size: 11px; min-width: 1em; min-height: 1em;">
+                                    <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="width:320px;height:500px">
+                                        <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="propertyFormDijit" style="font-size: 11px; min-width: 1em; min-height: 1em;">
 
-									   <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+                                            <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
 
-										 <div style="float:left; padding:0px;margin;0px;">search type:
-										</div>
-									 <div style="padding: 0px; float: right; padding:0px;margin;0px;">
-									   <select id="selSearchType" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
-										 <option value="property" selected="true">property</option>
-										 <option value="salesdata">sales data</option>
-										 <option value="saleslist">sales list</option>
-										 <option value="sub">subdivision</option>
-										 <option value="business">business</option>
-										  <option value="map">map</option>
-									   </select>
-										</div>
+                                                <div style="float:left; padding:0px;margin;0px;">search type:
+                                                </div>
+                                                <div style="padding: 0px; float: right; padding:0px;margin;0px;">
+                                                    <select id="selSearchType" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
+                                                        <option value="property" selected="true">property</option>
+                                                        <option value="salesdata">sales data</option>
+                                                        <option value="saleslist">sales list</option>
+                                                        <option value="sub">subdivision</option>
+                                                        <option value="business">business</option>
+                                                        <option value="map">map</option>
+                                                    </select>
+                                                </div>
+                                            </div>
 
-									   </div>
+                                            <div style="margin: 33px 5px 2px 7px; font-size: 11px;">
 
-									 <div style="margin: 33px 5px 2px 7px; font-size: 11px;">
+                                                <div id="psearchForm" data-dojo-type="dijit/layout/ContentPane" style="">
+                                                    <p>Parcel Number:</p>
+                                                    <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN" data-dojo-props="name:'searchPIN',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <br>
+                                                    <br>
+                                                    <p>Owner:</p>
+                                                    <input id="tbOwner" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchOwner" data-dojo-props="name:'searchOwner',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <br>
+                                                    <br>
+                                                    <p>Address or Street Name:</p>
+                                                    <br>
+                                                    <input id="tbAddr" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchAddr" data-dojo-props="name:'searchAddr',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <br>
+                                                    <br>
 
-									 <div id="psearchForm" data-dojo-type="dijit/layout/ContentPane" style="">
-
-                                         <p>Parcel Number:</p>
-                                         <input id="tbPIN" type="text" autocomplete="on"   data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN" data-dojo-props="name:'searchPIN',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"  style="width: 219px;"></input>
-                                         <br><br>
-										 <p>Owner:</p>
-										  <input id="tbOwner" type="text" autocomplete="on"   data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchOwner" data-dojo-props="name:'searchOwner',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"  style="width: 219px;"></input>
-										  <br><br>
-										  <p>Address or Street Name:</p><br>
-                                         <input id="tbAddr" type="text" autocomplete="on"   data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchAddr" data-dojo-props="name:'searchAddr',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'"  style="width: 219px;"></input>
-										  <br><br>
-
-										 <br>
-									 </div>
-
-
-
-									  <div style="width:48%;margin: 3px 3px 5px 50px; font-size: 9px;">
-										 <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
-										  <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
-									   </div>
-
-									</br>
-									</br>
-									</br>
-
-									   </div>
-									 </div>
-									 </div>
+                                                    <br>
+                                                </div>
 
 
 
+                                                <div style="width:48%;margin: 3px 3px 5px 50px; font-size: 9px;">
+                                                    <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
+                                                    <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
+                                                </div>
+
+                                                </br>
+                                                </br>
+                                                </br>
+
+                                            </div>
+                                        </div>
+                                    </div>
 
 
 
+
+
+                                </div>
 
                             </div>
-
-                       </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
 
-                <div id="pResultsTab" data-dojo-type="dijit/layout/ContentPane" title="Results" >
+
+                <div id="pResultsTab" data-dojo-type="dijit/layout/ContentPane" title="Results">
 
 
-                   <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
-                      <div  class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
-                       <br>
-                       <div id="pSearchResults"  data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
 
-						<!--put content here -->
-						<p>property search results</p><br>
+                    <div id="pResultsSubTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer">
 
-                       </div>
+                        <div id="pResultListTab" data-dojo-type="dijit/layout/ContentPane" title="List">
+
+                            <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
+
+                                <div id="pPageSelDiv" style="visibility:visible;padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+
+                                    <div style="float:left; padding:0px;margin;0px;">page: </div>
+                                    <div style="padding: 0px; float: right; padding:0px;margin;0px;">
+                                        <select id="selResPage" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
+                                            <option value="1" selected="true">1</option>
+
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <div id="pResCount" style="float:center; padding:0px;margin;0px;"> </div>
+                                <br>
+
+
+
+
+
+                                <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
+                                    <br>
+                                    <div id="pSearchResults" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
+
+                                        <!--<div id="pWaitDiv" style="visibility:visible"><img id="pwaitimg"  alt="Please standby while I search" title="Please Standby" src="images/ajax-loader3.gif" /></div>-->
+
+
+
+                                    </div>
+
+
+                                    <!--<div id="pWaitDiv"  data-dojo-attach-point="pWaitDiv" data-dojo-type="dijit/layout/ContentPane"  style="visibility:visible">
+                        <img id="pwaitimg"  alt="Please standby while I search" title="Please Standby" src="images/ajax-loader3.gif" />
+                       </div>-->
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- end pResultListTab -->
+
+
+                        <div id="pResultDetailTab" data-dojo-type="dijit/layout/ContentPane" title="Detail">
+                                <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
+
+                                    <div id="pcMinDet" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
+
+
+
+                                    </div>
+
+                                </div>
+
+                        </div>
+                        <!-- end pResultDetailTab -->
+
+
+
+
+
                     </div>
-                  </div>
-                    <!--<div class="ptabContBG"> </div>-->
+
+
+
                 </div>
 
-                <div id="pSavedTab"  data-dojo-type="dijit/layout/ContentPane" title="Saved">
+
+                <div id="pSavedTab" data-dojo-type="dijit/layout/ContentPane" title="Saved">
 
 
-                   <div class="ptabContent ptabContMain">
-                      <div  class="ptabContent ptabContMain">
-                       <br>
-                       <div id="pSearchSaved"  data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
-							 <p>Saved property cards</p><br>
-                       </div>
+                    <div class="ptabContent ptabContMain">
+                        <div class="ptabContent ptabContMain">
+                            <br>
+                            <div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
+                                <p>Saved property cards</p>
+                                <br>
+                            </div>
 
+                        </div>
                     </div>
-                  </div>
                 </div>
             </div>
         </div>
 
     </div>
-            <div class="dijitDialogPaneActionBar ptabActnBar" >
-	            <div  class="closeButton" data-dojo-attach-point="closebtnDijitDiv" >
-	                   <input id="propertyclosebtn"  type="button" style="z-index: 900;font-size:9px;margin:0px;padding:0px;height:20px" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Close" iconClass="dijitNoIcon"    data-dojo-attach-event="onClick:close">
-                       </input>
-	            </div>
+    <div class="dijitDialogPaneActionBar ptabActnBar">
+        <div class="closeButton" data-dojo-attach-point="closebtnDijitDiv">
+            <input id="propertyclosebtn" type="button" style="z-index: 900;font-size:9px;margin:0px;padding:0px;height:20px" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Close" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:close">
+            </input>
         </div>
+    </div>
 </div>

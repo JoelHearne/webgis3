@@ -28,6 +28,7 @@ define([
     "dijit/form/ComboBox",
     'dijit/TooltipDialog',
     'dijit/form/Form',
+    //"dijit/form/Select",
     'dojo/_base/array',
     'dojo/io-query',
     'dojox/lang/functional',
@@ -38,6 +39,7 @@ define([
 	'dijit/form/ValidationTextBox',
 	'dojo/store/Cache', 'dojo/store/JsonRest',
 	'./prc',
+	'./prcmin',
     //'jquery',
 	'xstyle/css!./property/css/property.css'
 	 ,'dojo/domReady!'
@@ -61,6 +63,7 @@ define([
 ,ComboBox
 ,TooltipDialog
 ,Form
+//,Select
 ,array
 ,ioQuery
 ,functional
@@ -70,6 +73,7 @@ define([
 ,FilteringSelect,validationtextBox
 ,Cache,JsonRest
 ,prc
+,prcmin
 //,$
 ) {
 
@@ -88,6 +92,7 @@ define([
 		autofill_urls:null,
 		afStore:null,
 		queryIdx:0,
+		resPage:1,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -128,6 +133,8 @@ define([
 
 		,startup: function() {
 		      this.inherited(arguments);
+
+		      var _this=this;
 
 		      //this.pstartupDijit.set('value', this.pshowAtStartup);
 
@@ -195,6 +202,7 @@ define([
 */
 
 
+          //this.addPRC_Min();
 
 
                 // add a generic onchange event listener to the search type selection dropdown
@@ -210,9 +218,76 @@ define([
 				 this.setautofill("tbOwner");
                  this.setautofill("tbPIN");
 
+
+			   // handle results pager
+			   var sp = document.getElementById("selResPage");
+			   if (sp.addEventListener) {
+					 sp.addEventListener("change",
+					   function(e){
+						   _this.resPage=e.target.selectedIndex+1;
+                           _this.doSearch();
+                       }, false);
+				} else {
+					 sp.attachEvent('change',  function(e){
+						   _this.resPage=e.target.selectedIndex+1;
+                           _this.doSearch();
+                       }) ;
+				}
+
+
+
 		        return this.pshowAtStartup;
         }
+        ,addPRC_Min: function(pinv){
 
+			domConstruct.empty("pcMinDet");
+
+			var _this=this;
+			var srmd=dom.byId("pcMinDet");
+			var tpcmd =new prcmin(
+			 {
+			   pin: pinv
+			 });
+			tpcmd.startup();
+			tpcmd.placeAt(srmd);
+
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+            dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+
+			 tpcmd.on("click", function (e) {
+			    var actntype=e.target.id;
+				  if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
+									|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
+
+
+						 var prcob=registry.byId(this.id);
+						 var pin=prcob.pin.trim();
+
+						 console.log("mindetail menu click",pin," ",actntype);
+
+						 if (pin) {
+
+									 var ownr=prcob.owner.trim();
+									 var addrr=prcob.address.trim();
+									 var hmstd=prcob.homestead.trim();
+
+
+									 var pcObj={
+										 pin:pin,
+										 owner:ownr,
+										 address:addrr,
+										 homestead:hmstd
+
+									 };
+
+									 //console.log("pcObj",pcObj);
+									 _this.handlePRCevent(actntype,pcObj,this.id);
+
+						}
+			   }
+		    });
+
+		}
       ,setautofill: function(inputobj_key) {
 
 		            var flidx=0;
@@ -297,6 +372,7 @@ define([
  								 //dijit.byId(tbID).set('value', '');
 
  								 this.own(on(dijit.byId( tbID), 'keyup', lang.hitch(this, function (evt) {
+									  if (evt.keyCode === keys.ENTER) _this.doSearch();
 
  									 //console.log("dijit keyup dojo.byId(tbID)",dojo.byId(tbID) );
 
@@ -308,6 +384,7 @@ define([
 
  								 })));
 		            }
+
 
 
 
@@ -362,11 +439,48 @@ define([
 				this.parentWidget.hide();
 			}
 		}
+		,showWait:function() {
+
+		   var srd=dom.byId("pSearchResults");
+		   if (srd) {
+			   var img = dojo.doc.createElement('img');
+				dojo.attr(img, {
+					id:"waitimg",
+					src: "images/ajax-loader2.gif",
+					alt: "Please Standbye while I search",
+					style: {cursor: "pointer"}
+				});
+			   dojo.place(img, srd, "after");
+	      }
+
+		}
+		,hideWait:function() {
+
+		   var wi=dom.byId("waitimg");
+		   if (wi) {
+			   wi.parentNode.removeChild(wi);
+
+		   }
+
+		}
+
+
 		,doSearch: function(){
 			//console.log("doSearch");
 
+            this.showWait();
+
             var startrec = 1;
             var endrec = 50;
+
+            if (this.resPage > 1) {
+				startrec = ((this.resPage-1) * 50) + 1;
+				endrec = (startrec + 50) - 1;
+			}
+
+
+
+
             var sval;
             var stype;
 
@@ -449,7 +563,9 @@ define([
 			} else if (actntype == "pc_fulldet") {
 
 			} else if (actntype == "pc_mindet") {
-				prcob.expand_detail();
+				//prcob.expand_detail();
+
+				this.addPRC_Min(pcObj.pin);
 
 			} else if (actntype == "pc_save") {
 				this.addPRC2Saved(pcObj,prcID);
@@ -514,7 +630,64 @@ define([
 
 
 		}
+		,resultsAddPager(dobj){
+
+
+			//TODO: Hide if there are zero results and show if there are > 0
+            var rec_page = 0;
+            var pgcnt=0;
+            if (dobj.rec_count > 0) {
+				var select = dom.byId("selResPage");
+				select.options.length=0;
+				rec_page = 1;
+				pgcnt = 1;
+				// build paging control
+				if (dobj.rec_count > 50) {
+					document.getElementById("pPageSelDiv").style.visibility="visible";
+					pgcnt = Math.ceil(dobj.rec_count / 50);
+
+					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
+
+					for (var p = 0; p < pgcnt; p++) {
+						select.options[select.options.length]=new Option(p + 1);
+					}
+				} else {
+					// hide the page selection box pPageSelDiv
+					//var psdv = dom.byId("pPageSelDiv");
+					document.getElementById("pPageSelDiv").style.visibility="hidden";
+
+
+				}
+
+				if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
+		   }
+
+		   /*
+		   var el = document.getElementById("selResPage");
+		   if (el.addEventListener) {
+		   		 el.addEventListener("change",  this.changePage, false);
+		    } else {
+		   		 el.attachEvent('change',  this.changePage)  ;
+		    }
+		    */
+
+		    // show the record count
+		    var rc = document.getElementById("pResCount");
+		    rc.innerHTML='<br><b><p>' + dobj.rec_count + ' total records</p></b><br>page ' + rec_page + ' of ' + pgcnt;
+
+		}
+		,changePage:function(e){
+
+             var pg=e.target.selectedIndex-1;
+             console.log("changePage changing page",pg );
+
+             this.resPage=pg;
+             this.doSearch();
+
+		}
 		,showResults: function (results){
+
+			 this.hideWait();
 
              var _this=this;
              var srd=dom.byId("pSearchResults");
@@ -527,6 +700,11 @@ define([
 			 if (!pobj) {
 				 console.log("error getting results",results);
 			 }
+
+
+			// Set the page menu and select current page
+            this.resultsAddPager(dobj);
+
 
 
 			 for (var i = 0; i < pobj.length; i++) {
@@ -543,7 +721,7 @@ define([
 							 if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
 									|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
 
-								  console.log("click...",e," ",this);
+
 
 								 // get the prc id, get the widget, fire widget method
 								  var prcob=registry.byId(this.id);
@@ -552,7 +730,7 @@ define([
 
 								 //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
                                  var pin=prcob.pin.trim();
-								 console.log(" pinclick...",pin);
+
 								 if (pin) {
 									 //pin=pin.replace(/(\r\n|\n|\r)/gm,"").trim();
 
@@ -582,6 +760,13 @@ define([
 
 				     tprc.placeAt(srd);
 			 }
+
+
+			 // set the pager to active page
+
+
+
+			 //dijit.byId("pWaitDiv").set("style", "visibility:hidden");
 
 		}
 		,PclCardClck: function(){
