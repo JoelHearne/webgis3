@@ -140,8 +140,15 @@ select {
 
 
 
+.pContRes {
+  display:none;
 
+}
 
+.pContResVis {
+  display:block;
+
+}
 
 
 .showAtStartup {

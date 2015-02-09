@@ -39,6 +39,15 @@ define({
 			layerIds: [14],
 			searchFields: ['PATSUB_SUB_NAME'],
 			minChars: 1
+		} ,
+        {
+			description: 'Find Property by Business',
+			inputobj_key:'tbBus',
+			url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Subdivisions/MapServer',
+			autofill_url:'http://gisvm109/webgis3/bus_lookup.php?',
+			layerIds: [14],
+			searchFields: ['PATSUB_SUB_NAME'],
+			minChars: 1
 		}
 	]
 });

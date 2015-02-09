@@ -39,7 +39,7 @@
 
                                             <div style="margin: 33px 5px 2px 7px; font-size: 11px;">
 
-                                                <div id="psearchForm" data-dojo-type="dijit/layout/ContentPane" style="">
+                                                <div id="pPropSearchForm" class="pContResVis" data-dojo-attach-point="pPropSearchForm" data-dojo-type="dijit/layout/ContentPane" >
                                                     <p>Parcel Number:</p>
                                                     <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN" data-dojo-props="name:'searchPIN',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
                                                     <br>
@@ -56,19 +56,49 @@
 
                                                     <br>
                                                 </div>
+                                            </div>
 
 
+                                                 <div id="pBusForm" class="pContRes" data-dojo-attach-point="pBusForm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
+                                                    <p>Business:</p>
+                                                    <input id="tbBus" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchBus" data-dojo-props="name:'searchBus',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <br>
+                                                </div>
+
+                                                  <div id="pSubForm" class="pContRes" data-dojo-attach-point="pBusForm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
+                                                    <p>Subdivision:</p>
+                                                    <input id="tbSub" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchSub" data-dojo-props="name:'searchSub',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <br>
+                                                </div>
+
+                                                <div id="pSalesListFrm" class="pContRes" data-dojo-attach-point="pSalesListFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
+                                                    <p>Sales List:</p>
+                                                    <p>Sales Search Tools Coming Soon</p>
+                                                    <br>
+                                                </div>
+                                                <div id="pSalesDataFrm" class="pContRes" data-dojo-attach-point="pSalesListFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
+                                                    <p>Sales Data:</p>
+                                                    <p>Sales Search Tools Coming Soon</p>
+                                                    <br>
+                                                </div>
+
+                                                <div id="pMapFrm" class="pContRes" data-dojo-attach-point="pMapFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
+                                                    <p>Map Search Tools Coming Soon</p>
+
+                                                    <br>
+                                                </div>
 
                                                 <div style="width:48%;margin: 3px 3px 5px 50px; font-size: 9px;">
                                                     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
                                                     <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
                                                 </div>
 
-                                                </br>
-                                                </br>
-                                                </br>
 
-                                            </div>
+
+
+
+
+
                                         </div>
                                     </div>
 
@@ -122,12 +152,6 @@
 
 
                                     </div>
-
-
-                                    <!--<div id="pWaitDiv"  data-dojo-attach-point="pWaitDiv" data-dojo-type="dijit/layout/ContentPane"  style="visibility:visible">
-                        <img id="pwaitimg"  alt="Please standby while I search" title="Please Standby" src="images/ajax-loader3.gif" />
-                       </div>-->
-
                                 </div>
                             </div>
 

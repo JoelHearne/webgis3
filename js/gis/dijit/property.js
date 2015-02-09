@@ -116,10 +116,6 @@ define([
             // uncomment to open at startup
             this.parentWidget.show();
 
-		   // set autofills
-          // this.setautofill("tbAddr");
-          // this.setautofill("tbOwner");
-          // this.setautofill("tbPIN");
 
            /*
            var _this=this;
@@ -217,6 +213,10 @@ define([
 				 this.setautofill("tbAddr");
 				 this.setautofill("tbOwner");
                  this.setautofill("tbPIN");
+                 this.setautofill("tbBus");
+                 this.setautofill("tbSub");
+                 //this.setautofill("tbSalesList");
+                 //this.setautofill("tbSalesData");
 
 
 			   // handle results pager
@@ -395,20 +395,37 @@ define([
 
 			var selForm=evt.target.value;
 
-
+            var frmObj=null;
 			if (selForm=="property") {
-			 	SearchPane.set("href", "./js/gis/dijit/property/templates/parcel.html");
+				frmObj=dijit.byId("pPropSearchForm");
+
 			} else if (selForm=="saleslist") {
+				 frmObj=dijit.byId("pSalesListFrm");
 
 			} else if (selForm=="salesdata") {
+				 frmObj=dijit.byId("pSalesDataFrm");
 
 			} else if (selForm=="sub") {
-				 SearchPane.set("href", "./js/gis/dijit/property/templates/sub.html");
+				 frmObj=dijit.byId("pSubForm");
+
 			} else if (selForm=="business") {
-				 SearchPane.set("href", "./js/gis/dijit/property/templates/business.html");
+				 //SearchPane.set("href", "./js/gis/dijit/property/templates/business.html");
+				 frmObj=dijit.byId("pBusForm");
+
 			} else if (selForm=="map") {
+				 frmObj=dijit.byId("pMapFrm");
 
 			}
+
+			// hide all the forms then only show the active form
+			dijit.byId("pSubForm").set("style", "display:none");
+			dijit.byId("pBusForm").set("style", "display:none");
+            dijit.byId("pPropSearchForm").set("style", "display:none");
+            dijit.byId("pSalesListFrm").set("style", "display:none");
+            dijit.byId("pSalesDataFrm").set("style", "display:none");
+            dijit.byId("pMapFrm").set("style", "display:none");
+
+            if (frmObj) frmObj.set("style", "display:block");
 
 
 
@@ -479,8 +496,6 @@ define([
 			}
 
 
-
-
             var sval;
             var stype;
 
@@ -508,7 +523,7 @@ define([
 
 			var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=' + stype + '&searchString=' + sval + '&startrec=' + startrec + '&endrec=' + endrec;
 
-            //console.log("got property query url",iurl);
+            console.log("got property query url",iurl);
 
             var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
@@ -522,23 +537,6 @@ define([
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
-
-
-
-
-
-
-			// TODO /////////////////////////////////////
-
-			// Prep query json
-
-			// Send AJAX request to Central_GIS
-
-			// Switch to results tab
-
-			// Draw result form
-
-			///////////////////////////////////////////
 
 
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
@@ -775,7 +773,11 @@ define([
 
 		}
 		,clearSearch: function(){
-			//console.log("clearSearch");
+
+
+           //dijit.byId("pPropSearchForm").set("style", "display:none");
+
+
 			var selSearchType = dom.byId("selSearchType");
 			//console.log("selSearchType",selSearchType);
 
@@ -791,6 +793,8 @@ define([
 			} else if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
 			           registry.byId("af_tbSub").textbox.value="";
 			}
+
+
 		}
 
 	});
