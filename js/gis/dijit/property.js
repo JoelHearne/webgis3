@@ -48,6 +48,7 @@ define([
 	'esri/symbols/PictureMarkerSymbol',
 	 "esri/geometry/Geometry",
 	'esri/geometry/Point',
+	"esri/geometry/Polygon",
 	'esri/SpatialReference',
 	'esri/symbols/SimpleMarkerSymbol',
 	'esri/symbols/SimpleLineSymbol',
@@ -106,6 +107,7 @@ define([
 ,PictureMarkerSymbol
  ,Geometry
 ,Point
+,Polygon
 ,SpatialReference
 ,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters,InfoTemplate
 
@@ -131,6 +133,14 @@ define([
 		activeMenu:"property",
 		mapClickMode: null,
 		pointGraphics:null,
+		polylineGraphics:null,
+		polygonGraphics:null,
+		mapSearchMode:"none", // none,point,box,polygon,polyline
+		mapSearchGeomPts:[],
+		qryPolyGeom:null,
+		qryTask:null,
+		qry:null,
+
 
 
 		postCreate: function () {
@@ -184,9 +194,22 @@ define([
 				dc.attachEvent('change',  this.salesListYearChange)  ;
 			}
 
+			Array.prototype.clean = function(deleteValue) {
+			  for (var i = 0; i < this.length; i++) {
+				if (this[i] == deleteValue) {
+				  this.splice(i, 1);
+				  i--;
+				}
+			  }
+			  return this;
+			};
+
+
+
 			return this.pshowAtStartup;
         }
         ,createGraphicsLayer: function () {
+
 			var pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
 			this.pointGraphics = new GraphicsLayer({
 				id: 'parcel_graphics',
@@ -198,17 +221,48 @@ define([
 			 this.pointGraphics.setRenderer(pointRenderer);
 			 this.map.addLayer(this.pointGraphics);
 			 this.pointGraphics.show();
+
+
+		    this.polygonGraphics = this.map.getLayer("findGraphics_polygon");
+            if (!this.polygonGraphics) this.polygonGraphics = new GraphicsLayer({ id: 'findGraphics_polygon', title: 'Find Graphics' });
+            var polygonsymbol = new  SimpleFillSymbol().setColor(new  Color([24, 167, 181]));
+            var polygonrenderer = new  SimpleRenderer(polygonsymbol);
+            this.polygonGraphics.setRenderer(polygonrenderer);
+
+            this.map.addLayer(this.polygonGraphics);
+            this.polygonGraphics.show();
+
+            this.qryPolyGeom = new  Polygon( this.map.spatialReference);
+
+
+            //this.pointGraphics=this.polygonGraphics;
+
+
+
+
+
 		}
 		, setMapClickMode: function (mode) {
 			this.mapClickMode = mode;
 		}
 		, placePoint: function (e) {
 			this.disconnectMapClick();
+
+			console.log("placePoint",e);
+			this.mapSearchMode='';
 			//get map click, set up listener in post create
 		}
-		,disconnectMapClick: function () {
+		, modePoint: function (e) {
+			this.disconnectMapClick();
+			this.mapSearchMode='point';
+		}
+		, modePolygon: function (e) {
+			this.disconnectMapClick();
+			this.mapSearchMode='polygon';
+		}
+		, disconnectMapClick: function () {
 			this.map.setMapCursor('crosshair');
-			topic.publish('mapClickMode/setCurrent', 'streetview');
+			topic.publish('mapClickMode/setCurrent', 'propert_mapselect');
 		}
 		, connectMapClick: function () {
 			this.map.setMapCursor('auto');
@@ -216,59 +270,157 @@ define([
 		}
 		, clearGraphics: function () {
 			this.pointGraphics.clear();
-			domStyle.set(this.noStreetViewResults, 'display', 'block');
+			this.polygonGraphics.clear();
+
 		}
-		,mapSearch: function(e){
-            console.log("mapSearch",e);
-            var mappt=e.mapPoint;
+		,mapClickHandler: function(e) {
+               if (this.mapClickMode != "propert_mapselect") return;
+               console.log("mapClickHandler",e, " ",this.mapSearchMode," ",this.mapClickMode);
 
-            console.log("mapSearch pt",mappt.x,"  ",mappt.y);
-            console.log("this.pointGraphics ",this.pointGraphics);
-            var  graphic = new Graphic(e.mapPoint);
-            this.pointGraphics.add(graphic);
+              var sms = new  SimpleMarkerSymbol().setStyle( SimpleMarkerSymbol.STYLE_SQUARE).setColor(new Color([255,0,0,0.5]));
 
 
-            // Step 1: Query AGS, add the selection to the map, and get the pins for the selected  area
-            // 1.a - Query AGS.
+              var polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.0]));
 
-			var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
-			console.log("q_url",q_url);
+            if (this.mapClickMode === "propert_mapselect") {
 
-			var query = new  Query();
-			//query.where = "STATE_NAME = 'Washington'";
-			//query.outSpatialReference = {wkid:102100};
-			query.geometry = mappt;
-			query.outSpatialReference = {wkid:this.map.spatialReference.wkid};
-			query.returnGeometry = true;
-			query.outFields = [this.pin_field];
+				var mappt=e.mapPoint;
 
-			var qryTask=new QueryTask(q_url);
+				//console.log("mapSearch pt",mappt.x,"  ",mappt.y);
+				//console.log("this.pointGraphics ",this.pointGraphics);
+				var  graphic;
+				//var  graphic = new Graphic(e.mapPoint);
+				//this.pointGraphics.add(graphic);
 
-			//console.log("queryTask",qryTask);
-			qryTask.execute(query,lang.hitch(this, 'mapqRes'));
+				//this.polygonGraphics.add(graphic);
 
 
-            // Step 2: Query CentralGIS using the selected PINs
+				//mapSearchGeomPts.push(mappt);
 
-            // Step 3: Add a mechanism to clear the selection set.
 
-            // Step 4: Do proper gqarbage collection and cleanup
+               if (this.mapSearchMode=='point') {
+				   // do the search and toggle mapClickMode to default
+				   //graphic = new Graphic(mappt,sms);
+				   //this.pointGraphics.clear();
+				   //this.pointGraphics.add(graphic);
+				   this.connectMapClick();
+				   graphic = new Graphic(mappt,sms);
+				   this.pointGraphics.add(graphic);
+
+
+			   } else if (this.mapSearchMode=='polygon') {
+				   // add the point to polygon geometry and draw
+
+				   // draw the vertices in the pointlayer
+				   graphic = new Graphic(mappt,sms);
+				   this.pointGraphics.add(graphic);
+
+
+				    //console.log("this.qryPolyGeom",this.qryPolyGeom);
+
+
+				    var pgg=this.polygonGraphics.graphics;
+				    //console.log("glayer graphics",pgg);
+
+				    var pgm=esri.getGeometries(pgg);
+				    //console.log("glayer geom",pgm);
+
+                     //graphic = new Graphic(mappt,sms );
+                     //this.polygonGraphics.add(graphic);
+                     this.mapSearchGeomPts.push([mappt.x,mappt.y]);
+
+                     if (this.mapSearchGeomPts.length > 2) {
+						console.log("adding ring",this.mapSearchGeomPts);
+                        this.qryPolyGeom.addRing(this.mapSearchGeomPts);
+                        graphic = new Graphic(this.qryPolyGeom );
+                        graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+											 						 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+					 						 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.55])));
+					 	this.polygonGraphics.add(graphic);
+				     }
+
+                    //this.pointGraphics.add(graphic);
+
+			   }
+		   }
+
+
+			   console.log("mapClickHandler done" );
+
+
+
+		}
+		,runMapSearch:function(){
+
+			   var qry_gm;
+			   if (this.mapSearchMode=='point') {
+                    qry_gm=esri.getGeometries(this.pointGraphics.graphics);
+			   } else if (this.mapSearchMode=='polygon') {
+				    qry_gm=esri.getGeometries(this.polygonGraphics.graphics);
+		       }
+
+		       console.log("qry_gm",qry_gm);
+		       this.connectMapClick();
+		       this.mapSearch(qry_gm);
+
+		}
+		,mapSearch: function(geom){
+			console.log("...mapSearch 1" );
+            console.log("mapSearch",geom);
+
+            //if (this.mapClickMode === "propert_mapselect") {
+
+				/*var mappt=e.mapPoint;
+
+				console.log("mapSearch pt",mappt.x,"  ",mappt.y);
+				console.log("this.pointGraphics ",this.pointGraphics);
+				var  graphic = new Graphic(e.mapPoint);
+				this.pointGraphics.add(graphic);
+				*/
+
+
+				// Step 1: Query AGS, add the selection to the map, and get the pins for the selected  area
+				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+				this.qry = new  Query();
+				//query.where = "STATE_NAME = 'Washington'";
+				//query.outSpatialReference = {wkid:102100};
+				this.qry.geometry = geom[0];
+				this.qry.outSpatialReference =  this.map.spatialReference ;
+				this.qry.returnGeometry = true;
+				this.qry.outFields = [this.pin_field];
+
+				console.log("...mapSearch 2 \r\n    geom:",geom,"\r\n", this.qry,"\r\n",q_url );
+
+				this.qryTask=new QueryTask(q_url);
+				console.log("...mapSearch 3" ,this.qryTask);
+				//qryTask.execute(query,lang.hitch(this, 'mapqRes'));
+
+				this.clearGraphics();
+
+				//this.qryTask.execute(this.qry, this.mapqRes  );
+				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+				console.log("...mapSearch 4" );
+
+		   //}
 
 		}
 		,mapqRes: function(results) {
+			console.log("mapqRes start");
 			console.log("mapqRes",results);
 			var _this=this;
 			console.log("mapqRes this",this);
             var zoomExtent = null;
 
             // add graphics layer if it does not already exist
+		    /*
 		    var polygonGraphics = this.map.getLayer("findGraphics_polygon");
             if (!polygonGraphics) polygonGraphics = new GraphicsLayer({ id: 'findGraphics_polygon', title: 'Find Graphics' });
             this.map.addLayer(polygonGraphics);
             polygonGraphics.show();
+            */
 
             //console.log("polygonGraphics",polygonGraphics);
-            console.log("mapqRes results",results);
+
 
             // TODO: make the infotemplate an option/parameter
             // var infoTemplate = new InfoTemplate("Parcel Info", "<table><tr><td>PIN: </td><td>${PARCEL ID}</td></tr><tr><td>Owner: </td><td>${OWNER}</td></tr></table>");
@@ -277,9 +429,11 @@ define([
             var feats=[];
             var pins=[];
 			array.forEach( results.features, function (feature) {
+				  console.log(" ...mapqRes 1",feature );
 				  var graphic;
                   //feature.setInfoTemplate(infoTemplate);
 				  feats.push(feature);
+				  console.log(" ...mapqRes 2" );
 
 				  console.log("feature.attributes",feature.attributes);
 
@@ -288,6 +442,8 @@ define([
 					   pins.push(feature.attributes.PATPCL_PIN);
 
 				  }
+
+				  console.log(" ...mapqRes 3" );
 
 
 				  switch (feature.geometry.type) {
@@ -298,9 +454,9 @@ define([
 						    // TODO: Add polyline graphics
 							break;
 						case 'polygon':
-
+                            console.log(" ...mapqRes 4" );
 							if (feature.geometry.rings && feature.geometry.rings.length > 0) {
-
+                                 console.log(" ...mapqRes 4.5" );
 								graphic = new Graphic(feature.geometry, null, {
 									ren: 1
 								});
@@ -310,8 +466,10 @@ define([
 								graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
 											 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
 											 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.15])));
-
-							     polygonGraphics.add(graphic);
+                                 console.log(" ...mapqRes 4.7" );
+							     console.log(" ...mapqRes 4.8 \r\n .....",_this.polygonGraphics ," \r\n .....",graphic );
+							     _this.polygonGraphics.add(graphic);
+							     console.log(" ...mapqRes 5" );
 								//_this.pointGraphics.add(graphic);
 
 							}
@@ -329,21 +487,23 @@ define([
 				  }
 				  */
 
-
-				  if ( polygonGraphics.graphics.length > 0) {
+                  console.log(" ...mapqRes 6" );
+				  if ( _this.polygonGraphics.graphics.length > 0) {
 						if (zoomExtent === null) {
-							zoomExtent = graphicsUtils.graphicsExtent(polygonGraphics.graphics);
+							zoomExtent = graphicsUtils.graphicsExtent(_this.polygonGraphics.graphics);
 						} else {
-							zoomExtent = zoomExtent.union(graphicsUtils.graphicsExtent(polygonGraphics.graphics));
+							zoomExtent = zoomExtent.union(graphicsUtils.graphicsExtent(_this.polygonGraphics.graphics));
 						}
 				  }
+				  console.log(" ...mapqRes 7" );
 
 			}); // end array.forEach
-
+             console.log(" ...mapqRes 8" );
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
 
 			console.log("pins",pins);
 			this.doSearch_Pins(pins);
+			 console.log(" ...mapqRes 9" );
 
            // Show info popup
 		   //var mapPoint = zoomExtent.getCenter();
@@ -379,10 +539,10 @@ define([
 		,activateMapSearch: function(){
 
 			this.createGraphicsLayer();
-			console.log("this.map",this.map);
-			this.map.on('click', lang.hitch(this, 'mapSearch'));
+
+			this.map.on('click', lang.hitch(this, 'mapClickHandler'));
 			this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
-			this.connectMapClick();
+			this.disconnectMapClick();
 		}
         ,addPRC_Min: function(pinv){
 
@@ -602,6 +762,11 @@ define([
 
             domConstruct.empty("pSearchResults");
             this.showWait();
+
+            if (this.activeMenu=='map') {
+                this.runMapSearch();
+				return;
+			}
 
             var startrec = 1;
             var endrec = 50;
