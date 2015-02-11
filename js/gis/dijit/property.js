@@ -35,18 +35,32 @@ define([
     'dojo/json',
     'dojo/cookie',
     "dojo/parser",
-     'dijit/form/FilteringSelect',
+    'dijit/form/FilteringSelect',
 	'dijit/form/ValidationTextBox',
 	'dojo/store/Cache', 'dojo/store/JsonRest',
 	'./prc',
 	'./prcmin',
+	'dojo/_base/Color',
 	'esri/layers/GraphicsLayer',
 	'esri/graphic',
+	'esri/graphicsUtils',
 	'esri/renderers/SimpleRenderer',
 	'esri/symbols/PictureMarkerSymbol',
-	//"esri/geometry/Geometry",
+	 "esri/geometry/Geometry",
 	'esri/geometry/Point',
 	'esri/SpatialReference',
+	'esri/symbols/SimpleMarkerSymbol',
+	'esri/symbols/SimpleLineSymbol',
+	'esri/symbols/SimpleFillSymbol',
+	'esri/graphicsUtils',
+	'esri/tasks/FindTask',
+	'esri/tasks/FindParameters',
+	"esri/tasks/QueryTask",
+	"esri/tasks/query",
+	'esri/geometry/Extent',
+	'esri/tasks/IdentifyTask',
+	'esri/tasks/IdentifyParameters',
+	'esri/InfoTemplate',
 	'xstyle/css!./property/css/property.css'
 	 ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
@@ -54,11 +68,14 @@ define([
 ,Style
 ,request
 ,script
-,ready,parser,registry
+,ready
+,parser
+,registry
 ,topic
 ,number
 ,aspect
-, keys, Memory
+,keys
+,Memory
 ,template
 ,Button
 ,TabContainer
@@ -76,16 +93,23 @@ define([
 ,JSON
 ,cookie
 ,parser
-,FilteringSelect,validationtextBox
+,FilteringSelect
+,validationtextBox
 ,Cache,JsonRest
 ,prc
 ,prcmin
-,GraphicsLayer, Graphic,SimpleRenderer,PictureMarkerSymbol
-//,Geometry
-,Point,SpatialReference
+,Color
+,GraphicsLayer
+,Graphic
+, graphicsUtils
+,SimpleRenderer
+,PictureMarkerSymbol
+ ,Geometry
+,Point
+,SpatialReference
+,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters,InfoTemplate
 
 ) {
-
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 		widgetsInTemplate: true,
 		templateString: template,
@@ -94,6 +118,9 @@ define([
 		domTarget: 'propertyDijit',
 		draggable: true,
 		baseClass: 'propertyDijit',
+		property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
+		parcel_lyrid:11,
+		pin_field:"PATPCL_PIN",
 		filteringSelect:null,
 		filteringSelect_list:[],
 		afStore_list:[],
@@ -105,14 +132,10 @@ define([
 		mapClickMode: null,
 		pointGraphics:null,
 
+
 		postCreate: function () {
 			this.inherited(arguments);
 
-		   //$("div").click(function(){
-		   //    alert("clicked p jquery");
-		   //});
-
-            //parser.parse();
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
 				this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
@@ -123,95 +146,45 @@ define([
 				on(help, 'click', lang.hitch(this.parentWidget, 'show'));
 			}
 
-
             // uncomment to open at startup
             this.parentWidget.show();
-
-
-
-           /*
-           var _this=this;
-		   dojo.forEach(this.queries, function(q, i){
-			   // check if element exists and set autofill
-			   if (registry.byId(q.inputobj_key))   _this.setautofill(q.inputobj_key);
- 		   });
- 		   */
-
 		}
-
 		,startup: function() {
-		      this.inherited(arguments);
+			this.inherited(arguments);
+			var _this=this;
 
-		      var _this=this;
+			this.setautofill("tbAddr");
+			//this.setautofill("tbOwner");
+			this.setautofill("tbPIN");
+			this.setautofill("tbBus");
+			this.setautofill("tbSub");
+			//this.setautofill("tbSalesList");
+			//this.setautofill("tbSalesData");
 
-		      //this.pstartupDijit.set('value', this.pshowAtStartup);
+		    // handle results pager
+		    var sp = document.getElementById("selResPage");
+		    if (sp.addEventListener) {
+				 sp.addEventListener("change",
+				   function(e){
+					   _this.resPage=e.target.selectedIndex+1;
+					   _this.doSearch();
+				   }, false);
+			} else {
+				 sp.attachEvent('change',  function(e){
+					   _this.resPage=e.target.selectedIndex+1;
+					   _this.doSearch();
+				   }) ;
+			}
 
-                     // How to select a tab programmatically
-               /*
-		             var mainTab = dijit.byId("pSearchTabs"); //Tr
-					 var subTab = dijit.byId("pResultsTab"); //tab Id which you want to show
-					 mainTab.selectChild(subTab); //Show the selected Tab
-					 */
+			// handle sales list year selection change
+			var dc = document.getElementById("selSaleListYear");
+			if (dc.addEventListener) {
+				dc.addEventListener("change",  this.salesListYearChange, false);
+			} else {
+				dc.attachEvent('change',  this.salesListYearChange)  ;
+			}
 
-					 // How to load html into contetpanel
-					 /*
-					 var pane1 = registry.byId("pane1");
-					 //pane1.set("href", "./js/viewer/templates/help/property_search.html");
-					 pane1.set("href", "./js/viewer/gis/dijit/property/templates/property_search.html");
-					 //pane1.domNode.innerHTML
-                */
-
-
-          //this.addPRC_Min();
-
-
-                // add a generic onchange event listener to the search type selection dropdown
-			    /*var el = document.getElementById("selSearchType");
-			    if (el.addEventListener) {
-					el.addEventListener("change",  this.changeSearchForm, false);
-				} else {
-					el.attachEvent('change',  this.changeSearchForm)  ;
-				}*/
-
-
-				 this.setautofill("tbAddr");
-				 //this.setautofill("tbOwner");
-                 this.setautofill("tbPIN");
-                 this.setautofill("tbBus");
-                 this.setautofill("tbSub");
-                 //this.setautofill("tbSalesList");
-                 //this.setautofill("tbSalesData");
-
-
-			   // handle results pager
-			   var sp = document.getElementById("selResPage");
-			   if (sp.addEventListener) {
-					 sp.addEventListener("change",
-					   function(e){
-						   _this.resPage=e.target.selectedIndex+1;
-                           _this.doSearch();
-                       }, false);
-				} else {
-					 sp.attachEvent('change',  function(e){
-						   _this.resPage=e.target.selectedIndex+1;
-                           _this.doSearch();
-                       }) ;
-				}
-
-
-
-				// handle sales list year selection change
-				var dc = document.getElementById("selSaleListYear");
-				if (dc.addEventListener) {
-					dc.addEventListener("change",  this.salesListYearChange, false);
-				} else {
-					dc.attachEvent('change',  this.salesListYearChange)  ;
-				}
-
-
-
-
-		        return this.pshowAtStartup;
+			return this.pshowAtStartup;
         }
         ,createGraphicsLayer: function () {
 			var pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
@@ -229,7 +202,7 @@ define([
 		, setMapClickMode: function (mode) {
 			this.mapClickMode = mode;
 		}
-		, placePoint: function () {
+		, placePoint: function (e) {
 			this.disconnectMapClick();
 			//get map click, set up listener in post create
 		}
@@ -250,10 +223,156 @@ define([
             var mappt=e.mapPoint;
 
             console.log("mapSearch pt",mappt.x,"  ",mappt.y);
+            console.log("this.pointGraphics ",this.pointGraphics);
             var  graphic = new Graphic(e.mapPoint);
             this.pointGraphics.add(graphic);
 
 
+            // Step 1: Query AGS, add the selection to the map, and get the pins for the selected  area
+            // 1.a - Query AGS.
+
+			var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+			console.log("q_url",q_url);
+
+			var query = new  Query();
+			//query.where = "STATE_NAME = 'Washington'";
+			//query.outSpatialReference = {wkid:102100};
+			query.geometry = mappt;
+			query.outSpatialReference = {wkid:this.map.spatialReference.wkid};
+			query.returnGeometry = true;
+			query.outFields = [this.pin_field];
+
+			var qryTask=new QueryTask(q_url);
+
+			//console.log("queryTask",qryTask);
+			qryTask.execute(query,lang.hitch(this, 'mapqRes'));
+
+
+            // Step 2: Query CentralGIS using the selected PINs
+
+            // Step 3: Add a mechanism to clear the selection set.
+
+            // Step 4: Do proper gqarbage collection and cleanup
+
+		}
+		,mapqRes: function(results) {
+			console.log("mapqRes",results);
+			var _this=this;
+			console.log("mapqRes this",this);
+            var zoomExtent = null;
+
+            // add graphics layer if it does not already exist
+		    var polygonGraphics = this.map.getLayer("findGraphics_polygon");
+            if (!polygonGraphics) polygonGraphics = new GraphicsLayer({ id: 'findGraphics_polygon', title: 'Find Graphics' });
+            this.map.addLayer(polygonGraphics);
+            polygonGraphics.show();
+
+            //console.log("polygonGraphics",polygonGraphics);
+            console.log("mapqRes results",results);
+
+            // TODO: make the infotemplate an option/parameter
+            // var infoTemplate = new InfoTemplate("Parcel Info", "<table><tr><td>PIN: </td><td>${PARCEL ID}</td></tr><tr><td>Owner: </td><td>${OWNER}</td></tr></table>");
+
+
+            var feats=[];
+            var pins=[];
+			array.forEach( results.features, function (feature) {
+				  var graphic;
+                  //feature.setInfoTemplate(infoTemplate);
+				  feats.push(feature);
+
+				  console.log("feature.attributes",feature.attributes);
+
+				  if (feature.attributes && feature.attributes.PATPCL_PIN) {
+
+					   pins.push(feature.attributes.PATPCL_PIN);
+
+				  }
+
+
+				  switch (feature.geometry.type) {
+						case 'point':
+						    // TODO: Add point graphics
+							break;
+						case 'polyline':
+						    // TODO: Add polyline graphics
+							break;
+						case 'polygon':
+
+							if (feature.geometry.rings && feature.geometry.rings.length > 0) {
+
+								graphic = new Graphic(feature.geometry, null, {
+									ren: 1
+								});
+
+
+                                // TODO: make symbology an option/parameter
+								graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+											 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+											 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.15])));
+
+							     polygonGraphics.add(graphic);
+								//_this.pointGraphics.add(graphic);
+
+							}
+							break;
+						default:
+				  }
+
+                  // update the results extent
+				  /*if ( _this.pointGraphics.graphics.length > 0) {
+						if (zoomExtent === null) {
+							zoomExtent = graphicsUtils.graphicsExtent(_this.pointGraphics.graphics);
+						} else {
+							zoomExtent = zoomExtent.union(graphicsUtils.graphicsExtent(_this.pointGraphics.graphics));
+						}
+				  }
+				  */
+
+
+				  if ( polygonGraphics.graphics.length > 0) {
+						if (zoomExtent === null) {
+							zoomExtent = graphicsUtils.graphicsExtent(polygonGraphics.graphics);
+						} else {
+							zoomExtent = zoomExtent.union(graphicsUtils.graphicsExtent(polygonGraphics.graphics));
+						}
+				  }
+
+			}); // end array.forEach
+
+			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
+
+			console.log("pins",pins);
+			this.doSearch_Pins(pins);
+
+           // Show info popup
+		   //var mapPoint = zoomExtent.getCenter();
+		   //this.map.infoWindow.setContent('<div class="loading"></div>');
+           //this.map.infoWindow.setFeatures(feats);
+           //this.map.infoWindow.show(mapPoint);
+
+           // Step 2: Query CentralGIS using the selected PINs
+
+		}
+		,doSearch_Pins: function(pins){
+            console.log("doSearch_Pins",pins);
+
+            var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=pin_list&searchString=' + pins.join() + '&startrec=1&endrec=50';
+            //console.log("iurl",iurl);
+
+            var _this=this;
+            request.get(iurl,{ handleAs: "json" }).then(
+
+                function (data){
+                     console.log(  data);
+                    _this.showResults(data);
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
 
 		}
@@ -264,8 +383,6 @@ define([
 			this.map.on('click', lang.hitch(this, 'mapSearch'));
 			this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 			this.connectMapClick();
-
-
 		}
         ,addPRC_Min: function(pinv){
 
@@ -283,154 +400,100 @@ define([
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
             dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
 
-			 tpcmd.on("click", function (e) {
+			tpcmd.on("click", function (e) {
 			    var actntype=e.target.id;
 				  if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
 									|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
 
+					  var prcob=registry.byId(this.id);
+					  var pin=prcob.pin.trim();
 
-						 var prcob=registry.byId(this.id);
-						 var pin=prcob.pin.trim();
+					  if (pin) {
+							 var ownr=prcob.owner.trim();
+							 var addrr=prcob.address.trim();
+							 var hmstd=prcob.homestead.trim();
 
-						 console.log("mindetail menu click",pin," ",actntype);
+							 var pcObj={
+								 pin:pin,
+								 owner:ownr,
+								 address:addrr,
+								 homestead:hmstd
 
-						 if (pin) {
-
-									 var ownr=prcob.owner.trim();
-									 var addrr=prcob.address.trim();
-									 var hmstd=prcob.homestead.trim();
-
-
-									 var pcObj={
-										 pin:pin,
-										 owner:ownr,
-										 address:addrr,
-										 homestead:hmstd
-
-									 };
-
-									 //console.log("pcObj",pcObj);
-									 _this.handlePRCevent(actntype,pcObj,this.id);
-
-						}
+							 };
+							 //console.log("pcObj",pcObj);
+							 _this.handlePRCevent(actntype,pcObj,this.id);
+					}
 			   }
 		    });
-
 		}
       ,setautofill: function(inputobj_key) {
 
-		            var flidx=0;
-                    flidx=this.filteringSelect_list.length;
+			var flidx=0;
+			flidx=this.filteringSelect_list.length;
 
-		            //var inputobj_key="tbAddr";
-		            var qryidx=-1;
+			var qryidx=-1;
+			dojo.forEach(this.queries, function(q, i){
+			   if (q.inputobj_key==inputobj_key) {
+				   qryidx=i;
 
-				    dojo.forEach(this.queries, function(q, i){
-					   if (q.inputobj_key==inputobj_key) {
-						   qryidx=i;
+			   }
+			});
 
-					   }
-				    });
+			if (qryidx==-1)  console.log("error: could not find query config record: ",qryidx, " fldix:",flidx, " q.inputobj_key:",inputobj_key);
 
-				    if (qryidx==-1) {
-						console.log("error: could not find query config record: ",qryidx, " fldix:",flidx, " q.inputobj_key:",inputobj_key);
+			var testStore = new Memory({ idProperty: "id",data: []});
+			var afStore = Cache(JsonRest({ target : this.queries[qryidx].autofill_url     , idProperty: "id" }), Memory());
+			this.afStore_list.push(afStore);
+			var tbID="af_" + inputobj_key
 
-					}
+			var fs = new FilteringSelect({
+					id: tbID,
+					name: tbID,
+					hasDownArrow: false,
+					value: "",
+					autoComplete: true,
+					pageSize: 10,
+					store: testStore,
+					//store:afStore,
+					searchAttr: "name",
+					disabled:false,
+					required:false,
+					scrollOnFocus:false,
+					queryExpr: "${0}",
+					invalidMessage:"not finding this value but, you can search it anyway",
+			}, "widget_" + inputobj_key);
 
-				    //console.log("qryidx",qryidx, " fldix:",flidx);
+			this.filteringSelect_list.push(fs);
+			this.filteringSelect_list[flidx].startup();
 
+			dijit.byId(tbID).set("store", this.afStore_list[flidx]);
 
-		            var testStore = new Memory({ idProperty: "id",data: []});
-					//this.afStore = Cache(JsonRest({ target : this.queries[qryidx].autofill_url     , idProperty: "id" }), Memory());
-					var afStore = Cache(JsonRest({ target : this.queries[qryidx].autofill_url     , idProperty: "id" }), Memory());
+			var _this=this;
+			this.afStore_list[flidx].query().then(function(response) {
+				testStore.setData(response.slice(0));
+				registry.byId(tbID).set("store", testStore);
+			});
 
-					this.afStore_list.push(afStore);
+			if (dijit.byId(tbID)) {
+				 dijit.byId( tbID).set('style', 'width:100%');
+				 dijit.byId(  tbID).set('store', testStore);
 
-					 var tbID="af_" + inputobj_key
+				 this.own(on(dijit.byId( tbID), 'keyup', lang.hitch(this, function (evt) {
+					 if (evt.keyCode === keys.ENTER) _this.doSearch();
+					 if(dojo.byId( tbID).value.length > _this.queries[qryidx].minChars )
+												dijit.byId(tbID).set("store", _this.afStore_list[flidx]);
 
-					 //tbID="tbPIN";
-					 //ready(function(){
-						 ///this.filteringSelect
-					 var fs = new FilteringSelect({
-										id: tbID,
-										name: tbID,
-										hasDownArrow: false,
-										value: "",
-										autoComplete: true,
-										pageSize: 10,
-										store: testStore,
-										//store:afStore,
-										searchAttr: "name",
-										disabled:false,
-										required:false,
-										scrollOnFocus:false,
-										queryExpr: "${0}",
-										invalidMessage:"not finding this value but, you can search it anyway",
-										//onKeyUp: function(value){}
-										//,onChange: function(state){}
-								}, "widget_" + inputobj_key);
-					  //});
-
-					  this.filteringSelect_list.push(fs);
-					  this.filteringSelect_list[flidx].startup();
-
-                      //console.log("flidx",flidx);
-					  //console.log("this.filteringSelect_list[flidx]",this.filteringSelect_list[flidx]);
-
-					  dijit.byId(tbID).set("store", this.afStore_list[flidx]);
-					 // dijit.byId(inputobj_key).set("store", testStore);
-                      //dijit.byId(inputobj_key).set("store", this.afStore_list[flidx]);
-
-		              var _this=this;
-					  this.afStore_list[flidx].query().then(function(response) {
-
-							testStore.setData(response.slice(0));
-							registry.byId(tbID).set("store", testStore);
-							// _this.own(on(dijit.byId(tbID), 'keyup', lang.hitch(_this, function (evt) {
-		                    //            dijit.byId(tbID).set("store", _this.afStore_list[flidx]);
-							//})));
-
-					 });
-
-
-                      if (dijit.byId(tbID)) {
-
- 								 //document.getElementById(tbID).focus();
- 								 dijit.byId( tbID).set('style', 'width:100%');
- 								 dijit.byId(  tbID).set('store', testStore);
- 								 //dijit.byId(tbID).set('value', '');
-
- 								 this.own(on(dijit.byId( tbID), 'keyup', lang.hitch(this, function (evt) {
-									  if (evt.keyCode === keys.ENTER) _this.doSearch();
-
- 									 //console.log("dijit keyup dojo.byId(tbID)",dojo.byId(tbID) );
-
- 									 if(dojo.byId( tbID).value.length > _this.queries[qryidx].minChars )
- 																dijit.byId(tbID).set("store", _this.afStore_list[flidx]);
-
- 									 if(dojo.byId( tbID).value.length <= _this.queries[qryidx].minChars )
- 											dijit.byId(tbID).set("store",testStore);
-
- 								 })));
-		            }
-
-
-
-
+					 if(dojo.byId( tbID).value.length <= _this.queries[qryidx].minChars )
+							dijit.byId(tbID).set("store",testStore);
+				 })));
+		   }
  		}
         ,changeSearchForm:function(evt){
-
-			console.log("changeSearchForm",evt," ",this);
 			this.clearSearch();
-
-
 			var SearchPane  = registry.byId("psearchForm");
-
 			var selForm=evt.target.value;
-
             var frmObj=null;
             this.activeMenu=selForm;
-            console.log("changeSearchForm this.activeMenu",this.activeMenu);
 
 			if (selForm=="property") {
 				frmObj=dijit.byId("pPropSearchForm");
@@ -451,7 +514,6 @@ define([
 			} else if (selForm=="map") {
 				 frmObj=dijit.byId("pMapFrm");
 				 this.activateMapSearch();
-
 			}
 
 			// hide all the forms then only show the active form
@@ -463,8 +525,6 @@ define([
             dijit.byId("pMapFrm").set("style", "display:none");
 
             if (frmObj) frmObj.set("style", "display:block");
-
-			// need a way to impliment autosuggest on the dynamic textboxes
 		}
         ,salesListYearChange:function(evt){
 			// filter the months for available values
@@ -496,14 +556,12 @@ define([
 		}
 		,getQueryObj: function(frmfldid){
 			var qo="";
-			//console.log("getAutoFillURL",frmfldid);
 
 			if (frmfldid=="property"){
 				qo=this.queries[0];
 			}
             return qo;
 		}
-
 		,onOpen: function () {
 			if (!this.openOnStartup) {
 				this.containerNode.resize();
@@ -532,7 +590,6 @@ define([
 
 		}
 		,hideWait:function() {
-
 		   var wi=dom.byId("waitimg");
 		   if (wi) {
 			   wi.parentNode.removeChild(wi);
@@ -608,12 +665,8 @@ define([
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
-
 		}
 		,prepSalesDataURL: function(startrec,endrec){
-
-			console.log("prepSalesDataURL");
-
 			 var qJsonObj={
 				"subNumber":"",
 				"subid":"",
@@ -634,9 +687,6 @@ define([
 				"saleVacant2":"",
 				"saleVacant":""
 		    };
-
-		    console.log("qJsonObj",qJsonObj);
-
 
 			if (registry.byId("tbSlDateFrom") && registry.byId("tbSlDateFrom").textbox.value && (registry.byId("tbSlDateFrom").textbox.value !="")){
 			          qJsonObj.startDate=registry.byId("tbSlDateFrom").textbox.value;
@@ -666,7 +716,7 @@ define([
 			          qJsonObj.endAcreage=registry.byId("tbSlAcreTo").textbox.value;
 			}
 
-             console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
+            //console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
 
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson=' + dojo.toJson(qJsonObj,true);
 		}
@@ -683,48 +733,27 @@ define([
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson={"subNumber":"","subid":"","sectionValue":"","townshipValue":"","rangeValue":"","startDate":"' + qStartDate + '","endDate":"' + qEndDate + '","startPrice":0,"endPrice":0,"startArea":0,"endArea":0,"startAcreage":0,"endAcreage":0,"saleQualification1":"","saleQualification":"","saleVacant1":"","saleVacant2":"","saleVacant":""} ';
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
-			 //console.log("handling prc event",pcObj,"  ",actntype);
 
-			 var prcob=registry.byId(prcID);
-
-
-
-
-			//var _this=this;
-			if (actntype == "pc_zoom") {
-				//console.log("zooming "," map ",this.map);
-
+			var prcob=registry.byId(prcID);
+ 			if (actntype == "pc_zoom") {
                topic.publish('InitZoomer/ZoomParcel', {
 			 		 pin:pcObj.pin
                });
-
 			} else if (actntype == "pc_fulldet") {
 
 			} else if (actntype == "pc_mindet") {
-				//prcob.expand_detail();
-
 				this.addPRC_Min(pcObj.pin);
-
 			} else if (actntype == "pc_save") {
 				this.addPRC2Saved(pcObj,prcID);
-
 				// if action card is minimal detail then ...
-
 			} else if (actntype == "pc_print") {
 
 			}
-
-
-
 		}
 		,addPRC2Saved:function(pcObj,widgetID){
-
 			 var _this=this;
              var srd=dom.byId("pSearchSaved");
-
-
 			 var prcob=registry.byId(widgetID);
-
 
 			 var tprc =new prc(
 			    {
@@ -759,7 +788,6 @@ define([
 		}
 		,resultsAddPager(dobj){
 
-
 			//TODO: Hide if there are zero results and show if there are > 0
             var rec_page = 0;
             var pgcnt=0;
@@ -782,10 +810,7 @@ define([
 					// hide the page selection box pPageSelDiv
 					//var psdv = dom.byId("pPageSelDiv");
 					document.getElementById("pPageSelDiv").style.visibility="hidden";
-
-
 				}
-
 				if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
 		   }
 
@@ -801,21 +826,19 @@ define([
 		    // show the record count
 		    var rc = document.getElementById("pResCount");
 		    rc.innerHTML='<br><b><p>' + dobj.rec_count + ' total records</p></b><br>page ' + rec_page + ' of ' + pgcnt;
-
 		}
 		,changePage:function(e){
-
              var pg=e.target.selectedIndex-1;
              console.log("changePage changing page",pg );
 
              this.resPage=pg;
              this.doSearch();
-
 		}
 		,showResults: function (results){
 
-			 this.hideWait();
+			console.log("showResults",results);
 
+			 this.hideWait();
              var _this=this;
              var srd=dom.byId("pSearchResults");
 			 var dlgcont = "";
@@ -828,7 +851,6 @@ define([
 				 console.log("error getting results",results);
 			 }
 
-
 			// Set the page menu and select current page
             this.resultsAddPager(dobj);
 
@@ -836,83 +858,53 @@ define([
             if (pobj.length==1) {
                dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
 			   dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
-			   //TODO: show min detail pobj[0].pin
-			   this.addPRC_Min(pcObj.pin);
-
+			   this.addPRC_Min(pobj[0].pin);
 		    }
 
+			for (var i = 0; i < pobj.length; i++) {
+				 var tprc =new prc(
+				 {
+				   pin: pobj[i].pin,
+				   owner: pobj[i].owner,
+				   address: pobj[i].addr,
+				   homestead:pobj[i].hstead
+				 });
 
+				 tprc.on("click", function (e) {
+					 var actntype=e.target.id;
+					 if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
+							|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
 
-			 for (var i = 0; i < pobj.length; i++) {
-					 var tprc =new prc(
-						 {
-						   pin: pobj[i].pin,
-						   owner: pobj[i].owner,
-						   address: pobj[i].addr,
-						   homestead:pobj[i].hstead
-						 });
+						 // get the prc id, get the widget, fire widget method
+						 var prcob=registry.byId(this.id);
+						 //prcob.expand_detail();
+						 //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
+						 var pin=prcob.pin.trim();
 
-						 tprc.on("click", function (e) {
-							 var actntype=e.target.id;
-							 if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
-									|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
+						 if (pin) {
+							 var ownr=prcob.owner.trim();
+							 var addrr=prcob.address.trim();
+							 var hmstd=prcob.homestead.trim();
 
+							 var pcObj={
+								 pin:pin,
+								 owner:ownr,
+								 address:addrr,
+								 homestead:hmstd
 
-
-								 // get the prc id, get the widget, fire widget method
-								  var prcob=registry.byId(this.id);
-								  //prcob.expand_detail();
-
-
-								 //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
-                                 var pin=prcob.pin.trim();
-
-								 if (pin) {
-									 //pin=pin.replace(/(\r\n|\n|\r)/gm,"").trim();
-
-									 //var ownr=this.childNodes[1].childNodes[1].children[0].children[0].children[4].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
-									 //var addrr=this.childNodes[1].childNodes[1].children[0].children[0].children[6].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
-									 //var hmstd=this.childNodes[1].childNodes[1].children[0].children[0].children[8].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
-									 var ownr=prcob.owner.trim();
-									 var addrr=prcob.address.trim();
-									 var hmstd=prcob.homestead.trim();
-
-
-									 var pcObj={
-										 pin:pin,
-										 owner:ownr,
-										 address:addrr,
-										 homestead:hmstd
-
-									 };
-
-									 //console.log("pcObj",pcObj);
-									 _this.handlePRCevent(actntype,pcObj,this.id);
-								 }
-							 }
-						 });
-
-					 tprc.startup();
-
-				     tprc.placeAt(srd);
+							 };
+							 _this.handlePRCevent(actntype,pcObj,this.id);
+						 }
+					 }
+				 });
+				 tprc.startup();
+				 tprc.placeAt(srd);
 			 }
-
-
-			 // set the pager to active page
-
-
-
-			 //dijit.byId("pWaitDiv").set("style", "visibility:hidden");
-
 		}
 		,PclCardClck: function(){
-			console.log("PclCardClck");
-
 
 		}
 		,clearSearch: function(){
-
-
            var dobj=dijit.byId("pane1").domNode;
            var iboxes=dobj.getElementsByTagName('input');
            for (var i=0;i<iboxes.length;i++){
@@ -920,35 +912,6 @@ define([
                     iboxes[i].value="";
 				}
 		   }
-
-          /*
-			var selSearchType = dom.byId("selSearchType");
-			//console.log("selSearchType",selSearchType);
-
-			 //this.setautofill("tbOwner");
-			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
-			           registry.byId("af_tbAddr").textbox.value="";
-		    }
-			if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
-			           registry.byId("af_tbOwner").textbox.value="";
-			}
-			if (registry.byId("tbOwner") && registry.byId("tbOwner").textbox.value && (registry.byId("tbOwner").textbox.value !="")){
-			           registry.byId("tbOwner").textbox.value="";
-
-			}
-			if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
-			           registry.byId("af_tbPIN").textbox.value="";
-			}
-			if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
-			           registry.byId("af_tbBus").textbox.value="";
-			}
-			if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
-			           registry.byId("af_tbSub").textbox.value="";
-			}
-			*/
-
-
 		}
-
 	});
 });

@@ -13,7 +13,7 @@ define({
 			//layerIds: [2],
 			layerIds: [81],
 			searchFields: ['SITE_ADDR'],
-			minChars: 2
+			minChars: 1
 		} ,
 
        {
