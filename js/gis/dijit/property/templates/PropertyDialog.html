@@ -16,7 +16,7 @@
 
                             <div id="pSearchForm" style="position:absolute;top:1%;left:1%">
                                 <!--put content here -->
-                                <div id="pane1" data-dojo-type="dijit/layout/ContentPane">
+                                <div id="pane1" data-dojo-attach-point="pane1" data-dojo-type="dijit/layout/ContentPane">
 
                                     <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="width:320px;height:500px">
                                         <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="propertyFormDijit" style="font-size: 11px; min-width: 1em; min-height: 1em;">
@@ -26,7 +26,7 @@
                                                 <div style="float:left; padding:0px;margin;0px;">search type:
                                                 </div>
                                                 <div style="padding: 0px; float: right; padding:0px;margin;0px;">
-                                                    <select id="selSearchType" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
+                                                    <select id="selSearchType" data-dojo-attach-point="selSearchType" data-dojo-attach-event="onChange:changeSearchForm" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
                                                         <option value="property" selected="true">property</option>
                                                         <option value="salesdata">sales data</option>
                                                         <option value="saleslist">sales list</option>
@@ -73,24 +73,99 @@
 
                                                 <div id="pSalesListFrm" class="pContRes" data-dojo-attach-point="pSalesListFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
                                                     <p>Sales List:</p>
-                                                    <p>Sales Search Tools Coming Soon</p>
+
+													 <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+
+														 <div style="float:left; padding:0px;margin;0px;">Month:
+														 </div>
+														 <div style="padding: 0px; float: right; padding:0px;margin;0px;">
+															 <select id="selSaleListMonth" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
+																<option value="1" selected="true">January</option>
+																<option value="2">February</option>
+																<option value="3">March</option>
+																<option value="4">April</option>
+																<option value="5">May</option>
+																<option value="6">June</option>
+																<option value="7">July</option>
+																<option value="8">August</option>
+																<option value="9">September</option>
+																<option value="10">October</option>
+																<option value="11">November</option>
+																<option value="12">December</option>
+															 </select>
+														 </div>
+                                                     </div>
+                                                     <br>
+ 													 <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+														 <div style="float:left; padding:0px;margin;0px;">Year:
+														 </div>
+														 <div style="padding: 0px; float: right; padding:0px;margin;0px;">
+															 <select id="selSaleListYear" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
+															    <option value="2012">2012</option>
+															    <option value="2013">2013</option>
+															    <option value="2014" selected="true">2014</option>
+															    <option value="2015">2015</option>
+															 </select>
+														 </div>
+                                                     </div>
                                                     <br>
                                                 </div>
+
+
                                                 <div id="pSalesDataFrm" class="pContRes" data-dojo-attach-point="pSalesListFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
-                                                    <p>Sales Data:</p>
-                                                    <p>Sales Search Tools Coming Soon</p>
+
+
+                                                    <p>Date Range:</p>
+                                                    <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+													    <input id="tbSlDateFrom" type="text" auFromcomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlDateFrom" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want From search for.',class:'searchText'" style="width: 99px;float:left"></input>
+
+														<input id="tbSlDateTo" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlDateTo" data-dojo-props="name:'searchSlDateTo',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:right"></input>
+														<br>
+													</div>
+													<br>
+
+                                                    <p>Price Range:</p>
+                                                    <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+														<input id="tbSlPriceFrom" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlPriceFrom" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:left"></input>
+
+														 <input id="tbSlPriceTo" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlPriceTo" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:right"></input>
+														<br>
+													</div>
+													<br>
+
+                                                    <p>Square Footage Range:</p>
+                                                    <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+														<input id="tbSlSGFTFrom" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlSGFTFrom" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:left"></input>
+
+														 <input id="tbSlSGFTTo" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlSGFTTo" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:right"></input>
+														<br>
+													</div>
+                                                     <br>
+                                                    <p>Acreage Range:</p>
+                                                    <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+														<input id="tbSlAcreFrom" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlAcreFrom" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:left"></input>
+
+														 <input id="tbSlAcreTo" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbSlAcreTo" data-dojo-props="name:'searchSlDateFrom',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 99px;float:right"></input>
+
+													</div>
+
+
+
                                                     <br>
                                                 </div>
 
                                                 <div id="pMapFrm" class="pContRes" data-dojo-attach-point="pMapFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;">
-                                                    <p>Map Search Tools Coming Soon</p>
+                                                    <p>Map Search Tools Are in the works</p>
+
+                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:placePoint"  label="Select By Point" iconClass="dijitNoIcon" ></input>
 
                                                     <br>
                                                 </div>
 
                                                 <div style="width:48%;margin: 3px 3px 5px 50px; font-size: 9px;">
                                                     <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
-                                                    <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch" intermediateChanges="false" label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
+
+                                                    <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch"  label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
                                                 </div>
 
 

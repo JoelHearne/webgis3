@@ -1,4 +1,4 @@
-define.amd.jQuery = true;
+//define.amd.jQuery = true;
 define([
 	'dojo/_base/declare',
     'dijit/_WidgetBase',
@@ -29,7 +29,7 @@ define([
     'dojox/lang/functional',
     'dojo/json',
     'dojo/cookie',
-    'jquery',
+    //'jquery',
 	'xstyle/css!./Help/css/Help.css'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
 ,baseFx
@@ -53,7 +53,7 @@ define([
 ,functional
 ,JSON
 ,cookie
-,$
+//,$
 ) {
 
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {

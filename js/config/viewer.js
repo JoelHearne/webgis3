@@ -21,9 +21,9 @@ define([
 	// url to your proxy page, must be on same machine hosting you app. See proxy folder for readme.
 	esriConfig.defaults.io.proxyUrl = 'proxy/proxy.ashx';
 	esriConfig.defaults.io.alwaysUseProxy = false;
-	esriConfig.defaults.io.corsDetection=true;
-	esriConfig.defaults.io.useCors=true;
-	//esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
+    esriConfig.defaults.io.corsDetection=true;
+    esriConfig.defaults.io.useCors=true;
+    esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
 
 
 	// url to your geometry server.

@@ -1,5 +1,8 @@
 define({
 	map: true,
+	mapClickMode: true,
+	openOnStartup: true,
+	mapRightClickMenu: true,
 	queries: [
 		{
 			description: 'Find Address',

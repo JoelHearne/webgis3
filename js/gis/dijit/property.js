@@ -40,7 +40,13 @@ define([
 	'dojo/store/Cache', 'dojo/store/JsonRest',
 	'./prc',
 	'./prcmin',
-    //'jquery',
+	'esri/layers/GraphicsLayer',
+	'esri/graphic',
+	'esri/renderers/SimpleRenderer',
+	'esri/symbols/PictureMarkerSymbol',
+	//"esri/geometry/Geometry",
+	'esri/geometry/Point',
+	'esri/SpatialReference',
 	'xstyle/css!./property/css/property.css'
 	 ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
@@ -74,7 +80,10 @@ define([
 ,Cache,JsonRest
 ,prc
 ,prcmin
-//,$
+,GraphicsLayer, Graphic,SimpleRenderer,PictureMarkerSymbol
+//,Geometry
+,Point,SpatialReference
+
 ) {
 
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -88,11 +97,13 @@ define([
 		filteringSelect:null,
 		filteringSelect_list:[],
 		afStore_list:[],
-
 		autofill_urls:null,
 		afStore:null,
 		queryIdx:0,
 		resPage:1,
+		activeMenu:"property",
+		mapClickMode: null,
+		pointGraphics:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -115,6 +126,7 @@ define([
 
             // uncomment to open at startup
             this.parentWidget.show();
+
 
 
            /*
@@ -149,69 +161,21 @@ define([
 					 //pane1.domNode.innerHTML
                 */
 
-                //this.testautofill();
-			    // set the initial search form
-			    //var SearchPane  = registry.byId("psearchForm");
-			    // SearchPane.set("href", "./js/gis/dijit/property/templates/parcel.html");
-                //SearchPane.set("href", parcel);
-                //console.log("SearchPane",SearchPane);
-                //SearchPane.startup();
-
-
-
-                //var tb=registry.byId("dijit_form_ValidationTextBox_0");
-
-                //tb.set("autocomplete", "on");
-                //tb.startup();
-                //console.log("tb",tb);
-                //parser.parse();
-
-			    //this.testautofill();
-
-			    //console.log("propertyFormDijit",this.propertyFormDijit);
-/*
-		             var mainTab = dijit.byId("pSearchTabs"); //Tr
-					 var subTab = dijit.byId("pResultsTab"); //tab Id which you want to show
-					 mainTab.selectChild(subTab); //Show the selected Tab
-
-				     var tprc =new prc(
-						 {
-						   pin:"23-2S-14-00000-00",
-						   owner:"BillyBob",
-						   address:"368 Schneider",
-                           homestead:"Y"
-						 });
-
-				     tprc.startup();
-
-				     console.log("tprc",tprc);
-				     var srd=dom.byId("pSearchResults");
-
-				     //dojo.place( srd,tprc );
-				     //domConstruct.place(tprc, srd );
-				      //domConstruct.place( srd,tprc );
-				     //var form = new Form();
-				     //tprc.placeAt(form.containerNode);
-				     //form.placeAt(srd);
-
-				     tprc.placeAt(srd);
-*/
-
 
           //this.addPRC_Min();
 
 
                 // add a generic onchange event listener to the search type selection dropdown
-			    var el = document.getElementById("selSearchType");
+			    /*var el = document.getElementById("selSearchType");
 			    if (el.addEventListener) {
 					el.addEventListener("change",  this.changeSearchForm, false);
 				} else {
 					el.attachEvent('change',  this.changeSearchForm)  ;
-				}
+				}*/
 
 
 				 this.setautofill("tbAddr");
-				 this.setautofill("tbOwner");
+				 //this.setautofill("tbOwner");
                  this.setautofill("tbPIN");
                  this.setautofill("tbBus");
                  this.setautofill("tbSub");
@@ -236,8 +200,73 @@ define([
 
 
 
+				// handle sales list year selection change
+				var dc = document.getElementById("selSaleListYear");
+				if (dc.addEventListener) {
+					dc.addEventListener("change",  this.salesListYearChange, false);
+				} else {
+					dc.attachEvent('change',  this.salesListYearChange)  ;
+				}
+
+
+
+
 		        return this.pshowAtStartup;
         }
+        ,createGraphicsLayer: function () {
+			var pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
+			this.pointGraphics = new GraphicsLayer({
+				id: 'parcel_graphics',
+				title: 'Parcel Search'
+			});
+			var pointRenderer = new SimpleRenderer( pointSymbol);
+			 pointRenderer.label = 'Parcel View';
+			 pointRenderer.description = 'Parcel View';
+			 this.pointGraphics.setRenderer(pointRenderer);
+			 this.map.addLayer(this.pointGraphics);
+			 this.pointGraphics.show();
+		}
+		, setMapClickMode: function (mode) {
+			this.mapClickMode = mode;
+		}
+		, placePoint: function () {
+			this.disconnectMapClick();
+			//get map click, set up listener in post create
+		}
+		,disconnectMapClick: function () {
+			this.map.setMapCursor('crosshair');
+			topic.publish('mapClickMode/setCurrent', 'streetview');
+		}
+		, connectMapClick: function () {
+			this.map.setMapCursor('auto');
+			topic.publish('mapClickMode/setDefault');
+		}
+		, clearGraphics: function () {
+			this.pointGraphics.clear();
+			domStyle.set(this.noStreetViewResults, 'display', 'block');
+		}
+		,mapSearch: function(e){
+            console.log("mapSearch",e);
+            var mappt=e.mapPoint;
+
+            console.log("mapSearch pt",mappt.x,"  ",mappt.y);
+            var  graphic = new Graphic(e.mapPoint);
+            this.pointGraphics.add(graphic);
+
+
+
+
+		}
+		,activateMapSearch: function(){
+
+			this.createGraphicsLayer();
+			console.log("this.map",this.map);
+			this.map.on('click', lang.hitch(this, 'mapSearch'));
+			this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
+			this.connectMapClick();
+
+
+		}
         ,addPRC_Min: function(pinv){
 
 			domConstruct.empty("pcMinDet");
@@ -391,11 +420,18 @@ define([
  		}
         ,changeSearchForm:function(evt){
 
+			console.log("changeSearchForm",evt," ",this);
+			this.clearSearch();
+
+
 			var SearchPane  = registry.byId("psearchForm");
 
 			var selForm=evt.target.value;
 
             var frmObj=null;
+            this.activeMenu=selForm;
+            console.log("changeSearchForm this.activeMenu",this.activeMenu);
+
 			if (selForm=="property") {
 				frmObj=dijit.byId("pPropSearchForm");
 
@@ -414,6 +450,7 @@ define([
 
 			} else if (selForm=="map") {
 				 frmObj=dijit.byId("pMapFrm");
+				 this.activateMapSearch();
 
 			}
 
@@ -427,22 +464,43 @@ define([
 
             if (frmObj) frmObj.set("style", "display:block");
 
-
-
 			// need a way to impliment autosuggest on the dynamic textboxes
-
 		}
+        ,salesListYearChange:function(evt){
+			// filter the months for available values
+			var selYr=evt.target.value;
+			var yrObj=registry.byId("selSaleListYear");
+			var mnthObj=dom.byId("selSaleListMonth");
 
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                  "July", "August", "September", "October", "November", "December"];
+
+            var today = new Date();
+            var cmonth = today.getMonth() ;
+            var cyear = today.getFullYear();
+
+			// we need to filter months for the current year
+			if (cyear==selYr) {
+			   mnthObj.options.length=0;
+	           for ( var p = 0; p < cmonth; p++) {
+				   mnthObj.options[mnthObj.options.length]=new Option(monthNames[p],p+1);
+			   }
+			   mnthObj.selectedIndex = 0;
+			} else {
+			   mnthObj.options.length=0;
+	           for ( var p = 0; p < monthNames.length; p++) {
+				   mnthObj.options[mnthObj.options.length]=new Option(monthNames[p],p+1);
+			   }
+			   mnthObj.selectedIndex = 0;
+			}
+		}
 		,getQueryObj: function(frmfldid){
 			var qo="";
 			//console.log("getAutoFillURL",frmfldid);
 
 			if (frmfldid=="property"){
 				qo=this.queries[0];
-
-
 			}
-
             return qo;
 		}
 
@@ -457,6 +515,8 @@ define([
 			}
 		}
 		,showWait:function() {
+           document.getElementById("pPageSelDiv").style.visibility="hidden";
+           document.getElementById("pResCount").innerHTML='';
 
 		   var srd=dom.byId("pSearchResults");
 		   if (srd) {
@@ -478,13 +538,12 @@ define([
 			   wi.parentNode.removeChild(wi);
 
 		   }
-
 		}
-
-
 		,doSearch: function(){
-			//console.log("doSearch");
+            console.log("doSearch" );
+			console.log("doSearch",this.activeMenu);
 
+            domConstruct.empty("pSearchResults");
             this.showWait();
 
             var startrec = 1;
@@ -494,7 +553,6 @@ define([
 				startrec = ((this.resPage-1) * 50) + 1;
 				endrec = (startrec + 50) - 1;
 			}
-
 
             var sval;
             var stype;
@@ -507,6 +565,9 @@ define([
 			          //console.log("owner",registry.byId("af_tbOwner").textbox.value);
 			          stype="owner";
 			          sval=registry.byId("af_tbOwner").textbox.value;
+			} else  if (registry.byId("tbOwner") && registry.byId("tbOwner").textbox.value && (registry.byId("tbOwner").textbox.value !="")){
+			          stype="owner";
+			          sval=registry.byId("tbOwner").textbox.value;
 			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
 			          //console.log("pin",registry.byId("af_tbPIN").textbox.value);
 			          stype="pin";
@@ -521,26 +582,105 @@ define([
 			          sval=registry.byId("af_tbSub").textbox.value;
 			}
 
-			var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=' + stype + '&searchString=' + sval + '&startrec=' + startrec + '&endrec=' + endrec;
+            var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=' + stype + '&searchString=' + sval + '&startrec=' + startrec + '&endrec=' + endrec;
 
-            console.log("got property query url",iurl);
+			if (this.activeMenu=="saleslist") {
+                 stype="saleslist";
+                 iurl = this.prepSalesListURL(startrec,endrec);
+			}
+
+			if (this.activeMenu=="salesdata") {
+                 stype="saleslist";
+                 iurl = this.prepSalesDataURL(startrec,endrec);
+			}
 
             var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
 
                 function (data){
-                    //console.log(  data);
+                     //console.log(  data);
                     _this.showResults(data);
-
  	            } ,
  	            function (error){
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
-
-
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
+
+		}
+		,prepSalesDataURL: function(startrec,endrec){
+
+			console.log("prepSalesDataURL");
+
+			 var qJsonObj={
+				"subNumber":"",
+				"subid":"",
+				"sectionValue":"",
+				"townshipValue":"",
+				"rangeValue":"",
+				"startDate":"",
+				"endDate":"",
+				"startPrice":0,
+				"endPrice":0,
+				"startArea":0,
+				"endArea":0,
+				"startAcreage":0,
+				"endAcreage":0,
+				"saleQualification1":"",
+				"saleQualification":"",
+				"saleVacant1":"",
+				"saleVacant2":"",
+				"saleVacant":""
+		    };
+
+		    console.log("qJsonObj",qJsonObj);
+
+
+			if (registry.byId("tbSlDateFrom") && registry.byId("tbSlDateFrom").textbox.value && (registry.byId("tbSlDateFrom").textbox.value !="")){
+			          qJsonObj.startDate=registry.byId("tbSlDateFrom").textbox.value;
+			}
+			if (registry.byId("tbSlDateTo") && registry.byId("tbSlDateTo").textbox.value && (registry.byId("tbSlDateTo").textbox.value !="")){
+			          qJsonObj.endDate=registry.byId("tbSlDateTo").textbox.value;
+			}
+			if (registry.byId("tbSlPriceFrom") && registry.byId("tbSlPriceFrom").textbox.value && (registry.byId("tbSlPriceFrom").textbox.value !="")){
+			          qJsonObj.startPrice=registry.byId("tbSlPriceFrom").textbox.value;
+			}
+			if (registry.byId("tbSlPriceTo") && registry.byId("tbSlPriceTo").textbox.value && (registry.byId("tbSlPriceTo").textbox.value !="")){
+			          qJsonObj.endPrice=registry.byId("tbSlPriceTo").textbox.value;
+			}
+
+			if (registry.byId("tbSlSGFTFrom") && registry.byId("tbSlSGFTFrom").textbox.value && (registry.byId("tbSlSGFTFrom").textbox.value !="")){
+			          qJsonObj.startArea=registry.byId("tbSlSGFTFrom").textbox.value;
+			}
+
+			if (registry.byId("tbSlSGFTTo") && registry.byId("tbSlSGFTTo").textbox.value && (registry.byId("tbSlSGFTTo").textbox.value !="")){
+			          qJsonObj.endArea=registry.byId("tbSlSGFTTo").textbox.value;
+			}
+			if (registry.byId("tbSlAcreFrom") && registry.byId("tbSlAcreFrom").textbox.value && (registry.byId("tbSlAcreFrom").textbox.value !="")){
+			          qJsonObj.startAcreage=registry.byId("tbSlAcreFrom").textbox.value;
+			}
+
+			if (registry.byId("tbSlAcreTo") && registry.byId("tbSlAcreTo").textbox.value && (registry.byId("tbSlAcreTo").textbox.value !="")){
+			          qJsonObj.endAcreage=registry.byId("tbSlAcreTo").textbox.value;
+			}
+
+             console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
+
+			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson=' + dojo.toJson(qJsonObj,true);
+		}
+		,prepSalesListURL: function(startrec,endrec){
+			var syear=dom.byId("selSaleListYear").value;
+			var smonth=parseInt(dom.byId("selSaleListMonth").value)-1;
+
+            var startDate=new Date(syear,parseInt(smonth),1);
+            var endDate=  new Date(new Date(syear,parseInt(smonth)+1,1)  - (24*60*60*1000));
+
+            var qStartDate=(startDate.getMonth() + 1) + '/' + (startDate.getDate() ) + '/' + startDate.getFullYear();
+            var qEndDate=(endDate.getMonth() + 1) + '/' + (endDate.getDate()  ) + '/' + endDate.getFullYear();
+
+			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson={"subNumber":"","subid":"","sectionValue":"","townshipValue":"","rangeValue":"","startDate":"' + qStartDate + '","endDate":"' + qEndDate + '","startPrice":0,"endPrice":0,"startArea":0,"endArea":0,"startAcreage":0,"endAcreage":0,"saleQualification1":"","saleQualification":"","saleVacant1":"","saleVacant2":"","saleVacant":""} ';
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
 			 //console.log("handling prc event",pcObj,"  ",actntype);
@@ -599,14 +739,8 @@ define([
 			     if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
 												   || (actntype == "pc_print")) {
 
-				     //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
 				     var pin=prcob.pin.trim();
 				     if (pin) {
-					 //pin=pin.replace(/(\r\n|\n|\r)/gm,"").trim();
-
-					 //var ownr=this.childNodes[1].childNodes[1].children[0].children[0].children[4].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
-					 //var addrr=this.childNodes[1].childNodes[1].children[0].children[0].children[6].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
-					 //var hmstd=this.childNodes[1].childNodes[1].children[0].children[0].children[8].textContent.replace(/(\r\n|\n|\r)/gm,"").trim();
 					 var ownr=prcob.owner.trim();
 					 var addrr=prcob.address.trim();
 					 var hmstd=prcob.homestead.trim();
@@ -615,18 +749,13 @@ define([
 						 owner:ownr,
 						 address:addrr,
 						 homestead:hmstd
-
 					 };
-
 					 _this.handlePRCevent(actntype,pcObj);
 				 }
 			 }
 		    });
-
 			  tprc.startup();
 			  tprc.placeAt(srd);
-
-
 		}
 		,resultsAddPager(dobj){
 
@@ -703,6 +832,15 @@ define([
 			// Set the page menu and select current page
             this.resultsAddPager(dobj);
 
+            // show minimal detail if there is only one results
+            if (pobj.length==1) {
+               dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			   dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+			   //TODO: show min detail pobj[0].pin
+			   this.addPRC_Min(pcObj.pin);
+
+		    }
+
 
 
 			 for (var i = 0; i < pobj.length; i++) {
@@ -775,24 +913,39 @@ define([
 		,clearSearch: function(){
 
 
-           //dijit.byId("pPropSearchForm").set("style", "display:none");
+           var dobj=dijit.byId("pane1").domNode;
+           var iboxes=dobj.getElementsByTagName('input');
+           for (var i=0;i<iboxes.length;i++){
+			    if (iboxes[i].type=="text"){
+                    iboxes[i].value="";
+				}
+		   }
 
-
+          /*
 			var selSearchType = dom.byId("selSearchType");
 			//console.log("selSearchType",selSearchType);
 
 			 //this.setautofill("tbOwner");
 			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
 			           registry.byId("af_tbAddr").textbox.value="";
-			} else  if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
+		    }
+			if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
 			           registry.byId("af_tbOwner").textbox.value="";
-			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
+			}
+			if (registry.byId("tbOwner") && registry.byId("tbOwner").textbox.value && (registry.byId("tbOwner").textbox.value !="")){
+			           registry.byId("tbOwner").textbox.value="";
+
+			}
+			if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
 			           registry.byId("af_tbPIN").textbox.value="";
-			} else if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
+			}
+			if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
 			           registry.byId("af_tbBus").textbox.value="";
-			} else if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
+			}
+			if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
 			           registry.byId("af_tbSub").textbox.value="";
 			}
+			*/
 
 
 		}
