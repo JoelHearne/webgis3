@@ -1,0 +1,55 @@
+*{margin:0; padding:0;}
+BODY          {margin-top : 0cm}
+A:link	      { color: rgb(0,0,102) }
+A:visited     { color: rgb(0,0,102) }
+A:active      { color: rgb(0,0,102) }
+A:hover       {color: Red}
+
+
+TABLE          {BORDER-COLLAPSE: collapse} 
+.table_class  {width: 100%}
+.table_class2 {width: 600px}
+
+TR          {border: 1px solid #C0C0C0} 
+.even {}
+.odd  {background-color: #E0E5FF }
+
+TD        {padding:2px; color: black; font-size: 10px; font-family: Verdana, Arial, helvetica, sans-serif; border: 1px solid #C0C0C0}
+.map_table_header {text-align: center; font-size: 14px; background-color: #E0E5FF; font-weight:bold}
+.table_header {text-align: center; font-size: 11px; background-color: #E0E5FF; font-weight:bold}
+.table_header2 {text-align: center; font-size: 10px; background-color: #FFFFFF; font-weight:bold}
+.table_header3 {text-align: center; font-size: 11px; background-color: #FFFFFF; font-weight:bold; color: #27408B;}
+.header_link  {text-align: center; background-color: #E0E5FF; font-weight:bold}
+.cell_header {color: black; font-weight:bold}
+.cell_value  {font-size: 10px}
+.cell_value2
+{
+  font-size: 10px;
+  font-weight: bold;
+  background-color: #E0E5FF;
+}
+table.table_sketch 
+{
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+tr.sketch
+{
+  border: 0px solid #FFFFFF;
+}
+td.sketch
+{
+  width: 200px;
+  height: 200px;
+  border: 0px solid #FFFFFF;
+}
+td.sketch_main
+{
+  border: 0px solid #FFFFFF;
+}
+.top_logo_table
+{
+  font-size:18px;
+  background-color:#557957;
+  color:#FFFFFF
+}

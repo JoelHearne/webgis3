@@ -272,6 +272,13 @@ define([
 			this.pointGraphics.clear();
 			this.polygonGraphics.clear();
 
+			this.mapSearchGeomPts=[];
+			try {
+              this.qryPolyGeom.removeRing(0);
+		    } catch (exc){
+
+		    }
+
 		}
 		,mapClickHandler: function(e) {
                if (this.mapClickMode != "propert_mapselect") return;
@@ -905,6 +912,7 @@ define([
 			 		 pin:pcObj.pin
                });
 			} else if (actntype == "pc_fulldet") {
+				this.Open_PRCFull(pcObj.pin);
 
 			} else if (actntype == "pc_mindet") {
 				this.addPRC_Min(pcObj.pin);
@@ -912,6 +920,7 @@ define([
 				this.addPRC2Saved(pcObj,prcID);
 				// if action card is minimal detail then ...
 			} else if (actntype == "pc_print") {
+				this.GetPrintMap(pcObj.pin);
 
 			}
 		}
@@ -1065,6 +1074,24 @@ define([
 				 tprc.startup();
 				 tprc.placeAt(srd);
 			 }
+		}
+		,Open_PRCFull:function(pin){
+			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");
+			if (window.focus) {puw.focus()}
+		}
+		,GetPrintMap:function(pin){
+            var _this=this;
+            var iurl='./pa.asmx/GetPrintMap?pin=' + pin;
+            request.get(iurl,{ handleAs: "text" }).then(
+
+                function (text){
+                     window.open( text,"prcprint");
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+			//http://204.49.20.80/pa_map/pa.asmx/GetPrintMapWebGIS?pin=00-2S-22-1320-0006-0000&_=1423690261954
 		}
 		,PclCardClck: function(){
 

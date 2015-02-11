@@ -1,0 +1,42 @@
+BODY          {background-color: White  }
+A:link	      {color: Blue;}
+A:visited     {color: Blue;}
+A:active      {color: Blue;}
+A:image       {color: Blue;}
+A:hover       {color: Red;}
+.parcel_link  {color: Red;}
+
+FONT         {color: black; font-size: 10px; font-family:Verdana, Arial, Helvetica; font-weight: bold}
+.map_directions {color: yello; font-size: 10px;}
+
+TD, td            {color: black; font-size: 10px; font-family: Verdana, Arial, helvetica; font-weight: bold}
+.table_header {text-align: center; font-size: 14px}
+.search_header {text-align: center; font-size: 11px}
+.search_value {font-size: 11px}
+.sub_search_header {text-align: center; font-size: 9px}
+.sub_search_value {text-align: center; font-size: 9px}
+.header_link  {text-align: center}
+.owner_header {color: black}
+.owner_value  {font-size: 10px;}
+.tax_header   {text-align: center}
+.port_value    {color: red; text-align: center}
+.tax_value    {text-align: center}
+.legal_header {text-align: center}
+.legal_value  {font-size: 10px;}
+.land_header  {text-align: center}
+.land_value   {text-align: center;}
+.build_header {text-align: center;}
+.build_value  {text-align: center;}
+.misc_header  {text-align: center}
+.misc_value   {text-align: center;}
+.sales_header {text-align: center;}
+.sales_value  {text-align: center;}
+.disclaimer   {color: black; font-size:8px; font-weight: bold}
+.map_table_header {text-align: center; font-weight:bold; background-color=white}
+.map_column_header {color:blue; text-align: left; background-color=white}
+.map_column_header2 {color:blue; text-align: center; background-color=white}
+.map_column_header_parcel {color:red; text-align: left; background-color=white}
+.map_column_value {text-align: left; background-color=white}
+.map_column_value2 {text-align: center; background-color=white}
+.map_column_value3 {text-align: right; background-color=white}
+.map_pics {text-align: center; text-valign: middle;}

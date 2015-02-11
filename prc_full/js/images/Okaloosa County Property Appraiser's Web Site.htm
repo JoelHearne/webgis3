@@ -1,0 +1,2388 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>
+      Okaloosa County Property Appraiser's Web Site
+    </title>
+    <link rel="stylesheet" href="Okaloosa%20County%20Property%20Appraiser%27s%20Web%20Site_files/dw_style.css" type="text/css">
+  </head>
+  <body>
+    <center>
+      <table class="table_class" width="100%">
+        <tbody><tr>
+          <th>
+            <img src="Okaloosa%20County%20Property%20Appraiser%27s%20Web%20Site_files/fl_okaloosa.jpg">
+          </th>
+        </tr>
+      </tbody></table>
+    </center><br>
+    <br> New Sort: DESC    <br>Query: SELECT   *
+                          FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY saledt1 ) AS RowNum, *
+                                      FROM      olview_sale
+                                      WHERE saledt1 &gt;= 20130000
+                                      AND saledt1 &lt; 20140000
+                                      AND month(cast(CAST(saledt1 as varchar(9)) as DATE)) = 01
+                                   ) AS RowConstrainedResult
+                          WHERE   RowNum &gt;= 51
+                          AND RowNum &lt;= 101
+                          ORDER BY RowNum      <table align="center" border="4" width="100%">
+      <tbody><tr>
+        <td colspan="15" class="table_header" align="center">
+          <font size="1">Search Criteria: Sale Date &gt;= 2013-01, Sale
+Date &lt;= 2013-01, Sale Qualification = All, Sale Type = All, Property
+Type = All</font>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="15" class="table_header" align="center">
+          <font size="1">Search produced the following results. Select one by clicking the parcel number in the first column below.</font>
+        </td>
+      </tr>
+      <tr>
+        <td class="table_header" colspan="15">
+          <font size="1">To sort a column, click its column header. To get details on a parcel, simply click that parcel</font>
+        </td>
+      </tr>
+      <tr>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=pin_dsp&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013&amp;sortby=DESC">
+          Parcel Number</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=sect&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Sec-Twn-Rng</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=taxdist&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          District</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=saledt1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Sale Date</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=saleadj1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Sale Price</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=b_ahtd&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Heated<br>
+          Sq Ft</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=totacres&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Acres</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=qu1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Sale<br>
+          Qual</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=beyb&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Year<br>
+          Built</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=address_1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Location Address</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=book1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Book</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=page1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Page</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=inst1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Instrument</a>
+        </td>
+        <td class="table_header2">
+          <a href="http://gisvm300/pa_website/sales.php?orderby=vimp1&amp;sortby=DESC&amp;start=0&amp;endDate=01-2013&amp;startDate=01-2013">
+          Vacant/Impr</a>
+        </td>
+      </tr>
+      <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=16-4N-23-1000-000A-0110" target="_top">16-4N-23-1000-000A-0110       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              16-    4N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           352800&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           3085&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2013&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           6550 WELANNEE BLVD            &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4936&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=09-1S-22-0731-0001-0160" target="_top">09-1S-22-0731-0001-0160       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               9-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          6&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1638&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1972&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           400 LIVE OAK ST               &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2826&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=05-2N-23-2322-000A-0090" target="_top">05-2N-23-2322-000A-0090       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               5-    2N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           80800&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1207&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1985&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           FINCA CIELITO SUR VIA VOLCAN  &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2940&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=03-2S-24-0094-000B-0020" target="_top">03-2S-24-0094-000B-0020       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               3-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1193&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1999&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           8365 PERDUE DR                &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4183&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=00-2S-22-1548-000B-0160" target="_top">00-2S-22-1548-000B-0160       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              00-    2S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          10&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           133500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1153&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2001&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           209 WILDCAT CT                &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              309&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           SW&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=12-1S-23-253E-0006-0280" target="_top">12-1S-23-253E-0006-0280       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              12-    1S-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          8&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           117500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1040&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1959&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           336 OHIO AVE                  &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               63&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=00-2S-24-2186-000F-0930" target="_top">00-2S-24-2186-000F-0930       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              00-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          10&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           550000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2904&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1993&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           203 MIDDLETON RD              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3076&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              217&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           AL&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=10-2S-24-3030-000C-0060" target="_top">10-2S-24-3030-000C-0060       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              10-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           3772&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1975&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PO BOX 1095                   &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3082&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+                1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=18-2S-23-080I-0009-0150" target="_top">18-2S-23-080I-0009-0150       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              18-    2S-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          4&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1965&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           207 WRIGHT PKWY               &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3433&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=28-3N-23-1020-000B-0690" target="_top">28-3N-23-1020-000B-0690       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              28-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1564&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2006&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           5720 SEMINOLE DR              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2159&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PB&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=34-4N-22-0000-0006-0030" target="_top">34-4N-22-0000-0006-0030       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              34-    4N-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000001.500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1956&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4385 JACK POWELL RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4341&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=02-2S-24-2670-0002-0030" target="_top">02-2S-24-2670-0002-0030       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               2-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130108&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1216&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1974&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           105 SHORT ST                  &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2263&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=02-2S-24-1002-0001-0130" target="_top">02-2S-24-1002-0001-0130       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               2-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           78500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1061&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1955&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           101 MERLE CIRCLE              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              557&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=13-2S-24-1911-0000-00B0" target="_top">13-2S-24-1911-0000-00B0       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              13-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          4&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1131&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1950&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           (LIFE ESTATE)                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1552&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           DD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=15-4N-23-1020-0020-0160" target="_top">15-4N-23-1020-0020-0160       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              15-    4N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           7500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1286&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          V&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2013&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           6494 GEORGIA AVE              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4827&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           SW&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           V&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=03-2S-24-0900-0006-0020" target="_top">03-2S-24-0900-0006-0020       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               3-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           95000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2241&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1960&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           108 LINCOLN DR NW             &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4915&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           SW&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=09-2S-24-3012-000G-0220" target="_top">09-2S-24-3012-000G-0220       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               9-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           153000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1353&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1980&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           407 SLASH PINE CT             &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1678&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=05-1S-22-2601-0000-0360" target="_top">05-1S-22-2601-0000-0360       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               5-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          6&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           349000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2492&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          C&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2012&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           227 GRACIE LANE               &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4395&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=08-2S-24-1100-0000-0310" target="_top">08-2S-24-1100-0000-0310       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               8-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1752&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2007&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4691 AMHURST CIRCLE           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3078&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1049&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=03-5N-24-2770-0000-056J" target="_top">03-5N-24-2770-0000-056J       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               3-    5N-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           26100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           924&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000001.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2010&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           308 W JAMES LEE BLVD          &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4413&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           CT&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=00-2S-22-0076-0000-1400" target="_top">00-2S-22-0076-0000-1400       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              00-    2S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          10&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           200000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           6030&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2014&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4720 SEASTAR VISTA            &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1423&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           V&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=28-3N-23-1020-000A-0490" target="_top">28-3N-23-1020-000A-0490       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              28-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1356&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2006&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4316 STONEBRIDGE RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              452&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=25-1S-24-0000-0010-0000" target="_top">25-1S-24-0000-0010-0000       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              25-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           3844&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1976&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           910 WOODBRIAR CT              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3075&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              288&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=30-4N-23-1100-000F-0090" target="_top">30-4N-23-1100-000F-0090       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              30-    4N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1823&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          V&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2014&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           5735 WILDWOOD RD              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4467&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           V&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=14-3N-25-0000-0017-0000" target="_top">14-3N-25-0000-0017-0000       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              14-    3N-    25&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1593&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000001.010&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1989&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           977 LIGHTHOUSE CHURCH RD      &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3870&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=28-3N-23-1020-000B-0340" target="_top">28-3N-23-1020-000B-0340       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              28-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1356&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2006&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4316 STONEBRIDGE RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              454&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=00-2S-22-1443-00EE-0120" target="_top">00-2S-22-1443-00EE-0120       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              00-    2S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          9&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           3195&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4316 STONEBRIDGE RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              456&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=28-3N-23-1020-000B-0770" target="_top">28-3N-23-1020-000B-0770       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              28-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130109&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1564&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2006&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4316 STONEBRIDGE RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              450&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=28-3N-23-1000-000C-0220" target="_top">28-3N-23-1000-000C-0220       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              28-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           110000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1822&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2005&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           272 LIMESTONE CIR             &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3077&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4426&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           SW&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=05-1S-22-0397-0000-0110" target="_top">05-1S-22-0397-0000-0110       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               5-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          6&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           190000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1997&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           111 POPLAR PL                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2899&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=05-1S-22-256B-0032-0110" target="_top">05-1S-22-256B-0032-0110       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               5-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          15&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1350&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1977&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PO BOX 313                    &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              341&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=17-3N-23-2490-0131-005B" target="_top">17-3N-23-2490-0131-005B       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              17-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1900&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1980&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1605 PERRY SMITH RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              263&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(224, 229, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=17-3N-23-2490-0131-0070" target="_top">17-3N-23-2490-0131-0070       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              17-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           50000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1970&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1605 PERRY SMITH RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              262&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=05-1S-22-256B-0033-0050" target="_top">05-1S-22-256B-0033-0050       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               5-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          6&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           220000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2324&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          C&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1972&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           110 DANA POINTE               &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3374&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=16-2S-24-5011-000B-0320" target="_top">16-2S-24-5011-000B-0320       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              16-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          5&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1553&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1981&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           C/O DONALD KIRBY III          &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4491&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PB&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=01-2S-24-0000-0023-0000" target="_top">01-2S-24-0000-0023-0000       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+               1-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2827&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1973&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           C/O BART FLEET                &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2600&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=33-4N-23-0100-000C-0150" target="_top">33-4N-23-0100-000C-0150       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              33-    4N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2694&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2005&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           (LIFE ESTATE)                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3082&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+                5&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=10-2S-24-258D-0009-0290" target="_top">10-2S-24-258D-0009-0290       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              10-    2S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          4&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           178500&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2038&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1962&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           110 DESTIN DR                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1225&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=34-4N-23-1200-000B-0050" target="_top">34-4N-23-1200-000B-0050       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              34-    4N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           162000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1890&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2013&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           5821 SEVEN DUCKS LN           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              147&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=33-1S-24-0000-0001-0060" target="_top">33-1S-24-0000-0001-0060       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              33-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           3224&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1985&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           4812 GROVE ST                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3082&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+                7&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=34-1S-24-5040-000A-0150" target="_top">34-1S-24-5040-000A-0150       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              34-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           145000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1922&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1982&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           848 HOLBROOK CIR              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+                1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=34-1S-24-5040-000B-0300" target="_top">34-1S-24-5040-000B-0300       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              34-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           157000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2252&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1982&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           944 HOLBROOK CIRCLE           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3350&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=00-2S-22-0068-000B-0060" target="_top">00-2S-22-0068-000B-0060       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              00-    2S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          9&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           275000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2331&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2004&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           9300 VERDIN CT                &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             2415&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=27-1S-24-2800-000B-0160" target="_top">27-1S-24-2800-000B-0160       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              27-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           108000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           998&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          Q&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1975&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1519 E PONDEROSA RD           &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1223&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=18-3N-23-0890-0005-0160" target="_top">18-3N-23-0890-0005-0160       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              18-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1050&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1974&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1320 WILSON BLVD N            &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3075&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              320&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=18-3N-23-1240-0001-0120" target="_top">18-3N-23-1240-0001-0120       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              18-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           720&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1950&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PO BOX 333                    &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4468&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=18-3N-23-1240-0001-0140" target="_top">18-3N-23-1240-0001-0140       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              18-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          1&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           989&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1957&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PO BOX 333                    &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3073&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4470&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           WD&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=18-2S-23-2600-0001-0170" target="_top">18-2S-23-2600-0001-0170       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              18-    2S-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          4&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130110&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2880&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1968&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           329 BROOKS ST                 &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3078&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3136&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=32-3N-23-441C-0002-0460" target="_top">32-3N-23-441C-0002-0460       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              32-    3N-    23&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          3&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130111&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1263&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2006&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           114 CAMPBELL AVE              &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             1937&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=23-1S-22-4763-000F-0230" target="_top">23-1S-22-4763-000F-0230       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              23-    1S-    22&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          14&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130111&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2240&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1982&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           725 PROVIDENCE WAY            &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3077&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             4707&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           QC&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr style="background-color: rgb(255, 255, 255);" onmouseover="this.style.backgroundColor='#E0E5FF'" onmouseout="this.style.backgroundColor='#FFFFFF'">
+        <td class="cell_value" align="center" nowrap="nowrap">
+          <a href="http://gisvm300/pa_website/fl_display_dw.php?pin=34-1S-24-0000-0019-0060" target="_top">34-1S-24-0000-0019-0060       </a>&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              34-    1S-    24&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          12&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           20130111&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           100&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           480&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           0000000.000&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+          U&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           1990&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           2005 DOCS PL                  &nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+             3074&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+              767&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           PB&nbsp;
+        </td>
+        <td class="cell_value" align="center" nowrap="nowrap">
+           I&nbsp;
+        </td>
+      </tr>
+            <tr>
+        <td class="cell_value" colspan="15" align="center">
+          <a href="http://gisvm300/pa_website/sales.php?start=102&amp;endDate=01-2013&amp;startDate=01-2013">
+          Search Next 50 Parcels</a>
+        </td>
+      </tr>
+      <tr>
+        <td class="cell_value" colspan="15" align="center">
+          <a href="http://gisvm300/fl_subdivision_dw.php?mode=excel&amp;SUBMIT=Start+Query&amp;start=0&amp;propertyType=All&amp;saleVacant=All&amp;saleQualification=All&amp;endAcreage=&amp;startAcreage=&amp;endArea=&amp;startArea=&amp;endPrice=&amp;startPrice=&amp;endDate=01-2013&amp;startDate=01-2013&amp;rangeValue=&amp;townshipValue=&amp;sectionValue=&amp;subName=&amp;subNumber=&amp;searchType=form&amp;county=fl_okaloosa">
+          Open Results in Excel</a>
+        </td>
+      </tr>
+      <tr>
+        <td class="cell_header" colspan="15" align="center">
+          <a href="fl_search_dw.php?county=fl_okaloosa">Return to Main Search</a>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="15" class="caption">
+          The Okaloosa County Property Appraiser's Office makes every
+effort to produce the most accurate information possible. No warranties,
+ expressed or implied, are
+          provided for the data herein, its use or interpretation. The
+Senior Exemption Does Not Apply to All Taxing Authorities. Just (Market)
+ Value is established by the
+          Property Appraiser for ad valorem tax purposes. It does not
+represent anticipated selling price. Working values are subject to
+change. Website Updated: February 26, 2014
+        </td>
+      </tr>
+    </tbody></table>
+    <p></p>
+    <center>
+      <font size="-2"><b>© 2014 by the County of Okaloosa, FL  </b></font>
+    </center>
+
+
+</body></html>

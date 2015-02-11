@@ -1,0 +1,27 @@
+BODY		{ background-color: #ffffff }
+P			{ font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: black }
+A:link		{ font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: blue; text-decoration: none }
+A:visited	{ font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: blue; text-decoration: none }
+A:active	{ font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: blue; text-decoration: none }
+A:hover		{ font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: red; text-decoration: underline }
+body 		{ font-family: Verdana, Arial, helvetica;
+				font-size: 10pt color: black }
+table 		{ font-family: Verdana, Arial, helvetica; font-size: 12pt}
+td			{ font-family: Verdana, Arial, helvetica; font-size: 12pt}
+H1          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 14pt; color: black; font-weight: bolder }
+H2          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 14pt; color: black; font-weight: bolder }
+H3          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 14pt; color: black; font-weight: bolder }
+TD          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: black }  
+UL          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: black }
+LI          { font-family: Verdana, Arial, helvetica;
+		  		font-size: 10pt; color: black }

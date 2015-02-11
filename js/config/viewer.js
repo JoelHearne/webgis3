@@ -24,7 +24,7 @@ define([
     esriConfig.defaults.io.corsDetection=true;
     esriConfig.defaults.io.useCors=true;
     esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
-
+    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.80");
 
 	// url to your geometry server.
 	esriConfig.defaults.geometryService = new GeometryService('http://gisvm101:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer');
