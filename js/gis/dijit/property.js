@@ -116,7 +116,7 @@ define([
 		widgetsInTemplate: true,
 		templateString: template,
 		title: 'Okaloosa County Property Search',
-		html: '<a href="#">Property</a>',
+		html: '<a href="#">Property Search</a>',
 		domTarget: 'propertyDijit',
 		draggable: true,
 		baseClass: 'propertyDijit',
@@ -348,6 +348,7 @@ define([
 		,mapqRes: function(results) {
 			console.log("mapqRes");
 			console.log("mapqRes",results);
+			//this.clearGraphics();
 			var _this=this;
             var zoomExtent = null;
             // var infoTemplate = new InfoTemplate("Parcel Info", "<table><tr><td>PIN: </td><td>${PARCEL ID}</td></tr><tr><td>Owner: </td><td>${OWNER}</td></tr></table>");
@@ -406,6 +407,8 @@ define([
            //this.map.infoWindow.show(mapPoint);
 		}
 		,doSearch_Pins: function(pins){
+
+
 
             var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=pin_list&searchString=' + pins.join() + '&startrec=1&endrec=50';
             var _this=this;
@@ -931,7 +934,7 @@ define([
 
             if (dobj.rec_count) this.qObj.rec_count=dobj.rec_count;
 
-		    pinlist=[];
+		    this.pinlist=[];
 
 			for (var i = 0; i < pobj.length; i++) {
 

@@ -24,7 +24,7 @@ define([
     esriConfig.defaults.io.corsDetection=true;
     esriConfig.defaults.io.useCors=true;
     esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
-    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.80");
+
 
 	// url to your geometry server.
 	esriConfig.defaults.geometryService = new GeometryService('http://gisvm101:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer');
@@ -48,7 +48,7 @@ define([
 		},
 
 		//default mapClick mode, mapClickMode lets widgets know what mode the map is in to avoid multipult map click actions from taking place (ie identify while drawing).
-		defaultMapClickMode: 'pan',
+		defaultMapClickMode: 'identify',
 		mouseWheelSensitivity: 2,
 		panFloatSensitivity: 4, // 1-10
 		// map options, passed to map constructor. see: https://developers.arcgis.com/javascript/jsapi/map-amd.html#map1
@@ -64,7 +64,7 @@ define([
 			}),
 
 			center: [-86.59987, 30.68192],
-			zoom: 10
+			zoom: 11
 
 			,fadeOnZoom: true
 			,force3DTransforms: true
@@ -386,7 +386,7 @@ define([
 					}
 				}
 			}
-
+*/
             ,navtools: {
 				include: true,
 				id: 'navtools',
@@ -405,7 +405,7 @@ define([
 					mapClickMode: true
 				}
 			}
-*/
+
 
            ,panpuck: {
 				include: true,
@@ -505,7 +505,7 @@ define([
 			},
 			*/
 
-			/*
+
 		   ,ModBasemaps: {
 				include: true,
 				id: 'modbasemaps',
@@ -525,7 +525,7 @@ define([
 				srcNodeRef: 'imagesliderDijit',
 				options: 'config/modbasemaps'
 			}
-			*/
+
 
 
 /*
@@ -546,9 +546,8 @@ define([
 					minWidth: 286
 				}
 			}
-			*/
-
-			, scalebar: {
+	*/
+			,scalebar: {
 				include: true,
 				id: 'scalebar',
 				type: 'map',
@@ -560,7 +559,7 @@ define([
 					scalebarUnit: 'dual'
 				}
 			}
-			/*
+	/*
 		   , locateButton: {
 				include: true,
 				id: 'locateButton',
@@ -578,7 +577,7 @@ define([
 						enableHighAccuracy: true
 					}
 				}
-			}
+			}*/
 		 	,overviewMap: {
 				include: true,
 				id: 'overviewMap',
@@ -614,7 +613,7 @@ define([
 					})
 				}
 			}
-			*/
+
 			,legend: {
 				include: true,
 				id: 'legend',
@@ -644,7 +643,7 @@ define([
 					overlayReorder: true
 				}
 			}
-			/*
+
 			,bookmarks: {
 				include: true,
 				id: 'bookmarks',
@@ -716,7 +715,7 @@ define([
 					defaultLayout: 'Letter ANSI A Landscape'
 				}
 			}
-			*/
+
 			/*,PINSearch: {
 				include: true,
 				id: 'PINSearch',
@@ -791,7 +790,7 @@ define([
 				}
 			}
 */
-/*
+
 			,streetview: {
 				include: true,
 				id: 'streetview',
@@ -807,7 +806,7 @@ define([
 					mapRightClickMenu: true
 				}
 			}
-*/
+
 			,help: {
 				include: true,
 				id: 'help',
