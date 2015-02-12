@@ -40,9 +40,9 @@ select {
 }
 
 #property_parent {
-    position: absolute !important;
-    top:50px !important;
-    left:550px !important;
+   //position: absolute !important;
+   //top:40px !important;
+   //left:80% !important;
 
 }
 
@@ -88,7 +88,7 @@ select {
 .propertyDijit .closeButton {
     //bottom: -2px;
     left: 45%;
-    position: absolute;
+    //position: absolute;
     font-size: 9px  !important;
 }
 
@@ -218,7 +218,7 @@ select {
     font-weight: bold;
     opacity: 0.5;
     position: absolute;
-    right: 7px;
+    right: 57px;
     top: -25px;
 }
 .progressTitle {

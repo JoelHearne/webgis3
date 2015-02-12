@@ -63,7 +63,7 @@ define([
 	    ,get_data:function(){
 
 			var iurl = 'WebGIS.asmx/PropertyQueryMinDet?pin=' + this.pin;
-
+           //console.log(iurl);
             var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
 
@@ -80,6 +80,8 @@ define([
 
 		}
 		,populate_form:function(dobj){
+
+			//console.log(dobj);
 
 			 this.pcPIN.innerHTML=dobj.pin;
 			 this.pcOwner.innerHTML=dobj.owner;
@@ -120,10 +122,27 @@ define([
 			this.pcFireDist.innerHTML=dobj.FIRE;
 			this.pcCensusTract.innerHTML=dobj.TRACT;
 
+			// sales list
+            try {
+				if (dobj.sales_list && dobj.sales_list.length > 0) {
+					this.pcSLS_Date_1.innerHTML=dobj.sales_list[0].sale_date;
+					this.pcSLS_Price_1.innerHTML=dobj.sales_list[0].sale_amount;
+					this.pcSLS_Vacant_1.innerHTML=dobj.sales_list[0].vacant;
+					this.pcSLS_Qual_1.innerHTML=dobj.sales_list[0].qualified;
+
+					if (dobj.sales_list[1]) {
+						this.pcSLS_Date_2.innerHTML=dobj.sales_list[1].sale_date;
+						this.pcSLS_Price_2.innerHTML=dobj.sales_list[1].sale_amount;
+						this.pcSLS_Vacant_2.innerHTML=dobj.sales_list[1].vacant;
+						this.pcSLS_Qual_2.innerHTML=dobj.sales_list[1].qualified;
+					}
+				}
+		    } catch (exc) { console.log("error",exc); }
+
 
 		}
  		,ebClick:function(e){
-			console.log("ebClick",e,"   ",e.target.parentElement.textContent);
+			//console.log("ebClick",e,"   ",e.target.parentElement.textContent);
 			//document.getElementById("pPageSelDiv").style.visibility="visible";
 
             //this.znTable.style.visibility="visible";
@@ -134,6 +153,8 @@ define([
 				  togOb=this.znTable;
 			}  else if (e.target.parentElement.textContent.indexOf("Value") !=-1) {
 				  togOb=this.slTable;
+			}  else if (e.target.parentElement.textContent.indexOf("Sales") !=-1) {
+				  togOb=this.slsTable;
 			}
             if (togOb) {
 				if (togOb.style.display=="none") {

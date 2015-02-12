@@ -97,6 +97,7 @@ define([
     handleCoordInput: function(evt) {
       if (evt.charOrCode === keys.ENTER) {
         this.gotoCoordinate();
+        
         return;
       }
     },
