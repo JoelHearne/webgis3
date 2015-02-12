@@ -140,6 +140,8 @@ define([
 		qryPolyGeom:null,
 		qryTask:null,
 		qry:null,
+		pinlist:[],
+		qObj:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -174,7 +176,17 @@ define([
 
             //domStyle.set(this.parentWidget, "left", "900px");
             //this.parentWidget.set('style', 'left:0px !important;top;0px !important;position:absolute');
+            this.createGraphicsLayer();
 
+
+            this.qObj={
+			    querytype:'',
+			    queryvalue:'',
+			    rec_count:0,
+			    startrec:0,
+			    endrec:0,
+			    qsaleObj:null
+			};
 
 
 		}
@@ -334,6 +346,8 @@ define([
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,mapqRes: function(results) {
+			console.log("mapqRes");
+			console.log("mapqRes",results);
 			var _this=this;
             var zoomExtent = null;
             // var infoTemplate = new InfoTemplate("Parcel Info", "<table><tr><td>PIN: </td><td>${PARCEL ID}</td></tr><tr><td>Owner: </td><td>${OWNER}</td></tr></table>");
@@ -408,7 +422,7 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,activateMapSearch: function(){
-			this.createGraphicsLayer();
+			//this.createGraphicsLayer();
 			this.map.on('click', lang.hitch(this, 'mapClickHandler'));
 			this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 			this.disconnectMapClick();
@@ -626,7 +640,7 @@ define([
 		   }
 		}
 		,doSearch: function(){
-            console.log("doSearch" );
+
 			console.log("doSearch",this.activeMenu);
 
             domConstruct.empty("pSearchResults");
@@ -684,9 +698,21 @@ define([
 			}
 
 			if (this.activeMenu=="salesdata") {
-                 stype="saleslist";
+                 stype="salesdata";
                  iurl = this.prepSalesDataURL(startrec,endrec);
 			}
+            this.qObj={
+			    querytype:'',
+			    queryvalue:'',
+			    rec_count:0,
+			    startrec:0,
+			    endrec:0,
+			    qsaleObj:null
+			};
+			this.qObj.querytype=stype;
+			this.qObj.queryvalue=sval;
+			this.qObj.startrec=startrec;
+			this.qObj.endrec=endrec;
 
             var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
@@ -885,6 +911,8 @@ define([
 			 var pobj = results.ps_res;
 
 			 domConstruct.empty("pSearchResults");
+             domConstruct.empty("pcMinDet");
+             domConstruct.empty("pResCount");
 
 			 if (!pobj) {
 				 console.log("error getting results",results);
@@ -900,7 +928,21 @@ define([
 			   this.addPRC_Min(pobj[0].pin);
 		    }
 
+
+            if (dobj.rec_count) this.qObj.rec_count=dobj.rec_count;
+
+		    pinlist=[];
+
 			for (var i = 0; i < pobj.length; i++) {
+
+				 pobj[i].pin=pobj[i].pin.trim();
+				 pobj[i].owner= pobj[i].owner.trim();
+				 pobj[i].addr= pobj[i].addr.trim();
+				 pobj[i].hstead=pobj[i].hstead.trim();
+
+
+				 this.pinlist.push(pobj[i].pin);
+
 				 var tprc =new prc(
 				 {
 				   pin: pobj[i].pin,
@@ -944,6 +986,21 @@ define([
 			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");
 			if (window.focus) {puw.focus()}
 		}
+		,printMailLbls: function(){
+
+            var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
+            request.get(iurl,{ handleAs: "text" }).then(
+
+                function (text){
+                     window.open( text,"prcprint");
+
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+
+		}
 		,GetPrintMap:function(pin){
             var _this=this;
             var iurl='./pa.asmx/GetPrintMap?pin=' + pin;
@@ -969,38 +1026,81 @@ define([
                     iboxes[i].value="";
 				}
 		   }
+
+			 domConstruct.empty("pSearchResults");
+             domConstruct.empty("pcMinDet");
+             domConstruct.empty("pResCount");
+             document.getElementById("pPageSelDiv").style.visibility="hidden";
+
 		}
-		,test:function(){
-			console.log("test" );
-			 /*Style.set(this , {
-							//display: "none",
-							//position:"absolute",
-							left:500,
-							top:0
-			});
-			*/
+		,zoomAllList:function() {
+			console.log("zoomAllList");
+			//console.profile();
+			//pinlist
+			    var whereclause=this.pin_field + "='" + this.pinlist.join("' OR " + this.pin_field + "='") + "'";
+
+				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+				this.qry = new  Query();
+				this.qry.where = whereclause;
+				//this.qry.geometry = geom[0];
+				this.qry.outSpatialReference =  this.map.spatialReference ;
+				this.qry.returnGeometry = true;
+				this.qry.outFields = [this.pin_field];
+				this.qryTask=new QueryTask(q_url);
+				this.clearGraphics();
+ 				//this.qryTask.execute(this.qry, this.mapqRes  );
+				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+				//console.profileEnd();
 
 
 
+		}
+		,zoomAll:function() {
+			// this will zoom to all of the records returned by the current query
+			//  large result sets can easily bog down the client and AGS server.
+			//  This approach attempts to cut out the RDBMS query step and mirror
+			//  the SQL Server query on the parcel layer.
+
+			// TODO: !!IDEA - Build an SDE spatial view that joins parcels with Central_GIS
+			    var whereclause="";
+
+			    console.log("this.qObj",this.qObj);
+
+			    if (this.qObj.querytype=="address") {
+					whereclause="PATPCL_ADDR1 like '" + this.qObj.queryvalue + "%'";
+				} else if (this.qObj.querytype=="owner") {
+					whereclause="PATPCL_OWNER like '" + this.qObj.queryvalue + "%'";
+				} else if (this.qObj.querytype=="pin") {
+					whereclause="PATPCL_PIN like '" + this.qObj.queryvalue + "%'";
+				} else if (this.qObj.querytype=="bus") {
+
+				} else if (this.qObj.querytype=="sub") {
+
+				} else if (this.qObj.querytype=="saleslist") {
+
+				} else if (this.qObj.querytype=="salesdata") {
+
+				}
 
 
-			//Style.set(this.parentWidget, "top", "30px");
-            //domStyle.set(this.parentWidget, "left", "900px");
+				console.log("zoomAll",whereclause);
+
+                if (whereclause!="") {
+					var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+					this.qry = new  Query();
+					this.qry.where = whereclause;
+					//this.qry.geometry = geom[0];
+					this.qry.outSpatialReference =  this.map.spatialReference ;
+					this.qry.returnGeometry = true;
+					this.qry.outFields = [this.pin_field];
+					this.qryTask=new QueryTask(q_url);
+					this.clearGraphics();
+					//this.qryTask.execute(this.qry, this.mapqRes  );
+					this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+					//console.profileEnd();
+			  }
 
 
-            var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-            this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top;0px !important;position:absolute');
-
-            console.log("_FloatingWidgetMixin",_FloatingWidgetMixin);
-
-
-
-            //dojo.style('dialog','background-color','#AAAAAA');
-
-			//var co = dojo.coords('period'); // element below which I want to display dialog
-
-			//dojo.style('md1','top',(co.y + 25)+'px');
-            //dojo.style('md1','left', co.x+'px');
 
 		}
 	});

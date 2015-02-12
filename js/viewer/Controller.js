@@ -796,19 +796,17 @@ define([
 			if (this.config.isDebug) {
 				if (typeof (console) === 'object') {
 
-                     console.log("cmv-app error--------------------------");
-					 console.log(arguments);
-					 console.log(arguments.callee.caller);
-					 console.log(arguments.callee.caller.toString());
 
-
+					 //console.log(arguments);
+					 //console.log(arguments.callee.caller);
+					 //console.log(arguments.callee.caller.toString());
 
 					for (var option in options) {
 						if (options.hasOwnProperty(option)) {
 							console.log(option, options[option]);
 						}
 					}
-					console.log("-------------------------------------");
+
 				}
 			} else {
 				// add growler here?

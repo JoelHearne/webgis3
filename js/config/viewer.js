@@ -48,7 +48,7 @@ define([
 		},
 
 		//default mapClick mode, mapClickMode lets widgets know what mode the map is in to avoid multipult map click actions from taking place (ie identify while drawing).
-		defaultMapClickMode: 'identify',
+		defaultMapClickMode: 'pan',
 		mouseWheelSensitivity: 2,
 		panFloatSensitivity: 4, // 1-10
 		// map options, passed to map constructor. see: https://developers.arcgis.com/javascript/jsapi/map-amd.html#map1
@@ -545,8 +545,10 @@ define([
 					yLabel: '',
 					minWidth: 286
 				}
-			},
-			scalebar: {
+			}
+			*/
+
+			, scalebar: {
 				include: true,
 				id: 'scalebar',
 				type: 'map',
@@ -558,6 +560,7 @@ define([
 					scalebarUnit: 'dual'
 				}
 			}
+			/*
 		   , locateButton: {
 				include: true,
 				id: 'locateButton',
