@@ -18,6 +18,7 @@ define([
     'dojo/dom-construct',
     'dojo/dom',
     'dojo/dom-style',
+    "dojo/dom-attr",
     'dojo/request',
     'dojo/request/script',
     'dojo/ready',
@@ -28,6 +29,7 @@ define([
 ,domConstruct
 ,dom
 ,Style
+,domAttr
 ,request
 ,script
 ,ready
@@ -46,6 +48,7 @@ define([
         saved:"n",
         query_type:"",
         query_str:"",
+        res_type:"normal",
         postCreate: function(){
           //this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode', 'PanPuck')));
           //this.PanPuck.on('extent-history-change', lang.hitch(this, 'extentHistoryChangeHandler'));
@@ -116,6 +119,15 @@ define([
             var td = domConstruct.create("td", {"colspan":"5",'class': 'jumplistheader'}, tr);
             td.innerHTML= fld;
             //td.placeAt(td, 'last');
+
+		}
+		,saveMe:function() {
+			console.log("saveMe");
+			console.log("--",domAttr.get("pc_save", "src"));
+			//domAttr.set("pc_save", "src","img/DeleteSearch1.gif")
+			domAttr.set(this.pc_save, "src","img/DeleteSearch1.gif")
+
+			//pc_save
 
 		}
 		 ,expand_detail_procres:function(results){

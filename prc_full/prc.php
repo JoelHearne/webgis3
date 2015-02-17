@@ -1634,6 +1634,8 @@ WHERE o.PIN_DSP= '".$pin."' ";
          </center>
       </center>
  </div>
+ <br>
+  <center><input id="btnClose" style="font-size:11px;!important;width:300px" type="button" class="cbutton"  onclick="window.close();"  value="Close This Window"/> </center>
 
     <div id="advmapbd" style="overflow: hidden;position:absolute; ">
 

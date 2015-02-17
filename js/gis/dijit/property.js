@@ -37,6 +37,7 @@ define([
     "dojo/parser",
     'dijit/form/FilteringSelect',
 	'dijit/form/ValidationTextBox',
+	'dijit/form/DateTextBox',
 	'dojo/store/Cache', 'dojo/store/JsonRest',
 	'./prc',
 	'./prcmin',
@@ -96,6 +97,7 @@ define([
 ,parser
 ,FilteringSelect
 ,validationtextBox
+,DateTextBox
 ,Cache,JsonRest
 ,prc
 ,prcmin
@@ -141,6 +143,7 @@ define([
 		qryTask:null,
 		qry:null,
 		pinlist:[],
+		savedlist:[],
 		qObj:null,
 
 		postCreate: function () {
@@ -498,7 +501,7 @@ define([
 					hasDownArrow: false,
 					value: "",
 					autoComplete: true,
-					pageSize: 10,
+					pageSize: 30,
 					store: testStore,
 					//store:afStore,
 					searchAttr: "name",
@@ -619,8 +622,12 @@ define([
 			}
 		}
 		,showWait:function() {
-           document.getElementById("pPageSelDiv").style.visibility="hidden";
-           document.getElementById("pResCount").innerHTML='';
+           //document.getElementById("pPageSelDiv").style.visibility="hidden";
+            document.getElementById("pResCount").innerHTML='';
+
+		   this.btnZoomAll.domNode.style.display="none";
+		   this.btnPrLbls.domNode.style.display="none";
+		   document.getElementById("pPageSelDiv").style.display="none";
 
 		   var srd=dom.byId("pSearchResults");
 		   if (srd) {
@@ -629,22 +636,24 @@ define([
 					id:"waitimg",
 					src: "images/ajax-loader2.gif",
 					alt: "Please Standbye while I search",
-					style: {cursor: "pointer"}
+					style: {float: "center", border:"5px",padding:"50px",margin:"80px"}
 				});
 			   dojo.place(img, srd, "after");
 	      }
 
 		}
 		,hideWait:function() {
+
 		   var wi=dom.byId("waitimg");
 		   if (wi) {
 			   wi.parentNode.removeChild(wi);
 
 		   }
+
 		}
 		,doSearch: function(){
 
-			console.log("doSearch",this.activeMenu);
+			//console.log("doSearch",this.activeMenu);
 
             domConstruct.empty("pSearchResults");
             domConstruct.empty("pcMinDet");
@@ -667,6 +676,7 @@ define([
 
             var sval;
             var stype;
+
 
 			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
 			          //console.log("addre",registry.byId("af_tbAddr").textbox.value);
@@ -754,6 +764,11 @@ define([
 				"saleVacant":""
 		    };
 
+
+			console.log("tbSlDateFrom",this.tbSlDateFrom.value)
+
+
+
 			if (registry.byId("tbSlDateFrom") && registry.byId("tbSlDateFrom").textbox.value && (registry.byId("tbSlDateFrom").textbox.value !="")){
 			          qJsonObj.startDate=registry.byId("tbSlDateFrom").textbox.value;
 			}
@@ -782,7 +797,7 @@ define([
 			          qJsonObj.endAcreage=registry.byId("tbSlAcreTo").textbox.value;
 			}
 
-            //console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
+            console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
 
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson=' + dojo.toJson(qJsonObj,true);
 		}
@@ -812,13 +827,36 @@ define([
 				this.addPRC_Min(pcObj.pin);
 			} else if (actntype == "pc_save") {
 				this.addPRC2Saved(pcObj,prcID);
-				// if action card is minimal detail then ...
+			} else if (actntype == "pc_delete") {
+				this.DelPRCSaved(pcObj,prcID);
 			} else if (actntype == "pc_print") {
 				this.GetPrintMap(pcObj.pin);
 
 			}
 		}
+		,DelPRCSaved:function(pcObj,widgetID){
+			console.log("DelPRCSaved ",pcObj,widgetID);
+             //var srd=dom.byId("pSearchSaved");
+			 var prcob=registry.byId(widgetID);
+			 console.log("    prcob ",prcob);
+			 domConstruct.destroy(prcob.domNode);
+
+			 var i = this.savedlist.indexOf(pcObj.pin);
+			 if(i != -1) {
+				this.savedlist.splice(i, 1);
+			 }
+
+			 if (this.savedlist.length==0){
+			   this.btnSavedZoomAll.domNode.style.display="none";
+			   this.btnSavedPrLbls.domNode.style.display="none";
+			 }
+
+		}
 		,addPRC2Saved:function(pcObj,widgetID){
+
+			 this.btnSavedZoomAll.domNode.style.display="block";
+			 this.btnSavedPrLbls.domNode.style.display="block";
+
 			 var _this=this;
              var srd=dom.byId("pSearchSaved");
 			 var prcob=registry.byId(widgetID);
@@ -828,31 +866,52 @@ define([
 						   pin: pcObj.pin,
 						   owner: pcObj.owner,
 						   address: pcObj.addr,
-						   homestead:pcObj.hstead
+						   homestead:pcObj.hstead,
+						   res_type:"saved"
 			    });
 
 			 tprc.on("click", function (e) {
 			     var actntype=e.target.id;
 			     if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
 												   || (actntype == "pc_print")) {
-
 				     var pin=prcob.pin.trim();
 				     if (pin) {
-					 var ownr=prcob.owner.trim();
-					 var addrr=prcob.address.trim();
-					 var hmstd=prcob.homestead.trim();
-					 var pcObj={
-						 pin:pin,
-						 owner:ownr,
-						 address:addrr,
-						 homestead:hmstd
-					 };
-					 _this.handlePRCevent(actntype,pcObj);
+						 var ownr=prcob.owner.trim();
+						 var addrr=prcob.address.trim();
+						 var hmstd=prcob.homestead.trim();
+						 var pcObj={
+							 pin:pin,
+							 owner:ownr,
+							 address:addrr,
+							 homestead:hmstd
+						 };
+						 _this.handlePRCevent(actntype,pcObj);
+				     }
 				 }
-			 }
-		    });
+			     if  (actntype == "pc_save")   {
+				     var pin=prcob.pin.trim();
+				     if (pin) {
+						 var ownr=prcob.owner.trim();
+						 var addrr=prcob.address.trim();
+						 var hmstd=prcob.homestead.trim();
+						 var pcObj={
+							 pin:pin,
+							 owner:ownr,
+							 address:addrr,
+							 homestead:hmstd
+						 };
+						 _this.handlePRCevent("pc_delete",pcObj,this.id);
+				    }
+				 }
+
+		      });
 			  tprc.startup();
+			  tprc.saveMe();
 			  tprc.placeAt(srd);
+
+
+			  this.savedlist.push(pcObj.pin);
+
 		}
 		,resultsAddPager(dobj){
 
@@ -864,9 +923,14 @@ define([
 				select.options.length=0;
 				rec_page = 1;
 				pgcnt = 1;
+
+			    this.btnZoomAll.domNode.style.display="block";
+			    this.btnPrLbls.domNode.style.display="block";
 				// build paging control
 				if (dobj.rec_count > 50) {
-					document.getElementById("pPageSelDiv").style.visibility="visible";
+					//document.getElementById("pPageSelDiv").style.visibility="visible";
+					document.getElementById("pPageSelDiv").style.display="block";
+
 					pgcnt = Math.ceil(dobj.rec_count / 50);
 
 					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
@@ -877,9 +941,17 @@ define([
 				} else {
 					// hide the page selection box pPageSelDiv
 					//var psdv = dom.byId("pPageSelDiv");
-					document.getElementById("pPageSelDiv").style.visibility="hidden";
+					//document.getElementById("pPageSelDiv").style.visibility="hidden";
+					document.getElementById("pPageSelDiv").style.display="none";
+
 				}
 				if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
+		   } else {  // no results
+			   	this.btnZoomAll.domNode.style.display="none";
+			    this.btnPrLbls.domNode.style.display="none";
+			    document.getElementById("pPageSelDiv").style.display="none";
+
+
 		   }
 
 		   /*
@@ -904,7 +976,9 @@ define([
 		}
 		,showResults: function (results){
 
-			console.log("showResults",results);
+			console.log("showResults",this.btnZoomAll.domNode,results);
+
+
 
 			 this.hideWait();
              var _this=this;
@@ -990,10 +1064,8 @@ define([
 			if (window.focus) {puw.focus()}
 		}
 		,printMailLbls: function(){
-
             var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
             request.get(iurl,{ handleAs: "text" }).then(
-
                 function (text){
                      window.open( text,"prcprint");
 
@@ -1002,7 +1074,19 @@ define([
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
+		}
+		,printMailLblsSaved: function(){
+			//savedlist
+            var iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
+            request.get(iurl,{ handleAs: "text" }).then(
+                function (text){
+                     window.open( text,"prcprint");
 
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
 		}
 		,GetPrintMap:function(pin){
             var _this=this;
@@ -1036,10 +1120,21 @@ define([
              document.getElementById("pPageSelDiv").style.visibility="hidden";
 
 		}
+		,zoomAllListSaved:function() {
+			    var whereclause=this.pin_field + "='" + this.savedlist.join("' OR " + this.pin_field + "='") + "'";
+				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+				this.qry = new  Query();
+				this.qry.where = whereclause;
+				this.qry.outSpatialReference =  this.map.spatialReference ;
+				this.qry.returnGeometry = true;
+				this.qry.outFields = [this.pin_field];
+				this.qryTask=new QueryTask(q_url);
+				this.clearGraphics();
+				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+		}
 		,zoomAllList:function() {
-			console.log("zoomAllList");
+
 			//console.profile();
-			//pinlist
 			    var whereclause=this.pin_field + "='" + this.pinlist.join("' OR " + this.pin_field + "='") + "'";
 
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
@@ -1053,10 +1148,6 @@ define([
 				this.clearGraphics();
  				//this.qryTask.execute(this.qry, this.mapqRes  );
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
-				//console.profileEnd();
-
-
-
 		}
 		,zoomAll:function() {
 			// this will zoom to all of the records returned by the current query
@@ -1084,9 +1175,6 @@ define([
 				} else if (this.qObj.querytype=="salesdata") {
 
 				}
-
-
-				console.log("zoomAll",whereclause);
 
                 if (whereclause!="") {
 					var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;

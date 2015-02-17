@@ -137,12 +137,9 @@ define([
                  this._writeCookie();
 
             // uncomment to open at startup
-            /*
-            if (this.userPreferences.showWelcome==true)
-                                   this.parentWidget.show();
+            //this.parentWidget.show();
 
-            if (this.showAtStartup) { this.openProgress(); }
-            */
+
 
 		}, startup: function() {
 		            this.inherited(arguments);
@@ -175,6 +172,9 @@ define([
 			//  Make sure the content is visible when the dialog
 			//  is shown/opened. Something like this may be needed
 			//  for all floating windows that don't open on startup?
+
+		    dijit.byId("hHelpTabs").selectChild(dijit.byId("hHelpTab"));
+
 			if (!this.openOnStartup) {
 				this.containerNode.resize();
 			}

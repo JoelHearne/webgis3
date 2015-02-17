@@ -1,11 +1,11 @@
 <div class="helpDijit">
     <div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="containerNode" class="helpContainer">
         <div class="helpNode">
-            <div data-dojo-type="dijit/layout/TabContainer" class="helpTabContainer">
+            <div  id="hHelpTabs" data-dojo-type="dijit/layout/TabContainer" class="helpTabContainer">
 
 
 
-                <div data-dojo-type="dijit/layout/ContentPane" title="Welcome">
+                <div id="hWelcomeTab" data-dojo-type="dijit/layout/ContentPane" title="Welcome">
 
                      <div class="htabContBG">
                      </div>
@@ -36,18 +36,18 @@
 
 
                     </div>
-                    <div style="color: red;position: absolute; z-index: 900; left: 0%; bottom: 15px;">
+                   <!-- <div style="color: red;position: absolute; z-index: 900; left: 0%; bottom: 15px;">
                         <hr style="border-color: red"><hr style="border-color: red">
                         This application is a work in progress, but it does work on mobile devices.
                         You are seeing it even though it is new and lacks many of the features of our
                         desktop application.  Please be patient as we test and enhance it.
                         <hr style="border-color: red"><hr style="border-color: red">
-                    </div>
+                    </div>-->
                   </div>
 
                 </div>
 
-                <div data-dojo-type="dijit/layout/ContentPane" title="Disclaimer">
+                <div id="hDisclaimerTab" data-dojo-type="dijit/layout/ContentPane" title="Disclaimer">
 
 
 				  <div class="htabContBG"> </div>
@@ -74,7 +74,7 @@
                 </div>
 
 
-                <div data-dojo-type="dijit/layout/ContentPane" title="Help">
+                <div id="hHelpTab" data-dojo-type="dijit/layout/ContentPane" title="Help">
 				  <div class="htabContBG"> </div>
 
                    <div class="htabContent htabContMain">
