@@ -71,6 +71,7 @@ body, html {
     overflow: auto;
     overflow-x: hidden;
     border-right: 1px solid #B5BCC7;
+    display:none;
 }
 #sidebarRight {
     width: 300px;
@@ -99,7 +100,8 @@ body, html {
 #mapCenter {
     padding: 0;
     overflow: hidden;
-    background: url("../images/noisy_grid.png") #fff;
+    //background: url("../images/noisy_grid.png") #fff;
+    background: url("../images/noisy_grid_green.png") #fff;
 }
 .panetop {
     border-top: 1px solid #B5BCC7;

@@ -56,6 +56,9 @@ define([
 		     //basemap: 'streets',
 		     // basemap: 'ortho_2013',
 		    // basemap:  new esri.dijit.Basemap({
+				//logo:false,
+				//nav:true,
+
 			   basemap:  new  Basemap({
 				id: 'ortho_2013',
 				title: 'ortho_2013',
@@ -791,7 +794,7 @@ define([
 			}
 */
 
-			,streetview: {
+/*			,streetview: {
 				include: true,
 				id: 'streetview',
 				type: 'titlePane',
@@ -806,7 +809,7 @@ define([
 					mapRightClickMenu: true
 				}
 			}
-
+*/
 			,help: {
 				include: true,
 				id: 'help',

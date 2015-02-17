@@ -71,6 +71,7 @@ define([
     },
     // extension point. called automatically after widget DOM ready.
     postCreate: function() {
+		console.log("Im the TOC");
       domStyle.set(this.rowNode, 'paddingLeft', '' + this.rootLayerTOC.tocWidget.indentSize * this.rootLayerTOC._currentIndent + 'px');
       // using the availability of certain property to decide what kind of node to create.
       // priority is legend/serviceLayer/rootLayer

@@ -81,6 +81,7 @@ define([
         },
         postCreate: function () {
             this.inherited(arguments);
+
             if (this.separated) {
                 var ControlContainer = declare([WidgetBase, Container]);
                 // vector layer label

@@ -2,6 +2,7 @@ define([
     'dojo/_base/declare',
     'dojo/_base/lang',
     'dojo/_base/array',
+        'dojo/topic',
     'dojo/on',
     'dojo/dom-class',
     'dojo/dom-style',
@@ -16,6 +17,7 @@ define([
     declare,
     lang,
     array,
+    topic,
     on,
     domClass,
     domStyle,
@@ -85,11 +87,19 @@ define([
         },
         // set checkbox based on layer so it's always in sync
         _setSublayerCheckbox: function (checked, checkNode) {
+			//console.log("_setSublayerCheckbox",checked, checkNode,this);
             checkNode = checkNode || this.checkNode;
             var i = this.icons;
             if (checked) {
                 domAttr.set(checkNode, 'data-checked', 'checked');
                 domClass.replace(checkNode, i.checked, i.unchecked);
+
+                // JCH 2-17-15 - Send message to check the parent if not already
+                var _this=this;
+                topic.publish('Dynamic/ChildChecked', {
+                    sub:_this.sublayerInfo.parentLayerId
+                });
+
             } else {
                 domAttr.set(checkNode, 'data-checked', 'unchecked');
                 domClass.replace(checkNode, i.unchecked, i.checked);

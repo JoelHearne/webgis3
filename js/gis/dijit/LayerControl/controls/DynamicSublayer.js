@@ -31,6 +31,8 @@ define([
         _expandClickHandler: null,
         postCreate: function () {
             this.inherited(arguments);
+
+
             if (array.indexOf(this.control.layer.visibleLayers, this.sublayerInfo.id) !== -1) {
                 domClass.remove(this.checkNode, 'fa-square-o');
                 domClass.add(this.checkNode, 'fa fa-check-square-o');

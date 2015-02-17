@@ -72,7 +72,21 @@ define([
             } else {
                 this._expandRemove();
             }
-        },
+
+
+              // JCH 2-17-15 - Quick work around to toggle group parents on when child is checked
+            var _this=this;
+            topic.subscribe('Dynamic/ChildChecked', lang.hitch(this, function (c) {
+                array.forEach(_this._sublayerControls, function (control) {
+						 //console.log("Dynamic sublayerControls ",control.sublayerInfo.id );
+						 if (control.sublayerInfo.id ==c.sub){
+                              //console.log(" ----IM YOUR DADDY ",c,control.sublayerInfo.id );
+                              control._setSublayerCheckbox(true);
+						 }
+		        });
+		        _this._setVisibleLayers();
+            }));
+         },
         // called from LayerMenu plugin
         _dynamicToggleMenuItems: function (menu) {
             if (this._hasSublayers && this.controlOptions.allSublayerToggles !== false) {
@@ -96,6 +110,7 @@ define([
         },
         // add folder/sublayer controls per layer.layerInfos
         _createSublayers: function (layer) {
+
             // check for single sublayer - if so no sublayer/folder controls
             if (layer.layerInfos.length > 1) {
                 array.forEach(layer.layerInfos, lang.hitch(this, function (info) {
@@ -191,6 +206,8 @@ define([
             this._visLayersHandler = aspect.after(this.layer, 'setVisibleLayers', lang.hitch(this, '_onSetVisibleLayers'), true);
         },
         _onSetVisibleLayers: function (visLayers) {
+
+			console.log("_onSetVisibleLayers",visLayers,this.layer);
             var visibleIds = [];
             array.forEach(this.layer.layerInfos, function (info) {
                 if (array.indexOf(visLayers, info.id) !== -1) {
@@ -207,6 +224,13 @@ define([
                     control._setSublayerCheckbox(false);
                 }
             });
+
+
+
+
+
+
+
         }
     });
     return DynamicControl;
