@@ -122,13 +122,8 @@ define([
 
 		}
 		,saveMe:function() {
-			console.log("saveMe");
-			console.log("--",domAttr.get("pc_save", "src"));
 			//domAttr.set("pc_save", "src","img/DeleteSearch1.gif")
 			domAttr.set(this.pc_save, "src","img/DeleteSearch1.gif")
-
-			//pc_save
-
 		}
 		 ,expand_detail_procres:function(results){
              var _this=this;

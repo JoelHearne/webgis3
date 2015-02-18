@@ -41,7 +41,8 @@ define([
 	'dojo/store/Cache', 'dojo/store/JsonRest',
 	'./prc',
 	'./prcmin',
-	'dojo/_base/Color',
+	//'dojo/_base/Color',
+	"esri/Color",
 	'esri/layers/GraphicsLayer',
 	'esri/graphic',
 	'esri/graphicsUtils',
@@ -50,10 +51,12 @@ define([
 	 "esri/geometry/Geometry",
 	'esri/geometry/Point',
 	"esri/geometry/Polygon",
+	"esri/geometry/Polyline",
 	'esri/SpatialReference',
 	'esri/symbols/SimpleMarkerSymbol',
 	'esri/symbols/SimpleLineSymbol',
 	'esri/symbols/SimpleFillSymbol',
+	   'esri/toolbars/draw',
 	'esri/graphicsUtils',
 	'esri/tasks/FindTask',
 	'esri/tasks/FindParameters',
@@ -104,14 +107,15 @@ define([
 ,Color
 ,GraphicsLayer
 ,Graphic
-, graphicsUtils
+,graphicsUtils
 ,SimpleRenderer
 ,PictureMarkerSymbol
- ,Geometry
+,Geometry
 ,Point
 ,Polygon
+,Polyline
 ,SpatialReference
-,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters,InfoTemplate
+,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters,InfoTemplate
 
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -122,9 +126,9 @@ define([
 		domTarget: 'propertyDijit',
 		draggable: true,
 		baseClass: 'propertyDijit',
-		property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
-		parcel_lyrid:11,
-		pin_field:"PATPCL_PIN",
+		//property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
+		//parcel_lyrid:11,
+		//pin_field:"PATPCL_PIN",
 		filteringSelect:null,
 		filteringSelect_list:[],
 		afStore_list:[],
@@ -137,9 +141,16 @@ define([
 		pointGraphics:null,
 		polylineGraphics:null,
 		polygonGraphics:null,
+		pointSymbol:null,
+		polylineSymbol:null,
+        polygonsymbol:null,
 		mapSearchMode:"none", // none,point,box,polygon,polyline
 		mapSearchGeomPts:[],
 		qryPolyGeom:null,
+		qryPlineGeom:null,
+		qryPtGeom:null,
+
+		drawToolbar: null,
 		qryTask:null,
 		qry:null,
 		pinlist:[],
@@ -179,7 +190,14 @@ define([
 
             //domStyle.set(this.parentWidget, "left", "900px");
             //this.parentWidget.set('style', 'left:0px !important;top;0px !important;position:absolute');
+
+
+            this.drawToolbar = new Draw(this.map);
+            this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
+
+
             this.createGraphicsLayer();
+            this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 
 
             this.qObj={
@@ -236,46 +254,117 @@ define([
         }
         ,createGraphicsLayer: function () {
 
-			 var pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
+			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
+			 this.pointSymbol = new  SimpleMarkerSymbol().setStyle( SimpleMarkerSymbol.STYLE_SQUARE).setColor(new Color([2 ,1,281,0.5]));
+			 this.polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([2 , 1, 181,0.5]), 3);
+			 //this.polylineSymbol = new SimpleLineSymbol.setStyle(SimpleLineSymbol.STYLE_DASH).setColor(new Color([255, 0, 0]), 1);
+			 this.polygonsymbol = new  SimpleFillSymbol().setColor(new  Color([2 , 1 , 181,0.5]));
+
 			 this.pointGraphics = new GraphicsLayer({
 				id: 'parcel_graphics',
 				title: 'Parcel Search'
 			 });
-			 var pointRenderer = new SimpleRenderer( pointSymbol);
+			 var pointRenderer = new SimpleRenderer( this.pointSymbol);
 			 pointRenderer.label = 'Parcel View';
 			 pointRenderer.description = 'Parcel View';
 			 this.pointGraphics.setRenderer(pointRenderer);
 			 this.map.addLayer(this.pointGraphics);
 			 this.pointGraphics.show();
 
-			 this.polygonGraphics = this.map.getLayer("findGraphics_polygon");
-			 if (!this.polygonGraphics) this.polygonGraphics = new GraphicsLayer({ id: 'findGraphics_polygon', title: 'Find Graphics' });
-			 var polygonsymbol = new  SimpleFillSymbol().setColor(new  Color([24, 167, 181]));
-			 var polygonrenderer = new  SimpleRenderer(polygonsymbol);
+			 this.polygonGraphics = this.map.getLayer("findGraphics_pgon");
+			 if (!this.polygonGraphics) this.polygonGraphics = new GraphicsLayer({ id: 'findGraphics_pgon', title: 'Find Graphics' });
+
+			 var polygonrenderer = new  SimpleRenderer(this.polygonsymbol);
 			 this.polygonGraphics.setRenderer(polygonrenderer);
 			 this.map.addLayer(this.polygonGraphics);
 			 this.polygonGraphics.show();
 			 this.qryPolyGeom = new  Polygon( this.map.spatialReference);
-		}
+
+             this.polylineGraphics = this.map.getLayer("findGraphics_pline");
+             if (!this.polylineGraphics)   this.polylineGraphics = new GraphicsLayer({ id: 'findGraphics_pline', title: 'Draw Graphics' });
+
+             var polylineRenderer = new SimpleRenderer(this.polylineSymbol);
+             //polylineRenderer.label = 'User drawn lines';
+             //polylineRenderer.description = 'User drawn lines';
+             this.polylineGraphics.setRenderer(polylineRenderer);
+             this.map.addLayer(this.polylineGraphics);
+             this.polylineGraphics.show();
+
+             this.qryPlineGeom = new  Polyline( this.map.spatialReference);
+
+             this.qryPtGeom=new Point( this.map.spatialReference);
+
+             //console.log("polyline  ",  " ",polylineRenderer, "  ",this.polylineGraphics);
+
+		},
+        onDrawToolbarDrawEnd: function (evt) {
+            this.drawToolbar.deactivate();
+            var graphic;
+            switch (evt.geometry.type) {
+                case 'point':
+                    graphic = new Graphic(evt.geometry);
+                    this.pointGraphics.add(graphic);
+                    this.qryPtGeom=evt.geometry;
+                    break;
+                case 'polyline':
+                    graphic = new Graphic(evt.geometry);
+                    graphic.setSymbol(this.polylineSymbol);
+                    this.polylineGraphics.add(graphic);
+                    this.qryPlineGeom=evt.geometry;
+                    break;
+                case 'polygon':
+
+                    //graphic = new Graphic(evt.geometry, null, {
+                    //    ren: 1
+                    //});
+
+                    graphic = new Graphic(evt.geometry );
+
+                    graphic.setSymbol(this.polygonsymbol);
+                    this.polygonGraphics.add(graphic);
+                    this.qryPolyGeom=evt.geometry;
+                    break;
+                default:
+            }
+            this.connectMapClick();
+        }
 		, setMapClickMode: function (mode) {
 			this.mapClickMode = mode;
 		}
-		, placePoint: function (e) {
-			this.disconnectMapClick();
-			console.log("placePoint",e);
-			this.mapSearchMode='';
-		}
+
 		, modePoint: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='point';
+            this.drawToolbar.activate(Draw.POINT);
 		}
 		, modePolygon: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='polygon';
+			this.drawToolbar.activate(Draw.POLYGON);
+ 		}
+		, modePolyline: function (e) {
+			this.disconnectMapClick();
+			this.mapSearchMode='polyline';
+			this.drawToolbar.activate(Draw.POLYLINE);
 		}
+		,modeFreehandLine: function () {
+		    this.disconnectMapClick();
+		    this.mapSearchMode='polyline';
+		    this.drawToolbar.activate(Draw.FREEHAND_POLYLINE);
+
+        }
+        ,modeFreehandPolygon: function () {
+            this.disconnectMapClick();
+            this.mapSearchMode='polygon';
+            this.drawToolbar.activate(Draw.FREEHAND_POLYGON);
+
+        }
+
 		, disconnectMapClick: function () {
 			this.map.setMapCursor('crosshair');
-			topic.publish('mapClickMode/setCurrent', 'propert_mapselect');
+			//topic.publish('mapClickMode/setCurrent', 'propert_mapselect');
+			topic.publish('mapClickMode/setCurrent', 'draw');
+
 		}
 		, connectMapClick: function () {
 			this.map.setMapCursor('auto');
@@ -284,53 +373,31 @@ define([
 		, clearGraphics: function () {
 			this.pointGraphics.clear();
 			this.polygonGraphics.clear();
+			this.polylineGraphics.clear();
 
 			this.mapSearchGeomPts=[];
 			try {
-              this.qryPolyGeom.removeRing(0);
+              //this.qryPolyGeom.removeRing(0);
 		    } catch (exc){
 
 		    }
-		}
-		,mapClickHandler: function(e) {
-             if (this.mapClickMode != "propert_mapselect") return;
-              //console.log("mapClickHandler",e, " ",this.mapSearchMode," ",this.mapClickMode);
-
-              var sms = new  SimpleMarkerSymbol().setStyle( SimpleMarkerSymbol.STYLE_SQUARE).setColor(new Color([255,0,0,0.5]));
-              var polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.0]));
-
-              if (this.mapClickMode === "propert_mapselect") {
-
-				var mappt=e.mapPoint;
-			    var  graphic;
-                if (this.mapSearchMode=='point') {
-				   this.connectMapClick();
-				   graphic = new Graphic(mappt,sms);
-				   this.pointGraphics.add(graphic);
-			    } else if (this.mapSearchMode=='polygon') {
-				   graphic = new Graphic(mappt,sms);
-				   this.pointGraphics.add(graphic);
-                    this.mapSearchGeomPts.push([mappt.x,mappt.y]);
-
-                    if (this.mapSearchGeomPts.length > 2) {
-						console.log("adding ring",this.mapSearchGeomPts);
-                        this.qryPolyGeom.addRing(this.mapSearchGeomPts);
-                        graphic = new Graphic(this.qryPolyGeom );
-                        graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
-											 						 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
-					 						 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.55])));
-					 	this.polygonGraphics.add(graphic);
-				    }
-			   }
-		   }
+		    this.qryPolyGeom=new  Polyline( this.map.spatialReference);
+		    this.qryPlineGeom=new  Polyline( this.map.spatialReference);
+		    this.qryPtGeom=new Point( this.map.spatialReference);
 		}
 		,runMapSearch:function(){
 			   var qry_gm;
 			   if (this.mapSearchMode=='point') {
-                    qry_gm=esri.getGeometries(this.pointGraphics.graphics);
+                    //qry_gm=esri.getGeometries(this.pointGraphics.graphics);
+                    qry_gm=this.qryPtGeom;
+			   } else if (this.mapSearchMode=='polyline') {
+				    //qry_gm=esri.getGeometries(this.polylineGraphics.graphics);
+				    qry_gm=this.qryPlineGeom;
 			   } else if (this.mapSearchMode=='polygon') {
-				    qry_gm=esri.getGeometries(this.polygonGraphics.graphics);
+				    //qry_gm=esri.getGeometries(this.polygonGraphics.graphics);
+				    qry_gm=this.qryPolyGeom;
 		       }
+		       //console.log("runMapSearch",qry_gm);
 		       this.connectMapClick();
 		       this.mapSearch(qry_gm);
 		}
@@ -339,7 +406,8 @@ define([
 				this.qry = new  Query();
 				//query.where = "STATE_NAME = 'Washington'";
 				//query.outSpatialReference = {wkid:102100};
-				this.qry.geometry = geom[0];
+				//this.qry.geometry = geom[0];
+				this.qry.geometry = geom;
 				this.qry.outSpatialReference =  this.map.spatialReference ;
 				this.qry.returnGeometry = true;
 				this.qry.outFields = [this.pin_field];
@@ -349,8 +417,8 @@ define([
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,mapqRes: function(results) {
-			console.log("mapqRes");
-			console.log("mapqRes",results);
+			//console.log("mapqRes");
+			//console.log("mapqRes",results);
 			//this.clearGraphics();
 			var _this=this;
             var zoomExtent = null;
@@ -429,7 +497,7 @@ define([
 		}
 		,activateMapSearch: function(){
 			//this.createGraphicsLayer();
-			this.map.on('click', lang.hitch(this, 'mapClickHandler'));
+			//this.map.on('click', lang.hitch(this, 'mapClickHandler'));
 			this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 			this.disconnectMapClick();
 		}
@@ -765,9 +833,7 @@ define([
 		    };
 
 
-			console.log("tbSlDateFrom",this.tbSlDateFrom.value)
-
-
+			//console.log("tbSlDateFrom",this.tbSlDateFrom.value)
 
 			if (registry.byId("tbSlDateFrom") && registry.byId("tbSlDateFrom").textbox.value && (registry.byId("tbSlDateFrom").textbox.value !="")){
 			          qJsonObj.startDate=registry.byId("tbSlDateFrom").textbox.value;
@@ -1193,6 +1259,9 @@ define([
 
 
 
-		}
+		},
+        setMapClickMode: function (mode) {
+            this.mapClickMode = mode;
+        }
 	});
 });

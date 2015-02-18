@@ -3,6 +3,9 @@ define({
 	mapClickMode: true,
 	openOnStartup: true,
 	mapRightClickMenu: true,
+	property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
+	parcel_lyrid:11,
+	pin_field:"PATPCL_PIN",
 	queries: [
 		{
 			description: 'Find Address',

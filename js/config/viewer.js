@@ -447,7 +447,7 @@ define([
 
 
 
-/*
+
              ,share: {
                 include: true,
                 title: "Share the Map",
@@ -466,7 +466,7 @@ define([
                  //help: './js/viewer/templates/help/editor.html'
 			   }
             }
-*/
+
 /*
             ,userpreferences: {
                 include: true,
@@ -496,7 +496,7 @@ define([
 				options: 'config/identify'
 			}
 
-			/*basemaps: {
+			/*,basemaps: {
 				include: true,
 				id: 'basemaps',
 				title: 'Basemaps',
@@ -505,7 +505,7 @@ define([
 				path: 'gis/dijit/Basemaps',
 				srcNodeRef: 'basemapsDijit',
 				options: 'config/basemaps'
-			},
+			}
 			*/
 
 
@@ -529,9 +529,6 @@ define([
 				options: 'config/modbasemaps'
 			}
 
-
-
-/*
 			,mapInfo: {
 				include: false,
 				id: 'mapInfo',
@@ -549,7 +546,7 @@ define([
 					minWidth: 286
 				}
 			}
-	*/
+
 			,scalebar: {
 				include: true,
 				id: 'scalebar',
@@ -765,6 +762,7 @@ define([
 					}
 				}
 			}
+*/
 			  ,editor: {
 				include: true,
 				id: 'editor',
@@ -792,9 +790,9 @@ define([
 					}
 				}
 			}
-*/
 
-/*			,streetview: {
+
+ 			,streetview: {
 				include: true,
 				id: 'streetview',
 				type: 'titlePane',
@@ -809,7 +807,7 @@ define([
 					mapRightClickMenu: true
 				}
 			}
-*/
+
 			,help: {
 				include: true,
 				id: 'help',

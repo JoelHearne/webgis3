@@ -157,6 +157,7 @@ define([
             // }
         },
         onDrawToolbarDrawEnd: function (evt) {
+			//console.log("onDrawToolbarDrawEnd",evt);
             this.drawToolbar.deactivate();
             this.drawModeTextNode.innerText = this.i18n.labels.currentDrawModeNone;
             var graphic;
