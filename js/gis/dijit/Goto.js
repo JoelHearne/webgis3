@@ -3,26 +3,19 @@ define([
   'dojo/_base/declare',
   'dojo/_base/lang',
   'dojo/_base/array',
-
   'dojo/on',
   'dojo/keys',
-
   'dijit/TooltipDialog',
   'dijit/popup',
-
   'put-selector',
-
   '//cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js',
-
   // mixins & base classes
   'dijit/_WidgetBase',
   'dijit/_TemplatedMixin',
   'dijit/_WidgetsInTemplateMixin',
-
   // templates & widget css
   'dojo/text!./Goto/templates/Goto.html',
   'xstyle/css!./Goto/css/Goto.css',
-
   // not referenced
   'dijit/form/Button',
   'dijit/form/TextBox',
@@ -97,14 +90,22 @@ define([
     handleCoordInput: function(evt) {
       if (evt.charOrCode === keys.ENTER) {
         this.gotoCoordinate();
-        
         return;
       }
     },
     gotoCoordinate: function() {
+
+      var zmScale=parseInt(this.tbScale.value);
+      if (zmScale !== null && !isNaN(zmScale)) {
+        this.map.setScale(zmScale);
+      }
+
+
       var inputCoord = this.coordinateTextBox.get('value');
       var latlongCoord = this.determineLatLongFromCoordinate(inputCoord);
-      // console.log(latlongCoord);
+
+      //console.log("gotoCoordinate \ncoord: ",latlongCoord," \nscale:",zmScale);
+
       if (latlongCoord !== null && !isNaN(latlongCoord[0]) && !isNaN(latlongCoord[1])) {
         this.map.centerAt(latlongCoord);
       }

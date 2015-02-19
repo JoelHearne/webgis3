@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +29,7 @@ namespace WebGIS
         public PropertySearchList proplist=new PropertySearchList();
         private ArrayList aps = new ArrayList();
 
-        private String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        private String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
         private String srcView = "CAMVIEW_Sales";
  
         public clsSalesData()

@@ -291,7 +291,7 @@ namespace WebGIS
         public Sale[] sales_list;
 
 
-        private String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
 
         public PropertysearchMinDetail() { }
         public PropertysearchMinDetail(PropertySearchResult pr) 
@@ -335,7 +335,7 @@ namespace WebGIS
             sqlStr = sqlStr + "  taxable_value,exempt_value,ag_value,land_value,bldg_value,xtra_value,just_value,assd_value,HMSTD,";
             sqlStr = sqlStr + "  COMMISSION,commissioner,ZONING,FLUPY,TRACT,WETLAND,FLDWY,FLDZ_BFE,WATER,POWER,SUBDIVISION,FIRE,COBRA,";
             sqlStr = sqlStr + "  acres,propertyuse,landuse,lu_code   ";
-            sqlStr = sqlStr + "  FROM xxxxx.dbo.CAMVIEW_MinParcelDetail ";
+            sqlStr = sqlStr + "  FROM CENTRAL_GIS.dbo.CAMVIEW_MinParcelDetail ";
             sqlStr = sqlStr + "  WHERE pin='" + pin.Trim() + "'";
 
            
@@ -630,7 +630,7 @@ namespace WebGIS
 
 
         public PropertySearchResult[] ps_res;
-        String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
         private ArrayList aps = new ArrayList();
 
  
@@ -751,10 +751,16 @@ namespace WebGIS
                 sqlStr = "";
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
-                sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD FROM CAMVIEW_PropertyList  p";
+                /*
+                 sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD FROM CAMVIEW_PropertyList  p";
                 sqlStr = sqlStr + "  JOIN  PA_CAMPA c ON p.PRPROP=c.PAPROP";
                 sqlStr = sqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 sqlStr = sqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
+                */
+                sqlStr = sqlStr + "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD  ";
+                sqlStr = sqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                sqlStr = sqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
+
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
@@ -769,9 +775,17 @@ namespace WebGIS
                 sqlStr = "";
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
+                /*
                 sqlStr = sqlStr + "  SELECT   PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD  FROM  CAMVIEW_PropertyList  p";
                 sqlStr = sqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 sqlStr = sqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
+                 */
+                sqlStr = sqlStr + "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
+                sqlStr = sqlStr + "FROM CAMVIEW_PropertyList  p  ";
+                sqlStr = sqlStr + "JOIN PA_WBusName b  ON p.PRPROP=b.OWFLPROP";
+                sqlStr = sqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
+
+
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString() ;
@@ -888,7 +902,7 @@ namespace WebGIS
         public int end_rec = 50;
    
  
-        private String conStr = "Server=xxxxx;Database=WebGIS;User Id=webgisuser;Password=web1gis;";
+        private String conStr = "Server=gisvm104\\GRIZZLY;Database=WebGIS;User Id=webgisuser;Password=web1gis;";
         private ArrayList aps = new ArrayList();
         private String bsqlstr = "SELECT peflex1cd,peflname,pin,pefladdr1,pefladdr2,pefladdr3,peflacity,peflst,peflzip5,peflcntry,passnam,sardate FROM cama_search_view ";
 
@@ -1151,7 +1165,7 @@ namespace WebGIS
         */
 
         public SalesSearchResult[] salessearch_list;
-        String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
         private ArrayList aps = new ArrayList();
 
 
@@ -1343,7 +1357,7 @@ namespace WebGIS
         public String pin = "";
         private ArrayList aslist = new ArrayList();
 
-        private String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
 
         public Sales() { }
 

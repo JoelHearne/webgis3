@@ -283,9 +283,8 @@ define([
 			///////////////////////////////////////////////////////////////////
 			// This hack is my attempt to make JSAPI mousewheel zoom behave like OpenLayers
 			//   OpenLayers is way more responsive than JSAPI
-
+/*
             var _this=this;
-
 			this.map.on('mouse-wheel', function (evt) {
 				 if (evt.detail > 0) {
                     _this.map.setZoom(_this.map.getZoom()+_this.config.mouseWheelSensitivity)
@@ -293,7 +292,7 @@ define([
                     _this.map.setZoom(_this.map.getZoom()-_this.config.mouseWheelSensitivity)
 				 }
 			});
-
+*/
 			///////////////////////////////////////////////////////////////////
 			// This hack is my attempt to make JSAPI pan have momentum like OpenLayers
 /*

@@ -390,6 +390,7 @@ define([
 				}
 			}
 */
+/*
             ,navtools: {
 				include: true,
 				id: 'navtools',
@@ -408,7 +409,7 @@ define([
 					mapClickMode: true
 				}
 			}
-
+*/
 
            ,panpuck: {
 				include: true,
@@ -447,7 +448,7 @@ define([
 
 
 
-
+/*
              ,share: {
                 include: true,
                 title: "Share the Map",
@@ -466,7 +467,7 @@ define([
                  //help: './js/viewer/templates/help/editor.html'
 			   }
             }
-
+*/
 /*
             ,userpreferences: {
                 include: true,
@@ -495,6 +496,16 @@ define([
 				position: 3,
 				options: 'config/identify'
 			}
+			,goto: {
+				include: true,
+				id: 'goto',
+				type: 'titlePane',
+				path: 'gis/dijit/Goto',
+				title: 'Go to Coordinate',
+				open: false,
+				position: 12,
+				options: { map: true }
+			}
 
 			/*,basemaps: {
 				include: true,
@@ -508,7 +519,7 @@ define([
 			}
 			*/
 
-
+/*
 		   ,ModBasemaps: {
 				include: true,
 				id: 'modbasemaps',
@@ -528,7 +539,8 @@ define([
 				srcNodeRef: 'imagesliderDijit',
 				options: 'config/modbasemaps'
 			}
-
+*/
+/*
 			,mapInfo: {
 				include: false,
 				id: 'mapInfo',
@@ -546,7 +558,7 @@ define([
 					minWidth: 286
 				}
 			}
-
+*/
 			,scalebar: {
 				include: true,
 				id: 'scalebar',
@@ -654,6 +666,7 @@ define([
 				position: 2,
 				options: 'config/bookmarks'
 			}
+/*
 			,find: {
 				include: true,
 				id: 'find',
@@ -665,6 +678,7 @@ define([
 				position: 3,
 				options: 'config/find'
 			}
+*/
 		   ,draw: {
 				include: true,
 				id: 'draw',
@@ -763,6 +777,7 @@ define([
 				}
 			}
 */
+/*
 			  ,editor: {
 				include: true,
 				id: 'editor',
@@ -790,7 +805,7 @@ define([
 					}
 				}
 			}
-
+*/
 
  			,streetview: {
 				include: true,

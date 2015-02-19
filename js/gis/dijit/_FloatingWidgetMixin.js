@@ -15,7 +15,6 @@ define([
 			if (this.parentWidget && this.parentWidget.declaredClass === 'gis.dijit.FloatingWidget' && this.openOnStartup) {
 				this.parentWidget.show();
 			}
-
 			this.inherited(arguments);
 		}
 	});

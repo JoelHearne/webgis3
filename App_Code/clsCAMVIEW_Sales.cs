@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +19,7 @@ namespace WebGIS
         public CAMVIEW_Sales[] CAMVIEW_Sales_list;
         private ArrayList aps = new ArrayList();
 
-        public String conStr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        public String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
         public String srcView = "CAMVIEW_Sales";
 
 

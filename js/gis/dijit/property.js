@@ -38,7 +38,8 @@ define([
     'dijit/form/FilteringSelect',
 	'dijit/form/ValidationTextBox',
 	'dijit/form/DateTextBox',
-	'dojo/store/Cache', 'dojo/store/JsonRest',
+	'dojo/store/Cache'
+	,'dojo/store/JsonRest',
 	'./prc',
 	'./prcmin',
 	//'dojo/_base/Color',
@@ -56,7 +57,7 @@ define([
 	'esri/symbols/SimpleMarkerSymbol',
 	'esri/symbols/SimpleLineSymbol',
 	'esri/symbols/SimpleFillSymbol',
-	   'esri/toolbars/draw',
+	'esri/toolbars/draw',
 	'esri/graphicsUtils',
 	'esri/tasks/FindTask',
 	'esri/tasks/FindParameters',
@@ -65,9 +66,12 @@ define([
 	'esri/geometry/Extent',
 	'esri/tasks/IdentifyTask',
 	'esri/tasks/IdentifyParameters',
+    "esri/geometry/normalizeUtils",
+    "esri/tasks/GeometryService",
+    "esri/tasks/BufferParameters",
 	'esri/InfoTemplate',
-	'xstyle/css!./property/css/property.css'
-	 ,'dojo/domReady!'
+	'xstyle/css!./property/css/property.css',
+	'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
 ,dom
 ,Style
@@ -115,7 +119,8 @@ define([
 ,Polygon
 ,Polyline
 ,SpatialReference
-,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters,InfoTemplate
+,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
+, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,InfoTemplate
 
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -145,7 +150,7 @@ define([
 		polylineSymbol:null,
         polygonsymbol:null,
 		mapSearchMode:"none", // none,point,box,polygon,polyline
-		mapSearchGeomPts:[],
+		//mapSearchGeomPts:[],
 		qryPolyGeom:null,
 		qryPlineGeom:null,
 		qryPtGeom:null,
@@ -170,35 +175,11 @@ define([
 				on(help, 'click', lang.hitch(this.parentWidget, 'show'));
 			}
 
-            // uncomment to open at startup
-            /*this.parentWidget.show().then(function () {
-				dojo.style(this.parentWidget.domNode, 'top', "0px");
-				dojo.style(this.parentWidget.domNode, 'left', "8px");
-			});
-			*/
-
             this.parentWidget.show() ;
-
-            /*var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-            //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top;-300px !important;position:absolute');
-
-
-			  Style.set(this.parentWidget, "left",offst_left + 'px');
-
-			  dom.byId("property_parent").set('style', 'left:' + offst_left + 'px !important;top;-300px !important;position:absolute');
-			  */
-
-            //domStyle.set(this.parentWidget, "left", "900px");
-            //this.parentWidget.set('style', 'left:0px !important;top;0px !important;position:absolute');
-
-
             this.drawToolbar = new Draw(this.map);
             this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
-
-
-            this.createGraphicsLayer();
+             this.createGraphicsLayer();
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
-
 
             this.qObj={
 			    querytype:'',
@@ -208,8 +189,6 @@ define([
 			    endrec:0,
 			    qsaleObj:null
 			};
-
-
 		}
 		,startup: function() {
 			this.inherited(arguments);
@@ -248,22 +227,18 @@ define([
 
             var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
             this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
-
-
 			return this.pshowAtStartup;
         }
         ,createGraphicsLayer: function () {
-
 			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
 			 this.pointSymbol = new  SimpleMarkerSymbol().setStyle( SimpleMarkerSymbol.STYLE_SQUARE).setColor(new Color([2 ,1,281,0.5]));
 			 this.polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([2 , 1, 181,0.5]), 3);
 			 //this.polylineSymbol = new SimpleLineSymbol.setStyle(SimpleLineSymbol.STYLE_DASH).setColor(new Color([255, 0, 0]), 1);
 			 this.polygonsymbol = new  SimpleFillSymbol().setColor(new  Color([2 , 1 , 181,0.5]));
 
-			 this.pointGraphics = new GraphicsLayer({
-				id: 'parcel_graphics',
-				title: 'Parcel Search'
-			 });
+             this.pointGraphics = this.map.getLayer("point_graphics");
+             if (!this.pointGraphics)  this.pointGraphics = new GraphicsLayer({ id: 'point_graphics', title: 'Point search' });
+
 			 var pointRenderer = new SimpleRenderer( this.pointSymbol);
 			 pointRenderer.label = 'Parcel View';
 			 pointRenderer.description = 'Parcel View';
@@ -271,17 +246,16 @@ define([
 			 this.map.addLayer(this.pointGraphics);
 			 this.pointGraphics.show();
 
-			 this.polygonGraphics = this.map.getLayer("findGraphics_pgon");
-			 if (!this.polygonGraphics) this.polygonGraphics = new GraphicsLayer({ id: 'findGraphics_pgon', title: 'Find Graphics' });
+			 this.polygonGraphics = this.map.getLayer("pgon_graphics");
+			 if (!this.polygonGraphics) this.polygonGraphics = new GraphicsLayer({ id: 'pgon_graphics', title: 'Polygon Search' });
 
 			 var polygonrenderer = new  SimpleRenderer(this.polygonsymbol);
 			 this.polygonGraphics.setRenderer(polygonrenderer);
 			 this.map.addLayer(this.polygonGraphics);
 			 this.polygonGraphics.show();
-			 this.qryPolyGeom = new  Polygon( this.map.spatialReference);
 
-             this.polylineGraphics = this.map.getLayer("findGraphics_pline");
-             if (!this.polylineGraphics)   this.polylineGraphics = new GraphicsLayer({ id: 'findGraphics_pline', title: 'Draw Graphics' });
+             this.polylineGraphics = this.map.getLayer("pline_graphics");
+             if (!this.polylineGraphics)   this.polylineGraphics = new GraphicsLayer({ id: 'pline_graphics', title: 'Polyline Search' });
 
              var polylineRenderer = new SimpleRenderer(this.polylineSymbol);
              //polylineRenderer.label = 'User drawn lines';
@@ -290,16 +264,14 @@ define([
              this.map.addLayer(this.polylineGraphics);
              this.polylineGraphics.show();
 
+             this.qryPolyGeom = new  Polygon( this.map.spatialReference);
              this.qryPlineGeom = new  Polyline( this.map.spatialReference);
-
              this.qryPtGeom=new Point( this.map.spatialReference);
-
-             //console.log("polyline  ",  " ",polylineRenderer, "  ",this.polylineGraphics);
-
 		},
         onDrawToolbarDrawEnd: function (evt) {
             this.drawToolbar.deactivate();
             var graphic;
+
             switch (evt.geometry.type) {
                 case 'point':
                     graphic = new Graphic(evt.geometry);
@@ -313,13 +285,13 @@ define([
                     this.qryPlineGeom=evt.geometry;
                     break;
                 case 'polygon':
-
-                    //graphic = new Graphic(evt.geometry, null, {
-                    //    ren: 1
-                    //});
-
                     graphic = new Graphic(evt.geometry );
-
+                    graphic.setSymbol(this.polygonsymbol);
+                    this.polygonGraphics.add(graphic);
+                    this.qryPolyGeom=evt.geometry;
+                    break;
+                case 'extent':
+                     graphic = new Graphic(evt.geometry );
                     graphic.setSymbol(this.polygonsymbol);
                     this.polygonGraphics.add(graphic);
                     this.qryPolyGeom=evt.geometry;
@@ -351,20 +323,20 @@ define([
 		    this.disconnectMapClick();
 		    this.mapSearchMode='polyline';
 		    this.drawToolbar.activate(Draw.FREEHAND_POLYLINE);
-
         }
         ,modeFreehandPolygon: function () {
             this.disconnectMapClick();
             this.mapSearchMode='polygon';
             this.drawToolbar.activate(Draw.FREEHAND_POLYGON);
-
         }
-
+		, modeBox: function (e) {
+			this.disconnectMapClick();
+			this.mapSearchMode='polygon';
+			this.drawToolbar.activate(Draw.EXTENT);
+ 		}
 		, disconnectMapClick: function () {
 			this.map.setMapCursor('crosshair');
-			//topic.publish('mapClickMode/setCurrent', 'propert_mapselect');
 			topic.publish('mapClickMode/setCurrent', 'draw');
-
 		}
 		, connectMapClick: function () {
 			this.map.setMapCursor('auto');
@@ -375,15 +347,13 @@ define([
 			this.polygonGraphics.clear();
 			this.polylineGraphics.clear();
 
-			this.mapSearchGeomPts=[];
-			try {
-              //this.qryPolyGeom.removeRing(0);
-		    } catch (exc){
+			//this.mapSearchGeomPts=[];
 
-		    }
 		    this.qryPolyGeom=new  Polyline( this.map.spatialReference);
 		    this.qryPlineGeom=new  Polyline( this.map.spatialReference);
 		    this.qryPtGeom=new Point( this.map.spatialReference);
+
+		    //pMapBuffr.style.display="none";
 		}
 		,runMapSearch:function(){
 			   var qry_gm;
@@ -449,12 +419,7 @@ define([
 								graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
 											 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
 											 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.15])));
-                                 console.log(" ...mapqRes 4.7" );
-							     console.log(" ...mapqRes 4.8 \r\n .....",_this.polygonGraphics ," \r\n .....",graphic );
 							     _this.polygonGraphics.add(graphic);
-							     console.log(" ...mapqRes 5" );
-								//_this.pointGraphics.add(graphic);
-
 							}
 							break;
 						default:
@@ -471,6 +436,9 @@ define([
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
 			this.doSearch_Pins(pins);
 
+
+			pMapBuffr.style.display="block";
+
            // Show info popup
 		   //var mapPoint = zoomExtent.getCenter();
 		   //this.map.infoWindow.setContent('<div class="loading"></div>');
@@ -478,8 +446,6 @@ define([
            //this.map.infoWindow.show(mapPoint);
 		}
 		,doSearch_Pins: function(pins){
-
-
 
             var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=pin_list&searchString=' + pins.join() + '&startrec=1&endrec=50';
             var _this=this;
@@ -606,7 +572,7 @@ define([
 		   }
  		}
         ,changeSearchForm:function(evt){
-			this.clearSearch();
+			//this.clearSearch();
 			var SearchPane  = registry.byId("psearchForm");
 			var selForm=evt.target.value;
             var frmObj=null;
@@ -719,6 +685,134 @@ define([
 		   }
 
 		}
+		,preBuffer:function(){
+
+			// get the selection geometry
+			var b_gm=esri.getGeometries(this.polygonGraphics.graphics);
+
+//esri.tasks.GeometryService.UNIT_KILOMETER esriSRUnit_Foot
+			// send it to doBuffer
+			this.doBuffer(b_gm);
+
+		}
+		,unionGeomArray:function(geoms){
+           var uPg = new  Polygon( this.map.spatialReference);
+           for (var i=0;i<geoms.length;i++){
+			   for (var r=0;r<geoms[i].rings.length;r++){
+				   uPg.addRing(geoms[i].rings[r]);
+			   }
+		   }
+		   return uPg;
+		}
+		,doBuffer:function(geometry){
+            var _this=this;
+			var bDist=parseInt(_this.tbBuffr.value);
+            console.log("doBuffer: ",this );
+
+            /*
+            try {
+				console.log("1 buffer units: ",this.selBufUnit);
+			} catch (ex){
+				console.log("err1..",ex);
+			}
+
+            try {
+                 var sUnit=document.getElementById("selBufUnit") ;
+			     console.log("2 buffer units: ",sUnit);
+			} catch (ex){
+				console.log("err2..",ex);
+			}
+			*/
+
+
+			this.drawToolbar.deactivate();
+
+			geometry=this.unionGeomArray(geometry);
+
+			var symbol;
+			switch (geometry.type) {
+			   case "point":
+				 symbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_SQUARE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255,0,0]), 1), new Color([0,255,0,0.25]));
+				 break;
+			   case "polyline":
+				 symbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255,0,0]), 1);
+				 break;
+			   case "polygon":
+				 symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
+				 break;
+			}
+
+			  var graphic = new Graphic(geometry, symbol);
+			  this.polygonGraphics.add(graphic);
+
+			  //setup the buffer parameters
+			  var params = new BufferParameters();
+			  params.distances = [ bDist ];
+			  params.outSpatialReference = this.map.spatialReference;
+			  params.unit = GeometryService[esri.tasks.GeometryService.UNIT_FOOT];
+			  params.geometries  = [ geometry ];
+              params.bufferSpatialReference = this.map.spatialReference;
+              params.unionResults=true;
+
+
+            try {
+                var su=dom.byId("selBufUnit").value;
+                if (su=="ft") params.unit = GeometryService[esri.tasks.GeometryService.UNIT_FOOT];
+                if (su=="mi") params.unit = GeometryService[esri.tasks.GeometryService.UNIT_STATUTE_MILE];
+                if (su=="m") params.unit = GeometryService[esri.tasks.GeometryService.UNIT_METER];
+                if (su=="km") params.unit = GeometryService[esri.tasks.GeometryService.UNIT_KILOMETER];
+			} catch (ex){
+				console.log("err3..",ex);
+			}
+
+              //esriConfig.defaults.geometryService.buffer(params, lang.hitch(this, 'showBuffer')  );
+
+			  //normalize the geometry
+              console.log(" 3 ....doBuffer " );
+              normalizeUtils.normalizeCentralMeridian([geometry ], esriConfig.defaults.geometryService).then(function(normalizedGeometries) {
+                 var normalizedGeometry = normalizedGeometries[0];
+				 if (normalizedGeometry.type === "polygon") {
+					 //if geometry is a polygon then simplify polygon.  This will make the user drawn polygon topologically correct.
+					console.log(" 5 ....doBuffer " );
+					esriConfig.defaults.geometryService.simplify([normalizedGeometry], function(geometries) {
+					params.geometries = geometries;
+					//esriConfig.defaults.geometryService.buffer(params, showBuffer);
+					esriConfig.defaults.geometryService.buffer(params, lang.hitch(_this, 'showBuffer')  );
+				  });
+				} else {
+				  params.geometries = [normalizedGeometry];
+				  //esriConfig.defaults.geometryService.buffer(params, showBuffer);
+				  esriConfig.defaults.geometryService.buffer(params, lang.hitch(_this, 'showBuffer')  );
+				}
+
+           });
+
+		}
+		,showBuffer:function(bufferedGeometries) {
+
+			console.log("showBuffer",this );
+			var _this=this;
+          var symbol = new SimpleFillSymbol(
+            SimpleFillSymbol.STYLE_SOLID,
+            new SimpleLineSymbol(
+              SimpleLineSymbol.STYLE_SOLID,
+              new Color([255,0,0,0.65]), 2
+            ),
+            new Color([255,0,0,0.35])
+          );
+
+          array.forEach(bufferedGeometries, function(geometry) {
+            var graphic = new Graphic(geometry, symbol);
+            //_this.map.graphics.add(graphic);
+            _this.polygonGraphics.add(graphic);
+            _this.mapSearchMode='polygon';
+            _this.qryPolyGeom=geometry;
+
+          });
+
+          //_this.mapSearch(bufferedGeometries[0]);
+
+        }
 		,doSearch: function(){
 
 			//console.log("doSearch",this.activeMenu);
@@ -796,8 +890,8 @@ define([
 			this.qObj.endrec=endrec;
 
             var _this=this;
-            request.get(iurl,{ handleAs: "json" }).then(
 
+            /*request.get(iurl,{ handleAs: "json" }).then(
                 function (data){
                      //console.log(  data);
                     _this.showResults(data);
@@ -806,6 +900,43 @@ define([
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
+ 	        */
+             request.post("WebGIS.asmx/PropertyQueryPaged",{
+				  handleAs: "json"
+                  ,data: {
+					searchtype:stype,
+					searchString:sval,
+					startrec:startrec,
+					endrec:endrec
+				}}).then(
+                function (data){
+                     //console.log(  data);
+                    _this.showResults(data);
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+
+ 	        /*
+            console.log("posting search");
+			request.post("WebGIS.asmx/PropertyQueryPaged", {
+				data: {
+					searchtype:stype,
+					searchString:sval,
+					startrec:startrec,
+					endrec:endrec
+				},
+				headers: {
+					"X-Something": "A value"
+				}
+			}).then(function(text){
+				console.log("The server returned: ", text);
+			});
+			*/
+
+
+
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
@@ -883,9 +1014,10 @@ define([
 
 			var prcob=registry.byId(prcID);
  			if (actntype == "pc_zoom") {
-               topic.publish('InitZoomer/ZoomParcel', {
+               /*topic.publish('InitZoomer/ZoomParcel', {
 			 		 pin:pcObj.pin
-               });
+               });*/
+               this.zoomPIN(pcObj.pin);
 			} else if (actntype == "pc_fulldet") {
 				this.Open_PRCFull(pcObj.pin);
 
@@ -901,24 +1033,20 @@ define([
 			}
 		}
 		,DelPRCSaved:function(pcObj,widgetID){
-			console.log("DelPRCSaved ",pcObj,widgetID);
-             //var srd=dom.byId("pSearchSaved");
 			 var prcob=registry.byId(widgetID);
-			 console.log("    prcob ",prcob);
 			 domConstruct.destroy(prcob.domNode);
-
 			 var i = this.savedlist.indexOf(pcObj.pin);
 			 if(i != -1) {
 				this.savedlist.splice(i, 1);
 			 }
-
 			 if (this.savedlist.length==0){
 			   this.btnSavedZoomAll.domNode.style.display="none";
 			   this.btnSavedPrLbls.domNode.style.display="none";
 			 }
-
 		}
 		,addPRC2Saved:function(pcObj,widgetID){
+
+			 if (this.savedlist.indexOf(pcObj.pin) != -1) return;
 
 			 this.btnSavedZoomAll.domNode.style.display="block";
 			 this.btnSavedPrLbls.domNode.style.display="block";
@@ -1005,11 +1133,7 @@ define([
 						select.options[select.options.length]=new Option(p + 1);
 					}
 				} else {
-					// hide the page selection box pPageSelDiv
-					//var psdv = dom.byId("pPageSelDiv");
-					//document.getElementById("pPageSelDiv").style.visibility="hidden";
 					document.getElementById("pPageSelDiv").style.display="none";
-
 				}
 				if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
 		   } else {  // no results
@@ -1019,16 +1143,6 @@ define([
 
 
 		   }
-
-		   /*
-		   var el = document.getElementById("selResPage");
-		   if (el.addEventListener) {
-		   		 el.addEventListener("change",  this.changePage, false);
-		    } else {
-		   		 el.attachEvent('change',  this.changePage)  ;
-		    }
-		    */
-
 		    // show the record count
 		    var rc = document.getElementById("pResCount");
 		    rc.innerHTML='<br><b><p>' + dobj.rec_count + ' total records</p></b><br>page ' + rec_page + ' of ' + pgcnt;
@@ -1041,11 +1155,6 @@ define([
              this.doSearch();
 		}
 		,showResults: function (results){
-
-			console.log("showResults",this.btnZoomAll.domNode,results);
-
-
-
 			 this.hideWait();
              var _this=this;
              var srd=dom.byId("pSearchResults");
@@ -1070,7 +1179,6 @@ define([
 			   dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
 			   this.addPRC_Min(pobj[0].pin);
 		    }
-
 
             if (dobj.rec_count) this.qObj.rec_count=dobj.rec_count;
 
@@ -1168,9 +1276,7 @@ define([
  	            }
  	        );
 		}
-		,PclCardClck: function(){
 
-		}
 		,clearSearch: function(){
            var dobj=dijit.byId("pane1").domNode;
            var iboxes=dobj.getElementsByTagName('input');
@@ -1185,6 +1291,19 @@ define([
              domConstruct.empty("pResCount");
              document.getElementById("pPageSelDiv").style.visibility="hidden";
 
+             this.clearGraphics();
+ 		}
+		,zoomPIN:function(pin) {
+			    var whereclause=this.pin_field + "='" + pin + "'";
+				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
+				this.qry = new  Query();
+				this.qry.where = whereclause;
+				this.qry.outSpatialReference =  this.map.spatialReference ;
+				this.qry.returnGeometry = true;
+				this.qry.outFields = [this.pin_field];
+				this.qryTask=new QueryTask(q_url);
+				this.clearGraphics();
+				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,zoomAllListSaved:function() {
 			    var whereclause=this.pin_field + "='" + this.savedlist.join("' OR " + this.pin_field + "='") + "'";
@@ -1223,9 +1342,6 @@ define([
 
 			// TODO: !!IDEA - Build an SDE spatial view that joins parcels with Central_GIS
 			    var whereclause="";
-
-			    console.log("this.qObj",this.qObj);
-
 			    if (this.qObj.querytype=="address") {
 					whereclause="PATPCL_ADDR1 like '" + this.qObj.queryvalue + "%'";
 				} else if (this.qObj.querytype=="owner") {
@@ -1256,8 +1372,6 @@ define([
 					this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 					//console.profileEnd();
 			  }
-
-
 
 		},
         setMapClickMode: function (mode) {

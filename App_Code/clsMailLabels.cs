@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -52,7 +52,7 @@ namespace Mapserv
         private DirectoryInfo di = new System.IO.DirectoryInfo(outDir);
         private String baseOutputURL = ConfigurationManager.AppSettings["baseOutputURL"];
         //private String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
-        String cgis_connstr = "Server=xxxxx;Database=xxxxx;User Id=xxxxx;Password=xxxxx;";
+        String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
 
 
         private ArrayList label_al = new System.Collections.ArrayList();
@@ -112,15 +112,15 @@ namespace Mapserv
             page.Orientation = PdfSharp.PageOrientation.Portrait;
 
 
-            document.Info.Title = "Okaloosa County Property Appraiser Mailing Labels";
-            document.Info.Author = "Okaloosa County Property Appraiser";
+            document.Info.Title = "Okaloosa County WebGIS Mailing Labels";
+            document.Info.Author = "Okaloosa County WebGIS";
             document.Info.Subject = "Mailing Labels";
-            document.Info.Keywords = "Okaloosa County,Property,Report,Mailing Labels";
+            document.Info.Keywords = "Okaloosa County,WebGIS,Mailing Labels";
 
 
             GenerateReport(document);
 
-            Debug.WriteLine("seconds=" + (DateTime.Now - now).TotalSeconds.ToString());
+            //Debug.WriteLine("seconds=" + (DateTime.Now - now).TotalSeconds.ToString());
 
             // Save the document...
             document.Save(di.FullName + filename);
@@ -417,7 +417,22 @@ namespace Mapserv
             }
             else if (search_type == "address")
             {
-                sqlStr = sqlStr + "  WHERE site_address like  '" + search_string + "%' ";
+                sqlStr = sqlStr + "  WHERE site_address like  '%" + search_string + "%' ";
+             }
+            else if (search_type == "pinlist")
+            {
+                String[] pins = search_string.Split(',');
+
+
+                for (int i = 0; i < pins.Length; i++)
+                {
+                    pins[i] = "'" + pins[i] + "'";
+                }
+
+                String newWhere = String.Join(",", pins);
+                newWhere = "(" + newWhere + ")";
+ 
+                sqlStr = sqlStr + " WHERE  pin in " + newWhere;
 
             }
             else if (search_type == "street")
