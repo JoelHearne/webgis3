@@ -135,11 +135,16 @@ define([
                 map.on('zoom-end', lang.hitch(this, '_setZoom'));
             }
             map.on('mouse-move, mouse-drag', lang.hitch(this, '_setCoords'));
+
+            console.log("MapInfo wkid:",wkid,"\n mode:",mode);
         },
         _setCoords: function (evt) {
             var pnt = evt.mapPoint,
                 mode = this.mode,
                 scale = this.unitScale;
+
+           console.log("MapInfo _setCoords: pnt",pnt,"\n scale:",scale);
+
             switch (this._mode) {
             case 0:
             case 3:

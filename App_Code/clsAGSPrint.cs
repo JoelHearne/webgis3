@@ -1022,8 +1022,8 @@ namespace Mapserv
     {
 
         // private String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
-        private String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
-
+        //private String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+        private String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
 
         public CAMVIEW_ParcelMapreport()
         {

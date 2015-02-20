@@ -2,7 +2,7 @@
 
 select {
   font-size:10px;
-  font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
+  //font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
 
 }
 
@@ -16,7 +16,7 @@ select {
 .propertyDijit .propertyContainer {
 	padding: 0px;
 	font-size: 11px;
-	font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
+	//font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
 
 }
 .floatingWidget .propertyDijit .propertyContainer {

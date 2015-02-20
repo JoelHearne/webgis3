@@ -105,7 +105,7 @@ define([
              // 2- Parse JSON and add additional rows
 
 		}
-		,addTableRow(fld,val){
+		,addTableRow: function(fld,val){
 
            /*var tr = domConstruct.create("tr", {}, this.pcTable),
                 td = domConstruct.create("td", {"colspan":"5"}, tr),

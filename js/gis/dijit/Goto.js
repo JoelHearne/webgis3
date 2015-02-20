@@ -99,8 +99,6 @@ define([
       if (zmScale !== null && !isNaN(zmScale)) {
         this.map.setScale(zmScale);
       }
-
-
       var inputCoord = this.coordinateTextBox.get('value');
       var latlongCoord = this.determineLatLongFromCoordinate(inputCoord);
 

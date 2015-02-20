@@ -159,6 +159,7 @@ define([
 		qryTask:null,
 		qry:null,
 		pinlist:[],
+		mapsearchpins:[],
 		savedlist:[],
 		qObj:null,
 
@@ -175,7 +176,7 @@ define([
 				on(help, 'click', lang.hitch(this.parentWidget, 'show'));
 			}
 
-            this.parentWidget.show() ;
+            //this.parentWidget.show() ;
             this.drawToolbar = new Draw(this.map);
             this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
              this.createGraphicsLayer();
@@ -208,12 +209,24 @@ define([
 				 sp.addEventListener("change",
 				   function(e){
 					   _this.resPage=e.target.selectedIndex+1;
-					   _this.doSearch();
+					   console.log("page change",_this.resPage,"\n",_this.activeMenu,"\n",_this.mapsearchpins);
+
+                       if (_this.activeMenu=='map') {
+						   _this.doSearch_Pins(_this.mapsearchpins);
+					   } else {
+					       _this.doSearch();
+					   }
+
 				   }, false);
 			} else {
 				 sp.attachEvent('change',  function(e){
 					   _this.resPage=e.target.selectedIndex+1;
-					   _this.doSearch();
+					   //_this.doSearch();
+                       if (_this.activeMenu=='map') {
+						   _this.doSearch_Pins(_this.mapsearchpins);
+					   } else {
+					       _this.doSearch();
+					   }
 				   }) ;
 			}
 
@@ -394,13 +407,14 @@ define([
             var zoomExtent = null;
             // var infoTemplate = new InfoTemplate("Parcel Info", "<table><tr><td>PIN: </td><td>${PARCEL ID}</td></tr><tr><td>Owner: </td><td>${OWNER}</td></tr></table>");
             var feats=[];
-            var pins=[];
+            //var pins=[];
+            this.mapsearchpins=[];
 			array.forEach( results.features, function (feature) {
 				  var graphic;
                   //feature.setInfoTemplate(infoTemplate);
 				  feats.push(feature);
 				  if (feature.attributes && feature.attributes.PATPCL_PIN) {
-					   pins.push(feature.attributes.PATPCL_PIN);
+					   _this.mapsearchpins.push(feature.attributes.PATPCL_PIN);
 				  }
 
 				  switch (feature.geometry.type) {
@@ -434,8 +448,7 @@ define([
 			}); // end array.forEach
 
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
-			this.doSearch_Pins(pins);
-
+			this.doSearch_Pins(this.mapsearchpins);
 
 			pMapBuffr.style.display="block";
 
@@ -445,22 +458,7 @@ define([
            //this.map.infoWindow.setFeatures(feats);
            //this.map.infoWindow.show(mapPoint);
 		}
-		,doSearch_Pins: function(pins){
 
-            var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=pin_list&searchString=' + pins.join() + '&startrec=1&endrec=50';
-            var _this=this;
-            request.get(iurl,{ handleAs: "json" }).then(
-                function (data){
-                     //console.log(  data);
-                    _this.showResults(data);
- 	            } ,
- 	            function (error){
- 	                console.log("Error Occurred: " + error);
- 	            }
- 	        );
-			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
-			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
-		}
 		,activateMapSearch: function(){
 			//this.createGraphicsLayer();
 			//this.map.on('click', lang.hitch(this, 'mapClickHandler'));
@@ -813,6 +811,36 @@ define([
           //_this.mapSearch(bufferedGeometries[0]);
 
         }
+		,doSearch_Pins: function(pins){
+            var startrec = 1;
+            var endrec = 50;
+
+            if (this.resPage > 1) {
+				startrec = ((this.resPage-1) * 50) + 1;
+				endrec = (startrec + 50) - 1;
+			}
+
+             var _this=this;
+             request.post("WebGIS.asmx/PropertyQueryPaged",{
+				  handleAs: "json"
+                  ,data: {
+					searchtype:"pin_list",
+					searchString:pins.join(','),
+					startrec:startrec,
+					endrec:endrec
+				}}).then(
+                function (data){
+                     //console.log(  data);
+                    _this.showResults(data);
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
+
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
+		}
 		,doSearch: function(){
 
 			//console.log("doSearch",this.activeMenu);
@@ -824,7 +852,9 @@ define([
             this.showWait();
 
             if (this.activeMenu=='map') {
-                this.runMapSearch();
+                //if (this.resPage == 1) {
+				this.runMapSearch();
+
 				return;
 			}
 
@@ -1107,7 +1137,7 @@ define([
 			  this.savedlist.push(pcObj.pin);
 
 		}
-		,resultsAddPager(dobj){
+		,resultsAddPager: function(dobj){
 
 			//TODO: Hide if there are zero results and show if there are > 0
             var rec_page = 0;

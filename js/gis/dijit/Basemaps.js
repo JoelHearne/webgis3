@@ -34,6 +34,8 @@ define([
             this.currentBasemap = this.mapStartBasemap || null;
 
             if (this.mode === 'custom') {
+
+				console.log("basemaps custom", this.basemaps);
                 this.gallery = new BasemapGallery({
                     map: this.map,
                     showArcGISBasemaps: false,
@@ -52,6 +54,7 @@ define([
                 //baseClass: this.menuClass
             });
 
+            //console.log("0 abt to basemap add basemaps to dropdown ",this.basemaps,"\n",this.basemapsToShow);
             array.forEach(this.basemapsToShow, function (basemap) {
                 if (this.basemaps.hasOwnProperty(basemap)) {
                     var menuItem = new MenuItem({

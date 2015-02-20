@@ -12,3 +12,20 @@
     font-family: FontAwesome;
     content: "\f009";
 }
+
+basemapDD {
+ font-size: 18px;
+
+}
+
+ 
+.basemapDD .dijitMenuItemLabel {
+   font-size: 12px;
+}
+#bmDD .dijitMenuItemLabel {
+   font-size: 12px;
+}
+
+.dijitMenuItemLabel {
+   font-size: 12px;
+}

@@ -38,7 +38,30 @@ define([
 	//image parameters for dynamic services, set to png32 for higher quality exports.
 	var imageParameters = new ImageParameters();
 	imageParameters.format = 'png32';
-
+/*
+    var webLods = [
+            //{ "level" : 0, "resolution" : 156543.033928, "scale" : 591657527.591555 },
+            //{ "level" : 1, "resolution" : 78271.5169639999, "scale" : 295828763.795777 },
+            //{ "level" : 2, "resolution" : 39135.7584820001, "scale" : 147914381.897889 },
+            //{ "level" : 3, "resolution" : 19567.8792409999, "scale" : 73957190.948944 },
+            //{ "level" : 4, "resolution" : 9783.93962049996, "scale" : 36978595.474472 },
+            //{ "level" : 5, "resolution" : 4891.96981024998, "scale" : 18489297.737236 },
+            //{ "level" : 6, "resolution" : 2445.98490512499, "scale" : 9244648.868618 },
+            //{ "level" : 7, "resolution" : 1222.99245256249, "scale" : 4622324.434309 },
+            { "level" : 8, "resolution" : 611.49622628138, "scale" : 2311162.217155 },
+            { "level" : 9, "resolution" : 305.748113140558, "scale" : 1155581.108577 },
+            { "level" : 10, "resolution" : 152.874056570411, "scale" : 577790.554289 },
+            { "level" : 11, "resolution" : 76.4370282850732, "scale" : 288895.277144 },
+            { "level" : 12, "resolution" : 38.2185141425366, "scale" : 144447.638572 },
+            { "level" : 13, "resolution" : 19.1092570712683, "scale" : 72223.819286 },
+            { "level" : 14, "resolution" : 9.55462853563415, "scale" : 36111.909643 },
+            { "level" : 15, "resolution" : 4.77731426794937, "scale" : 18055.954822 },
+            { "level" : 16, "resolution" : 2.38865713397468, "scale" : 9027.977411 },
+            { "level" : 17, "resolution" : 1.19432856685505, "scale" : 4513.988705 },
+            { "level" : 18, "resolution" : 0.597164283559817, "scale" : 2256.994353 },
+            { "level" : 19, "resolution" : 0.298582141647617, "scale" : 1128.497176 }
+        ];
+*/
 	return {
 		// used for debugging your app
 		isDebug: true,
@@ -56,18 +79,42 @@ define([
 		     //basemap: 'streets',
 		     // basemap: 'ortho_2013',
 		    // basemap:  new esri.dijit.Basemap({
-				//logo:false,
-				//nav:true,
+			   logo:false
+			   //nav:true,
+			   ,minZoom:8
+			   ,maxZoom:19
+			//sliderStyle: 'small',
+			//sliderPosition: "top-right",
+			 //,lods:webLods
+            //slider: true,
+			//sliderStyle: 'large'
+            //,sliderLabels: webLods
+			 /*  ,basemap:  new  Basemap({
+				id: 'hybrid',
+				title: 'Hybrid',
+				layers: [
+                   //new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] })
+                   //new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer'} )
+                   //,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  })
+                    new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/background/MapServer" })
+                    ,new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12, 13, 14] } )
+                    ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
+                   ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
+				]
+				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
+			})*/
 
-			   basemap:  new  Basemap({
-				id: 'ortho_2013',
-				title: 'ortho_2013',
-				//thumbnailUrl: '../../igis_thumb.png',
-				layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
-			}),
+			 	,basemap:  new  Basemap({
+								id: 'ortho_2013',
+								title: 'ortho_2013',
+								layers: [
+				new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
+				]
+			})
 
-			center: [-86.59987, 30.68192],
-			zoom: 11
+
+			,center: [-86.59987, 30.68192]
+			,zoom: 10
 
 			,fadeOnZoom: true
 			,force3DTransforms: true
@@ -390,7 +437,7 @@ define([
 				}
 			}
 */
-/*
+
             ,navtools: {
 				include: true,
 				id: 'navtools',
@@ -409,7 +456,7 @@ define([
 					mapClickMode: true
 				}
 			}
-*/
+
 
            ,panpuck: {
 				include: true,
@@ -428,27 +475,11 @@ define([
 				}
 			}
 /*
-           ,prc: {
-				include: true,
-				id: 'prc',
-				//type: 'titlePane',
-				//canFloat: false,
-			    type: 'domNode',
-				srcNodeRef: 'testDijit',
-				path: 'gis/dijit/prc',
-				title: 'PRC',
-				//open: false,
-				//position: 0,
-				//placeAt: 'right',
-				options: {
-					map: true
-				}
-			}
-*/
 
 
 
-/*
+
+
              ,share: {
                 include: true,
                 title: "Share the Map",
@@ -507,7 +538,7 @@ define([
 				options: { map: true }
 			}
 
-			/*,basemaps: {
+			 ,basemaps: {
 				include: true,
 				id: 'basemaps',
 				title: 'Basemaps',
@@ -517,7 +548,7 @@ define([
 				srcNodeRef: 'basemapsDijit',
 				options: 'config/basemaps'
 			}
-			*/
+
 
 /*
 		   ,ModBasemaps: {
@@ -540,7 +571,7 @@ define([
 				options: 'config/modbasemaps'
 			}
 */
-/*
+
 			,mapInfo: {
 				include: false,
 				id: 'mapInfo',
@@ -549,7 +580,8 @@ define([
 				srcNodeRef: 'mapInfoDijit',
 				options: {
 					map: true,
-					mode: 'dms',
+					//mode: 'dms',
+					mode: 'dd',
 					firstCoord: 'y',
 					unitScale: 3,
 					showScale: true,
@@ -558,7 +590,7 @@ define([
 					minWidth: 286
 				}
 			}
-*/
+
 			,scalebar: {
 				include: true,
 				id: 'scalebar',
@@ -666,7 +698,7 @@ define([
 				position: 2,
 				options: 'config/bookmarks'
 			}
-/*
+
 			,find: {
 				include: true,
 				id: 'find',
@@ -678,7 +710,7 @@ define([
 				position: 3,
 				options: 'config/find'
 			}
-*/
+
 		   ,draw: {
 				include: true,
 				id: 'draw',

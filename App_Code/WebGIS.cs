@@ -11,7 +11,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Diagnostics;
- 
+using System.Web.Configuration;
+using System.Configuration;
+using System.Collections;
 
 
 namespace WebGIS
@@ -291,8 +293,8 @@ namespace WebGIS
         public Sale[] sales_list;
 
 
-        private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
-
+        //private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+        private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         public PropertysearchMinDetail() { }
         public PropertysearchMinDetail(PropertySearchResult pr) 
         {
@@ -630,7 +632,8 @@ namespace WebGIS
 
 
         public PropertySearchResult[] ps_res;
-        String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+        //String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+        String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
 
  
@@ -717,7 +720,7 @@ namespace WebGIS
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
                 sqlStr = sqlStr + osqlStr;
-                sqlStr = sqlStr + " WHERE Site_Address like '%" + sqlWhereVal + "%'";
+                sqlStr = sqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%'";
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
@@ -1165,7 +1168,8 @@ namespace WebGIS
         */
 
         public SalesSearchResult[] salessearch_list;
-        String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+        //String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+        String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
 
 
@@ -1357,8 +1361,8 @@ namespace WebGIS
         public String pin = "";
         private ArrayList aslist = new ArrayList();
 
-        private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
-
+        //private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+        private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         public Sales() { }
 
         public Sales(String pinstr)

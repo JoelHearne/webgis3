@@ -55,7 +55,6 @@ define([
 ,cookie
 //,$
 ) {
-
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 		widgetsInTemplate: true,
 		templateString: template,
@@ -68,7 +67,6 @@ define([
 		userPreferenceDefaults:null,
 		userPreferences:null,
         cookieObj:null,
-
         timelineWidth: 190,
         summaryColor: '#FF0000',
         timelineColors: ['#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'],
@@ -91,16 +89,12 @@ define([
         closeProgressDelay: 20000,
         fadeTime: 1000,
         devEmail: null,
-
 		postCreate: function () {
 			this.inherited(arguments);
-
 			//console.log("jquery",$);
-		   //$("div").click(function(){
-		   //    alert("clicked p jquery");
-		   //});
-
-
+		    //$("div").click(function(){
+		    //    alert("clicked p jquery");
+		    //});
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
 				this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
@@ -110,18 +104,14 @@ define([
 				var help = domConstruct.place(this.html, this.domTarget);
 				on(help, 'click', lang.hitch(this.parentWidget, 'show'));
 			}
-
 			// show on startup as splashscreen
 			//lang.hitch(this.parentWidget, 'show')
-
             this.userPreferenceDefaults= {
 			            showWelcome: true
 			            ,showStartupMetrics: true
 			            ,showCoordinates: true
 			            ,disclaimer:false
             };
-
-
             // Get the saved user preferences from the cookie
             this.cookieObj = cookie('userPreferences');
             if (this.cookieObj === undefined) {
@@ -135,18 +125,16 @@ define([
 
             if (!this.hasCookie)
                  this._writeCookie();
-
             // uncomment to open at startup
-            //this.parentWidget.show();
-
-
-
+            if (this.userPreferences.showWelcome ) {
+				this.parentWidget.show();
+				// show disclaimer if not agreed to
+				if (!this.checkDisclaimer()) dijit.byId("hHelpTabs").selectChild(dijit.byId("hDisclaimerTab"));
+		    }
+			 on(this.parentWidget, 'hide', lang.hitch(this, 'close'));
 		}, startup: function() {
 		            this.inherited(arguments);
-
-
 		            // uncomment to open at startup
-
 		            // Set the startup checkboxes to agree with the parameters
 		            /*
 		            this.startupMetricsDijit.set('value', this.showStartupMetrics);
@@ -165,7 +153,6 @@ define([
 						}, 500);
 				    }
 				    */
-
 		            return this.showAtStartup;
         }
 		,onOpen: function () {
@@ -180,36 +167,44 @@ define([
 			}
 		},
 		close: function () {
+			if (!this.checkDisclaimer()) {
+				this.parentWidget.show();
+				dijit.byId("hHelpTabs").selectChild(dijit.byId("hDisclaimerTab"));
+				return;
+			}
 			if (this.parentWidget.hide) {
 				this.parentWidget.hide();
 			}
-
-		},
-		onbtnclick: function(e) {
+		}
+		,acceptDisclaimer: function(){
+			this.userPreferences.disclaimer=true;
+			this.cookieObj.disclaimer=true;
+			this._writeCookie();
+		    dijit.byId("hHelpTabs").selectChild(dijit.byId("hWelcomeTab"));
+ 		}
+ 		,checkDisclaimer:function(){
+			var isDiscl=false;
+			isDiscl=this.userPreferences.disclaimer;
+			return isDiscl;
+ 		}
+		,onbtnclick: function(e) {
 			console.log("button clicked",e);
-
 		}
 		,stopTimer: function(e){
 			console.log("stopTimer button clicked",e );
-
-
 		}
 		,sendToDeveloper:function(e){
 
-
 		}
 		,_onStartupMetricsChange: function(e) {
-            console.log("_onStartupMetricsChange",e );
             var showw=true;
             if (e==false) showw=false;
 			this._updateUserPreferences({ showStartupMetrics: showw });
-
 		}
 		,_onStartupChange: function(e){
             var showw=true;
             if (e==false) showw=false;
 			this._updateUserPreferences({ showWelcome: showw });
-
 		}
 		, _writeCookie: function() {
             cookie('userPreferences', JSON.stringify(this.cookieObj), { expires: 99999 });
