@@ -7,8 +7,15 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <title>OkaloosaGIS Map Viewer</title>
-        <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11compact/esri/css/esri.css">
-        <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+         <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11compact/esri/css/esri.css">
+         <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+        <!--
+        <link rel="stylesheet" type="text/css" href="//gisvm101/arcgis_js_api/library/3.12/3.12/esri/css/esri.css">
+        <link rel="stylesheet" type="text/css" href="//gisvm109/font-awesome-4.3.0/css/font-awesome.min.css">
+        -->
+
+
         <link rel="stylesheet" type="text/css" href="css/theme/dbootstrap/dbootstrap.css">
         <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -19,7 +26,7 @@
             <div class="headerLogo">
                 <img alt="logo" src="images/oc_logo_shark.png" height="28" />
             </div>
-            <div class="headerTitle" style="font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;">
+            <div class="headerTitle"  >
                 <span id="headerTitleSpan" >Okaloosa County IS/GIS</span>
                 <!--<div id="subHeaderTitleSpan" class="subHeaderTitle">WebGIS</div>-->
             </div>
@@ -35,8 +42,12 @@
             </div>
 
             <div class="headerLinks">
-                <div id="helpDijit">
+                <div id="propertyDijit" style="float: left;margin: 3px 4px 2px 5px">
                 </div>
+
+                <div id="helpDijit" style="float: right;margin: 3px 4px 2px 5px">
+                </div>
+
             </div>
 
         </div>
@@ -50,18 +61,10 @@
 
         <script type="text/javascript">
 
-            /*
-            DOJO LOADER http://dojotoolkit.org/reference-guide/1.8/loader/amd.html
-            http://dojotoolkit.org/documentation/tutorials/1.9/modules_advanced/
-            http://blog.redfin.com/devblog/2012/12/dojo_phased_javascript_loading.html#.VNFHP2PVvYA
-            http://www.speich.net/articles/category/javascript/
-            http://www.maratbn.com/blogs/2011/04/27/jquery-dojo-together/
-            */
-
             var dojoConfig = {
                 async: true,
-                tlmSiblingOfDojo: false,
-                parseOnLoad: false,
+                //tlmSiblingOfDojo: false,
+                //parseOnLoad: false,
                 packages: [{
                     name: 'viewer',
                     location: location.pathname.replace(/[^\/]+$/, '') + 'js/viewer'
@@ -71,11 +74,8 @@
                 },{
                     name: 'gis',
                     location: location.pathname.replace(/[^\/]+$/, '') + 'js/gis'
-                },
-                //https://www.ibm.com/developerworks/community/blogs/94e7fded-7162-445e-8ceb-97a2140866a9/entry/loading_jquery_with_dojo_1_7_amd_loader2?lang=en
+                }
 
-                { name: 'jquery', location: 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1',
-                     main: 'jquery' }
 
                 ]
             };
@@ -84,6 +84,7 @@
             <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/es5-shim/4.0.3/es5-shim.min.js"></script>
         <![endif]-->
         <script type="text/javascript" src="//js.arcgis.com/3.11compact/"></script>
+        <!--<script type="text/javascript" src="//gisvm101/arcgis_js_api/library/3.12/3.12compact/init.js"></script>-->
         <script type="text/javascript">
             // get the config file from the url if present
             var file = 'config/viewer', s = window.location.search, q = s.match(/config=([^&]*)/i);
@@ -93,6 +94,7 @@
                     file = 'config/' + file;
                 }
             }
+
             require(['viewer/Controller', file], function(Controller, config){
                 Controller.startup(config);
             });

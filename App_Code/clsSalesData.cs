@@ -9,8 +9,6 @@ using System.Data.SqlTypes;
 using System.Data;
 using System.IO;
 using System.Reflection;
-using System.Configuration;
-using System.Collections;
 
 namespace WebGIS
 {
@@ -31,8 +29,7 @@ namespace WebGIS
         public PropertySearchList proplist=new PropertySearchList();
         private ArrayList aps = new ArrayList();
 
-         
-        private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
+        private String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
         private String srcView = "CAMVIEW_Sales";
  
         public clsSalesData()

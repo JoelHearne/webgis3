@@ -23,7 +23,7 @@ define([
     topic,
     proj4
 ) {
-    'use strict';
+    //'use strict';
     return declare([WidgetBase, TemplatedMixin], {
         map: null,
         mode: 'map',
@@ -67,10 +67,14 @@ define([
                 ts += '${xLabel}<span data-dojo-attach-point="xNode"></span>&nbsp;&nbsp;${yLabel}<span data-dojo-attach-point="yNode"></span>';
             }
             ts += '</div>';
+
             this.templateString = ts;
+
+
         },
         postCreate: function () {
             var map = this.map;
+
             if (!map) {
                 topic.publish('viewer/handleError', {
                     source: 'MapInfo',
@@ -89,9 +93,10 @@ define([
         _initialize: function (map) {
             var wkid = map.spatialReference.wkid,
                 mode = this.mode;
-            if (wkid === 102100 && mode !== 'dec' && mode !== 'dms') {
+
+            if ((wkid === 102100 || wkid === 3435 || wkid === 102113) && mode !== 'dec' && mode !== 'dms') {
                 this._mode = 0; //assume wm grid
-            } else if (wkid === 102100) {
+            } else if (wkid === 102100  || wkid === 3435 || wkid === 102113) {
                 this._mode = 1; //assume wm and proj to geo
             } else if (wkid === 4326) {
                 this._mode = 2;
@@ -123,6 +128,7 @@ define([
                     }));
                 }
             }
+
             if (this.minWidth) {
                 style.set(this.domNode, 'minWidth', this.minWidth + 'px');
             }
@@ -136,14 +142,11 @@ define([
             }
             map.on('mouse-move, mouse-drag', lang.hitch(this, '_setCoords'));
 
-            console.log("MapInfo wkid:",wkid,"\n mode:",mode);
         },
         _setCoords: function (evt) {
             var pnt = evt.mapPoint,
                 mode = this.mode,
                 scale = this.unitScale;
-
-           console.log("MapInfo _setCoords: pnt",pnt,"\n scale:",scale);
 
             switch (this._mode) {
             case 0:

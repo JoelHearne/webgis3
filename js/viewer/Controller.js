@@ -796,9 +796,9 @@ define([
 				if (typeof (console) === 'object') {
 
 
-					 //console.log(arguments);
-					 //console.log(arguments.callee.caller);
-					 //console.log(arguments.callee.caller.toString());
+					//console.log(arguments);
+					//console.log(arguments.callee.caller);
+					// console.log(arguments.callee.caller.toString());
 
 					for (var option in options) {
 						if (options.hasOwnProperty(option)) {

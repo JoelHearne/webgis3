@@ -35,7 +35,6 @@ define([
 
             if (this.mode === 'custom') {
 
-				console.log("basemaps custom", this.basemaps);
                 this.gallery = new BasemapGallery({
                     map: this.map,
                     showArcGISBasemaps: false,

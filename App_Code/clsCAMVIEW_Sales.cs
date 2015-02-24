@@ -9,8 +9,6 @@ using System.Data.SqlTypes;
 using System.Data;
 using System.IO;
 using System.Reflection;
-using System.Configuration;
-using System.Collections;
 
 namespace WebGIS
 {
@@ -21,9 +19,7 @@ namespace WebGIS
         public CAMVIEW_Sales[] CAMVIEW_Sales_list;
         private ArrayList aps = new ArrayList();
 
-        //public String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
-
-        public String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
+        public String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
         public String srcView = "CAMVIEW_Sales";
 
 

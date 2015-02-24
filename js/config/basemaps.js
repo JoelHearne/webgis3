@@ -22,7 +22,7 @@ define([
         // TODO Is this array necessary when the same keys are explicitly included/excluded below?
         //basemapsToShow: ['ortho_mapserv','ortho_2013','streets', 'satellite', 'hybrid', 'topo', 'lightGray', 'gray', 'national-geographic', 'osm', 'oceans'],
 
- basemapsToShow: [ 'ortho_2013','hybrid', 'esri_terrain','esri_streets','esri_topo','esri_imagery','nav_charts'  ],
+ basemapsToShow: [ 'ortho_2013','hybrid','openstreet', 'esri_terrain','esri_streets','esri_topo','esri_imagery','nav_charts'  ],
 
         // define all valid custom basemaps here. Object of Basemap objects. For custom basemaps, the key name and basemap id must match.
         basemaps: { // agol basemaps
@@ -51,15 +51,26 @@ define([
                    //new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19] })
                    //new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer'} )
                    //,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  })
-                    new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/background/MapServer"     })
-                    ,new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12, 13, 14] } )
-                    ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
+                   new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/background/MapServer"     })
+                   ,new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12, 13, 14] } )
+                   ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
                    ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
 				]
 				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
 			  })
 			},
-
+          openstreet: {
+              title: 'Open Street Map',
+              basemap:
+                new Basemap({
+                layers: [new BasemapLayer({
+                type:'OpenStreetMap'
+                })],
+                id:'openstreet',
+                title:'Open Street Map',
+                thumbnailUrl:'images/OpenStreetMap.png'
+            })
+          },
 
 
  /*           ortho_mapserv: {
@@ -148,6 +159,10 @@ define([
  					})]
  				})
             }
+
+
+
+
 
             /*,
             streets: {

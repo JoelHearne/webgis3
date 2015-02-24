@@ -25,12 +25,9 @@ define([
     esriConfig.defaults.io.useCors=true;
     esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
 
-
 	// url to your geometry server.
 	esriConfig.defaults.geometryService = new GeometryService('http://gisvm101:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer');
-
 	esriConfig.defaults.map.panDuration = 1000; // time in milliseconds, default panDuration: 250
-
 	esriConfig.defaults.map.panRate = 1; // default panRate: 25
 	esriConfig.defaults.map.zoomDuration = 100; // default zoomDuration: 500
 	esriConfig.defaults.map.zoomRate = 1; // default zoomRate: 25
@@ -79,10 +76,10 @@ define([
 		     //basemap: 'streets',
 		     // basemap: 'ortho_2013',
 		    // basemap:  new esri.dijit.Basemap({
-			   logo:false
-			   //nav:true,
-			   ,minZoom:8
-			   ,maxZoom:19
+			  logo:false
+			  //nav:true,
+			  ,minZoom:8
+			  ,maxZoom:19
 			//sliderStyle: 'small',
 			//sliderPosition: "top-right",
 			 //,lods:webLods
@@ -573,21 +570,24 @@ define([
 */
 
 			,mapInfo: {
-				include: false,
+				include: true,
 				id: 'mapInfo',
 				type: 'domNode',
 				path: 'gis/dijit/MapInfo',
 				srcNodeRef: 'mapInfoDijit',
 				options: {
 					map: true,
-					//mode: 'dms',
-					mode: 'dd',
+					//mode: 'map',
+					 //mode: 'dms',
+					mode: 'dec',
 					firstCoord: 'y',
-					unitScale: 3,
-					showScale: true,
-					xLabel: '',
-					yLabel: '',
-					minWidth: 286
+					unitScale: 4,
+					showScale: false,
+					xLabel: 'X:',
+					yLabel: 'Y:',
+					minWidth: 186,
+                    proj4Catalog: 'EPSG', //'ESRI', 'EPSG' or 'SR-ORG' **
+                    proj4Wkid: 3435 //wkid of the map ** // 4326
 				}
 			}
 
@@ -861,7 +861,7 @@ define([
 				type: 'floating',
 				path: 'gis/dijit/Help',
 				title: 'Okaloosa County Map Viewer',
-				options: {}
+				options: { webgis_version:"0.92"}
 			}
 
 		 	,property: {

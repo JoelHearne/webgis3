@@ -26,7 +26,6 @@ using System.Web.Script.Services;
 using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using System.Web.Configuration;
-using System.Configuration;
 using System.Collections;
 using System.Data.SqlClient;
 using System.Data.Sql;
@@ -53,9 +52,9 @@ namespace Mapserv
         private DirectoryInfo di = new System.IO.DirectoryInfo(outDir);
         private String baseOutputURL = ConfigurationManager.AppSettings["baseOutputURL"];
         //private String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
-        //String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
-        String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
-        
+        String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+
+
         private ArrayList label_al = new System.Collections.ArrayList();
 
         public clsMailLabels()

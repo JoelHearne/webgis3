@@ -122,6 +122,10 @@ define([
 			this.pcFireDist.innerHTML=dobj.FIRE;
 			this.pcCensusTract.innerHTML=dobj.TRACT;
 
+			try {
+				this.pcSiteAddr.innerHTML=dobj.Site_Addr;
+			} catch (exc) { console.log("error",exc); }
+
 			// sales list
             try {
 				if (dobj.sales_list && dobj.sales_list.length > 0) {

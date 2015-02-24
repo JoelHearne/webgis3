@@ -37,9 +37,7 @@ namespace WebGIS
             //Uncomment the following line if using designed components 
             //InitializeComponent(); 
         }
-
-
-
+ 
         [WebMethod(Description = "Query property records by searchtype: pin, pin_list, address, sub,bus,leg, or owner.")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public String PropertyQuery(String searchtype, String searchString)
@@ -261,6 +259,7 @@ namespace WebGIS
         public String PEFLZIP5 = "";
         public String PEFLCNTRY = "";
         public String PEFLCONF = "";
+        public String Site_Addr = "";
         public double taxable_value = 0;
         public double exempt_value = 0;
         public double ag_value = 0;
@@ -293,7 +292,7 @@ namespace WebGIS
         public Sale[] sales_list;
 
 
-        //private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+ 
         private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         public PropertysearchMinDetail() { }
         public PropertysearchMinDetail(PropertySearchResult pr) 
@@ -336,7 +335,7 @@ namespace WebGIS
             sqlStr = sqlStr + " SELECT pin,PRPROP,owner,PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY,PEFLCONF,";
             sqlStr = sqlStr + "  taxable_value,exempt_value,ag_value,land_value,bldg_value,xtra_value,just_value,assd_value,HMSTD,";
             sqlStr = sqlStr + "  COMMISSION,commissioner,ZONING,FLUPY,TRACT,WETLAND,FLDWY,FLDZ_BFE,WATER,POWER,SUBDIVISION,FIRE,COBRA,";
-            sqlStr = sqlStr + "  acres,propertyuse,landuse,lu_code   ";
+            sqlStr = sqlStr + "  acres,propertyuse,landuse,lu_code,SITE_ADDR   ";
             sqlStr = sqlStr + "  FROM CENTRAL_GIS.dbo.CAMVIEW_MinParcelDetail ";
             sqlStr = sqlStr + "  WHERE pin='" + pin.Trim() + "'";
 
@@ -612,7 +611,16 @@ namespace WebGIS
                 catch
                 {
                 }
- 
+
+
+                
+                 try
+                {
+                    Site_Addr = (String)dt.Rows[i]["Site_Addr"];
+                }
+                catch
+                {
+                }
             }
  
         }
@@ -632,7 +640,7 @@ namespace WebGIS
 
 
         public PropertySearchResult[] ps_res;
-        //String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+       
         String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
 
@@ -767,11 +775,21 @@ namespace WebGIS
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
-                csqlStr = "";
+
+
+               /* csqlStr = "";
                 csqlStr = csqlStr + " SELECT  Count(pin) FROM CAMVIEW_PropertyList  p";
                 csqlStr = csqlStr + "  JOIN  PA_CAMPA c ON p.PRPROP=c.PAPROP";
                 csqlStr = csqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 csqlStr = csqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
+                */
+
+                csqlStr = "";
+                csqlStr = csqlStr + "SELECT  COUNT(*)  ";
+                csqlStr = csqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                csqlStr = csqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
+
+
             }
             else if (searchtype == "bus")
             {
@@ -1168,7 +1186,7 @@ namespace WebGIS
         */
 
         public SalesSearchResult[] salessearch_list;
-        //String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+        
         String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
 
@@ -1361,7 +1379,7 @@ namespace WebGIS
         public String pin = "";
         private ArrayList aslist = new ArrayList();
 
-        //private String conStr = "Server=gisvm104\\GRIZZLY;Database=CENTRAL_GIS;User Id=PA_User;Password=pa2gisuser;";
+ 
         private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         public Sales() { }
 

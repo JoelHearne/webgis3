@@ -91,7 +91,7 @@ define([
         devEmail: null,
 		postCreate: function () {
 			this.inherited(arguments);
-			//console.log("jquery",$);
+
 		    //$("div").click(function(){
 		    //    alert("clicked p jquery");
 		    //});
@@ -132,6 +132,9 @@ define([
 				if (!this.checkDisclaimer()) dijit.byId("hHelpTabs").selectChild(dijit.byId("hDisclaimerTab"));
 		    }
 			 on(this.parentWidget, 'hide', lang.hitch(this, 'close'));
+
+			 this.vers_str.textContent="version " + this.webgis_version;
+
 		}, startup: function() {
 		            this.inherited(arguments);
 		            // uncomment to open at startup
