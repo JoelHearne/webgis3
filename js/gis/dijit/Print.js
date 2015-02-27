@@ -66,6 +66,11 @@ define([
                 error: lang.hitch(this, '_handleError')
             });
             //aspect.after(this.printTask, '_createOperationalLayers', this.operationalLayersInspector, false);
+
+			topic.subscribe('print/printmap', lang.hitch(this, function (args) {
+				this.print();
+			}));
+
         },
         operationalLayersInspector: function (opLayers) {
             array.forEach(opLayers, function (layer) {

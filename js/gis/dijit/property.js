@@ -458,7 +458,42 @@ define([
            //this.map.infoWindow.setFeatures(feats);
            //this.map.infoWindow.show(mapPoint);
 		}
+		,mapqResNoQry: function(results) {
+			var _this=this;
+            var zoomExtent = null;
+            var feats=[];
+            this.mapsearchpins=[];
+			array.forEach( results.features, function (feature) {
+				  var graphic;
+                  //feature.setInfoTemplate(infoTemplate);
+				  feats.push(feature);
+				  switch (feature.geometry.type) {
+						case 'polygon':
+							if (feature.geometry.rings && feature.geometry.rings.length > 0) {
+								graphic = new Graphic(feature.geometry, null, {
+									ren: 1
+								});
 
+								graphic.setSymbol(new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID,
+											 new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID,
+											 new Color([0, 0, 235]), 3), new Color([0, 10, 205, 0.15])));
+							     _this.polygonGraphics.add(graphic);
+							}
+							break;
+						default:
+				  }
+				  if ( _this.polygonGraphics.graphics.length > 0) {
+						if (zoomExtent === null) {
+							zoomExtent = graphicsUtils.graphicsExtent(_this.polygonGraphics.graphics);
+						} else {
+							zoomExtent = zoomExtent.union(graphicsUtils.graphicsExtent(_this.polygonGraphics.graphics));
+						}
+				  }
+			}); // end array.forEach
+
+			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
+			pMapBuffr.style.display="block";
+		}
 		,activateMapSearch: function(){
 			//this.createGraphicsLayer();
 			//this.map.on('click', lang.hitch(this, 'mapClickHandler'));
@@ -506,9 +541,9 @@ define([
 					}
 			   }
 		    });
+		     this.zoomPIN(pinv,false);
 		}
       ,setautofill: function(inputobj_key) {
-
 			var flidx=0;
 			flidx=this.filteringSelect_list.length;
 
@@ -516,12 +551,10 @@ define([
 			dojo.forEach(this.queries, function(q, i){
 			   if (q.inputobj_key==inputobj_key) {
 				   qryidx=i;
-
 			   }
 			});
 
 			if (qryidx==-1)  console.log("error: could not find query config record: ",qryidx, " fldix:",flidx, " q.inputobj_key:",inputobj_key);
-
 			var testStore = new Memory({ idProperty: "id",data: []});
 			var afStore = Cache(JsonRest({ target : this.queries[qryidx].autofill_url     , idProperty: "id" }), Memory());
 			this.afStore_list.push(afStore);
@@ -584,6 +617,7 @@ define([
 
 			} else if (selForm=="salesdata") {
 				 frmObj=dijit.byId("pSalesDataFrm");
+				 //this.salesDataPopType();
 
 			} else if (selForm=="sub") {
 				 frmObj=dijit.byId("pSubForm");
@@ -604,8 +638,25 @@ define([
             dijit.byId("pSalesListFrm").set("style", "display:none");
             dijit.byId("pSalesDataFrm").set("style", "display:none");
             dijit.byId("pMapFrm").set("style", "display:none");
-
             if (frmObj) frmObj.set("style", "display:block");
+		}
+		,salesDataPopType: function(){
+			var select = document.getElementById('selSaleDataType');
+            var iurl='./webgis.asmx/GetLanduseLookup';
+            request.get(iurl,{ handleAs: "json" }).then(
+                function (data){
+                    //console.log("lulc types: " , data);
+					for (var i = 0; i<data.length; i++){
+						var opt = document.createElement('option');
+						opt.value = data[i].lu_code;
+						opt.innerHTML = data[i].lu_desc;
+						select.appendChild(opt);
+					}
+ 	            } ,
+ 	            function (error){
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	        );
 		}
         ,salesListYearChange:function(evt){
 			// filter the months for available values
@@ -931,22 +982,35 @@ define([
  	            }
  	        );
  	        */
-             request.post("WebGIS.asmx/PropertyQueryPaged",{
-				  handleAs: "json"
-                  ,data: {
-					searchtype:stype,
-					searchString:sval,
-					startrec:startrec,
-					endrec:endrec
-				}}).then(
-                function (data){
-                     //console.log(  data);
-                    _this.showResults(data);
- 	            } ,
- 	            function (error){
- 	                console.log("Error Occurred: " + error);
- 	            }
- 	        );
+
+			if (this.activeMenu=="salesdata" || this.activeMenu=="saleslist") {
+				  request.get(iurl,{ handleAs: "json" }).then(
+					function (data){
+						 //console.log(  data);
+						_this.showResults(data);
+					} ,
+					function (error){
+						console.log("Error Occurred: " + error);
+					}
+				 );
+			}  else {
+				 request.post("WebGIS.asmx/PropertyQueryPaged",{
+					  handleAs: "json"
+					  ,data: {
+						searchtype:stype,
+						searchString:sval,
+						startrec:startrec,
+						endrec:endrec
+					}}).then(
+					function (data){
+						 //console.log(  data);
+						_this.showResults(data);
+					} ,
+					function (error){
+						console.log("Error Occurred: " + error);
+					}
+				);
+		   }
 
  	        /*
             console.log("posting search");
@@ -1020,11 +1084,13 @@ define([
 			          qJsonObj.startAcreage=registry.byId("tbSlAcreFrom").textbox.value;
 			}
 
+			qJsonObj.saleQualification=dom.byId("selSaleDataQual").value;
+			qJsonObj.saleVacant=dom.byId("selSaleDataVac").value;
+			//qJsonObj.????=dom.byId("selSaleDataType").value;
+
 			if (registry.byId("tbSlAcreTo") && registry.byId("tbSlAcreTo").textbox.value && (registry.byId("tbSlAcreTo").textbox.value !="")){
 			          qJsonObj.endAcreage=registry.byId("tbSlAcreTo").textbox.value;
 			}
-
-            console.log("qJsonObj to json",dojo.toJson(qJsonObj,true));
 
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson=' + dojo.toJson(qJsonObj,true);
 		}
@@ -1262,6 +1328,8 @@ define([
 				 tprc.startup();
 				 tprc.placeAt(srd);
 			 }
+
+			 document.getElementById("pResultListTab").scrollTop=0;
 		}
 		,Open_PRCFull:function(pin){
 			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");
@@ -1292,9 +1360,10 @@ define([
  	            }
  	        );
 		}
-		,GetPrintMap:function(pin){
+		,GetPrintMap:function(pinv){
+			/*
             var _this=this;
-            var iurl='./pa.asmx/GetPrintMap?pin=' + pin;
+            var iurl='./pa.asmx/GetPrintMap?pin=' + pinv;
             request.get(iurl,{ handleAs: "text" }).then(
 
                 function (text){
@@ -1305,6 +1374,15 @@ define([
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
+ 	        */
+
+             Style.set(dijit.byId("sidebarLeft").domNode, 'display', "block");
+             topic.publish('viewer/togglePane', {pane:"left",show:"true"});
+
+             var prcob=dijit.byId("print_parent");
+             prcob.set("open", "true");
+             this.zoomPIN(pinv,false);
+             topic.publish('print/printmap', {pin:pinv });
 		}
 
 		,clearSearch: function(){
@@ -1322,8 +1400,12 @@ define([
              document.getElementById("pPageSelDiv").style.visibility="hidden";
 
              this.clearGraphics();
- 		}
-		,zoomPIN:function(pin) {
+  		}
+		,zoomPIN:function(pin,doDBSearch) {
+				if (typeof doDBSearch == "undefined") {
+					doDBSearch = true;
+				}
+
 			    var whereclause=this.pin_field + "='" + pin + "'";
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
 				this.qry = new  Query();
@@ -1333,7 +1415,13 @@ define([
 				this.qry.outFields = [this.pin_field];
 				this.qryTask=new QueryTask(q_url);
 				this.clearGraphics();
-				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+
+
+				if (doDBSearch) {
+				    this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes'));
+				} else {
+                    this.qryTask.execute(this.qry, lang.hitch(this, 'mapqResNoQry'));
+				}
 		}
 		,zoomAllListSaved:function() {
 			    var whereclause=this.pin_field + "='" + this.savedlist.join("' OR " + this.pin_field + "='") + "'";

@@ -37,7 +37,27 @@ namespace WebGIS
             //Uncomment the following line if using designed components 
             //InitializeComponent(); 
         }
+
+
+        [WebMethod(Description = "Get a list of valid property types")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void GetLanduseLookup()
+        {
+            LanduseLookup lulu = new LanduseLookup();
  
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            String res = serializer.Serialize(lulu.lu_items);  // multiple or zero results
+ 
+            System.Web.HttpContext.Current.Response.Write(res);
+
+        }
+              
+        
+        
+        
+        
+        
+        
         [WebMethod(Description = "Query property records by searchtype: pin, pin_list, address, sub,bus,leg, or owner.")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public String PropertyQuery(String searchtype, String searchString)
@@ -1492,8 +1512,81 @@ namespace WebGIS
 
     }
 
+    public class luc
+    {
+        public String lu_code = "";
+        public String lu_desc = "";
+    }
+    public class LanduseLookup
+    {
+        public luc[] lu_items;
+        private ArrayList aslist = new ArrayList();
+        private String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
+
+        public LanduseLookup() 
+        {
+            ExecuteSearch();
+        }
+        public void ExecuteSearch()
+        {
+            DataTable dt = new DataTable();
+
+            SqlConnection cn = null;
+            SqlDataAdapter da = null;
+
+            cn = new SqlConnection(conStr);
+
+            try
+            {
+                cn.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            String sqlStr = "";
+            sqlStr = sqlStr + " select LVALCD,lvalds from PA_CAMLVAL ORDER By lvalds ASC";
+       
+
+            SqlCommand cmd = new SqlCommand(sqlStr, cn);
+
+            da = new SqlDataAdapter(cmd);
+            dt = new DataTable();
+            DataSet dSet = new DataSet();
+            da.Fill(dt);
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                luc lc = new luc();
+
+                try
+                {
+                    //Type typ =  dt.Rows[i]["SaleDate"].GetType();
+                    String lucode = (String)dt.Rows[i]["LVALCD"];
+                    String luname = (String)dt.Rows[i]["lvalds"];
+                    lc.lu_code = lucode;
+                    lc.lu_desc = luname;
+                    aslist.Add(lc);
+                }
+                catch (Exception ex)
+                {
+
+                }
+
+              
+                
+
+            }
 
 
+            cn.Close();
+
+            lu_items = (luc[])aslist.ToArray(typeof(luc));
+ 
+        }
+
+    }
 
 
 

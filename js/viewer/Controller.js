@@ -121,6 +121,7 @@ define([
 		,addTopics: function () {
 			// toggle a sidebar pane
 			topic.subscribe('viewer/togglePane', lang.hitch(this, function (args) {
+				console.log("viewer/togglePane",args);
 				this.togglePane(args.pane, args.show);
 			}));
 
@@ -573,6 +574,7 @@ define([
 			}, this);
 		},
 		togglePane: function (id, show) {
+			 console.log("togglePane",id,show);
 			if (!this.panes[id]) {
 				return;
 			}
@@ -590,9 +592,7 @@ define([
 			}
 		},
 		positionSideBarToggle: function (id) {
-
-			//console.log("controller","positionSideBarToggle");
-
+ console.log("positionSideBarToggle",id );
 			var pane = this.panes[id];
 			var btn = this.collapseButtons[id];
 			if (!pane || !btn) {
@@ -630,10 +630,12 @@ define([
 		// extra management of splitters required when the buttons
 		// are not in the center map pane
 		splitterStartDrag: function (id) {
+			console.log("splitterStartDrag",id );
 			var btn = this.collapseButtons[id];
 			domStyle.set(btn, 'display', 'none');
 		},
 		splitterStopDrag: function (id) {
+			console.log("splitterStopDrag",id );
 			this.positionSideBarToggle(id);
 		},
 
