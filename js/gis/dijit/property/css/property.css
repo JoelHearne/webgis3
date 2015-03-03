@@ -197,12 +197,13 @@ select {
 }
 
  
-
+/*
 .dbootstrap .dijitDialogUnderlay {
      //background-color: rgb(0, 0, 0);
      background-color: transparent;
      opacity: 0.0 !important;
 }
+*/
 .dijitDialogUnderlay {
      //background: none repeat scroll 0% 0% rgb(238, 238, 238);
      //opacity: 1.0  !important;

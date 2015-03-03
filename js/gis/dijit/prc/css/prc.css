@@ -110,14 +110,14 @@
  }
  
  .CSSTableGenerator tr:first-child td{
- 	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	
- 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
+ 	//background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	
+ 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.5, #3f7f00), color-stop(1, #ffffaa) );
  	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
- 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	
  	background: -o-linear-gradient(top,#3f7f00,ffffaa);
- 
- 	background-color:#3f7f00;
- 	border:0px solid #15157f;
+ 	background-image: -ms-linear-gradient(top, #3f7f00 0%, #ffffaa 100%);
+ 	//filter:progid:DXImageTransform.Microsoft.Gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	
+ 	//background-color:#3f7f00;
+ 	border:5px solid #15157f;
  	text-align:center;
  
  	/*border-width:0px 0px 1px 1px;*/
@@ -127,6 +127,7 @@
  	font-weight:bold;
  	color:#050404;
  }
+ 
  .CSSTableGenerator tr:first-child:hover td{
  	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
  	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );

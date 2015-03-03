@@ -61,7 +61,6 @@ define([
 			this.pcAddr.innerHTML=this.address;
 			this.pcHMSTD.innerHTML=this.homestead;
 
-
 	    }
 	    ,expand_detail:function(){
 			//console.log('------expand_detail' );

@@ -592,7 +592,6 @@ define([
 			}
 		},
 		positionSideBarToggle: function (id) {
- console.log("positionSideBarToggle",id );
 			var pane = this.panes[id];
 			var btn = this.collapseButtons[id];
 			if (!pane || !btn) {

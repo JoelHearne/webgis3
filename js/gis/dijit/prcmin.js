@@ -46,47 +46,40 @@ define([
         query_str:"",
          postCreate: function(){
 			this.inherited(arguments);
-
-			//this.pin="33-1S-24-113C-0000-0080";
 			this.get_data();
-
         }
         ,startup: function() {
 			this.inherited(arguments);
-
 			//this.pcPIN.innerHTML=this.pin;
-
-
-
-
 	    }
 	    ,get_data:function(){
-
 			var iurl = 'WebGIS.asmx/PropertyQueryMinDet?pin=' + this.pin;
            //console.log(iurl);
             var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
-
                 function (data){
-
                      _this.populate_form(data);
-
  	            } ,
  	            function (error){
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
-
-
 		}
 		,populate_form:function(dobj){
-
-			//console.log(dobj);
 
 			 this.pcPIN.innerHTML=dobj.pin;
 			 this.pcOwner.innerHTML=dobj.owner;
 
-			 var mailing_addr=dobj.PEFLADDR1.trim() + ' ' + dobj.PEFLADDR2.trim()+ ' ' + dobj.PEFLADDR3.trim() + "\n" + dobj.PEFLCITY.trim();
+			 //var mailing_addr=dobj.PEFLADDR1.trim() + ' ' + dobj.PEFLADDR2.trim()+ ' ' + dobj.PEFLADDR3.trim() + "\n" + dobj.PEFLCITY.trim();
+			 var mailing_addr="";
+			 mailing_addr=mailing_addr +  ((dobj.PEFLADDR1.trim()=="") ? "" : dobj.PEFLADDR1.trim() + "<br>");
+			 mailing_addr=mailing_addr +  ((dobj.PEFLADDR2.trim()=="") ? "" : dobj.PEFLADDR2.trim() + "<br>");
+			 mailing_addr=mailing_addr +  ((dobj.PEFLADDR3.trim()=="") ? "" : dobj.PEFLADDR3.trim() + "<br>");
+			 mailing_addr=mailing_addr +  ((dobj.PEFLCITY.trim()=="") ? "" : dobj.PEFLCITY.trim() + ",");
+			 mailing_addr=mailing_addr +  ((dobj.PEFLST.trim()=="") ? "" : " " + dobj.PEFLST.trim());
+			 mailing_addr=mailing_addr +  ((dobj.PEFLZIP5.trim()=="") ? "" : " " + dobj.PEFLZIP5.trim());
+			 mailing_addr=mailing_addr +  ((dobj.PEFLCNTRY.trim()=="") ? "" : "<br>" + dobj.PEFLCNTRY.trim());
+
 			 this.pcAddr.innerHTML=mailing_addr;
 
              this.owner=dobj.owner;

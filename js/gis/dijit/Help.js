@@ -135,6 +135,18 @@ define([
 
 			 this.vers_str.textContent="version " + this.webgis_version;
 
+			 //console.log("help parent widget",this.parentWidget);
+
+			 //dijit.byId("discbtn").set('style', "color:red;background-color:blue");
+
+			 //dijit.byId("discbtn").set('style', "color:red;background-color:blue");
+
+            //var offst_top=document.body.clientHeight - this.parentWidget.domNode.offsetHeight -5;
+            //var offst_top=document.body.clientHeight - this.parentWidget.domNode.offsetHeight -5;
+            //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
+            var offst_top=85;
+			this.parentWidget.set('style', 'top:' + offst_top + 'px');
+
 		}, startup: function() {
 		            this.inherited(arguments);
 		            // uncomment to open at startup

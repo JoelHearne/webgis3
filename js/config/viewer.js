@@ -163,7 +163,7 @@ define([
         {
 			type: 'dynamic',
 			url: 'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
-			title: 'Interal GIS',
+			title: 'Internal GIS',
 			slider: true,
 			noLegend: false,
 			collapsed: true,

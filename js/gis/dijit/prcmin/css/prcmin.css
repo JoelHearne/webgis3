@@ -122,6 +122,7 @@
  	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
  	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	
  	background: -o-linear-gradient(top,#3f7f00,ffffaa);
+ 	background-image: -ms-linear-gradient(top, #3f7f00 0%, #ffffaa 100%);
  
  	background-color:#3f7f00;
  	border:0px solid #15157f;

@@ -169,7 +169,7 @@ define([
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
 				this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
-					this.containerNode.resize();
+					 //this.containerNode.resize();
 				})));
 			} else {
 				var help = domConstruct.place(this.html, this.domTarget);
@@ -179,7 +179,7 @@ define([
             //this.parentWidget.show() ;
             this.drawToolbar = new Draw(this.map);
             this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
-             this.createGraphicsLayer();
+            this.createGraphicsLayer();
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 
             this.qObj={
@@ -194,7 +194,6 @@ define([
 		,startup: function() {
 			this.inherited(arguments);
 			var _this=this;
-
 			this.setautofill("tbAddr");
 			//this.setautofill("tbOwner");
 			this.setautofill("tbPIN");
@@ -229,7 +228,6 @@ define([
 					   }
 				   }) ;
 			}
-
 			// handle sales list year selection change
 			var dc = document.getElementById("selSaleListYear");
 			if (dc.addEventListener) {
@@ -237,10 +235,11 @@ define([
 			} else {
 				dc.attachEvent('change',  this.salesListYearChange)  ;
 			}
-
             var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-            this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
-			return this.pshowAtStartup;
+            //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
+			this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
+
+ 			return this.pshowAtStartup;
         }
         ,createGraphicsLayer: function () {
 			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
@@ -501,9 +500,7 @@ define([
 			this.disconnectMapClick();
 		}
         ,addPRC_Min: function(pinv){
-
 			domConstruct.empty("pcMinDet");
-
 			var _this=this;
 			var srmd=dom.byId("pcMinDet");
 			var tpcmd =new prcmin(
@@ -643,6 +640,7 @@ define([
 		,salesDataPopType: function(){
 			var select = document.getElementById('selSaleDataType');
             var iurl='./webgis.asmx/GetLanduseLookup';
+            var _this=this;
             request.get(iurl,{ handleAs: "json" }).then(
                 function (data){
                     //console.log("lulc types: " , data);
@@ -654,6 +652,7 @@ define([
 					}
  	            } ,
  	            function (error){
+					_this.handleXHR_Err(error,"Property Search Failed (salesDataPopType)");
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
@@ -705,9 +704,7 @@ define([
 			}
 		}
 		,showWait:function() {
-           //document.getElementById("pPageSelDiv").style.visibility="hidden";
-            document.getElementById("pResCount").innerHTML='';
-
+           document.getElementById("pResCount").innerHTML='';
 		   this.btnZoomAll.domNode.style.display="none";
 		   this.btnPrLbls.domNode.style.display="none";
 		   document.getElementById("pPageSelDiv").style.display="none";
@@ -717,32 +714,23 @@ define([
 			   var img = dojo.doc.createElement('img');
 				dojo.attr(img, {
 					id:"waitimg",
-					src: "images/ajax-loader2.gif",
+					src: "images/ajax-loader3.gif",
 					alt: "Please Standbye while I search",
-					style: {float: "center", border:"5px",padding:"50px",margin:"80px"}
+					//style: {float: "center",  padding:"0px 0px 0px 59px",margin:"80px"}
+					style: {float: "center",  padding:"0px 0px 0px 30px",margin:"0px"}
 				});
 			   dojo.place(img, srd, "after");
 	      }
-
 		}
 		,hideWait:function() {
-
 		   var wi=dom.byId("waitimg");
 		   if (wi) {
 			   wi.parentNode.removeChild(wi);
-
 		   }
-
 		}
 		,preBuffer:function(){
-
-			// get the selection geometry
 			var b_gm=esri.getGeometries(this.polygonGraphics.graphics);
-
-//esri.tasks.GeometryService.UNIT_KILOMETER esriSRUnit_Foot
-			// send it to doBuffer
 			this.doBuffer(b_gm);
-
 		}
 		,unionGeomArray:function(geoms){
            var uPg = new  Polygon( this.map.spatialReference);
@@ -756,28 +744,8 @@ define([
 		,doBuffer:function(geometry){
             var _this=this;
 			var bDist=parseInt(_this.tbBuffr.value);
-            console.log("doBuffer: ",this );
-
-            /*
-            try {
-				console.log("1 buffer units: ",this.selBufUnit);
-			} catch (ex){
-				console.log("err1..",ex);
-			}
-
-            try {
-                 var sUnit=document.getElementById("selBufUnit") ;
-			     console.log("2 buffer units: ",sUnit);
-			} catch (ex){
-				console.log("err2..",ex);
-			}
-			*/
-
-
 			this.drawToolbar.deactivate();
-
 			geometry=this.unionGeomArray(geometry);
-
 			var symbol;
 			switch (geometry.type) {
 			   case "point":
@@ -790,7 +758,6 @@ define([
 				 symbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_NONE, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255,0,0]), 2), new Color([255,255,0,0.25]));
 				 break;
 			}
-
 			  var graphic = new Graphic(geometry, symbol);
 			  this.polygonGraphics.add(graphic);
 
@@ -803,7 +770,6 @@ define([
               params.bufferSpatialReference = this.map.spatialReference;
               params.unionResults=true;
 
-
             try {
                 var su=dom.byId("selBufUnit").value;
                 if (su=="ft") params.unit = GeometryService[esri.tasks.GeometryService.UNIT_FOOT];
@@ -813,9 +779,6 @@ define([
 			} catch (ex){
 				console.log("err3..",ex);
 			}
-
-              //esriConfig.defaults.geometryService.buffer(params, lang.hitch(this, 'showBuffer')  );
-
 			  //normalize the geometry
               console.log(" 3 ....doBuffer " );
               normalizeUtils.normalizeCentralMeridian([geometry ], esriConfig.defaults.geometryService).then(function(normalizedGeometries) {
@@ -833,14 +796,10 @@ define([
 				  //esriConfig.defaults.geometryService.buffer(params, showBuffer);
 				  esriConfig.defaults.geometryService.buffer(params, lang.hitch(_this, 'showBuffer')  );
 				}
-
            });
-
 		}
 		,showBuffer:function(bufferedGeometries) {
-
-			console.log("showBuffer",this );
-			var _this=this;
+		  var _this=this;
           var symbol = new SimpleFillSymbol(
             SimpleFillSymbol.STYLE_SOLID,
             new SimpleLineSymbol(
@@ -873,7 +832,8 @@ define([
 
              var _this=this;
              request.post("WebGIS.asmx/PropertyQueryPaged",{
-				  handleAs: "json"
+				  handleAs: "json",
+				  timeout: 5000
                   ,data: {
 					searchtype:"pin_list",
 					searchString:pins.join(','),
@@ -885,6 +845,7 @@ define([
                     _this.showResults(data);
  	            } ,
  	            function (error){
+					_this.handleXHR_Err(error,"Property Search Failed (doSearch_Pins)");
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
@@ -893,61 +854,41 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,doSearch: function(){
-
 			//console.log("doSearch",this.activeMenu);
-
             domConstruct.empty("pSearchResults");
             domConstruct.empty("pcMinDet");
-
-
             this.showWait();
-
-            if (this.activeMenu=='map') {
-                //if (this.resPage == 1) {
-				this.runMapSearch();
-
-				return;
-			}
+            if (this.activeMenu=='map') { this.runMapSearch(); return; }
 
             var startrec = 1;
             var endrec = 50;
-
             if (this.resPage > 1) {
 				startrec = ((this.resPage-1) * 50) + 1;
 				endrec = (startrec + 50) - 1;
 			}
 
-            var sval;
-            var stype;
-
-
+            var sval,stype;
 			if (registry.byId("af_tbAddr") && registry.byId("af_tbAddr").textbox.value && (registry.byId("af_tbAddr").textbox.value !="")){
-			          //console.log("addre",registry.byId("af_tbAddr").textbox.value);
 			          stype="address";
 			          sval=registry.byId("af_tbAddr").textbox.value;
 			} else  if (registry.byId("af_tbOwner") && registry.byId("af_tbOwner").textbox.value && (registry.byId("af_tbOwner").textbox.value !="")){
-			          //console.log("owner",registry.byId("af_tbOwner").textbox.value);
 			          stype="owner";
 			          sval=registry.byId("af_tbOwner").textbox.value;
 			} else  if (registry.byId("tbOwner") && registry.byId("tbOwner").textbox.value && (registry.byId("tbOwner").textbox.value !="")){
 			          stype="owner";
 			          sval=registry.byId("tbOwner").textbox.value;
 			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
-			          //console.log("pin",registry.byId("af_tbPIN").textbox.value);
 			          stype="pin";
 			          sval=registry.byId("af_tbPIN").textbox.value;
 			} else if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
-			          //console.log("bus",registry.byId("af_tbBus").textbox.value);
 			          stype="bus";
 			          sval=registry.byId("af_tbBus").textbox.value;
 			} else if (registry.byId("af_tbSub") && registry.byId("af_tbSub").textbox.value && (registry.byId("af_tbSub").textbox.value !="")){
-			          //console.log("sub",registry.byId("af_tbSub").textbox.value);
 			          stype="sub";
 			          sval=registry.byId("af_tbSub").textbox.value;
 			}
 
             var iurl = 'WebGIS.asmx/PropertyQueryPaged?searchtype=' + stype + '&searchString=' + sval + '&startrec=' + startrec + '&endrec=' + endrec;
-
 			if (this.activeMenu=="saleslist") {
                  stype="saleslist";
                  iurl = this.prepSalesListURL(startrec,endrec);
@@ -971,18 +912,6 @@ define([
 			this.qObj.endrec=endrec;
 
             var _this=this;
-
-            /*request.get(iurl,{ handleAs: "json" }).then(
-                function (data){
-                     //console.log(  data);
-                    _this.showResults(data);
- 	            } ,
- 	            function (error){
- 	                console.log("Error Occurred: " + error);
- 	            }
- 	        );
- 	        */
-
 			if (this.activeMenu=="salesdata" || this.activeMenu=="saleslist") {
 				  request.get(iurl,{ handleAs: "json" }).then(
 					function (data){
@@ -991,49 +920,49 @@ define([
 					} ,
 					function (error){
 						console.log("Error Occurred: " + error);
+						_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
 					}
 				 );
 			}  else {
 				 request.post("WebGIS.asmx/PropertyQueryPaged",{
 					  handleAs: "json"
+					  //,timeout: 15000
 					  ,data: {
 						searchtype:stype,
-						searchString:sval,
+						searchString:sval.trim(),
 						startrec:startrec,
 						endrec:endrec
 					}}).then(
 					function (data){
-						 //console.log(  data);
 						_this.showResults(data);
 					} ,
 					function (error){
-						console.log("Error Occurred: " + error);
+						_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
+						console.log("Error Occurred: " + error.message," ",error.lineNumber);
 					}
 				);
 		   }
-
- 	        /*
-            console.log("posting search");
-			request.post("WebGIS.asmx/PropertyQueryPaged", {
-				data: {
-					searchtype:stype,
-					searchString:sval,
-					startrec:startrec,
-					endrec:endrec
-				},
-				headers: {
-					"X-Something": "A value"
-				}
-			}).then(function(text){
-				console.log("The server returned: ", text);
-			});
-			*/
-
-
-
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
+		}
+		,handleXHR_Err:function(error,usr_msg){
+			console.log("Error Occurred: " + error);
+			this.hideWait();
+            var srd=dom.byId("pSearchResults");
+			domConstruct.empty("pSearchResults");
+            domConstruct.empty("pcMinDet");
+            domConstruct.empty("pResCount");
+            dom.byId("pSearchResults").innerHTML="<center>There was an problem with this search.<br>Please let the site administrator know.<br>Thank You</center>";
+
+			topic.publish('growler/growl', {
+					title: 'Property Search Failed',
+					message: usr_msg + "\r\n" + error,
+					level: 'error', //can be: 'default', 'warning', 'info', 'error', 'success'.
+					timeout: 5000, //set to 0 for no timeout
+					opacity: 0.7
+				});
+ 			//alert(usr_msg);
 		}
 		,prepSalesDataURL: function(startrec,endrec){
 			 var qJsonObj={
@@ -1056,10 +985,6 @@ define([
 				"saleVacant2":"",
 				"saleVacant":""
 		    };
-
-
-			//console.log("tbSlDateFrom",this.tbSlDateFrom.value)
-
 			if (registry.byId("tbSlDateFrom") && registry.byId("tbSlDateFrom").textbox.value && (registry.byId("tbSlDateFrom").textbox.value !="")){
 			          qJsonObj.startDate=registry.byId("tbSlDateFrom").textbox.value;
 			}
@@ -1083,11 +1008,9 @@ define([
 			if (registry.byId("tbSlAcreFrom") && registry.byId("tbSlAcreFrom").textbox.value && (registry.byId("tbSlAcreFrom").textbox.value !="")){
 			          qJsonObj.startAcreage=registry.byId("tbSlAcreFrom").textbox.value;
 			}
-
 			qJsonObj.saleQualification=dom.byId("selSaleDataQual").value;
 			qJsonObj.saleVacant=dom.byId("selSaleDataVac").value;
 			//qJsonObj.????=dom.byId("selSaleDataType").value;
-
 			if (registry.byId("tbSlAcreTo") && registry.byId("tbSlAcreTo").textbox.value && (registry.byId("tbSlAcreTo").textbox.value !="")){
 			          qJsonObj.endAcreage=registry.byId("tbSlAcreTo").textbox.value;
 			}
@@ -1097,17 +1020,13 @@ define([
 		,prepSalesListURL: function(startrec,endrec){
 			var syear=dom.byId("selSaleListYear").value;
 			var smonth=parseInt(dom.byId("selSaleListMonth").value)-1;
-
             var startDate=new Date(syear,parseInt(smonth),1);
             var endDate=  new Date(new Date(syear,parseInt(smonth)+1,1)  - (24*60*60*1000));
-
             var qStartDate=(startDate.getMonth() + 1) + '/' + (startDate.getDate() ) + '/' + startDate.getFullYear();
             var qEndDate=(endDate.getMonth() + 1) + '/' + (endDate.getDate()  ) + '/' + endDate.getFullYear();
-
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson={"subNumber":"","subid":"","sectionValue":"","townshipValue":"","rangeValue":"","startDate":"' + qStartDate + '","endDate":"' + qEndDate + '","startPrice":0,"endPrice":0,"startArea":0,"endArea":0,"startAcreage":0,"endAcreage":0,"saleQualification1":"","saleQualification":"","saleVacant1":"","saleVacant2":"","saleVacant":""} ';
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
-
 			var prcob=registry.byId(prcID);
  			if (actntype == "pc_zoom") {
                /*topic.publish('InitZoomer/ZoomParcel', {
@@ -1125,7 +1044,6 @@ define([
 				this.DelPRCSaved(pcObj,prcID);
 			} else if (actntype == "pc_print") {
 				this.GetPrintMap(pcObj.pin);
-
 			}
 		}
 		,DelPRCSaved:function(pcObj,widgetID){
@@ -1141,16 +1059,12 @@ define([
 			 }
 		}
 		,addPRC2Saved:function(pcObj,widgetID){
-
 			 if (this.savedlist.indexOf(pcObj.pin) != -1) return;
-
 			 this.btnSavedZoomAll.domNode.style.display="block";
 			 this.btnSavedPrLbls.domNode.style.display="block";
-
 			 var _this=this;
              var srd=dom.byId("pSearchSaved");
 			 var prcob=registry.byId(widgetID);
-
 			 var tprc =new prc(
 			    {
 						   pin: pcObj.pin,
@@ -1159,7 +1073,6 @@ define([
 						   homestead:pcObj.hstead,
 						   res_type:"saved"
 			    });
-
 			 tprc.on("click", function (e) {
 			     var actntype=e.target.id;
 			     if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
@@ -1198,14 +1111,9 @@ define([
 			  tprc.startup();
 			  tprc.saveMe();
 			  tprc.placeAt(srd);
-
-
 			  this.savedlist.push(pcObj.pin);
-
 		}
 		,resultsAddPager: function(dobj){
-
-			//TODO: Hide if there are zero results and show if there are > 0
             var rec_page = 0;
             var pgcnt=0;
             if (dobj.rec_count > 0) {
@@ -1218,13 +1126,9 @@ define([
 			    this.btnPrLbls.domNode.style.display="block";
 				// build paging control
 				if (dobj.rec_count > 50) {
-					//document.getElementById("pPageSelDiv").style.visibility="visible";
 					document.getElementById("pPageSelDiv").style.display="block";
-
 					pgcnt = Math.ceil(dobj.rec_count / 50);
-
 					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
-
 					for (var p = 0; p < pgcnt; p++) {
 						select.options[select.options.length]=new Option(p + 1);
 					}
@@ -1236,8 +1140,6 @@ define([
 			   	this.btnZoomAll.domNode.style.display="none";
 			    this.btnPrLbls.domNode.style.display="none";
 			    document.getElementById("pPageSelDiv").style.display="none";
-
-
 		   }
 		    // show the record count
 		    var rc = document.getElementById("pResCount");
@@ -1251,6 +1153,13 @@ define([
              this.doSearch();
 		}
 		,showResults: function (results){
+
+			 //console.clear();
+			 //console.group("-----showResults-------");
+			 //console.groupCollapsed("-----showResults-------");
+			 //console.log("showResults");
+			 //console.time("res");
+
 			 this.hideWait();
              var _this=this;
              var srd=dom.byId("pSearchResults");
@@ -1279,17 +1188,24 @@ define([
             if (dobj.rec_count) this.qObj.rec_count=dobj.rec_count;
 
 		    this.pinlist=[];
-
 			for (var i = 0; i < pobj.length; i++) {
-
 				 pobj[i].pin=pobj[i].pin.trim();
 				 pobj[i].owner= pobj[i].owner.trim();
-				 pobj[i].addr= pobj[i].addr.trim();
+				 //pobj[i].addr= pobj[i].addr.trim();
+
+				 var mailing_addr="";
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR1.trim()=="") ? "" : pobj[i].PEFLADDR1.trim() + "<br>");
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR2.trim()=="") ? "" : pobj[i].PEFLADDR2.trim() + "<br>");
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR3.trim()=="") ? "" : pobj[i].PEFLADDR3.trim() + "<br>");
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLCITY.trim()=="") ? "" : pobj[i].PEFLCITY.trim() + ",");
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLST.trim()=="") ? "" : " " + pobj[i].PEFLST.trim());
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLZIP5.trim()=="") ? "" : " " + pobj[i].PEFLZIP5.trim());
+				 mailing_addr=mailing_addr +  ((pobj[i].PEFLCNTRY.trim()=="") ? "" : "<br>" + pobj[i].PEFLCNTRY.trim());
+
+				 pobj[i].addr= mailing_addr;
 				 pobj[i].hstead=pobj[i].hstead.trim();
 
-
 				 this.pinlist.push(pobj[i].pin);
-
 				 var tprc =new prc(
 				 {
 				   pin: pobj[i].pin,
@@ -1301,19 +1217,14 @@ define([
 				 tprc.on("click", function (e) {
 					 var actntype=e.target.id;
 					 if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
-							|| (actntype == "pc_save") 			 || (actntype == "pc_print")) {
-
-						 // get the prc id, get the widget, fire widget method
+							|| (actntype == "pc_save")  || (actntype == "pc_print")) {
 						 var prcob=registry.byId(this.id);
 						 //prcob.expand_detail();
-						 //var pin=this.childNodes[1].childNodes[1].children[0].children[0].children[2].textContent;
 						 var pin=prcob.pin.trim();
-
 						 if (pin) {
 							 var ownr=prcob.owner.trim();
 							 var addrr=prcob.address.trim();
 							 var hmstd=prcob.homestead.trim();
-
 							 var pcObj={
 								 pin:pin,
 								 owner:ownr,
@@ -1328,8 +1239,12 @@ define([
 				 tprc.startup();
 				 tprc.placeAt(srd);
 			 }
-
 			 document.getElementById("pResultListTab").scrollTop=0;
+             //console.table()
+			 //console.timeEnd("res");
+			 //console.trace();
+			 //console.groupEnd();
+			 //console.select(document.getElementById("pResultListTab"));
 		}
 		,Open_PRCFull:function(pin){
 			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");
@@ -1337,25 +1252,31 @@ define([
 		}
 		,printMailLbls: function(){
             var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
+		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
+					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
                      window.open( text,"prcprint");
-
  	            } ,
  	            function (error){
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
 		}
 		,printMailLblsSaved: function(){
-			//savedlist
+			var _this=this;
             var iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
+		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
+                     Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
                      window.open( text,"prcprint");
-
  	            } ,
  	            function (error){
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					_this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLblsSaved)");
  	                console.log("Error Occurred: " + error);
  	            }
  	        );
@@ -1375,10 +1296,8 @@ define([
  	            }
  	        );
  	        */
-
              Style.set(dijit.byId("sidebarLeft").domNode, 'display', "block");
              topic.publish('viewer/togglePane', {pane:"left",show:"true"});
-
              var prcob=dijit.byId("print_parent");
              prcob.set("open", "true");
              this.zoomPIN(pinv,false);
@@ -1393,19 +1312,18 @@ define([
                     iboxes[i].value="";
 				}
 		   }
-
-			 domConstruct.empty("pSearchResults");
-             domConstruct.empty("pcMinDet");
-             domConstruct.empty("pResCount");
-             document.getElementById("pPageSelDiv").style.visibility="hidden";
-
-             this.clearGraphics();
+		   domConstruct.empty("pSearchResults");
+           domConstruct.empty("pcMinDet");
+           domConstruct.empty("pResCount");
+           document.getElementById("pPageSelDiv").style.visibility="hidden";
+           this.btnZoomAll.domNode.style.display="none";
+		   this.btnPrLbls.domNode.style.display="none";
+           this.clearGraphics();
   		}
 		,zoomPIN:function(pin,doDBSearch) {
 				if (typeof doDBSearch == "undefined") {
 					doDBSearch = true;
 				}
-
 			    var whereclause=this.pin_field + "='" + pin + "'";
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
 				this.qry = new  Query();
@@ -1415,8 +1333,6 @@ define([
 				this.qry.outFields = [this.pin_field];
 				this.qryTask=new QueryTask(q_url);
 				this.clearGraphics();
-
-
 				if (doDBSearch) {
 				    this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes'));
 				} else {
@@ -1436,10 +1352,8 @@ define([
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,zoomAllList:function() {
-
-			//console.profile();
+			    //console.profile();
 			    var whereclause=this.pin_field + "='" + this.pinlist.join("' OR " + this.pin_field + "='") + "'";
-
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
 				this.qry = new  Query();
 				this.qry.where = whereclause;
@@ -1473,9 +1387,7 @@ define([
 				} else if (this.qObj.querytype=="saleslist") {
 
 				} else if (this.qObj.querytype=="salesdata") {
-
 				}
-
                 if (whereclause!="") {
 					var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
 					this.qry = new  Query();
@@ -1490,7 +1402,6 @@ define([
 					this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 					//console.profileEnd();
 			  }
-
 		},
         setMapClickMode: function (mode) {
             this.mapClickMode = mode;

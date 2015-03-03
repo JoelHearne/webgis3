@@ -25,109 +25,7 @@
 	//left:0px;
 }
  
-.discl_text {
- 
-   font-size: 11px;
-   font-weight: normal;
-     text-align: justify;
-    text-justify: inter-word;
-    margin: 0px 10px 0px 10px;
-   
 
-}
-
-#discbtn {
-transform: rotate(3deg);
-   //color: rgba(0, 255, 0, 0) !important;
-   //background-color: rgba(25, 0, 255, 0.5) !important;
-   color: #FF0000;
-   font-size: 12px;
-   font-weight: bold;
-   //text-shadow: 0.1em 0.1em 0.2em green;
-   text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
-   /* -webkit-animation-name: blinker;
-    -webkit-animation-duration: 1s;
-    -webkit-animation-timing-function: linear;
-    -webkit-animation-iteration-count: infinite;
-
-    -moz-animation-name: blinker;
-    -moz-animation-duration: 1s;
-    -moz-animation-timing-function: linear;
-    -moz-animation-iteration-count: infinite;
-*/
-    //animation: blinker steps(15) 10s infinite;  
-}
-#discbtn2 {
-   color: #FF0000;
-   //font: 25px/6px "Comic Sans MS","Comic Sans","Chalkboard",cursive;
-   font-size: 12px;
-   font-weight: bold;
-   text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
-   animation: blinker steps(3) 2s infinite;
- 
-}
-
-@keyframes  blink  {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
- 
-
-@-moz-keyframes blinker {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
-
-@-webkit-keyframes blinker {  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }
-}
-
-@keyframes blinker {  
-    //0% { opacity: 1.0; }
-    //50% { opacity: 0.0; }
-    //100% { opacity: 1.0; }
-/*  0% { visibility: visible; }
-  40% { visibility: hidden; }
-  50% { visibility: visible; }
-  100% { visibility: visible; }   
-*/  
-    0% { opacity: 1.0; }
-    50% { opacity: 0.0; }
-    100% { opacity: 1.0; }  
-  
-}
-.glow {
-     //text-shadow: 0.1em 0.1em #333;
-     text-shadow: 0.1em 0.1em 0.2em green;
-     font-size: 12px;
-     font-weight: bold;
-}
-    
-.helpDijit .glow {
-     //text-shadow: 0.1em 0.1em #333;
-     text-shadow: 0.1em 0.1em 0.2em green;
-     font-size: 12px;
-     font-weight: bold;
-} 
-
-
-
-.helpDijit .btncls {
-   color: rgba(0, 255, 0, 0) !important;
-   background-color: rgba(25, 0, 255, 0.5) !important;
-    //background-image: none !important;
-    //border-style: none !important;
-   // box-shadow: none !important;
-
-} 
- .dijitButtonNode {
-        background-color: green;
-        border: 2px solid black;
-} 
  
 .helpDijit .progressIcon {
     background-image: url("../images/clock.png");
@@ -139,13 +37,11 @@ transform: rotate(3deg);
     transition-timing-function: linear;
     transition-property: height width margin;
     width: 24px;
-    display:none;
 }
 .helpDijit .progressButton {
     bottom: 0px;
     left: 6px;
     position: absolute;
-    
 }
 .helpDijit .progressIcon:hover {
     background-image: url("../images/clock.png");

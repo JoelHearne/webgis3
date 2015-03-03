@@ -3,8 +3,6 @@
         <div class="helpNode">
             <div  id="hHelpTabs" data-dojo-type="dijit/layout/TabContainer" class="helpTabContainer">
 
-
-
                 <div id="hWelcomeTab" data-dojo-type="dijit/layout/ContentPane" title="Welcome">
 
                      <div class="htabContBG">
@@ -51,16 +49,18 @@
 				  <div class="htabContBG"> </div>
                    <div class="htabContent htabContMain">
                       <div  class="htabContent htabContMain">
-                       <br>
-                       <div style="font-size:12px;position:absolute;top:5%;left:0px;text-align: justify;display: inline-block;margin:40px 10px 20px 10px">
-							<p>The data on this site is provided as a public service and no guarantees or certifications, expressed or implied, are provided regarding accuracy of information herein, its use, or its interpretation.</p><br>
-							<p>The information you are about to access was derived from data compiled by Okaloosa County Public Offices, including, but not limited to, Property Appraiser's and GIS Offices. Statistics are provided solely for the purpose of gathering geographically dependent information. Derived information can only be used for unofficial purposes.  Okaloosa County may elect to discontinue this service without notice at any point in the future.</p><br>
+                      <br>
+                        <input id="discbtn" class="glow"  type="button"   data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:acceptDisclaimer"  label="I Acknowledge the Disclaimer" ></input>
+
+                       <div class="discl_text" >
+							<p>The data on this site is provided as a public service and no guarantees or certifications, expressed or implied, are provided regarding accuracy of information herein, its use, or its interpretation.  Continued use of this web site is conditional upon your explicit acceptance of the terms and conditions set forth in this disclaimer document. The data provided herein may be inaccurate and/or out of date. Any person or entity who relies on this data for any purpose whatsoever does so solely at their own risk. Neither Okaloosa County Indiana nor its employees or officers warrant the accuracy, reliability, or timeliness of any of the data provided herein. This data is provided "as is" without warranty of any kind. This is not survey data. The information you are about to access was derived from data compiled by Okaloosa County Public Offices, including, but not limited to, Property Appraiser's and GIS Offices. Statistics are provided solely for the purpose of gathering geographically dependent information. Derived information can only be used for unofficial purposes. Okaloosa County may elect to discontinue this service without notice at any point in the future.</p><br>
 							<p>Please direct all inquiries concerning mapping issues related to this site to the County GIS Division at (850) 651-7570. For all issues dealing with assessment information please contact the County Property Appraiser's office at (850) 651-7240. Please see the main HELP tab within the WebGIS site for additional information. </p><br>
 							</p>
-                         <br>
-                        <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:acceptDisclaimer"  label="I Acknowledge the Disclaimer" iconClass="dijitNoIcon" ></input>
-                         <br>
+							<center><input  id="discbtn2"  class="glow" type="button"  data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:acceptDisclaimer"  label="I Acknowledge the Disclaimer" iconClass="dijitNoIcon" ></input>
+                            </center>
                        </div>
+
+                         <br>
                     </div>
                   </div>
                 </div>
