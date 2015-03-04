@@ -70,18 +70,23 @@
                 <div id="hHelpTab" data-dojo-type="dijit/layout/ContentPane" title="Help">
 				  <div class="htabContBG"> </div>
 
-                   <div class="htabContent htabContMain">
+                   <div class="htabContent htabContMain" style="overflow:auto">
                       <div  class="htabContent htabContMain">
                        <br>
-                       <div style="padding:1px;margin:1px;font-size: 10px;font-weight: normal; ">
+                       <div style="padding:1px;margin:1px;font-size: 10px;font-weight: normal">
 
 
                     <div class="helpIntro">
-                        Help is organized by function and by Widget.  Help for each Widget is also available from the
+                        Help is organized by function and by Widget.
+
+                        <!--Help for each Widget is also available from the
                         Quick Help button (<div style="background-color:#DDDDDD; display:inline;">
                                                <img src='images/w_question.png' height='12px' width='12px'></img>
                                            </div>) on the Widget.  The Quick Help will close after a few seconds if
-                        the cursor is not over it.  Close it at any time by clicking on it.<br>
+                        the cursor is not over it.  Close it at any time by clicking on it.
+                        -->
+
+                        <br>
                     </div>
                     <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="navigateHelp" class="generalDigits"
                          data-dojo-props="open:false, href:'./js/viewer/templates/help/navigate.html', title:'Navigation'">
@@ -92,6 +97,25 @@
                     <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="basemapsHelp" class="generalDigits"
                          data-dojo-props="open:false, href:'./js/viewer/templates/help/basemaps.html', title:'Basemaps'">
                     </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="printHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/print.html', title:'Print'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="measureHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/measure.html', title:'Measure'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="legendHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/legend.html', title:'Legend'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="drawHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/draw.html', title:'Draw'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="TOCHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/TOC.html', title:'Layers'">
+                    </div>
+                    <div data-dojo-type="dijit/TitlePane" data-dojo-attach-point="bookmarksHelp" class="generalDigits"
+                         data-dojo-props="open:false, href:'./js/viewer/templates/help/bookmarks.html', title:'Bookmarks'">
+                    </div>
+
 
 
                        </div>
