@@ -162,13 +162,13 @@ define([
 		operationalLayers: [
         {
 			type: 'dynamic',
-			url: 'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
-			title: 'Internal GIS',
+			url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
+			title: 'Okaloosa WebGIS',
 			slider: true,
 			noLegend: false,
-			collapsed: true,
+			collapsed: false,
 			options: {
-				id: 'IGIS',
+				id: 'WebGIS',
 				opacity: 1,
 				visible: true,
 				imageParameters: imageParameters
@@ -179,7 +179,7 @@ define([
 				metadataUrl: true,
 				expanded: true
 			}
-			//,identifyLayerInfos: { layerIds: [2, 4, 5, 8, 12, 21] }
+			 ,identifyLayerInfos: { layerIds: [1] }
 		}
 
 		// WMS and wms layer type is not supported controller.js line 575
@@ -512,7 +512,16 @@ define([
 		  }
 */
 
-
+			,property: {
+				include: true,
+				id: 'property',
+				type: 'titlePane',
+				path: 'gis/dijit/property',
+				title: 'property',
+				open: false,
+				position: 15,
+				options: 'config/property'
+			}
 
 			,identify: {
 				include: true,

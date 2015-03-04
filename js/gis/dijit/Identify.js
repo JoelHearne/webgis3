@@ -96,6 +96,7 @@ define([
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 
             this.map.on('click', lang.hitch(this, function (evt) {
+
                 if (this.mapClickMode === 'identify') {
                     this.executeIdentifyTask(evt);
                 }

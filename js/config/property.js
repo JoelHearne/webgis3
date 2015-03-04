@@ -3,8 +3,8 @@ define({
 	mapClickMode: true,
 	openOnStartup: true,
 	mapRightClickMenu: true,
-	property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
-	parcel_lyrid:11,
+	property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
+	parcel_lyrid:1,
 	pin_field:"PATPCL_PIN",
 	queries: [
 		{
@@ -14,7 +14,7 @@ define({
 			url:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
 			autofill_url:'http://gisvm109/webgis3/street_name_lookup.php?',
 			//layerIds: [2],
-			layerIds: [81],
+			layerIds: [16],
 			searchFields: ['SITE_ADDR'],
 			minChars: 1
 		} ,
@@ -24,7 +24,7 @@ define({
 			inputobj_key:'tbOwner',
 			url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Parcels/MapServer',
 			autofill_url:'http://gisvm109/webgis3/owner_lookup.php?',
-			layerIds: [11],
+			layerIds: [1],
 			searchFields: ['OWNER_NAME'],
 			minChars: 1
 		},
@@ -33,7 +33,7 @@ define({
 			inputobj_key:'tbPIN',
 			url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Parcels/MapServer',
 			autofill_url:'http://gisvm109/webgis3/pin_lookup.php?',
-			layerIds: [11],
+			layerIds: [1],
 			searchFields: ['PIN_DSP'],
 			minChars: 1
 		},
@@ -42,7 +42,7 @@ define({
 			inputobj_key:'tbSub',
 			url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Subdivisions/MapServer',
 			autofill_url:'http://gisvm109/webgis3/sub_lookup.php?',
-			layerIds: [14],
+			layerIds: [3],
 			searchFields: ['PATSUB_SUB_NAME'],
 			minChars: 1
 		} ,
@@ -51,7 +51,7 @@ define({
 			inputobj_key:'tbBus',
 			url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Subdivisions/MapServer',
 			autofill_url:'http://gisvm109/webgis3/bus_lookup.php?',
-			layerIds: [14],
+			layerIds: [3],
 			searchFields: ['PATSUB_SUB_NAME'],
 			minChars: 1
 		}

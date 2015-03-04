@@ -164,13 +164,9 @@ namespace WebGIS
         public void PropertyQueryMinDet(String pin)
         {
             PropertySearchList2 pl = new PropertySearchList2();
-
-          
+ 
              pl.ExecuteSearch(pin, "pin",1,1);
-            
-
-             
-
+  
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             String res = serializer.Serialize(pl);  // multiple or zero results
 
@@ -317,9 +313,9 @@ namespace WebGIS
         public PropertysearchMinDetail() { }
         public PropertysearchMinDetail(PropertySearchResult pr) 
         {
-            pin = pr.pin;
-            owner=pr.owner;
-            owner_addr = pr.addr;
+            pin = pr.pin.Trim();
+            owner = pr.owner.Trim();
+            owner_addr = pr.addr.Trim();
             ExecuteSearch();
             getsales();
  
@@ -382,6 +378,7 @@ namespace WebGIS
                 try
                 {
                     pin = (String)dt.Rows[i]["pin"];
+                    pin = pin.Trim();
                 }
                 catch
                 {
@@ -389,6 +386,7 @@ namespace WebGIS
                 try
                 {
                     owner = (String)dt.Rows[i]["owner"];
+                    owner = owner.Trim();
                 }
                 catch
                 {
@@ -396,6 +394,7 @@ namespace WebGIS
                 try
                 {
                     PEFLADDR1 = (String)dt.Rows[i]["PEFLADDR1"];
+                    PEFLADDR1 = PEFLADDR1.Trim();
                 }
                 catch
                 {
@@ -403,6 +402,7 @@ namespace WebGIS
                 try
                 {
                     PEFLADDR2 = (String)dt.Rows[i]["PEFLADDR2"];
+                    PEFLADDR2 = PEFLADDR2.Trim();
                 }
                 catch
                 {
@@ -410,6 +410,7 @@ namespace WebGIS
                 try
                 {
                     PEFLADDR3 = (String)dt.Rows[i]["PEFLADDR3"];
+                    PEFLADDR3 = PEFLADDR3.Trim();
                 }
                 catch
                 {
@@ -417,6 +418,7 @@ namespace WebGIS
                 try
                 {
                     PEFLCITY = (String)dt.Rows[i]["PEFLCITY"];
+                    PEFLCITY = PEFLCITY.Trim();
                 }
                 catch
                 {
@@ -424,6 +426,7 @@ namespace WebGIS
                 try
                 {
                     PEFLST = (String)dt.Rows[i]["PEFLST"];
+                    PEFLST = PEFLST.Trim();
                 }
                 catch
                 {
@@ -431,6 +434,7 @@ namespace WebGIS
                 try
                 {
                     PEFLZIP5 = (String)dt.Rows[i]["PEFLZIP5"];
+                    PEFLZIP5 = PEFLZIP5.Trim();
                 }
                 catch
                 {
@@ -438,6 +442,7 @@ namespace WebGIS
                 try
                 {
                     PEFLCNTRY = (String)dt.Rows[i]["PEFLCNTRY"];
+                    PEFLCNTRY = PEFLCNTRY.Trim();
                 }
                 catch
                 {
@@ -445,6 +450,7 @@ namespace WebGIS
                 try
                 {
                     PEFLCONF = (String)dt.Rows[i]["PEFLCONF"];
+                    PEFLCONF = PEFLCONF.Trim();
                 }
                 catch
                 {
@@ -522,6 +528,7 @@ namespace WebGIS
                 try
                 {
                     commissioner = (String)dt.Rows[i]["commissioner"];
+                    commissioner = commissioner.Trim();
                 }
                 catch
                 {
@@ -637,6 +644,7 @@ namespace WebGIS
                  try
                 {
                     Site_Addr = (String)dt.Rows[i]["Site_Addr"];
+                    Site_Addr = Site_Addr.Trim();
                 }
                 catch
                 {
@@ -690,8 +698,10 @@ namespace WebGIS
             }
 
             String sqlStr = "";
-            sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-            sqlStr = sqlStr + "FROM CAMVIEW_PropertyList";
+            //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
+            sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+            
+            sqlStr = sqlStr + " FROM CAMVIEW_PropertyList";
 
             String osqlStr = sqlStr;
             String csqlStr = "SELECT COUNT(pin) FROM CAMVIEW_PropertyList ";
@@ -711,11 +721,8 @@ namespace WebGIS
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
-
-             
                 csqlStr = csqlStr + " WHERE pin like '" + sqlWhereVal + "%'";
-                
-            }
+             }
             else if (searchtype == "pin_list")
             {
                 String[] pins = sqlWhereVal.Split(',');
@@ -891,14 +898,20 @@ namespace WebGIS
                 //PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD
 
                 String owner = (String)dt.Rows[i]["owner"];
+                owner = owner.Trim();
+
                 String pin = (String)dt.Rows[i]["pin"];
+                pin = pin.Trim();
+
                 String ownadd  = (String)dt.Rows[i]["Owner_Address"];
+                ownadd = ownadd.Trim();
                  
          
                 String sardate = "";
                 try
                 {
                     sardate = (String)dt.Rows[i]["Last_Sale"];
+                    sardate = sardate.Trim();
                
                 }
                 catch
@@ -908,10 +921,63 @@ namespace WebGIS
 
 
                 String legl = (String)dt.Rows[i]["LEDESC"];
+                legl = legl.Trim();
+
  
                 PropertySearchResult pr = new PropertySearchResult(pin, owner, ownadd, isHomeStead);
                 pr.lastSale = sardate;
                 pr.legal = legl;
+ 
+
+                try
+                {
+                    pr.PEFLADDR1 = (String)dt.Rows[i]["PEFLADDR1"];
+                    pr.PEFLADDR1=pr.PEFLADDR1.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLADDR2 = (String)dt.Rows[i]["PEFLADDR2"];
+                    pr.PEFLADDR2 = pr.PEFLADDR2.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLADDR3 = (String)dt.Rows[i]["PEFLADDR3"];
+                    pr.PEFLADDR2= pr.PEFLADDR2.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLCITY = (String)dt.Rows[i]["PEFLCITY"];
+                    pr.PEFLCITY = pr.PEFLCITY.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLST = (String)dt.Rows[i]["PEFLST"];
+                    pr.PEFLST = pr.PEFLST.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLZIP5 = (String)dt.Rows[i]["PEFLZIP5"];
+                    pr.PEFLZIP5 = pr.PEFLZIP5.Trim();
+                }
+                catch { }
+
+                try
+                {
+                    pr.PEFLCNTRY = (String)dt.Rows[i]["PEFLCNTRY"];
+                    pr.PEFLCNTRY = pr.PEFLCNTRY.Trim();
+                }
+                catch { }  
+
                 aps.Add(pr);
 
             }
@@ -1161,6 +1227,14 @@ namespace WebGIS
         public String hstead;
         public String legal;
         public String lastSale;
+        public String PEFLADDR1 = "";
+        public String PEFLADDR2 = "";
+        public String PEFLADDR3 = "";
+        public String PEFLCITY = "";
+        public String PEFLST = "";
+        public String PEFLZIP5 = "";
+        public String PEFLCNTRY = "";
+        public String PEFLCONF = "";
 
         public PropertySearchResult() { }
         public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead)

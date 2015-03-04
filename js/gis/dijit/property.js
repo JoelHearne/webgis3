@@ -10,6 +10,7 @@ define([
     'dojo/_base/lang',
     'dojo/dom',
     'dojo/dom-style',
+    "dojo/query",
     'dojo/request',
     'dojo/request/script',
     'dojo/ready', 'dojo/parser', 'dijit/registry',
@@ -75,6 +76,7 @@ define([
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
 ,dom
 ,Style
+,query
 ,request
 ,script
 ,ready
@@ -165,16 +167,30 @@ define([
 
 		postCreate: function () {
 			this.inherited(arguments);
-
+            var _this=this;
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
 				this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
-					 //this.containerNode.resize();
+					    this.propctrNode.resize();
+					    this.containerNode.resize();
 				})));
 			} else {
+
 				var help = domConstruct.place(this.html, this.domTarget);
-				on(help, 'click', lang.hitch(this.parentWidget, 'show'));
+				//on(help, 'click', lang.hitch(this.parentWidget, 'show'));
+				on(help, 'click', lang.hitch(this , 'showThis'));
+				//on(help, 'click',  this.showThis );
 			}
+
+			window.addEventListener('resize', function(event){
+			    _this.parentWidget.set('style', 'left:' + (document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -5) + 'px;top:42px');
+			});
+
+
+			//on(document, "keyup", function(event) {
+			//	_this.fixLayout(event.keyCode);
+			//});
+
 
             //this.parentWidget.show() ;
             this.drawToolbar = new Draw(this.map);
@@ -190,6 +206,7 @@ define([
 			    endrec:0,
 			    qsaleObj:null
 			};
+
 		}
 		,startup: function() {
 			this.inherited(arguments);
@@ -238,9 +255,16 @@ define([
             var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
             //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
 			this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
+            //console.log("query test",query(".propertyContainer"));
 
  			return this.pshowAtStartup;
         }
+        ,showThis:function(){
+			 this.parentWidget.show();
+			 this.pSearchTabs.resize();
+			 var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
+			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
+		}
         ,createGraphicsLayer: function () {
 			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
 			 this.pointSymbol = new  SimpleMarkerSymbol().setStyle( SimpleMarkerSymbol.STYLE_SQUARE).setColor(new Color([2 ,1,281,0.5]));
@@ -717,7 +741,7 @@ define([
 					src: "images/ajax-loader3.gif",
 					alt: "Please Standbye while I search",
 					//style: {float: "center",  padding:"0px 0px 0px 59px",margin:"80px"}
-					style: {float: "center",  padding:"0px 0px 0px 30px",margin:"0px"}
+					style: {float: "center",  padding:"0px 0px 0px 90px",margin:"0px"}
 				});
 			   dojo.place(img, srd, "after");
 	      }

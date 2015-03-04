@@ -10,6 +10,7 @@ body, html {
    // font-family:  Garamond,Broadway,Helvetica Condensed, Frutiger, Avenir, Univers,Myriad,Sabon 
     font-family:  Garamond,Calibri,Verdana, sans-serif;
     font-size: 10px;
+    line-height: 17px;
 }
 .appHeader {
     background: url("../images/linen.jpg") repeat-x scroll left top transparent;

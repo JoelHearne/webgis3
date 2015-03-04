@@ -23,6 +23,7 @@ define([
           //this.PanPuck.on('extent-history-change', lang.hitch(this, 'extentHistoryChangeHandler'));
         }  ,
         pan: function (e) {
+
 			if (e.target.id=='navt_n') {
 				this.map.panUp();
 			} else if (e.target.id=='navt_s') {

@@ -30,23 +30,15 @@ define([
                 })));
             }
 
-            console.clear();
-            //console.log("postCreate this ",this );
-
 
 
         },
 		startup: function() {
 			this.inherited(arguments);
 
-			console.log("startup  arguments",arguments);
-
-			console.log("de2 ",document.getElementById('dijit_layout_ContentPane_2'));
-
             document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
             //Style.set(this.domNode, 'font-size', ' 12px');
             //Style.set(this.resultValue.domNode, 'font-size', ' 12px');
-
 
 	    },
         checkMeasureTool: function () {

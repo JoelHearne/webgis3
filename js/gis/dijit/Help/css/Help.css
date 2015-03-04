@@ -31,13 +31,13 @@
    font-weight: normal;
      text-align: justify;
     text-justify: inter-word;
-    margin: 0px 10px 0px 10px;
+    margin: 0px 7px 0px 7px;
    
 
 }
 
 #discbtn {
-transform: rotate(3deg);
+   //transform: rotate(3deg);
    //color: rgba(0, 255, 0, 0) !important;
    //background-color: rgba(25, 0, 255, 0.5) !important;
    color: #FF0000;
@@ -63,7 +63,7 @@ transform: rotate(3deg);
    font-size: 12px;
    font-weight: bold;
    text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
-   animation: blinker steps(3) 2s infinite;
+   //animation: blinker steps(3) 2s infinite;
  
 }
 

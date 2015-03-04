@@ -21,48 +21,127 @@ define({
 	// for details on pop-up definition see: https://developers.arcgis.com/javascript/jshelp/intro_popuptemplate.html
 
 	identifies: {
-		meetupHometowns: {
-			0: {
-				title: 'Hometowns',
-				fieldInfos: [{
-					fieldName: 'Location',
-					visible: true
-				}]
-			}
-		},
-		louisvillePubSafety: {
-			2: {
-				title: 'Police Station',
-				fieldInfos: [{
-					fieldName: 'Name',
-					visible: true
-				}, {
-					fieldName: 'Address',
-					visible: true
-				}, {
-					fieldName: 'Type',
-					visible: true
-				}, {
-					fieldName: 'Police Function',
-					visible: true
-				}, {
-					fieldName: 'Last Update Date',
-					visible: true
-				}]
-			},
-			8: {
-				title: 'Traffic Camera',
-				description: '{Description} lasted updated: {Last Update Date}',
-				mediaInfos: [{
-					title: '',
-					caption: '',
-					type: 'image',
+		WebGIS: {
+			1: {
+				title: 'Property Info',
+				  mediaInfos: [
+
+				   {
+						"title": "Goto Full Parcel Detail",
+						"caption": "Full Parcel Detail",
+						"type": "image",
+						"value": {
+						  //"sourceURL": "http://gisvm109/webgis3_dev/images/happy.png",
+						  "sourceURL": "http://gisvm109/webgis3_dev/img/attributes_1.gif",
+						  "linkURL": "http://gisvm109/webgis3_dev/prc_full/prc.php?cl=paqry&pin={PIN}"
+						}
+				   }
+				  /* ,{
+					type: "piechart",
 					value: {
-						sourceURL: '{Location URL}',
-						linkURL: '{Location URL}'
+					  fields: ["PATPCL_TAXVAL","PATPCL_ASSEDVAL","PATPCL_BLDGVAL","PATPCL_MKTLAND","PATPCL_JUSTVAL"],
+					  theme: "Julie"
 					}
-				}]
+				  }*/
+
+ 				  ],
+
+
+				fieldInfos: [{
+					fieldName: 'PIN',
+					visible: true
+				}
+				,{
+					fieldName: 'OWNER',
+					visible: true
+				}
+
+				,{
+					fieldName: 'PATPCL_ADDR1',
+					label:'Address 1',
+					visible: true
+				}
+				,{
+					fieldName: 'PATPCL_ADDR2',
+					label:'Address 2',
+					visible: true
+				}
+				,{
+					fieldName: 'PATPCL_ADDR3',
+					label:'Address 3',
+					visible: true
+				}
+ 				,{
+ 					fieldName: 'PATPCL_City',
+ 					label:'City',
+ 					visible: true
+ 				}
+ 				,{
+ 					fieldName: 'PATPCL_State',
+ 					label:'State',
+ 					visible: true
+ 				}
+  				,{
+  					fieldName: 'PATPCL_USEDESC',
+  					label:'Landuse',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_GIS_ACRE',
+  					visible: true,
+  					label:'GIS Acres'
+  					,format: {  places: 2 }
+
+ 				}
+   				,{
+  					fieldName: 'PATPCL_TAXDIST',
+  					label:'Tax District',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_JUSTVAL',
+  					label: 'Just Value',
+  					visible: true
+  					, format: { places: 0, digitSeparator: true }
+
+ 				}
+   				,{
+  					fieldName: 'PATPCL_MKTLAND',
+  					label: 'Land Value',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_BLDGVAL',
+  					label: 'Building Value',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_ASSEDVAL',
+  					label: 'Assessed Value',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_TAXVAL',
+  					label: 'Taxable Value',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_SALEDT1',
+  					label: 'Last Sale Date',
+  					visible: true
+ 				}
+   				,{
+  					fieldName: 'PATPCL_SALE1',
+  					label: 'Last Sale Price',
+  					visible: true
+  					, format: { places: 0, digitSeparator: true }
+ 				}
+
+
+				]
 			}
+
+
 		}
 	}
 });

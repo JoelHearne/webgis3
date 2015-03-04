@@ -80,6 +80,28 @@ define([
                // this.showIntroSplash(false, 500, new Date().getTime());
             //}
 
+           this.showQuickTip();
+
+		}
+		,showQuickTip:function() {
+		   this.map.infoWindow.setTitle("Quick Tip");
+		   this.map.infoWindow.setContent("<-- Click Here to expand Tool Panel"  );
+		   //this.map.infoWindow.show(evt.screenPoint,map.getInfoWindowAnchor(evt.screenPoint));
+		   var lp=new  Point([135, 250]);
+		   lp.spatialReference=undefined;
+
+		   this.map.infoWindow.show( );
+
+		   this.map.infoWindow.domNode.style.top="47%";
+		   this.map.infoWindow.domNode.style.left="50px";
+		  /*domStyle(this.map.infoWindow.domNode, {
+			left: (45) + "px",
+			top: (350) + "px"
+		  });*/
+		  var _this=this;
+		  setTimeout(function(){ _this.map.infoWindow.hide( ); }, 7000);
+
+
 		}
 		,showIntroSplash:function(showHelp, duration, appStartTime) {
 /*
@@ -270,6 +292,9 @@ define([
 			} else {
 				this.initWidgets();
 			}
+
+
+
 		},
 		initLayers: function () {
 
@@ -574,7 +599,7 @@ define([
 			}, this);
 		},
 		togglePane: function (id, show) {
-			 console.log("togglePane",id,show);
+
 			if (!this.panes[id]) {
 				return;
 			}
