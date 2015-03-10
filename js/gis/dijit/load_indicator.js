@@ -21,7 +21,7 @@ define([
             this.inherited(arguments);
 
             var img_html='<img id="wimg" src="images/ajax-loader1.gif" style="z-index:1000" width="32" height="16" alt="">';
-            var n = domConstruct.create("div",{ id: "waitdiv",style: "position:absolute;left:60%;top:50%;visibility:hidden;z-index:999" }, win.body());
+            var n = domConstruct.create("div",{ id: "waitdiv",style: "position:absolute;left:45%;top:50%;visibility:hidden;z-index:999" }, win.body());
             dojo.place(img_html,"waitdiv");
 
 			this.map.on('update-start', function (layer) {

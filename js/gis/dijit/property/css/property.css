@@ -1,9 +1,10 @@
 
 
 select {
-  font-size:9px;
+  font-size:13px !important;
   //font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
-  font-family:  Garamond,Calibri,Verdana, sans-serif;
+  //font-family:  Garamond,Calibri,Verdana, sans-serif;
+ // font-family:  Verdana,Arial,helvetica;
 }
  /*
 .propertyDijit * {
@@ -25,6 +26,12 @@ select {
 
 }
  
+#pSearchResults {
+   overflow: hidden !important;
+   height:auto;
+
+
+}
 
 /*
 #propertyNode  * {
@@ -46,7 +53,9 @@ select {
    overflow: auto !important;
 }
 #pResultDetailTab {
-   overflow: auto !important;
+   //overflow: auto !important;
+   overflow: hidden !important;
+   height:auto !important;
 }
 #pane1 {
    overflow: auto !important;
@@ -80,7 +89,7 @@ select {
      //overflow: hidden !important;
 }
 .floatingWidget .propertyDijit .propertyContainer {
-	padding: 5px;
+	padding: 15px;
 }
 .propertyDijit .propertyNode {
     width: 98%;
@@ -242,6 +251,7 @@ select {
   //background-size: 85% auto;
   //width: 100%;
   //height: 100%;
+  height: auto !important;
   //position: absolute;
   //top:0px;
   //left:0%;
@@ -271,7 +281,55 @@ select {
      //opacity: 1.0  !important;
 }
 
+.dbootstrap .dijitInputContainer {
+    padding: 1px;
 
+ }
+.dbootstrap .dijitDialogTitleBar {
+    padding: 5px 15px 5px  0px ;
+    border-bottom: 2px solid rgb(38, 38, 38);
+    background-color: rgba(105, 144, 141, 0.7 );
+}
+
+.dbootstrap .dijitTab {
+    color: rgb(0, 136, 204);
+    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+    margin-right: 2px;
+    padding: 4px 6px;
+    line-height: 17px;
+    //border: 1px solid transparent;
+    border: 1px solid  rgba(245, 245, 215, 0 ); 
+    border-radius: 4px;
+    background-color: lightgrey;
+}
+.dbootstrap .dijitTabHover {
+   background-color: rgba(243, 243, 245, 0.5);
+    border-color: rgba(215, 215, 215, 0 );
+  //text-shadow: 0px 2px 0px rgba(255, 55, 55, 0.5);
+    
+}
+.dbootstrap .dijitTabChecked {
+  color: #555;
+  background-color: #fff;
+  border-color: #ddd;
+  background-color: rgba(205, 205, 205, 0.5);
+  border-color: rgba(245, 245, 215, 0 );  
+  //color: rgb(0, 136, 204);
+  //text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+   margin-right: 2px;
+   padding: 4px 6px;
+   line-height: 17px;
+    border: 3px solid rgb(0, 136, 204);
+    border-radius: 4px;  
+
+  cursor: default;
+}
+
+
+.dbootstrap .dijitTabContainerBottom-tabs, .dbootstrap .dijitTabContainerTop-tabs, .dbootstrap .dijitTabContainerLeft-tabs, .dbootstrap .dijitTabContainerRight-tabs {
+    border: medium none;
+    background-color: rgba(112, 162, 171, 0.5  ); 
+}
 
 
 .progressDialog h2 {
@@ -327,12 +385,12 @@ select {
 
 .ptabContent {
     //text-align: center ;
-    text-align: left;
+    text-align: left !important;
     font-size: 11px;
-    //margin: 8px;
-    margin-left: auto ;
-    margin-right: auto ;
-    padding: 0px;
+    margin: 0px !important;
+    //margin-left: auto ;
+    //margin-right: auto ;
+    padding: 0px !important;
    //background-color: #CACACA;
     //background-image: url("../images/clock.png");
     //background-repeat: no-repeat;
@@ -340,10 +398,10 @@ select {
     //height: 100%;
     //width: 100%;
    
-    transition-duration: 4.9s;
-    transition-timing-function: linear;
-    transition-property: height width margin;
-    line-height: 14px;
+    //transition-duration: 4.9s;
+    //transition-timing-function: linear;
+    //transition-property: height width margin;
+    //line-height: 14px;
 
 }
 
@@ -363,100 +421,99 @@ select {
 
 }*/
 
-
-.jumplistheader  {font-weight: bold;text-align: left; background-color="#ADC8D9";}
-.jumplistvalue     {border-style: solid; border-color: "#15157f";}
-.jumplisttable {
-    font-family: Arial, Helvetica, sans-serif; 
-    font-size: x-small;
-    width:300px;
- }
  
-
-.CSSTableGenerator {
-	margin:0px;padding:0px;
-	width:100%;
-	box-shadow: 10px 10px 5px #888888;
-	border:1px solid #15157f;
-	
-	-moz-border-radius-bottomleft:0px;
-	-webkit-border-bottom-left-radius:0px;
-	border-bottom-left-radius:0px;
-	
-	-moz-border-radius-bottomright:0px;
-	-webkit-border-bottom-right-radius:0px;
-	border-bottom-right-radius:0px;
-	
-	-moz-border-radius-topright:0px;
-	-webkit-border-top-right-radius:0px;
-	border-top-right-radius:0px;
-	
-	-moz-border-radius-topleft:0px;
-	-webkit-border-top-left-radius:0px;
-	border-top-left-radius:0px; 
-	border-top-left-radius:0px;
+ 
+.propertyDijit .outerList>li {
+    margin-bottom: 1em;
 }
-.CSSTableGenerator table tr:first-child td:last-child {
-	-moz-border-radius-topright:0px;
-	-webkit-border-top-right-radius:0px;
-	border-top-right-radius:0px;
-}.CSSTableGenerator tr:last-child td:first-child{
-	-moz-border-radius-bottomleft:0px;
-	-webkit-border-bottom-left-radius:0px;
-	border-bottom-left-radius:0px;
-}.CSSTableGenerator tr:hover td{
-	
-}
-.CSSTableGenerator tr:nth-child(odd){ background-color:#e7f9d4; }
-.CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
-	vertical-align:middle;
-	border:1px solid #15157f;
-	border-width:0px 1px 1px 0px;
-	text-align:left;
-	padding:0px;
-	font-size:9px;
-	font-family:Arial;
-	font-weight:normal;
-	color:#000000;
-}.CSSTableGenerator tr:last-child td{
-	border-width:0px 1px 0px 0px;
-}.CSSTableGenerator tr td:last-child{
-	border-width:0px 0px 1px 0px;
-}.CSSTableGenerator tr:last-child td:last-child{
-	border-width:0px 0px 0px 0px;
+.propertyDijit .list-unstyled {
+    padding-left: 0px;
+    list-style-type: none;
+    list-style-position: outside;
+    list-style-image: none;
 }
 
-.CSSTableGenerator tr:first-child td{
-	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
-	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	
-	background: -o-linear-gradient(top,#3f7f00,ffffaa);
-
-	background-color:#3f7f00;
-	border:0px solid #15157f;
-	text-align:center;
-
-	/*border-width:0px 0px 1px 1px;*/
-	border-width:0px 0px 0px 0px;
-	font-size:10px;
-	font-family:Arial;
-	font-weight:bold;
-	color:#050404;
+.propertyDijit .list-inline {
+    padding-left: 0px;
+    margin-left: -5px;
+    list-style-type: none;
+    list-style-position: outside;
+    list-style-image: none;
 }
-.CSSTableGenerator tr:first-child:hover td{
-	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
-	background:-moz-linear-gradient( center top, #3f7f00 5%, #ffffaa 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f7f00", endColorstr="#ffffaa");	background: -o-linear-gradient(top,#3f7f00,ffffaa);
 
-	background-color:#3f7f00;
+.propertyDijit .list-inline > li {
+    display: inline-block;
 }
-.CSSTableGenerator tr:first-child td:first-child{
-	
-	/* border-width:0px 0px 1px 0px; */
-	 border-width:0px 0px 0px 0px; 
+
+.propertyDijit .drawButton {
+    width: 50px;
 }
-.CSSTableGenerator tr:first-child td:last-child{
-	/*border-width:0px 0px 1px 1px;*/
-        border-width:0px 0px 0px 0px;	
+
+.propertyDijit .stopIcon {
+    color: red;
+}
+
+.propertyDijit .drawButton .dijitButtonText {
+    /*display: none;*/
+}
+.propertyDijit .polyIcon {
+    background-image: url(../images/toolbar_icons.png);
+    background-position: -68px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .pointIcon {
+    background-image: url(../images/toolbar_icons.png);
+    background-position: 0px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .circleDrawIcon {
+    background-image: url(../images/toolbar_icons.png);
+    background-position: -390px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .lineIcon {
+    background-image: url(../images/toolbar_icons.png);
+    background-position: -34px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .freehandDrawIcon {
+    background-image: url(../images/toolbar_icons.png);
+    background-position: -102px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .freehandPolygonDrawIcon {
+    background-image: url(../images/toolbar_icons_2.png);
+    background-position: -473px 0;
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .clearIcon {
+    background-image: url(../images/clear.png);
+    width: 16px;
+    height: 16px;
+}
+
+.propertyDijit .formContainer {
+    /*border: 1px solid #bbb;*/
+    margin-bottom: -1px;
+    width: 100%;
+}
+
+.propertyDijit .buttonActionBar {
+    /*background-color: #F2F2F2;
+    border: 1px solid #CDCDCD;*/
+    padding: 3px 0px 2px 0px;
+    text-align: right;
+    width: 100%;
 }

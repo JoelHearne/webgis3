@@ -2,7 +2,7 @@
 
 
 
-    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="propctrNode" class="propertyContainer" style="overflow:hidden !important">
+    <div data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="propctrNode" class="propertyContainer" style="overflow:hidden !important;padding:0px !important">
         <div id="propertyNode" data-dojo-attach-point="propertyNode" class="propertyNode" style="overflow:hidden !important">
 
             <div id="pSearchTabs" data-dojo-attach-point="pSearchTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer">
@@ -19,42 +19,44 @@
                                 <div id="pane1" data-dojo-attach-point="pane1" data-dojo-type="dijit/layout/ContentPane">
 
                                     <div data-dojo-type="dijit/layout/ContentPane" title="Pane" doLayout="false" style="width:320px;height:500px">
-                                        <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="propertyFormDijit" style="font-size: 11px; min-width: 1em; min-height: 1em;">
+                                        <div data-dojo-type="dijit/form/Form" data-dojo-attach-point="propertyFormDijit"  >
 
-                                            <div style="padding: 0px; font-size: 9px; z-index: 900; width: 250px; height: 18px;">
+                                            <div style="margin:0px 0px 0px 45px;padding: 0px; font-size: 11px !important; z-index: 900; width: 220px; height: 18px;">
 
-                                                <div style="float:left; padding:0px;margin;0px;">search type:
+                                                <div style="margin:0px 8px 0px 0px;float:left; padding:0px;margin;0px;font-weight:bold">Search Type:
                                                 </div>
                                                 <div style="padding: 0px; float: right; padding:0px;margin;0px;">
-                                                    <select id="selSearchType" data-dojo-attach-point="selSearchType" data-dojo-attach-event="onChange:changeSearchForm" style="font-size:11pt; width: 120px; padding:0px;margin;0px">
-                                                        <option value="property" selected="true">property</option>
-                                                        <option value="salesdata">sales data</option>
-                                                        <option value="saleslist">sales list</option>
-                                                        <option value="sub">subdivision</option>
-                                                        <option value="business">business</option>
-                                                        <option value="map">map</option>
+                                                    <select id="selSearchType" data-dojo-attach-point="selSearchType" data-dojo-attach-event="onChange:changeSearchForm" style="width: 120px; padding:0px;margin;0px">
+                                                        <option value="property" selected="true">Property</option>
+                                                        <option value="salesdata">Sales Data</option>
+                                                        <option value="saleslist">Sales List</option>
+                                                        <option value="sub">Subdivision</option>
+                                                        <option value="business">Business</option>
+                                                        <option value="map">Map</option>
                                                     </select>
                                                 </div>
                                             </div>
 
-                                            <div style="margin: 33px 5px 2px 7px; font-size: 11px;">
+                                            <div style="margin: 20px 5px 2px 7px;">
 
                                                 <div id="pPropSearchForm" class="pContResVis" data-dojo-attach-point="pPropSearchForm" data-dojo-type="dijit/layout/ContentPane" >
-                                                    <p>Parcel Number:</p>
-                                                    <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN" data-dojo-props="name:'searchPIN',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+                                                    <p style="margin:0px;font-weight:bold">Parcel Number:</p>
+                                                    <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN"   style="width: 219px;"></input>
                                                     <br>
-                                                    <br>
-                                                    <p>Owner:</p>
-                                                    <input id="tbOwner" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchOwner" data-dojo-props="name:'searchOwner',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
-                                                    <br>
-                                                    <br>
-                                                    <p>Address or Street Name:</p>
-                                                    <br>
-                                                    <input id="tbAddr" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchAddr" data-dojo-props="name:'searchAddr',trim:true,required:true,value:'',placeholder:'Enter the text you want to search for.',class:'searchText'" style="width: 219px;"></input>
+
+                                                    <p style="margin:0px;font-weight:bold">Owner:</p>
+                                                    <input id="tbOwner" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchOwner"   style="width: 286px;"></input>
                                                     <br>
                                                     <br>
 
+
+                                                    <p style="margin:0px;font-weight:bold">Address or Street Name:</p>
+
+                                                    <input id="tbAddr" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchAddr"  style="width: 219px;"></input>
                                                     <br>
+                                                    <br>
+
+
                                                 </div>
                                             </div>
 
@@ -203,7 +205,9 @@
                                                 <div id="pMapFrm" class="pContRes" data-dojo-attach-point="pMapFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;font-size:12px">
                                                     <p>Use these map search tools to select parcels on the map</p>
 
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePoint"  label="Select By Point" iconClass="dijitNoIcon" ></input>
+
+                                                    <!--
+                                                    <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePoint"  label="Select By Point" iconClass="dijitNoIcon" ></input>
                                                       <br>
                                                       <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePolyline"  label="Select By Line" iconClass="dijitNoIcon" ></input>
                                                       <br>
@@ -218,7 +222,74 @@
                                                       <br>
 
                                                       <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modeBox"  label="Select By Box" iconClass="dijitNoIcon" ></input>
+                                                      -->
                                                       <br>
+
+													<div style="padding:5px;">
+														<ul class="list-unstyled outerList">
+
+															<li>
+																<ul class="list-inline list-unstyled">
+
+																	<li>
+																		<button data-dojo-type="dijit/form/Button" data-dojo-props="iconClass:'adw-icon-point',showLabel:false"
+																				data-dojo-attach-event="onClick:modePoint"
+																				class="drawButton"
+																				title="point">
+
+																		</button>
+																	</li>
+
+																	<li>
+																		<button data-dojo-type="dijit/form/Button" data-dojo-props="iconClass:'adw-icon-polyline',showLabel:false"
+																				data-dojo-attach-event="onClick:modePolyline"
+																				class="drawButton"
+																				title="Polyline">
+																		</button>
+																	</li>
+
+																	<li>
+																		<button data-dojo-type="dijit/form/Button" data-dojo-props="iconClass:'adw-icon-freehand-polyline',showLabel:false"
+																				data-dojo-attach-event="onClick:modeFreehandLine"
+																				class="drawButton"
+																				title="Freehand Polyline">
+																		</button>
+																	</li>
+
+																	<li>
+																		<button data-dojo-type="dijit/form/Button" data-dojo-props="iconClass:'adw-icon-polygon',showLabel:false"
+																				data-dojo-attach-event="onClick:modePolygon"
+																				class="drawButton"
+																				title="Polygon">
+																		</button>
+																	</li>
+
+																	<li>
+																		<button data-dojo-type="dijit/form/Button" data-dojo-props="iconClass:'adw-icon-freehand-polygon',showLabel:false"
+																				data-dojo-attach-event="onClick:modeFreehandPolygon"
+																				class="drawButton"
+																				title="Freehand Polygon">
+																		</button>
+																	</li>
+																</ul>
+															</li>
+														</ul>
+													</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                                                       <br><br>
 
@@ -317,15 +388,15 @@
 
 
                         <div id="pResultDetailTab" data-dojo-type="dijit/layout/ContentPane" title="Detail">
-                                <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
+                               <!-- <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">-->
 
                                     <div id="pcMinDet" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
 
 
 
-                                    </div>
+                                     </div>
 
-                                </div>
+                               <!-- </div>-->
 
                         </div>
                         <!-- end pResultDetailTab -->

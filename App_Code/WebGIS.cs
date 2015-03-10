@@ -348,7 +348,7 @@ namespace WebGIS
             }
 
             String sqlStr = "";
-            sqlStr = sqlStr + " SELECT pin,PRPROP,owner,PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY,PEFLCONF,";
+            sqlStr = sqlStr + " SELECT TOP 1 pin,PRPROP,owner,PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY,PEFLCONF,";
             sqlStr = sqlStr + "  taxable_value,exempt_value,ag_value,land_value,bldg_value,xtra_value,just_value,assd_value,HMSTD,";
             sqlStr = sqlStr + "  COMMISSION,commissioner,ZONING,FLUPY,TRACT,WETLAND,FLDWY,FLDZ_BFE,WATER,POWER,SUBDIVISION,FIRE,COBRA,";
             sqlStr = sqlStr + "  acres,propertyuse,landuse,lu_code,SITE_ADDR   ";
@@ -649,6 +649,20 @@ namespace WebGIS
                 catch
                 {
                 }
+
+                 try
+                 {
+                     //Type typ = dt.Rows[i]["acres"].GetType();
+
+                     acres = (double)((Decimal)dt.Rows[i]["acres"]);
+                     
+                 }
+                 catch
+                 {
+                     acres = 0;
+                 }
+
+
             }
  
         }
@@ -699,12 +713,12 @@ namespace WebGIS
 
             String sqlStr = "";
             //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-            sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
             
             sqlStr = sqlStr + " FROM CAMVIEW_PropertyList";
 
             String osqlStr = sqlStr;
-            String csqlStr = "SELECT COUNT(pin) FROM CAMVIEW_PropertyList ";
+            String csqlStr = "SELECT distinct PIN FROM CAMVIEW_PropertyList ";
             //sqlStr = sqlStr + "where c.pin='13-2S-24-0150-0003-0070'";
             //sqlStr = sqlStr + "and l.lerecn=1";
 
@@ -860,6 +874,8 @@ namespace WebGIS
 
                 csqlStr = csqlStr + " WHERE  ledesc like '%" + sqlWhereVal + "%'";
             }
+
+            csqlStr = "Select Count(*) FROM (" + csqlStr + ") c";
 
 
             SqlCommand ccmd = new SqlCommand(csqlStr, cn);
@@ -1501,8 +1517,8 @@ namespace WebGIS
             }
 
             String sqlStr = "";
-            sqlStr = sqlStr + " SELECT * FROM CAMVIEW_Sales";
-            sqlStr = sqlStr + "  WHERE pin='" + pin.Trim() + "'";
+            sqlStr = sqlStr + " SELECT top 2 * FROM CAMVIEW_Sales";
+            sqlStr = sqlStr + "  WHERE pin='" + pin.Trim() + "' ORDER BY SALEDATE DESC";
 
 
             SqlCommand cmd = new SqlCommand(sqlStr, cn);

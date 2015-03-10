@@ -86,10 +86,11 @@ define([
              this.address=mailing_addr;
              this.homestead=dobj.HMSTD;
 
+             console.log("acres",dobj.acres);
+
              this.pcAcres.innerHTML=dobj.acres;
              this.pcPropuse.innerHTML=dobj.propertyuse;
              this.pcLanduse.innerHTML=dobj.landuse;
-
 
 			this.pcLandVal.innerHTML=dobj.land_value;
 			this.pcAgVal.innerHTML=dobj.ag_value;
@@ -99,20 +100,29 @@ define([
 			this.pcAssVal.innerHTML=dobj.assd_value;
 			this.pcXVal.innerHTML=dobj.exempt_value;
 			this.pcTaxVal.innerHTML=dobj.taxable_value;
+			//this.pcTaxVal.innerHTML='<a href="https://www.okaloosa.county-taxes.com/public/real_estate/parcels/042N24000000040000" target="_blank">' +dobj.taxable_value + '</a>';
 			this.pcHomestead.innerHTML=dobj.HMSTD;
-
-
-			this.pcFLU.innerHTML=dobj.FLUPY;
-			this.pcCtyZn.innerHTML=dobj.ZONING;
-			this.pcFEMAFlood.innerHTML=dobj.FLDZ_BFE;
-			this.pcCobra.innerHTML=dobj.COBRA;
+			//this.pcFLU.innerHTML=dobj.FLUPY;
+			this.pcFLU.innerHTML='<a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-FLU.pdf" target="_blank">' + dobj.FLUPY + '</a>';
+			//this.pcCtyZn.innerHTML=dobj.ZONING;
+			this.pcCtyZn.innerHTML='<a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-LDC.pdf" target="_blank">' + dobj.ZONING + '</a>';
+			//this.pcFEMAFlood.innerHTML=dobj.FLDZ_BFE;
+			this.pcFEMAFlood.innerHTML='<a href="https://www.fema.gov/floodplain-management/flood-zones" target="_blank">' + dobj.FLDZ_BFE + '</a>';
+			//this.pcCobra.innerHTML=dobj.COBRA;
+			this.pcCobra.innerHTML='<a href="http://www.fema.gov/national-flood-insurance-program-2/coastal-barrier-resources-system" target="_blank">' + dobj.COBRA + '</a>';
 			this.pcInFloodway.innerHTML=dobj.FLDWY;
-			this.pcWetlans.innerHTML=dobj.WETLAND;
+			this.pcInFloodway.innerHTML='<a href="https://suite.io/david-a-todd/23rd2j6" target="_blank">' + dobj.FLDWY + '</a>';
+			//this.pcWetlans.innerHTML=dobj.WETLAND;
+			this.pcWetlans.innerHTML='<a href="http://en.wikipedia.org/wiki/Wetland" target="_blank">' + dobj.WETLAND + '</a>';
 			this.pcPWRServProv.innerHTML=dobj.POWER;
 			this.pcWaterServ.innerHTML=dobj.WATER;
 			this.pcSub.innerHTML=dobj.SUBDIVISION;
-			this.pcBCCDist.innerHTML=dobj.COMMISSION;
-			this.pcFireDist.innerHTML=dobj.FIRE;
+			//this.pcBCCDist.innerHTML=dobj.COMMISSION;
+			this.pcBCCDist.innerHTML='<a href="http://www.co.okaloosa.fl.us/bcc_welcome.html" target="_blank">' + dobj.commissioner + " (" + dobj.COMMISSION + ')</a>';
+
+			//this.pcFireDist.innerHTML=dobj.FIRE;
+			this.pcFireDist.innerHTML='<a href="http://www.firedepartments.net/county/FL/OkaloosaCounty.html" target="_blank">' + dobj.FIRE + '</a>';
+
 			this.pcCensusTract.innerHTML=dobj.TRACT;
 
 			try {
@@ -146,7 +156,7 @@ define([
             //this.slTable.style.visibility="visible";
             var togOb=null;
 
-            if (e.target.parentElement.textContent.indexOf("Zoning") !=-1) {
+            if (e.target.parentElement.textContent.indexOf("Permit") !=-1) {
 				  togOb=this.znTable;
 			}  else if (e.target.parentElement.textContent.indexOf("Value") !=-1) {
 				  togOb=this.slTable;

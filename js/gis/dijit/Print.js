@@ -71,8 +71,11 @@ define([
 				this.print();
 			}));
 
+
         },
         operationalLayersInspector: function (opLayers) {
+			console.log("operationalLayersInspector",opLayers);
+
             array.forEach(opLayers, function (layer) {
                 if (layer.id == 'Measurement_graphicslayer') {
                     array.forEach(layer.featureCollection.layers, function (fcLayer) {
@@ -94,6 +97,7 @@ define([
             });
         },
         _handlePrintInfo: function (data) {
+
             this.printTask = new PrintTask(this.printTaskURL, {
                 async: data.executionType === 'esriExecutionTypeAsynchronous'
             });
@@ -157,6 +161,7 @@ define([
 
         },
         print: function () {
+
             if (this.printSettingsFormDijit.isValid()) {
                 var form = this.printSettingsFormDijit.get('value');
                 var preserve = this.preserveFormDijit.get('value');
@@ -183,8 +188,6 @@ define([
                 };
                 this.printparams.template = template;
 
-
-                console.log("print this.printparams",this.printparams);
 
                 var fileHandle = this.printTask.execute(this.printparams);
                 var result = new PrintResultDijit({

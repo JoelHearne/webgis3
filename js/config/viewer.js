@@ -86,7 +86,7 @@ define([
             //slider: true,
 			//sliderStyle: 'large'
             //,sliderLabels: webLods
-			 /*  ,basemap:  new  Basemap({
+			    ,basemap:  new  Basemap({
 				id: 'hybrid',
 				title: 'Hybrid',
 				layers: [
@@ -99,15 +99,17 @@ define([
                    ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
 				]
 				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
-			})*/
+			})
 
-			 	,basemap:  new  Basemap({
+			 /*
+			 ,basemap:  new  Basemap({
 								id: 'ortho_2013',
 								title: 'ortho_2013',
 								layers: [
-				new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
+				new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  ,copyright:"Okaloosa County WebGIS"   })
 				]
-			})
+			 })
+			 */
 
 
 			,center: [-86.59987, 30.68192]
@@ -179,7 +181,7 @@ define([
 				metadataUrl: true,
 				expanded: true
 			}
-			 ,identifyLayerInfos: { layerIds: [1] }
+			//,identifyLayerInfos: { layerIds: [11] }
 		}
 
 		// WMS and wms layer type is not supported controller.js line 575

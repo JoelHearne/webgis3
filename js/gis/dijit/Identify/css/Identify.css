@@ -10,7 +10,8 @@
 	margin-top: 5px;
 }
 .esriPopup {
-   font-family:  Garamond,Calibri,Verdana, sans-serif;
+   //font-family:  Garamond,Calibri,Verdana, sans-serif;
+   font-family:  Verdana,Arial,helvetica;
    font-size: 12px;
 
 }

@@ -71,8 +71,10 @@ define([
     "esri/tasks/GeometryService",
     "esri/tasks/BufferParameters",
 	'esri/InfoTemplate',
-	'xstyle/css!./property/css/property.css',
-	'dojo/domReady!'
+	//'dojo/i18n!./property/nls/resource',
+	'xstyle/css!./property/css/property.css'
+	//,'xstyle/css!./property/css/adw-icons.css'
+	 ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
 ,dom
 ,Style
@@ -123,6 +125,7 @@ define([
 ,SpatialReference
 ,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
 , IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,InfoTemplate
+//, i18n
 
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -557,6 +560,7 @@ define([
 								 homestead:hmstd
 
 							 };
+							 if (actntype == "pc_zoom") actntype = "pc_zoom_min";
 							 //console.log("pcObj",pcObj);
 							 _this.handlePRCevent(actntype,pcObj,this.id);
 					}
@@ -731,6 +735,7 @@ define([
            document.getElementById("pResCount").innerHTML='';
 		   this.btnZoomAll.domNode.style.display="none";
 		   this.btnPrLbls.domNode.style.display="none";
+		   document.getElementById("pResCount").style.display="none";
 		   document.getElementById("pPageSelDiv").style.display="none";
 
 		   var srd=dom.byId("pSearchResults");
@@ -1051,12 +1056,16 @@ define([
 			return iurl = 'WebGIS.asmx/SalesDataQueryPaged?startrec=' + startrec + '&endrec=' + endrec + '&objjson={"subNumber":"","subid":"","sectionValue":"","townshipValue":"","rangeValue":"","startDate":"' + qStartDate + '","endDate":"' + qEndDate + '","startPrice":0,"endPrice":0,"startArea":0,"endArea":0,"startAcreage":0,"endAcreage":0,"saleQualification1":"","saleQualification":"","saleVacant1":"","saleVacant2":"","saleVacant":""} ';
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
+
+
 			var prcob=registry.byId(prcID);
  			if (actntype == "pc_zoom") {
                /*topic.publish('InitZoomer/ZoomParcel', {
 			 		 pin:pcObj.pin
                });*/
                this.zoomPIN(pcObj.pin);
+            } else if (actntype == "pc_zoom_min") {
+               this.zoomPIN(pcObj.pin,false);
 			} else if (actntype == "pc_fulldet") {
 				this.Open_PRCFull(pcObj.pin);
 
@@ -1148,6 +1157,7 @@ define([
 
 			    this.btnZoomAll.domNode.style.display="block";
 			    this.btnPrLbls.domNode.style.display="block";
+			    document.getElementById("pResCount").style.display="block";
 				// build paging control
 				if (dobj.rec_count > 50) {
 					document.getElementById("pPageSelDiv").style.display="block";
@@ -1283,9 +1293,10 @@ define([
                      window.open( text,"prcprint");
  	            } ,
  	            function (error){
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
+ 	                alert("Error Printing Labels : " + error);
  	            }
  	        );
 		}
@@ -1299,9 +1310,10 @@ define([
                      window.open( text,"prcprint");
  	            } ,
  	            function (error){
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					_this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLblsSaved)");
  	                console.log("Error Occurred: " + error);
+ 	                alert("Error Printing Labels : " + error);
  	            }
  	        );
 		}
@@ -1388,7 +1400,8 @@ define([
 				this.qryTask=new QueryTask(q_url);
 				this.clearGraphics();
  				//this.qryTask.execute(this.qry, this.mapqRes  );
-				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+				//this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
+				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqResNoQry'));
 		}
 		,zoomAll:function() {
 			// this will zoom to all of the records returned by the current query
