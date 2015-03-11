@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.Web.Configuration;
 using System.Configuration;
 using System.Collections;
-
+ 
 
 namespace WebGIS
 {
@@ -30,6 +30,10 @@ namespace WebGIS
     [ScriptService]
     public class WebGIS : System.Web.Services.WebService
     {
+        //private String rawSQLQuery = ""; // set from a session var that stores (non-paged) raw SQL query string
+        //private int result_count_all = 0; // total result count from raw (non-paged) query
+
+        private String baseOutputURL = ConfigurationManager.AppSettings["baseOutputURL"];
 
         public WebGIS()
         {
@@ -38,69 +42,20 @@ namespace WebGIS
             //InitializeComponent(); 
         }
 
-
         [WebMethod(Description = "Get a list of valid property types")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void GetLanduseLookup()
         {
             LanduseLookup lulu = new LanduseLookup();
- 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             String res = serializer.Serialize(lulu.lu_items);  // multiple or zero results
- 
             System.Web.HttpContext.Current.Response.Write(res);
 
         }
-              
-        
-        
-        
-        
-        
-        
-        [WebMethod(Description = "Query property records by searchtype: pin, pin_list, address, sub,bus,leg, or owner.")]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public String PropertyQuery(String searchtype, String searchString)
-        {
-            PropertySearchList pl = new PropertySearchList();
+  
+ 
 
-            if (searchtype == "pin")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "pin_list")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "address")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "owner")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "sub")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "bus")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-            else if (searchtype == "leg")
-            {
-                pl.ExecuteSearch(searchString, searchtype);
-            }
-
-
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            String res = serializer.Serialize(pl.ps_res);
-            return res;
-            //return pr;
-        }
-
-        [WebMethod(Description = "Query property records by searchtype: pin, pin_list, address, sub,bus,leg, or owner.")]
+        [WebMethod(EnableSession = true, Description = "Query property records by searchtype: pin, pin_list, address, sub,bus,leg, or owner.")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void PropertyQueryPaged(String searchtype, String searchString,int startrec,int endrec)
         {
@@ -135,8 +90,9 @@ namespace WebGIS
                 pl.ExecuteSearch(searchString, searchtype, startrec, endrec);
             }
 
-             
-
+            Session["rawSQL"] = pl.rawSQLQuery;
+            Session["rawSQLCount"] = pl.rec_count;
+ 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             String res = serializer.Serialize(pl);  // multiple or zero results
 
@@ -159,7 +115,7 @@ namespace WebGIS
         }
 
 
-        [WebMethod(Description = "Query property record to populate minimal detail card")]
+        [WebMethod(EnableSession = true, Description = "Query property record to populate minimal detail card")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void PropertyQueryMinDet(String pin)
         {
@@ -184,16 +140,129 @@ namespace WebGIS
             System.Web.HttpContext.Current.Response.Write(res);
              
         }
-        
-        
-        
-        [WebMethod(Description = "Query sales list for date range")]
+
+        [WebMethod(EnableSession = true, Description = "Prints mailing labels based on searchtype and searchstring")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void PrintMailingLabels(String search_type, String search_string)
+        {
+            Mapserv.clsMailLabels lb = new Mapserv.clsMailLabels(search_type, search_string);
+            lb.DoIt();
+            FileInfo fi = new FileInfo(lb.PDFPth);
+            String pdfUrl = baseOutputURL + fi.Name;
+            //Debug.Print(pdfUrl);
+            //return pdfUrl;
+            System.Web.HttpContext.Current.Response.Write(pdfUrl);
+        }
+
+        [WebMethod(EnableSession = true, Description = "Prints mailing labels based on raw SQL query stored in session variable")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void PrintMailingLabelsSession()
+        {
+            String rawSQL = (String)Session["rawSQL"];
+            int rawCnt = (int)Session["rawSQLCount"];
+            int res_limit = Convert.ToInt32((String)ConfigurationManager.AppSettings["max_result_count"]);
+
+            String pdfUrl = "";
+            if (rawCnt > res_limit)
+            {
+                pdfUrl = "over limit";
+            }
+            else
+            {
+                if (rawSQL != null && rawSQL != "")
+                {
+                    Mapserv.clsMailLabels lb = new Mapserv.clsMailLabels(rawSQL + " AND PACONF <> 'Y'");
+                    lb.DoItRawSql();
+                    FileInfo fi = new FileInfo(lb.PDFPth);
+                    pdfUrl = baseOutputURL + fi.Name;
+                    //Debug.Print(pdfUrl);
+                    //return pdfUrl;
+                }
+                else
+                {
+                    pdfUrl = "query session is null";
+                }
+            }
+            System.Web.HttpContext.Current.Response.Write(pdfUrl);
+        }
+
+        [WebMethod(EnableSession = true, Description = "Prints mailing labels based on raw SQL query stored in session variable")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void ExportMailingLabelCSVSession()
+        {
+            String rawSQL = (String)Session["rawSQL"];
+            int rawCnt = (int)Session["rawSQLCount"];
+            int res_limit = Convert.ToInt32((String)ConfigurationManager.AppSettings["max_result_count"]);
+
+            String pdfUrl = "";
+            if (rawCnt > res_limit)
+            {
+                pdfUrl = "over limit " + rawCnt.ToString();
+            }
+            else
+            {
+                if (rawSQL != null && rawSQL != "")
+                {
+                    Mapserv.TableExport te = new Mapserv.TableExport(rawSQL + " AND PACONF <> 'Y'");
+                    te.DoItRawSql();
+
+                    FileInfo fi = new FileInfo(te.PDFPth);
+                    pdfUrl = baseOutputURL + fi.Name;
+                    //Debug.Print(pdfUrl);
+                    //return pdfUrl;
+                }
+                else
+                {
+                    pdfUrl = "query session is null";
+                }
+            }
+            System.Web.HttpContext.Current.Response.Write(pdfUrl);
+        }
+        [WebMethod(EnableSession = true, Description = "Prints mailing labels based on raw SQL query stored in session variable")]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+        public void ExportMailingLabelCSVPINs(String pinlist)
+        {
+
+
+            String[] pins = pinlist.Split(',');
+            for (int i = 0; i < pins.Length; i++)
+            {
+                pins[i] = "'" + pins[i] + "'";
+            }
+            String newWhere = String.Join(",", pins);
+            newWhere = "(" + newWhere + ")";
+
+            String sqlStr= "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+            sqlStr = sqlStr + " FROM CAMVIEW_PropertyList ";
+            sqlStr = sqlStr + " WHERE pin in " + newWhere;
+            
+       
+            //int rawCnt = (int)Session["rawSQLCount"];
+            int res_limit = Convert.ToInt32((String)ConfigurationManager.AppSettings["max_result_count"]);
+
+            String pdfUrl = "";
+
+            Mapserv.TableExport te = new Mapserv.TableExport(sqlStr + " AND PACONF <> 'Y'");
+            te.DoItRawSql();
+
+                    FileInfo fi = new FileInfo(te.PDFPth);
+                    pdfUrl = baseOutputURL + fi.Name;
+                    //Debug.Print(pdfUrl);
+                    //return pdfUrl;
+              
+           
+            System.Web.HttpContext.Current.Response.Write(pdfUrl);
+        }
+        [WebMethod(EnableSession = true, Description = "Query sales list for date range")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void SalesListQuery(String year, String month)
         {
             SalesSearchResultList sl = new SalesSearchResultList();
 
             sl.ExecuteSearchByYearMonth(year, month);
+
+            Session["rawSQL"] = sl.rawSQLQuery;
+            Session["rawSQLCount"] = sl.rec_count;
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             String res = serializer.Serialize(sl.salessearch_list);
@@ -203,7 +272,7 @@ namespace WebGIS
         }
 
 
-        [WebMethod(Description = "Query sales list using detailed search")]
+        [WebMethod(EnableSession = true, Description = "Query sales list using detailed search")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void SalesListQuery_Detailed(String objjson)
         {
@@ -217,7 +286,9 @@ namespace WebGIS
             CAMVIEW_SalesList sl = new CAMVIEW_SalesList();
             sl.ExecuteSearch(so);
 
-           
+            Session["rawSQL"] = sl.rawSQLQuery;
+            Session["rawSQLCount"] = sl.rec_count;
+
             String res = serializer.Serialize(sl.CAMVIEW_Sales_list);
        
 
@@ -226,7 +297,7 @@ namespace WebGIS
         }
 
 
-        [WebMethod(Description = "Query sales data using detailed search")]
+        [WebMethod(EnableSession = true, Description = "Query sales data using detailed search")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void SalesDataQuery(String objjson)
         {
@@ -242,7 +313,7 @@ namespace WebGIS
             System.Web.HttpContext.Current.Response.Write(res);
         }
 
-        [WebMethod(Description = "Query sales data using detailed search")]
+        [WebMethod(EnableSession = true, Description = "Query sales data using detailed search")]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
         public void SalesDataQueryPaged(int startrec,int endrec,String objjson)
         {
@@ -252,6 +323,12 @@ namespace WebGIS
             clsSalesData sl = new clsSalesData();
             sl.ExecutePagedSearch(so,startrec,endrec);
             sl.proplist.search_type = "sales";
+
+            Session["rawSQL"] = sl.rawSQLQuery;
+            Session["rawSQLCount"] = sl.rec_count;
+
+
+
             String res = serializer.Serialize(sl.proplist);
 
             //return res;
@@ -679,6 +756,7 @@ namespace WebGIS
         public int rec_count = 0;
         public String search_type = "";
         public String sqlWhere = "";
+        public String rawSQLQuery = "";
 
 
         public PropertySearchResult[] ps_res;
@@ -715,7 +793,7 @@ namespace WebGIS
             //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
             sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
             
-            sqlStr = sqlStr + " FROM CAMVIEW_PropertyList";
+            sqlStr = sqlStr + " FROM CAMVIEW_PropertyList ";
 
             String osqlStr = sqlStr;
             String csqlStr = "SELECT distinct PIN FROM CAMVIEW_PropertyList ";
@@ -736,6 +814,8 @@ namespace WebGIS
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
                 csqlStr = csqlStr + " WHERE pin like '" + sqlWhereVal + "%'";
+
+                rawSQLQuery = osqlStr + " WHERE pin like '" + sqlWhereVal + "%'";
              }
             else if (searchtype == "pin_list")
             {
@@ -762,6 +842,8 @@ namespace WebGIS
 
                 csqlStr = csqlStr + " WHERE pin in " + newWhere;
 
+                rawSQLQuery = osqlStr + " WHERE pin in " + newWhere;
+
             }
             else if (searchtype == "address")
             {
@@ -775,6 +857,8 @@ namespace WebGIS
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
 
                 csqlStr = csqlStr + " WHERE Site_Address like '%" + sqlWhereVal + "%'";
+
+                rawSQLQuery = osqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%'";
 
             }
             else if (searchtype == "owner")
@@ -790,6 +874,8 @@ namespace WebGIS
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
 
                 csqlStr = csqlStr + " WHERE owner like '" + sqlWhereVal + "%'";
+
+                rawSQLQuery = osqlStr + " WHERE owner like '%" + sqlWhereVal + "%'";
             }
             else if (searchtype == "sub")
             {
@@ -830,6 +916,8 @@ namespace WebGIS
                 csqlStr = csqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 csqlStr = csqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
+                rawSQLQuery = osqlStr + " WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
+
 
             }
             else if (searchtype == "bus")
@@ -856,6 +944,8 @@ namespace WebGIS
                 csqlStr = csqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 csqlStr = csqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
 
+                rawSQLQuery = osqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
+
             }
 
             //sqlStr = sqlStr + " and l.lerecn=1";
@@ -870,9 +960,10 @@ namespace WebGIS
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
-
-
+ 
                 csqlStr = csqlStr + " WHERE  ledesc like '%" + sqlWhereVal + "%'";
+
+                rawSQLQuery = osqlStr + " WHERE  ledesc like '%" + sqlWhereVal + "%'";
             }
 
             csqlStr = "Select Count(*) FROM (" + csqlStr + ") c";
@@ -896,9 +987,7 @@ namespace WebGIS
             dt = new DataTable();
             DataSet dSet = new DataSet();
             da.Fill(dt);
-
-
-
+ 
             PrepResults(dt);
 
             cn.Close();
@@ -1020,12 +1109,12 @@ namespace WebGIS
         public int rec_count = 0;
         public String search_type = "";
         public String sqlWhere = "";
-
+        public String rawSQLQuery = "";
         public int start_rec = 1;
         public int end_rec = 50;
    
  
-        private String conStr = "Server=gisvm104\\GRIZZLY;Database=WebGIS;User Id=webgisuser;Password=web1gis;";
+        private String conStr = ConfigurationManager.AppSettings["WGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
         private String bsqlstr = "SELECT peflex1cd,peflname,pin,pefladdr1,pefladdr2,pefladdr3,peflacity,peflst,peflzip5,peflcntry,passnam,sardate FROM cama_search_view ";
 
@@ -1156,6 +1245,21 @@ namespace WebGIS
             }
 
 
+            rawSQLQuery = sqlStr;
+
+            String csqlStr = "Select Count(*) FROM (" + sqlStr + ") a";
+            SqlCommand ccmd = new SqlCommand(csqlStr, cn);
+
+            try
+            {
+                rec_count = (int)ccmd.ExecuteScalar();
+            }
+            catch
+            {
+                rec_count = 0;
+            }
+
+
 
             SqlCommand cmd = new SqlCommand(sqlStr, cn);
 
@@ -1234,55 +1338,6 @@ namespace WebGIS
 
     }
 
-    public class PropertySearchResult
-    {
-
-        public String pin;
-        public String owner;
-        public String addr;
-        public String hstead;
-        public String legal;
-        public String lastSale;
-        public String PEFLADDR1 = "";
-        public String PEFLADDR2 = "";
-        public String PEFLADDR3 = "";
-        public String PEFLCITY = "";
-        public String PEFLST = "";
-        public String PEFLZIP5 = "";
-        public String PEFLCNTRY = "";
-        public String PEFLCONF = "";
-
-        public PropertySearchResult() { }
-        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead)
-        {
-            pin = rpin;
-            owner = rowner;
-            addr = raddr;
-            hstead = rhstead;
-
-        }
-        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead, String legDesc)
-        {
-            pin = rpin;
-            owner = rowner;
-            addr = raddr;
-            hstead = rhstead;
-            legal = legDesc;
-        }
-
-        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead, String legDesc, String last_sale)
-        {
-            pin = rpin;
-            owner = rowner;
-            addr = raddr;
-            hstead = rhstead;
-            legal = legDesc;
-            lastSale = last_sale;
-        }
-
-
-    }
-
 
     public class SalesSearchResultList
     {
@@ -1296,7 +1351,8 @@ namespace WebGIS
         */
 
         public SalesSearchResult[] salessearch_list;
-        
+        public String rawSQLQuery = "";
+        public int rec_count = 0;
         String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         private ArrayList aps = new ArrayList();
 
@@ -1329,6 +1385,19 @@ namespace WebGIS
             sqlStr = sqlStr + "WHERE   RowNm >= 1  AND RowNum < 100000 ORDER BY RowNm";
 
             sqlStr = "SELECT   * FROM dbo.PA_SalesList_Query(" + year + "," + month + " )";
+
+            rawSQLQuery = sqlStr;
+            String csqlStr = "Select Count(*) FROM (" + sqlStr + ") a";
+            SqlCommand ccmd = new SqlCommand(csqlStr, cn);
+
+            try
+            {
+                rec_count = (int)ccmd.ExecuteScalar();
+            }
+            catch
+            {
+                rec_count = 0;
+            }
 
             SqlCommand cmd = new SqlCommand(sqlStr, cn);
 
@@ -1431,6 +1500,55 @@ namespace WebGIS
         {
             aps.Add(psr);
             salessearch_list = (SalesSearchResult[])aps.ToArray(typeof(SalesSearchResult));
+        }
+
+
+    }
+
+    public class PropertySearchResult
+    {
+
+        public String pin;
+        public String owner;
+        public String addr;
+        public String hstead;
+        public String legal;
+        public String lastSale;
+        public String PEFLADDR1 = "";
+        public String PEFLADDR2 = "";
+        public String PEFLADDR3 = "";
+        public String PEFLCITY = "";
+        public String PEFLST = "";
+        public String PEFLZIP5 = "";
+        public String PEFLCNTRY = "";
+        public String PEFLCONF = "";
+
+        public PropertySearchResult() { }
+        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead)
+        {
+            pin = rpin;
+            owner = rowner;
+            addr = raddr;
+            hstead = rhstead;
+
+        }
+        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead, String legDesc)
+        {
+            pin = rpin;
+            owner = rowner;
+            addr = raddr;
+            hstead = rhstead;
+            legal = legDesc;
+        }
+
+        public PropertySearchResult(String rpin, String rowner, String raddr, String rhstead, String legDesc, String last_sale)
+        {
+            pin = rpin;
+            owner = rowner;
+            addr = raddr;
+            hstead = rhstead;
+            legal = legDesc;
+            lastSale = last_sale;
         }
 
 

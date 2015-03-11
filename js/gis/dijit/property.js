@@ -5,6 +5,7 @@ define([
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     'gis/dijit/_FloatingWidgetMixin',
+    "dijit/Dialog",
     'dojo/dom-construct',
     'dojo/on',
     'dojo/_base/lang',
@@ -75,7 +76,7 @@ define([
 	'xstyle/css!./property/css/property.css'
 	//,'xstyle/css!./property/css/adw-icons.css'
 	 ,'dojo/domReady!'
-], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, domConstruct, on, lang
+], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
 ,dom
 ,Style
 ,query
@@ -167,6 +168,7 @@ define([
 		mapsearchpins:[],
 		savedlist:[],
 		qObj:null,
+		export_dia:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -1284,23 +1286,208 @@ define([
 			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");
 			if (window.focus) {puw.focus()}
 		}
-		,printMailLbls: function(){
-            var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
+
+		,printMailLblsMenu: function(e,isSavedTab ){
+
+		    if (typeof isSavedTab == "undefined")  isSavedTab = false;
+
+            console.log("printMailLbls",e,isSavedTab);
+            var _this=this;
+
+
+			var form = new Form();
+		    //var dia  = new Dialog({
+
+			//if (this.export_dia==null) {
+					 this.export_dia= new Dialog({
+								title: "Export Mailing Labels",
+								//content: "export.....",
+								content: form,
+								style: "width: 300px",
+								hide: function(){ _this.export_dia.destroy(); }
+							});
+
+					  var cp = new dijit.layout.ContentPane(
+					  {
+					   title:"Property Search Results"
+					   ,content: '<div   style="width: 95%;margin: 0px 0px 20px 0px;"><div id="expoptn" style="width: 95%;float:center">Please select an export option</div><div id="expstatus" style="height:15px;width: 95%;padding:0px;font-size:small;margin: auto;;background-color: rgb(141,214,249)"></div><div id="expres" style="margin: auto;height:12px;width: 95%;float:center;padding:0px;font-size:small;text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8), 0 0 1.2em rgba(1,14,39,0.5),0 0 0.2em rgba(1,114,139,0.5);"></div></div>'
+
+					   //,id:'cpPropresults'
+					   //,class:"claro"
+					   ,style: "height:180px;width: 99%;background-color: rgb(141,214,249);font-size:10px;text-align: center;",
+					   //class:"claro",
+						class:'nonModal',
+						draggable:true,
+						parseOnLoad:false
+					  }
+					  ).placeAt(form.containerNode);
+
+
+
+					var btn1=new Button({
+					  label: "Mailing Labels for Displayed Results",
+					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
+					  onClick: function(){
+						 console.log("Mailing Labels for Displayed Results",isSavedTab );
+						 _this.printMailLbls(isSavedTab);
+						 //lang.hitch(_this, 'printMailLbls') ;
+						 //searchProperty("address",dijit.byId('pVal').value);
+						 //dom.byId("result1").innerHTML += "Thank you! ";
+					  }
+
+					}).placeAt(cp);
+
+					var btn2=new Button({
+					  label: "Mailing Labels for All Results",
+					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
+					  onClick: function(){
+						 console.log("Mailing Labels for All Results" );
+						 _this.printMailLblsAll(isSavedTab);
+						 //lang.hitch(_this, 'printMailLblsAll') ;
+						 //searchProperty("address",dijit.byId('pVal').value);
+						 //dom.byId("result1").innerHTML += "Thank you! ";
+					  }
+
+					}).placeAt(cp);
+
+
+					var btn3=new Button({
+					  label: "Export Results to Excel",
+					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
+					  onClick: function(){
+						 console.log("Exporting to CSV" );
+						 _this.export2CSV(isSavedTab);
+						 //lang.hitch(_this, 'export2CSV') ;
+					  }
+
+					}).placeAt(cp);
+
+					form.startup();
+				   this.export_dia.resize();
+		           this.export_dia.show();
+
+					 try {
+
+						//Style.set(btn1.domNode, "font-size", "8px");
+						Style.set(btn1.domNode.firstChild, "font-size", "10px");
+						Style.set(btn2.domNode.firstChild, "font-size", "10px");
+						Style.set(btn3.domNode.firstChild, "font-size", "10px");
+						Style.set(btn1.domNode.firstChild, "width", "75%;");
+						Style.set(btn2.domNode.firstChild, "width", "75%;")
+						Style.set(btn3.domNode.firstChild, "width", "75%;")
+						Style.set(btn1.domNode  , "margin", "7px");
+						Style.set(btn2.domNode  , "margin", "7px");
+						Style.set(btn3.domNode  , "margin", "7px");
+
+					} catch (ex) {
+						console.error("error",ex);
+					}
+	      //} else {
+		//	   this.export_dia.resize();
+		 //       this.export_dia.show();
+		 // }
+
+	 }
+   ,export2CSV: function(isSavedTab){
+         console.log("export2CSV...");
+            if (typeof isSavedTab == "undefined")  isSavedTab = false;
+
+            Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
+            dom.byId("expstatus").innerHTML="preparing data ... please standby ";
+
+
+            var iurl='./webgis.asmx/ExportMailingLabelCSVSession'
+            if (isSavedTab) iurl='./webgis.asmx/ExportMailingLabelCSVPINs?pinlist=' + this.savedlist.join(",");
 		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
+					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
+					 //dom.byId("expstatus").innerHTML="success";
+
+					 document.getElementById("expstatus").style.display="none";
+					 dom.byId("expstatus").innerHTML="";
+
+
 					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
-                     window.open( text,"prcprint");
+                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
  	            } ,
  	            function (error){
+					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
+					dom.byId("expstatus").innerHTML="failed to get data";
 					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
-					this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
+					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
- 	                alert("Error Printing Labels : " + error);
+
+ 	            }
+ 	        );
+	}
+   ,printMailLblsAll: function(isSavedTab){
+
+	        if (typeof isSavedTab == "undefined")  isSavedTab = false;
+
+            Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
+            dom.byId("expstatus").innerHTML="preparing data ... please standby ";
+
+
+            var iurl='./webgis.asmx/PrintMailingLabelsSession'
+            if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
+		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+            request.get(iurl,{ handleAs: "text" }).then(
+                function (text){
+					 document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
+
+					 dom.byId("expstatus").innerHTML="success";
+					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download Labels Here</a> ';
+ 	            } ,
+ 	            function (error){
+					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
+					dom.byId("expstatus").innerHTML="failed to get data";
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
+ 	                console.log("Error Occurred: " + error);
+
+ 	            }
+ 	        );
+	}
+   ,printMailLbls: function(isSavedTab){
+
+		     console.log("printMailLbls",isSavedTab);
+
+		    if (typeof isSavedTab == "undefined")  isSavedTab = false;
+
+            document.getElementById("expstatus").style="height:15px;width: 95%;padding:0px;margin:auto;font-size:small;float:center;background-color:rgb(0,215,45)";
+            document.getElementById("expstatus").innerHTML="getting data";
+            Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
+            dom.byId("expstatus").innerHTML="preparing data ... please standby ";
+
+
+            var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
+            if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
+		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+            request.get(iurl,{ handleAs: "text" }).then(
+                function (text){
+					 document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
+
+					 dom.byId("expstatus").innerHTML="success";
+					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download Labels Here</a> ';
+                     //window.open( text,"prcprint");
+ 	            } ,
+ 	            function (error){
+					//Style.set(dom.byId("expstatus") , 'background-color', "rgb(200,15,15);");
+					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
+					dom.byId("expstatus").innerHTML="failed to get data";
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
+ 	                console.log("Error Occurred: " + error);
+ 	                //alert("Error Printing Labels : " + error);
  	            }
  	        );
 		}
 		,printMailLblsSaved: function(){
+			this.printMailLblsMenu(null,true);
+			/*
 			var _this=this;
             var iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
 		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
@@ -1316,6 +1503,7 @@ define([
  	                alert("Error Printing Labels : " + error);
  	            }
  	        );
+ 	        */
 		}
 		,GetPrintMap:function(pinv){
 			/*

@@ -142,7 +142,8 @@
  	background: -o-linear-gradient(top,#3f7f00,ffffaa);
  	background-image: -ms-linear-gradient(top, #3f7f00 0%, #ffffaa 100%);
   	background-color:#3f7f00;
-*/ 	
+*/ 
+/*
  	background:-o-linear-gradient(bottom, #8dd6f9 5%, #009081 100%);	
  	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dd6f9), color-stop(1, #009081) );
  	background:-moz-linear-gradient( center top, #8dd6f9 5%, #009081 100% );
@@ -150,6 +151,14 @@
  	background: -o-linear-gradient(top,#8dd6f9,#009081);
  	background-image: -ms-linear-gradient(top, #8dd6f9 0%, #009081 100%);
   	background-color:#8dd6f9;	
+*/ 	
+  	background:-o-linear-gradient(bottom, #8dd6f9 5%, #69908d 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dd6f9), color-stop(1, #69908d) );
+ 	background:-moz-linear-gradient( center top, #8dd6f9 5%, #69908d 100% );
+ 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dd6f9", endColorstr="#69908d");	background: -o-linear-gradient(top,#8dd6f9,ffffaa);
+ 
+ 	background-color:#8dd6f9;	
+ 	
+ 	
  	
  	border:0px solid #15157f;
  	text-align:center;
@@ -162,11 +171,20 @@
  	color:#050404;
  }
  .CSSTableGenerator tr:first-child:hover td{
+ 	/*
  	background:-o-linear-gradient(bottom, #8dd6f9 5%, #69908d 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dd6f9), color-stop(1, #69908d) );
  	background:-moz-linear-gradient( center top, #8dd6f9 5%, #69908d 100% );
  	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dd6f9", endColorstr="#69908d");	background: -o-linear-gradient(top,#8dd6f9,ffffaa);
  
  	background-color:#8dd6f9;
+ 	*/
+ 	background:-o-linear-gradient(bottom, #8dd6f9 5%, #009081 100%);	
+ 	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dd6f9), color-stop(1, #009081) );
+ 	background:-moz-linear-gradient( center top, #8dd6f9 5%, #009081 100% );
+ 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dd6f9", endColorstr="#009081");	
+ 	background: -o-linear-gradient(top,#8dd6f9,#009081);
+ 	background-image: -ms-linear-gradient(top, #8dd6f9 0%, #009081 100%);
+  	background-color:#8dd6f9; 	
  }
  .CSSTableGenerator tr:first-child td:first-child{
  	

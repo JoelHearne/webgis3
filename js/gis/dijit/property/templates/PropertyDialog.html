@@ -43,9 +43,11 @@
                                                     <p style="margin:0px;font-weight:bold">Parcel Number:</p>
                                                     <input id="tbPIN" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchPIN"   style="width: 219px;"></input>
                                                     <br>
+                                                    <br>
 
                                                     <p style="margin:0px;font-weight:bold">Owner:</p>
                                                     <input id="tbOwner" type="text" autocomplete="on" data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="searchOwner"   style="width: 286px;"></input>
+                                                    <br>
                                                     <br>
                                                     <br>
 
@@ -364,7 +366,7 @@
                                  <div id="pZmDv" style="float:center; padding:0px;margin;0px;">
                                       <input id="btnZoomAlllIST" data-dojo-attach-point="btnZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllList"></input>
 
-                                     <input id="btnPrLbls" data-dojo-attach-point="btnPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLbls"></input>
+                                     <input id="btnPrLbls" data-dojo-attach-point="btnPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsMenu"></input>
 
                                  </div>
                                  <br>
@@ -415,7 +417,8 @@
                 <div id="pSavedTab" data-dojo-type="dijit/layout/ContentPane" title="Saved">
 
 
-                    <div class="ptabContent ptabContMain">
+                    <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
+                             <br>
                              <div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;">
                                       <input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input>
 
@@ -424,10 +427,10 @@
                             </div>
 
                             <br>
-                        <div class="ptabContent ptabContMain">
+                         <div class="ptabContent ptabContMain">
 
-                            <br>
-                            <div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="float:center;padding:0px !important;margin:0px !important;">
+                          <br>
+                            <div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
 
 
 
@@ -437,8 +440,7 @@
 
 
                             </div>
-
-                        </div>
+                      </div>
                     </div>
                 </div>
             </div>

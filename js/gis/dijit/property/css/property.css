@@ -29,9 +29,13 @@ select {
 #pSearchResults {
    overflow: hidden !important;
    height:auto;
-
-
 }
+
+#pSearchSaved {
+   overflow: hidden !important;
+   height:auto;
+}
+
 
 /*
 #propertyNode  * {
@@ -331,6 +335,11 @@ select {
     background-color: rgba(112, 162, 171, 0.5  ); 
 }
 
+.dbootstrap .dijitDialogTitle {
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0px;
+}
 
 .progressDialog h2 {
     color: #000000;

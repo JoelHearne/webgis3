@@ -9,6 +9,8 @@ using System.Data.SqlTypes;
 using System.Data;
 using System.IO;
 using System.Reflection;
+using System.Configuration;
+using System.Collections;
 
 namespace WebGIS
 {
@@ -19,9 +21,12 @@ namespace WebGIS
         public CAMVIEW_Sales[] CAMVIEW_Sales_list;
         private ArrayList aps = new ArrayList();
 
-        public String conStr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
+        
+        public String conStr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
         public String srcView = "CAMVIEW_Sales";
 
+        public int rec_count = 0;
+        public String rawSQLQuery = "";
 
 
         public void ExecuteSearch(CAMVIEW_Sales qryObj)
@@ -45,6 +50,21 @@ namespace WebGIS
             String sqlStr = "";
             sqlStr = sqlStr + "select * from CAMVIEW_Sales ";
             sqlStr = sqlStr + clsSqlHelper.buildWhereStr(qryObj);
+
+            String csqlStr = "Select Count(*) FROM (" + sqlStr + ") a";
+            SqlCommand ccmd = new SqlCommand(csqlStr, cn);
+
+            try
+            {
+                rec_count = (int)ccmd.ExecuteScalar();
+            }
+            catch
+            {
+                rec_count = 0;
+            }
+
+
+
 
             SqlCommand cmd = new SqlCommand(sqlStr, cn);
 

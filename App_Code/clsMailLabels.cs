@@ -26,6 +26,7 @@ using System.Web.Script.Services;
 using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using System.Web.Configuration;
+using System.Configuration;
 using System.Collections;
 using System.Data.SqlClient;
 using System.Data.Sql;
@@ -48,18 +49,25 @@ namespace Mapserv
         public String search_string = "";
         public String PDFPth = "";
         public int qpage = 1;
+        public String rawSQL = "";
+
         private static String outDir = ConfigurationManager.AppSettings["OutputLocation"];
         private DirectoryInfo di = new System.IO.DirectoryInfo(outDir);
         private String baseOutputURL = ConfigurationManager.AppSettings["baseOutputURL"];
         //private String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
-        String cgis_connstr = "Server=gisvm104\\GRIZZLY;Database=Central_GIS;User Id=PA_User;Password=pa2gisuser;";
-
-
+      
+        String cgis_connstr = ConfigurationManager.AppSettings["CGIS_CONNSTR"];
+        
         private ArrayList label_al = new System.Collections.ArrayList();
 
         public clsMailLabels()
         {
 
+        }
+
+        public clsMailLabels(String rawSQLStr)
+        {
+            rawSQL = rawSQLStr;
         }
 
         public clsMailLabels(String searchtype, String searchstring)
@@ -80,9 +88,16 @@ namespace Mapserv
         {
             QueryDB();
             DrawLabels();
-
         }
 
+        public void DoItRawSql()
+        {
+            if (this.rawSQL != "")
+            {
+                QueryDBRaw(this.rawSQL);
+                DrawLabels();
+            }
+        }
 
         private void DrawLabels()
         {
@@ -521,6 +536,87 @@ namespace Mapserv
                     {
                         MailingLabel ml = new MailingLabel();
                         ml.laddr = (System.String)dt.Rows[i]["Site_Address"];
+                        ml.lname = (System.String)dt.Rows[i]["owner"];
+                        ml.laddr_1 = (System.String)dt.Rows[i]["PEFLADDR1"];
+                        ml.laddr_2 = (System.String)dt.Rows[i]["PEFLADDR2"];
+                        ml.laddr_3 = (System.String)dt.Rows[i]["PEFLADDR3"];
+                        ml.lcity = (System.String)dt.Rows[i]["PEFLCITY"];
+                        ml.lstate = (System.String)dt.Rows[i]["PEFLST"];
+                        ml.lcntry = (System.String)dt.Rows[i]["PEFLCNTRY"];
+                        ml.zip = (System.String)dt.Rows[i]["PEFLZIP5"];
+
+                        ml.Cleanup();
+
+                        label_al.Add(ml);
+                    }
+                    catch
+                    {
+                    }
+
+                }
+
+
+            }
+
+
+
+
+
+            try
+            {
+                cn.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+        }
+
+        private void QueryDBRaw(String sqlStr)
+        {
+
+           
+
+            DataTable dt = new DataTable();
+
+            SqlConnection cn = null;
+            SqlDataAdapter da = null;
+
+            cn = new SqlConnection(cgis_connstr);
+
+            try
+            {
+                cn.Open();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            Debug.Print(sqlStr);
+
+            SqlCommand cmd = new SqlCommand(sqlStr, cn);
+
+            da = new SqlDataAdapter(cmd);
+            dt = new DataTable();
+            DataSet dSet = new DataSet();
+            da.Fill(dt);
+
+
+            // build labels
+            //MailingLabel
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+
+                    try
+                    {
+                        MailingLabel ml = new MailingLabel();
+                        //ml.laddr = (System.String)dt.Rows[i]["Site_Address"];
                         ml.lname = (System.String)dt.Rows[i]["owner"];
                         ml.laddr_1 = (System.String)dt.Rows[i]["PEFLADDR1"];
                         ml.laddr_2 = (System.String)dt.Rows[i]["PEFLADDR2"];
