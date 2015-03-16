@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>FeatureTable without map</title>
+  <link rel="stylesheet" href="//js.arcgis.com/3.12/dijit/themes/claro/claro.css">
+  <link rel="stylesheet" href="//js.arcgis.com/3.12/esri/css/esri.css">
+  <script src="//js.arcgis.com/3.12/"></script>
+  <link rel="stylesheet" href="js/gis/dijit/prc/css/prc.css">
+
+<script src="js/boomerang/boomerang.js"></script>
+
+
+<script>
+   console.clear();
+   console.log("starting webgis3 entry point");
+
+   var isSent=0;
+
+
+   //http://yahoo.github.io/boomerang End user oriented web performance testing and beaconing
+   BOOMR.init({
+       beacon_url: "beacon.php",
+	BW: {
+		 base_url: "http://gisvm109/webgis3_dev/js/boomerang/images/"
+
+	}
+   });
+
+  BOOMR.subscribe('before_beacon', function(o) {
+	console.log("perf results",isSent,o);
+	isSent=1;
+  });
+
+  var maxits=15;
+  var its=0;
+
+  var intrl = setInterval(checkBOOMR, 500);
+  function checkBOOMR(){
+   if (isSent==1){
+        console.log("GOTIT!!!!");
+        clearInterval(intrl);
+        document.location="default.htm";
+   }
+   its++;
+   if (its == maxits) {
+       clearInterval(intrl);
+       document.location="default.htm";
+   }
+ }
+
+</script>
+
+
+<script>
+     require([
+      "dojo/dom-construct",
+      "dojo/dom",
+      "dojo/parser",
+      "dojo/ready",
+      "dojo/on",
+      "dojo/_base/lang",
+      "dijit/registry"
+    ], function (
+      domConstruct, dom, parser, ready, on,lang,
+      registry
+    ) {
+      //parser.parse();
+      ready(function(){
+         console.log("dojo document ready");
+      });
+    });
+  </script>
+
+</head>
+
+<body >
+  <p>
+    <i>Welcome to Okaloosa WebGIS..please standbye while we check your bandwidth.</i>
+  </p>
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -86,8 +86,6 @@ define([
              this.address=mailing_addr;
              this.homestead=dobj.HMSTD;
 
-             console.log("acres",dobj.acres);
-
              this.pcAcres.innerHTML=dobj.acres;
              this.pcPropuse.innerHTML=dobj.propertyuse;
              this.pcLanduse.innerHTML=dobj.landuse;

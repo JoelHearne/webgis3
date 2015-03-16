@@ -36,7 +36,11 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
-            document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+            try {
+               document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+		    } catch (ex){
+
+		    }
             //Style.set(this.domNode, 'font-size', ' 12px');
             //Style.set(this.resultValue.domNode, 'font-size', ' 12px');
 

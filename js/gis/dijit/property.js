@@ -212,6 +212,14 @@ define([
 			    qsaleObj:null
 			};
 
+			// listen for topic broadcasts
+			topic.subscribe('property/showSpatial', lang.hitch(this, function (arg) {
+			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
+			  _this.changeSearchForm(null,"map");
+			  if (!_this.parentWidget.open) _this.showThis();
+			}));
+
+
 		}
 		,startup: function() {
 			this.inherited(arguments);
@@ -629,10 +637,12 @@ define([
 				 })));
 		   }
  		}
-        ,changeSearchForm:function(evt){
+        ,changeSearchForm:function(evt,selForm){
 			//this.clearSearch();
 			var SearchPane  = registry.byId("psearchForm");
-			var selForm=evt.target.value;
+			//var selForm=evt.target.value;
+			if (typeof selForm == "undefined")  selForm=evt.target.value;
+
             var frmObj=null;
             this.activeMenu=selForm;
 
@@ -1059,7 +1069,7 @@ define([
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
 
-
+            console.log("handlePRCevent",actntype);
 			var prcob=registry.byId(prcID);
  			if (actntype == "pc_zoom") {
                /*topic.publish('InitZoomer/ZoomParcel', {
@@ -1545,6 +1555,8 @@ define([
            this.clearGraphics();
   		}
 		,zoomPIN:function(pin,doDBSearch) {
+
+			    console.log("zoomPIN",doDBSearch);
 				if (typeof doDBSearch == "undefined") {
 					doDBSearch = true;
 				}

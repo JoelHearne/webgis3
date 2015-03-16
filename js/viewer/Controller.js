@@ -82,6 +82,28 @@ define([
 
            this.showQuickTip();
 
+           // insert spatial search link
+           var _this=this;
+           //dom.byId("spatialDijit").innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
+           //var node = document.getElementById('spatialDijit');
+           //domAttr.set(node, "innerHTML", "<a id=\"qrySpatLnk\" >Spatial Search</a>");
+           document.getElementById('spatialDijit').innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
+           document.getElementById('qrySpatLnk').onclick = function(){ _this.showSpatialSearchMenu(); };
+
+
+
+		   //var timerEnd =  (new Date()).getTime();
+
+		   //console.log("finished loading.... ",timerEnd);
+           //var sec = (timerEnd-timerStart)/1000;
+          //console.log("finished loading loadtime.... ",sec," seconds");
+		}
+		,showSpatialSearchMenu:function(){
+			console.log("showSpatialSearchMenu");
+			document.getElementById('selSearchType').getElementsByTagName('option')[5].selected = true;
+			topic.publish('property/showSpatial', ".");
+
+
 		}
 		,showQuickTip:function() {
 		   this.map.infoWindow.setTitle("Quick Tip");
