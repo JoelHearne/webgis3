@@ -169,9 +169,11 @@ define([
 		savedlist:[],
 		qObj:null,
 		export_dia:null,
+	    ptmrStrt:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
+			this.ptmrStrt= performance.now();
             var _this=this;
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
@@ -269,6 +271,12 @@ define([
             //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
 			this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
             //console.log("query test",query(".propertyContainer"));
+
+            if (performance && ptmrSt != null) {
+				 var ptmrEnd = performance.now();
+				 console.log(" property widget load perftime from page init.... ",(ptmrEnd-ptmrSt)," ms");
+				 console.log(" property widget load perftime from widget init.... ",(ptmrEnd-this.ptmrStrt)," ms");
+		    }
 
  			return this.pshowAtStartup;
         }

@@ -107,7 +107,7 @@ define([
 			// show on startup as splashscreen
 			//lang.hitch(this.parentWidget, 'show')
             this.userPreferenceDefaults= {
-			            showWelcome: true
+			            showWelcome: false
 			            ,showStartupMetrics: true
 			            ,showCoordinates: true
 			            ,disclaimer:false
@@ -126,11 +126,13 @@ define([
             if (!this.hasCookie)
                  this._writeCookie();
             // uncomment to open at startup
-            if (this.userPreferences.showWelcome ) {
+            if (this.userPreferences.showWelcome || !this.checkDisclaimer() ) {
 				this.parentWidget.show();
 				// show disclaimer if not agreed to
 				if (!this.checkDisclaimer()) dijit.byId("hHelpTabs").selectChild(dijit.byId("hDisclaimerTab"));
-		    }
+		    } else {
+				this.parentWidget.hide();
+			}
 			 on(this.parentWidget, 'hide', lang.hitch(this, 'close'));
 
 			 this.vers_str.textContent="version " + this.webgis_version;

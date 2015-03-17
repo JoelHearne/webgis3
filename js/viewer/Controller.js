@@ -50,6 +50,8 @@ define([
 			}
 		},
 		collapseButtons: {},
+		timerStart:null,
+		isMapInit:false,
 
 		startup: function (config) {
 			this.config = config;
@@ -90,13 +92,15 @@ define([
            document.getElementById('spatialDijit').innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
            document.getElementById('qrySpatLnk').onclick = function(){ _this.showSpatialSearchMenu(); };
 
+		   var timerEnd =  (new Date()).getTime();
+           var sec = (timerEnd-timerStart)/1000;
 
+		   if (performance && ptmrSt != null) {
+			   var ptmrEnd = performance.now();
+			   console.log(" page load perftime.... ",(ptmrEnd-ptmrSt)," ms");
+		   }
 
-		   //var timerEnd =  (new Date()).getTime();
-
-		   //console.log("finished loading.... ",timerEnd);
-           //var sec = (timerEnd-timerStart)/1000;
-          //console.log("finished loading loadtime.... ",sec," seconds");
+           console.log("finished loading loadtime.... ",sec," seconds");
 		}
 		,showSpatialSearchMenu:function(){
 			console.log("showSpatialSearchMenu");
@@ -473,7 +477,27 @@ define([
 
 			*/
 
+            var _this=this;
+			this.map.on('update-start', function (layer) {
+			   if (!_this.isMapInit) {
+				   console.log(" update-start",layer);
+			       _this.timerStart=  (new Date()).getTime();
+		       }
+			});
+			this.map.on('update-end', function (layer) {
+				if (!_this.isMapInit) {
+				   console.log("update-end");
+ 				   var timerEnd =  (new Date()).getTime();
+				   var sec = (timerEnd-_this.timerStart)/1000;
 
+                   console.log("map load time: ",sec," seconds" );
+                   if (performance && ptmrSt != null) {
+				   		var ptmrEnd = performance.now();
+				   		console.log(" map load perftime.... ",(ptmrEnd-ptmrSt)," ms");
+		           }
+                   _this.isMapInit=true;
+			   }
+			});
 
             ///////////////////////////////////////////////////////////////////
 
@@ -850,7 +874,7 @@ define([
 
 					for (var option in options) {
 						if (options.hasOwnProperty(option)) {
-							console.log(option, options[option]);
+							//console.log(option, options[option]);
 						}
 					}
 

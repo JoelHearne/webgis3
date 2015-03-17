@@ -24,6 +24,10 @@
 	//top:0px;
 	//left:0px;
 }
+
+#help_parent {
+   z-index:999999 !important;
+}
  
 .discl_text {
  
@@ -58,11 +62,11 @@
     //animation: blinker steps(15) 10s infinite;  
 }
 #discbtn2 {
-   color: #FF0000;
+   color: rgba(100, 131, 170, 1) !important;
    //font: 25px/6px "Comic Sans MS","Comic Sans","Chalkboard",cursive;
    font-size: 12px;
    font-weight: bold;
-   text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
+   text-shadow: 0 0 0.2em rgba(140, 214, 249, 1), 0 0 0.2em rgba(140, 214, 249, 1),0 0 0.3em rgba(140, 214, 249, 0.3);
    //animation: blinker steps(3) 2s infinite;
  
 }
