@@ -24,6 +24,7 @@ define([
     esriConfig.defaults.io.corsDetection=true;
     esriConfig.defaults.io.useCors=true;
     esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
+    esriConfig.defaults.io.corsEnabledServers.push("gisvm101:6080");
 
 	// url to your geometry server.
 	esriConfig.defaults.geometryService = new GeometryService('http://gisvm101:6080/arcgis/rest/services/Utilities/Geometry/GeometryServer');
@@ -94,8 +95,8 @@ define([
                    //new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer'} )
                    //,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  })
                      new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
-                    ,new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12] } )
-                    ,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
+                    //,new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11, 12] } )
+                    //,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [ 11, 12] ,copyright:"Okaloosa County WebGIS" })
 
 				]
 				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
@@ -184,214 +185,37 @@ define([
 			//,identifyLayerInfos: { layerIds: [11] }
 		}
 
-		// WMS and wms layer type is not supported controller.js line 575
-		//new mapservLayer({ wkid: 102100 });
-		 /*,{
-					type: 'mapserv',
-					url: 'http://204.49.20.75/ms/cgi/mapserv.exe?map=d:\\inetpub\\wwwroot\\ms6\\data\\pa\\map.map&service=WMS&request=GetCapabilities&version=1.3.0',
-					title: 'wms_aerial',
-					slider: false,
-					noLegend: true,
-					collapsed: false,
-					options: {
-						id: 'wms_aerial',
-						opacity: 1,
-						visible: true,
-						imageParameters: imageParameters
-					},
-					layerControlLayerInfos: {
-						swipe: true
-					}
-		}
-		*/
-
-
-		/*,
-        {
-			type: 'dynamic',
-			url: 'http://gisvm101:6080/arcgis/rest/services/Parcels/MapServer/',
-			title: 'parcels',
-			slider: true,
-			noLegend: false,
-			collapsed: false,
-			options: {
-				id: 'parcels',
-				opacity: 1,
-				visible: true,
-				imageParameters: imageParameters
-			},
-			layerControlLayerInfos: {
-				swipe: true
-			}
-		}
-       */
-
-
-
-
-
-
-
-		/*,{
-			type: 'feature',
-			url: 'http://204.49.20.75:6080/arcgis/rest/services/fs_test/FeatureServer/0',
-			title: 'Observation_Points',
-			options: {
-				id: 'obspoints',
-				opacity: 1.0,
-				visible: true,
-				outFields: ['*'],
-				mode: 0
-			},
-			editorLayerInfos: {
-				disableGeometryUpdate: false
-			}
-		}*/
-
-
-		/*,{
-			type: 'tiled',
-			url: 'http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer',
-			title: '2013 OrthoMosaic',
-			slider: true,
-			noLegend: false,
-			collapsed: false,
-			sublayerToggle: true, //true to automatically turn on sublayers
-			options: {
-				id: 'ortho_2013',
-				opacity: 1.0,
-				visible: true
-				,imageParameters: imageParameters
-			  }
-			}
-*/
-		/*{
-			type: 'feature',
-			url: 'http://services1.arcgis.com/g2TonOxuRkIqSOFx/arcgis/rest/services/MeetUpHomeTowns/FeatureServer/0',
-			title: 'STLJS Meetup Home Towns',
-			options: {
-				id: 'meetupHometowns',
-				opacity: 1.0,
-				visible: true,
-				outFields: ['*'],
-				mode: 0
-			},
-			editorLayerInfos: {
-				disableGeometryUpdate: false
-			}
-		}, {
-			type: 'feature',
-			url: 'http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0',
-			title: 'San Francisco 311 Incidents',
-			options: {
-				id: 'sf311Incidents',
-				opacity: 1.0,
-				visible: true,
-				outFields: ['req_type', 'req_date', 'req_time', 'address', 'district'],
-				mode: 0
-			}
-		},*/
-		/*{
-			type: 'dynamic',
-			url: 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/PublicSafety/PublicSafetyOperationalLayers/MapServer',
-			title: 'Louisville Public Safety',
-			slider: true,
-			noLegend: false,
-			collapsed: false,
-			sublayerToggle: false, //true to automatically turn on sublayers
-			options: {
-				id: 'louisvillePubSafety',
-				opacity: 1.0,
-				visible: true,
-				imageParameters: imageParameters
-			},
-			identifyLayerInfos: {
-				layerIds: [2, 4, 5, 8, 12, 21]
-			}
-		},*/
-      /*{
-			type: 'dynamic',
-			url: 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/PublicSafety/PublicSafetyOperationalLayers/MapServer',
-			title: 'Louisville Public Safety',
-			slider: true,
-			noLegend: false,
-			collapsed: false,
-			sublayerToggle: false, //true to automatically turn on sublayers
-			options: {
-				id: 'louisvillePubSafety',
-				opacity: 1.0,
-				visible: true,
-				imageParameters: imageParameters
-			},
-			identifyLayerInfos: {
-				layerIds: [2, 4, 5, 8, 12, 21]
-			}
-		} ,*/
-		/* {
-			type: 'dynamic',
-			url: 'http://204.49.20.75:6080/arcgis/rest/services/internet_webgis/MapServer',
-			title: 'WebGIS',
-			slider: true,
-			noLegend: false,
-			collapsed: false,
-			options: {
-				id: 'webgis',
-				opacity: 1.0,
-				visible: false,
-				imageParameters: imageParameters
-			},
-			layerControlLayerInfos: {
-				swipe: true
-			}
-		},
-		{
-					type: 'dynamic',
-					url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Parcels/MapServer',
-					title: 'parcels',
-					slider: true,
-					noLegend: false,
-					collapsed: false,
-					options: {
-						id: 'parcels',
-						opacity: 1.0,
-						visible: true,
-						imageParameters: imageParameters
-					},
-					layerControlLayerInfos: {
-						swipe: true
-					}
-		} , {
-					type: 'dynamic',
-					url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/2013Images/MapServer',
-					title: '2013Imagery',
-					slider: true,
-					noLegend: false,
-					collapsed: false,
-					options: {
-						id: '2013Imagery',
-						opacity: 1.0,
-						visible: true,
-						imageParameters: imageParameters
-					},
-					layerControlLayerInfos: {
-						swipe: true
-					}
-		}*/
-
-
 
 		],
 		// set include:true to load. For titlePane type set position the the desired order in the sidebar
 		widgets: {
-			growler: {
+			 help: {
 				include: true,
-				id: 'growler',
-				type: 'domNode',
-				path: 'gis/dijit/Growler',
-				srcNodeRef: 'growlerDijit',
-				options: {}
+				id: 'help',
+				type: 'floating',
+				path: 'gis/dijit/Help',
+				title: 'Okaloosa County Map Viewer',
+				options: { webgis_version:"0.92"}
 			}
-
+		 	,property: {
+				include: true,
+				id: 'property',
+				type: 'floating',
+				path: 'gis/dijit/property',
+				title: 'Property Search',
+				options:'config/property'
+				//options: { map: true }
+			}
+ 			, load_indicator : {
+							include: true,
+							id: 'load_indicator',
+							type: 'invisible',
+							path: 'gis/dijit/load_indicator',
+							//srcNodeRef: 'initParams',
+							options: {
+								map: true
+							}
+			}
 			,InitZoomer : {
 				include: true,
 				id: 'InitZoomer',
@@ -404,6 +228,91 @@ define([
 				    ,tocLayerInfos:true
 				}
 			}
+			,legend: {
+				include: true,
+				id: 'legend',
+				type: 'titlePane',
+				path: 'esri/dijit/Legend',
+				title: 'Legend',
+				open: false,
+				position: 0,
+				options: {
+					map: true,
+					legendLayerInfos: true
+				}
+			}
+			,layerControl: {
+				include: true,
+				id: 'layerControl',
+				type: 'titlePane',
+				path: 'gis/dijit/LayerControl',
+				title: 'Layers',
+				open: true,
+				position: 0,
+				options: {
+					map: true,
+					layerControlLayerInfos: true,
+					separated: true,
+					vectorReorder: true,
+					overlayReorder: true
+				}
+			}
+            ,navtools: {
+				include: true,
+				id: 'navtools',
+				//type: 'titlePane',
+				//canFloat: false,
+			    type: 'domNode',
+				srcNodeRef: 'navtoolsDijit',
+				path: 'gis/dijit/NavTools',
+				title: 'Navigation Tools',
+				//open: false,
+				//position: 0,
+				//placeAt: 'right',
+				options: {
+					map: true,
+					mapRightClickMenu: true,
+					mapClickMode: true
+				}
+			}
+           ,panpuck: {
+				include: true,
+				id: 'panpuck',
+				//type: 'titlePane',
+				//canFloat: false,
+			    type: 'domNode',
+				srcNodeRef: 'panpuckDijit',
+				path: 'gis/dijit/PanPuck',
+				title: 'Pan Tool',
+				//open: false,
+				//position: 0,
+				//placeAt: 'right',
+				options: {
+					map: true
+				}
+			}
+			,identify: {
+				include: true,
+				id: 'identify',
+				type: 'titlePane',
+				path: 'gis/dijit/Identify',
+				title: 'Identify',
+				open: false,
+				position: 3,
+				options: 'config/identify'
+			}
+			,goto: {
+				include: true,
+				id: 'goto',
+				type: 'titlePane',
+				path: 'gis/dijit/Goto',
+				title: 'Go to Coordinate',
+				open: false,
+				position: 12,
+				options: { map: true }
+			}
+
+
 
             /*
 			,IntroSplash : {
@@ -437,42 +346,8 @@ define([
 			}
 */
 
-            ,navtools: {
-				include: true,
-				id: 'navtools',
-				//type: 'titlePane',
-				//canFloat: false,
-			    type: 'domNode',
-				srcNodeRef: 'navtoolsDijit',
-				path: 'gis/dijit/NavTools',
-				title: 'Navigation Tools',
-				//open: false,
-				//position: 0,
-				//placeAt: 'right',
-				options: {
-					map: true,
-					mapRightClickMenu: true,
-					mapClickMode: true
-				}
-			}
 
 
-           ,panpuck: {
-				include: true,
-				id: 'panpuck',
-				//type: 'titlePane',
-				//canFloat: false,
-			    type: 'domNode',
-				srcNodeRef: 'panpuckDijit',
-				path: 'gis/dijit/PanPuck',
-				title: 'Pan Tool',
-				//open: false,
-				//position: 0,
-				//placeAt: 'right',
-				options: {
-					map: true
-				}
-			}
 /*
 
 
@@ -514,48 +389,7 @@ define([
 		  }
 */
 
-			,property: {
-				include: true,
-				id: 'property',
-				type: 'titlePane',
-				path: 'gis/dijit/property',
-				title: 'property',
-				open: false,
-				position: 15,
-				options: 'config/property'
-			}
 
-			,identify: {
-				include: true,
-				id: 'identify',
-				type: 'titlePane',
-				path: 'gis/dijit/Identify',
-				title: 'Identify',
-				open: false,
-				position: 3,
-				options: 'config/identify'
-			}
-			,goto: {
-				include: true,
-				id: 'goto',
-				type: 'titlePane',
-				path: 'gis/dijit/Goto',
-				title: 'Go to Coordinate',
-				open: false,
-				position: 12,
-				options: { map: true }
-			}
-
-			 ,basemaps: {
-				include: true,
-				id: 'basemaps',
-				title: 'Basemaps',
-				type: 'domNode',
-				//position: 13,
-				path: 'gis/dijit/Basemaps',
-				srcNodeRef: 'basemapsDijit',
-				options: 'config/basemaps'
-			}
 
 
 /*
@@ -669,35 +503,7 @@ define([
 				}
 			}
 
-			,legend: {
-				include: true,
-				id: 'legend',
-				type: 'titlePane',
-				path: 'esri/dijit/Legend',
-				title: 'Legend',
-				open: false,
-				position: 0,
-				options: {
-					map: true,
-					legendLayerInfos: true
-				}
-			}
-			,layerControl: {
-				include: true,
-				id: 'layerControl',
-				type: 'titlePane',
-				path: 'gis/dijit/LayerControl',
-				title: 'Layers',
-				open: false,
-				position: 0,
-				options: {
-					map: true,
-					layerControlLayerInfos: true,
-					separated: true,
-					vectorReorder: true,
-					overlayReorder: true
-				}
-			}
+
 
 			,bookmarks: {
 				include: true,
@@ -771,6 +577,16 @@ define([
 					defaultFormat: 'PDF',
 					defaultLayout: 'Letter ANSI A Landscape'
 				}
+			}
+			 ,basemaps: {
+				include: true,
+				id: 'basemaps',
+				title: 'Basemaps',
+				type: 'domNode',
+				//position: 13,
+				path: 'gis/dijit/Basemaps',
+				srcNodeRef: 'basemapsDijit',
+				options: 'config/basemaps'
 			}
 
 			/*,PINSearch: {
@@ -849,7 +665,7 @@ define([
 				}
 			}
 */
-
+/*
  			,streetview: {
 				include: true,
 				id: 'streetview',
@@ -865,38 +681,17 @@ define([
 					mapRightClickMenu: true
 				}
 			}
+*/
 
-			,help: {
+			,growler: {
 				include: true,
-				id: 'help',
-				type: 'floating',
-				path: 'gis/dijit/Help',
-				title: 'Okaloosa County Map Viewer',
-				options: { webgis_version:"0.92"}
+				id: 'growler',
+				type: 'domNode',
+				path: 'gis/dijit/Growler',
+				srcNodeRef: 'growlerDijit',
+				options: {}
 			}
 
-		 	,property: {
-				include: true,
-				id: 'property',
-				type: 'floating',
-				path: 'gis/dijit/property',
-				title: 'Property Search',
-				options:'config/property'
-				//options: { map: true }
-			}
-
-
-
-			 , load_indicator : {
-							include: true,
-							id: 'load_indicator',
-							type: 'invisible',
-							path: 'gis/dijit/load_indicator',
-							//srcNodeRef: 'initParams',
-							options: {
-								map: true
-							}
-			}
 
 
 			/*, dnd: {

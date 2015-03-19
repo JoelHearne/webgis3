@@ -48,7 +48,7 @@ body, html {
    //text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;  
    //text-shadow: 0 0 0.2em rgba(141,214,219,0.5), 0 0 0.2em rgba(141,214,219,0.5),0 0 0.2em rgba(141,214,219,0.5);  
    //text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8), 0 0 1.2em rgba(1,14,39,0.5),0 0 0.2em rgba(1,114,139,0.5);
-   
+/*  
 text-shadow: 0 1px 0 #ccc,
                0 2px 0 #c9c9c9,
                0 3px 0 #bbb,
@@ -61,11 +61,32 @@ text-shadow: 0 1px 0 #ccc,
                0 5px 10px rgba(0,0,0,.25),
                0 10px 10px rgba(0,0,0,.2),
                0 20px 20px rgba(0,0,0,.15);   
-   
-   
+*/   
+text-shadow: 0 1px 0 #ccc,
+               0 2px 0 #c9c9c9,
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3);
+
+     
    
    
 }
+/*
+#sidebarLeft {
+    font-size: 12pt;
+}
+
+
+.borderContainerOuter {
+font-size: 15pt;
+
+}
+*/
+#sidebarLeft .dijitTitlePaneTextNode {
+   font-size: 11px !important;
+
+}
+
 .appHeader .subHeaderTitle {
     color: #CFCFCF;
     font-size: small;
@@ -151,6 +172,19 @@ text-shadow: 0 1px 0 #ccc,
     //background: url("../images/noisy_grid.png") #fff;
     background: url("../images/noisy_grid_green.png") #fff;
 }
+
+
+ 
+.esriMeasurement .esriMeasurementResultValue {
+  font-size:17px !important;
+  font-weight:bold !important;
+    color: rgba(1,84,239,0.8);
+    /*text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8), 0 0 1.2em rgba(1,14,39,0.5),0 0 0.2em rgba(1,114,139,0.5);*/
+    text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8);
+    text-decoration: none;  
+}
+
+
 .panetop {
     border-top: 1px solid #B5BCC7;
 }
@@ -177,10 +211,23 @@ text-shadow: 0 1px 0 #ccc,
     z-index: 40;
     background-color: white;
     cursor: pointer;
-    color: #666666;
-    font-size: 1.3em;
+    //color: #666666;
+    color:rgb(105,144,141);
+    font-size: 15px;
     font-family: FontAwesome;
 }
+
+.sidebarCollapseButton :hover {
+    position: absolute;
+    z-index: 40;
+    background-color: white;
+    cursor: pointer;
+    color: #666666;
+    font-size: 20px;
+    font-family: FontAwesome;
+    color:rgb(141,215,249);
+}
+
 .sidebarCollapseButtonHorz {
     //width: 16px;
     //height: 25px;
@@ -193,7 +240,12 @@ text-shadow: 0 1px 0 #ccc,
     top: calc(50% - 12px);
     border-bottom: 1px solid #B5BCC7;
     border-top: 1px solid #B5BCC7;
+    
 }
+
+ 
+
+
 .sidebarCollapseButtonVert {
     width: 25px;
     height: 18px;
@@ -208,8 +260,17 @@ text-shadow: 0 1px 0 #ccc,
 .sidebarleftCollapseButton {
     left: -1px;
     border-radius: 0 5px 5px 0;
-    border-right: 1px solid #B5BCC7;
+    //border-right: 1px solid #B5BCC7;
+    border-right: 1px solid rgb(105,144,141);
+    color:rgb(105,144,141);
+    font-size: 15px;
+    font-weight:bold;
+    padding: auto;
+    margin:auto;
 }
+
+ 
+
 .sidebarrightCollapseButton {
     right: -1px;
     border-radius: 5px 0 0 5px;
@@ -228,8 +289,16 @@ text-shadow: 0 1px 0 #ccc,
 .sidebarCollapseButtonHorz .button {
     //padding-top: 4px;
     padding-top: 18px;
-    padding-left: 2px;
+    padding-left: 9px;
 }
+
+.sidebarCollapseButtonHorz .button {
+    //padding-top: 4px;
+    padding-top: 18px;
+    padding-left: 9px;
+}
+
+
 .sidebarCollapseButtonVert .button {
     padding-left: 4px;
     margin-top: -2px;
@@ -277,7 +346,7 @@ text-shadow: 0 1px 0 #ccc,
     border-radius: 4px;
 }
 .dbootstrap .dijitTitlePaneTitle {
-    color: #666666 !important;
+    /*color: #666666 !important;*/
     border-bottom: none;
     padding: 8px 15px;
     background-color: #F5F5F5;
@@ -296,6 +365,10 @@ text-shadow: 0 1px 0 #ccc,
 }
 
 /* end dbootstrap overrides*/
+
+
+
+
 
 /* esri popup window overrides */
 
@@ -364,6 +437,15 @@ text-shadow: 0 1px 0 #ccc,
 }
 .esriPopupMobile .pointer.top {
     background:url("../images/pointertop.png");
+}
+
+.esriPopup .titlePane {
+    background-color: rgb(112, 162, 171);
+    line-height: 20px;
+    padding-left: 6px;
+    border-radius: 5px 5px 0px 0px;
+    cursor: default;
+    color: rgb(255, 255, 255);
 }
 
 /* end esri mobile popup overrides */

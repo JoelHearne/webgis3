@@ -66,8 +66,10 @@
 
            var timerStart =  (new Date()).getTime();
            var ptmrSt =null;
-           if (performance)
+           try {
+              if (performance)
                 ptmrSt = performance.now();
+           } catch (ex){}
 
 
            console.clear();

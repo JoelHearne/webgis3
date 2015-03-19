@@ -20,9 +20,23 @@ define([
                 defaultAreaUnit: this.defaultAreaUnit,
                 defaultLengthUnit: this.defaultLengthUnit
             }, domConstruct.create('div')).placeAt(this.domNode);
+
+
+		  var _this=this;
+		  this.measure.on("measure-start", function(evt){
+			 _this.measure_start();
+		  });
+
+
             this.measure.startup();
             aspect.after(this.measure, 'setTool', lang.hitch(this, 'checkMeasureTool'));
             aspect.after(this.measure, 'closeTool', lang.hitch(this, 'checkMeasureTool'));
+            //aspect.after(this.measure, 'measure-start', lang.hitch(this, 'measure_start'));
+
+
+
+
+
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
             if (this.parentWidget && this.parentWidget.toggleable) {
                 this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
@@ -38,14 +52,27 @@ define([
 
             try {
                document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
 		    } catch (ex){
-
+			   console.log("error setting measurement style",ex);
 		    }
-            //Style.set(this.domNode, 'font-size', ' 12px');
-            //Style.set(this.resultValue.domNode, 'font-size', ' 12px');
+
+
 
 	    },
-        checkMeasureTool: function () {
+	    measure_start:function(){
+			console.log("...measure_start ",this.measure);
+
+			this.measure.resultValue.style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+
+            try {
+               document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
+		    } catch (ex){
+			   console.log("error setting measurement style",ex);
+		    }
+		}
+       , checkMeasureTool: function () {
             // no measurement tool is active
             if (!this.measure.activeTool || this.measure.activeTool === '') {
                 if (this.mapClickMode === 'measure') {
@@ -57,6 +84,19 @@ define([
                     this.disconnectMapClick();
                 }
             }
+            try {
+               document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
+		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
+		    } catch (ex){
+			   console.log("error setting measurement style",ex);
+		    }
+
+
+
+		  //   this.resultValue.set("style","font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;");
+
+
+
         },
         disconnectMapClick: function () {
             topic.publish('mapClickMode/setCurrent', 'measure');

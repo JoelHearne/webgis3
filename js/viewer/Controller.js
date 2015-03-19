@@ -82,7 +82,7 @@ define([
                // this.showIntroSplash(false, 500, new Date().getTime());
             //}
 
-           this.showQuickTip();
+           //this.showQuickTip();
 
            // insert spatial search link
            var _this=this;
@@ -92,15 +92,17 @@ define([
            document.getElementById('spatialDijit').innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
            document.getElementById('qrySpatLnk').onclick = function(){ _this.showSpatialSearchMenu(); };
 
-		   var timerEnd =  (new Date()).getTime();
-           var sec = (timerEnd-timerStart)/1000;
+		   //var timerEnd =  (new Date()).getTime();
+           //var sec = (timerEnd-timerStart)/1000;
 
-		   if (performance && ptmrSt != null) {
-			   var ptmrEnd = performance.now();
-			   console.log(" page load perftime.... ",(ptmrEnd-ptmrSt)," ms");
-		   }
+		   try {
+			   if (performance && ptmrSt != null) {
+				   var ptmrEnd = performance.now();
+				   console.log(" page load perftime.... ",(ptmrEnd-ptmrSt)," ms");
+			   }
+			} catch (ex){}
 
-           console.log("finished loading loadtime.... ",sec," seconds");
+          // console.log("finished loading loadtime.... ",sec," seconds");
 		}
 		,showSpatialSearchMenu:function(){
 			console.log("showSpatialSearchMenu");
@@ -260,6 +262,10 @@ define([
 					if (panes[key].collapsible) {
 						this.collapseButtons[key] = put(this.panes[this.collapseButtonsPane].domNode, 'div.sidebarCollapseButton.sidebar' + key + 'CollapseButton.sidebarCollapseButton' + ((key === 'bottom' || key === 'top') ? 'Vert' : 'Horz') + ' div.dijitIcon.button.close').parentNode;
 						on(this.collapseButtons[key], 'click', lang.hitch(this, 'togglePane', key));
+
+						on(this.collapseButtons[key], 'mouseenter', lang.hitch(this, 'hoverPane', key));
+						on(this.collapseButtons[key], 'mouseleave', lang.hitch(this, 'hoveroutPane', key));
+
 						this.positionSideBarToggle(key);
 						if (this.collapseButtonsPane === 'outer') {
 							var splitter = this.panes[key]._splitterWidget;
@@ -480,22 +486,26 @@ define([
             var _this=this;
 			this.map.on('update-start', function (layer) {
 			   if (!_this.isMapInit) {
-				   console.log(" update-start",layer);
-			       _this.timerStart=  (new Date()).getTime();
+				   //console.log(" update-start",layer);
+			       //_this.timerStart=  (new Date()).getTime();
 		       }
 			});
 			this.map.on('update-end', function (layer) {
 				if (!_this.isMapInit) {
-				   console.log("update-end");
- 				   var timerEnd =  (new Date()).getTime();
-				   var sec = (timerEnd-_this.timerStart)/1000;
+					_this.isMapInit=true;
+				   //console.log("update-end");
+ 				   //var timerEnd =  (new Date()).getTime();
+				   //var sec = (timerEnd-_this.timerStart)/1000;
 
-                   console.log("map load time: ",sec," seconds" );
-                   if (performance && ptmrSt != null) {
-				   		var ptmrEnd = performance.now();
-				   		console.log(" map load perftime.... ",(ptmrEnd-ptmrSt)," ms");
-		           }
-                   _this.isMapInit=true;
+                  // console.log("map load time: ",sec," seconds" );
+
+                   try {
+					   if (performance && ptmrSt != null) {
+							var ptmrEnd = performance.now();
+							console.log(" map load perftime.... ",(ptmrEnd-ptmrSt)," ms");
+					   }
+		           } catch (ex){}
+
 			   }
 			});
 
@@ -643,6 +653,29 @@ define([
 			array.forEach(paneWidgets, function (widget, i) {
 				this.widgetLoader(widget, i);
 			}, this);
+		},
+		hoveroutPane:function(id,show){
+
+		   var wi=dom.byId("lp_Popup");
+ 		   if (wi)  wi.parentNode.removeChild(wi);
+		}
+		,hoverPane: function (id, show) {
+			if (!this.panes[id])  return;
+
+			var pane = this.panes[id];
+			var disp = domStyle.get(pane.domNode, 'display');
+			if (disp=='none') {
+				var n = domConstruct.create("div", {id:"lp_Popup", innerHTML: "<p>Click Here to Open Tools Panel</p>" }, dojo.body());
+				var sx=30;
+				var sy=320;
+				if (show.screenX){
+					//sx=show.pageX;
+					//sy=show.pageY;
+				}
+				var stylestr="z-index:9999999 !important;font-size:15px;position:absolute;top:" + sy + "px;left:" + sx + "px;background-color:rgb(118,150,188);color:white;font-weight:bold";
+				n.innerHTML= "<p>Click Here to Open Tools Panel</p>" ;
+				n.style=stylestr;
+			}
 		},
 		togglePane: function (id, show) {
 

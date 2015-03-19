@@ -1671,32 +1671,32 @@ function updateadvmap() {
 
 	 var qs=parseQuery(window.location.search.substring(1));
 	 if (qs.cl=="mapqry") {
-	      console.log("mapqry: true"  );
+	      //console.log("mapqry: true"  );
 	      isMapChild=true;
 	 }
 
      if (isMapChild) {
         try {
    	      if (opener) {
-		      console.log("window.opener - changing map pin");
+		      //console.log("window.opener - changing map pin");
 		      window.opener.loadpin(<?php echo "\"$pin\""; ?>);
 
           } else if (window.opener.postMessage) {
-              console.log("could not get window.opener - trying postMessage for changing map pin");
+              //console.log("could not get window.opener - trying postMessage for changing map pin");
               window.opener.postMessage("pin:<?php echo $pin; ?>","*");  // ask the Map to do something
 
           } else {
-              console.log("cannot get access to map window...just launching it again");
+              //console.log("cannot get access to map window...just launching it again");
 
           }
 
 	    } catch(e) {
-	        console.log("error accessing opener" );
-	        console.log(e);
+	        //console.log("error accessing opener" );
+	        //console.log(e);
 
         }
      } else {
-        console.log("is not from map opening new window" );
+        //console.log("is not from map opening new window" );
 
      }
 
@@ -1706,41 +1706,41 @@ function updateadvmap() {
 
 function showadvmap() {
 
-      console.log("showing advanced map");
+      //console.log("showing advanced map");
 
      $('#divMapLink').html("opening map window");
      var dlgcont = '<div style="top:90px;left:25%;width:35%;height:15%;font-size: 8pt"><br>';
 
 	 var qs=parseQuery(window.location.search.substring(1));
 	 if (qs.cl=="mapqry") {
-	      console.log("mapqry: true"  );
+	      //console.log("mapqry: true"  );
 	      isMapChild=true;
 	 }
 
-     console.log("isMapChild: " + isMapChild);
+     //console.log("isMapChild: " + isMapChild);
 
      if (isMapChild) {
         try {
    	      if (opener) {
-		      console.log("window.opener - changing map pin");
+		      //console.log("window.opener - changing map pin");
 		      window.opener.loadpin(<?php echo "\"$pin\""; ?>);
 		      dlgcont = dlgcont + '<p style="font-size: 12pt">Please select the existing map tab or map window to see your selection</p><br><br><br><br>';
           } else if (window.opener.postMessage) {
-              console.log("could not get window.opener - trying postMessage for changing map pin");
+              //console.log("could not get window.opener - trying postMessage for changing map pin");
               window.opener.postMessage("pin:<?php echo $pin; ?>","*");  // ask the Map to do something
               dlgcont = dlgcont + '<p><b>Please select the existing map tab or map window to see your new selection.</b></p><br><br>';
           } else {
-              console.log("cannot get access to map window...just launching it again");
+              //console.log("cannot get access to map window...just launching it again");
               justOpenMap();
           }
 
 	    } catch(e) {
-	        console.log("error accessing opener" );
-	        console.log(e);
+	        //console.log("error accessing opener" );
+	        //console.log(e);
 	        justOpenMap();
         }
      } else {
-        console.log("is not from map opening new window" );
+        //console.log("is not from map opening new window" );
         justOpenMap();
      }
 
@@ -1772,7 +1772,7 @@ function  OpenSimpleMap(){
 function getMapReport() {
 
     var iurl = 'http://' + document.location.host + '/pa_map/pa.asmx/GetPrintMap?pin=<?php echo trim($pin); ?>';
-    console.log("getMapReport: " + iurl);
+    //console.log("getMapReport: " + iurl);
     $.support.cors = true;
 
     $.ajax({
@@ -1799,8 +1799,8 @@ function getMapReport() {
         },
         error: function (xhr, status, error) {
 
-		 console.log(xhr.status);
-		 console.log(error);
+		 //console.log(xhr.status);
+		 //console.log(error);
         }
     });
 
@@ -1838,7 +1838,7 @@ $(function () {
     $("#tabs").tabs({
 
             beforeLoad: function (event, ui) {
-               console.log("before unload");
+               //console.log("before unload");
                 if (ui.tab.data("loaded")) {
                     event.preventDefault();
                     return;
@@ -1858,7 +1858,7 @@ $(function () {
             //showAdvMapButton();
             var selected = ui.newTab.context.innerHTML;
             if (selected == "Property Map Report") {
-                 console.log("ismaprep: " + ismaprep);
+                 //console.log("ismaprep: " + ismaprep);
                  if (!ismaprep) {
                     ismaprep=true;
                     loadMap();
@@ -1898,7 +1898,7 @@ $(function () {
  });
 
 function showbuildingsketch(bldnum){
-      console.log("http://" + document.location.host + "/traversal/bldsketch.htm?pin=<?php echo $pin; ?>&building=" + bldnum);
+      //console.log("http://" + document.location.host + "/traversal/bldsketch.htm?pin=<?php echo $pin; ?>&building=" + bldnum);
       var mrfrm = document.getElementById('bldsketchframe');
       mrfrm.src = "http://" + document.location.host + "/traversal/bldsketch.htm?pin=<?php echo $pin; ?>&building=" + bldnum;
 
@@ -1913,7 +1913,7 @@ function showbuildingsketch(bldnum){
        var pin_geom=null;
 /*
 var browser_info = getAcrobatInfo();
-console.log(browser_info);
+//console.log(browser_info);
 if(browser_info.acrobat == null){
    //document.location.href = "http://www.getacrobataddress.c..."
 }
@@ -1936,8 +1936,8 @@ var displayResults = function($$){
 
              var T = function(){
 
-                 var version = PluginDetect.getVersion("Flash");    console.log("FLASH version: " + version);
-                   var pversion = PluginDetect.getVersion("AdobeReader");    console.log("adobe version: " + pversion);
+                 var version = PluginDetect.getVersion("Flash");    //console.log("FLASH version: " + version);
+                   var pversion = PluginDetect.getVersion("AdobeReader");    //console.log("adobe version: " + pversion);
                  };
               PluginDetect.onWindowLoaded(T);
 */
@@ -2017,12 +2017,12 @@ var displayResults = function($$){
 
 
 	      window.onmessage = function (e) {
-	           console.log("message recieved : " + e.data);
+	           //console.log("message recieved : " + e.data);
 
 				if (e.data.indexOf('pin') != -1 ) {
-					console.log("got a pin request");
+					//console.log("got a pin request");
 					var pin=e.data.substr(4,23);
-					console.log("pin: " + pin);
+					//console.log("pin: " + pin);
 					document.location="./fl_display_dw.php?cl=mapqry&pin=" + pin;
 			    }
 	       };
@@ -2059,11 +2059,11 @@ var displayResults = function($$){
 
 
 		  try {
-            //console.log("opening map window");
+            ////console.log("opening map window");
 			 //var qs=parseQuery(window.location.search.substring(1));
 			 //if (qs.cl=="paqrymap")  $("#tabs").tabs("option", "active", 5);
 		  } catch(e) {
-			   //console.log("ERROR: " + e.message);
+			   ////console.log("ERROR: " + e.message);
 		  }
 
 

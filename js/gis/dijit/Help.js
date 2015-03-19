@@ -130,6 +130,8 @@ define([
 				this.parentWidget.show();
 				// show disclaimer if not agreed to
 				if (!this.checkDisclaimer()) dijit.byId("hHelpTabs").selectChild(dijit.byId("hDisclaimerTab"));
+		    } else if (!this.userPreferences.showWelcome ||  this.checkDisclaimer() ) {
+				this.parentWidget.hide();
 		    } else {
 				this.parentWidget.hide();
 			}

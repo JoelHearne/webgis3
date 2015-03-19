@@ -173,7 +173,8 @@ define([
 
 		postCreate: function () {
 			this.inherited(arguments);
-			this.ptmrStrt= performance.now();
+			//this.ptmrStrt= performance.now();
+
             var _this=this;
 			this.parentWidget.draggable = this.draggable;
 			if (this.parentWidget.toggleable) {
@@ -278,11 +279,12 @@ define([
 				 console.log(" property widget load perftime from widget init.... ",(ptmrEnd-this.ptmrStrt)," ms");
 		    }
 
- 			return this.pshowAtStartup;
+ 			 return this.pshowAtStartup;
         }
         ,showThis:function(){
 			 this.parentWidget.show();
 			 this.pSearchTabs.resize();
+
 			 var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
 			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
 		}
@@ -743,7 +745,8 @@ define([
 		}
 		,onOpen: function () {
 			if (!this.openOnStartup) {
-				this.containerNode.resize();
+				this.showThis();
+				//this.containerNode.resize();
 			}
 		},
 		close: function () {
@@ -1505,39 +1508,8 @@ define([
 		}
 		,printMailLblsSaved: function(){
 			this.printMailLblsMenu(null,true);
-			/*
-			var _this=this;
-            var iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
-		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
-            request.get(iurl,{ handleAs: "text" }).then(
-                function (text){
-                     Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
-                     window.open( text,"prcprint");
- 	            } ,
- 	            function (error){
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
-					_this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLblsSaved)");
- 	                console.log("Error Occurred: " + error);
- 	                alert("Error Printing Labels : " + error);
- 	            }
- 	        );
- 	        */
 		}
 		,GetPrintMap:function(pinv){
-			/*
-            var _this=this;
-            var iurl='./pa.asmx/GetPrintMap?pin=' + pinv;
-            request.get(iurl,{ handleAs: "text" }).then(
-
-                function (text){
-                     window.open( text,"prcprint");
-
- 	            } ,
- 	            function (error){
- 	                console.log("Error Occurred: " + error);
- 	            }
- 	        );
- 	        */
              Style.set(dijit.byId("sidebarLeft").domNode, 'display', "block");
              topic.publish('viewer/togglePane', {pane:"left",show:"true"});
              var prcob=dijit.byId("print_parent");
@@ -1545,7 +1517,6 @@ define([
              this.zoomPIN(pinv,false);
              topic.publish('print/printmap', {pin:pinv });
 		}
-
 		,clearSearch: function(){
            var dobj=dijit.byId("pane1").domNode;
            var iboxes=dobj.getElementsByTagName('input');
@@ -1563,8 +1534,6 @@ define([
            this.clearGraphics();
   		}
 		,zoomPIN:function(pin,doDBSearch) {
-
-			    console.log("zoomPIN",doDBSearch);
 				if (typeof doDBSearch == "undefined") {
 					doDBSearch = true;
 				}
