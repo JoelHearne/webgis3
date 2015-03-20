@@ -170,6 +170,7 @@ define([
 		qObj:null,
 		export_dia:null,
 	    ptmrStrt:null,
+	    mapsearch_auto:false,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -217,10 +218,18 @@ define([
 
 			// listen for topic broadcasts
 			topic.subscribe('property/showSpatial', lang.hitch(this, function (arg) {
+			  if (!_this.parentWidget.open) _this.showThis();
 			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			  _this.changeSearchForm(null,"map");
-			  if (!_this.parentWidget.open) _this.showThis();
+
 			}));
+
+			topic.subscribe('property/toggleSpatial', lang.hitch(this, function (arg) {
+				console.log("property/toggleSpatial",arg);
+				_this.external_setMapSrchMode(arg.mode,arg.state);
+
+			}));
+
 
 
 		}
@@ -273,11 +282,12 @@ define([
 			this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
             //console.log("query test",query(".propertyContainer"));
 
-            if (performance && ptmrSt != null) {
+           /* if (performance && ptmrSt != null) {
 				 var ptmrEnd = performance.now();
-				 console.log(" property widget load perftime from page init.... ",(ptmrEnd-ptmrSt)," ms");
-				 console.log(" property widget load perftime from widget init.... ",(ptmrEnd-this.ptmrStrt)," ms");
+				 //console.log(" property widget load perftime from page init.... ",(ptmrEnd-ptmrSt)," ms");
+				 //console.log(" property widget load perftime from widget init.... ",(ptmrEnd-this.ptmrStrt)," ms");
 		    }
+		    */
 
  			 return this.pshowAtStartup;
         }
@@ -287,6 +297,8 @@ define([
 
 			 var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
 			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
+			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
+			  this.changeSearchForm(null,"property");
 		}
         ,createGraphicsLayer: function () {
 			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
@@ -328,7 +340,7 @@ define([
              this.qryPtGeom=new Point( this.map.spatialReference);
 		},
         onDrawToolbarDrawEnd: function (evt) {
-            this.drawToolbar.deactivate();
+            if (!this.mapsearch_auto) this.drawToolbar.deactivate();
             var graphic;
 
             switch (evt.geometry.type) {
@@ -357,12 +369,35 @@ define([
                     break;
                 default:
             }
-            this.connectMapClick();
+            if (!this.mapsearch_auto) this.connectMapClick();
+
+            if (this.mapsearch_auto) this.doSearch();
         }
-		, setMapClickMode: function (mode) {
+		,setMapClickMode: function (mode) {
 			this.mapClickMode = mode;
 		}
+		,external_setMapSrchMode: function(mode,state) {
+			console.log("external_setMapSrchMode",mode,state);
 
+			if (state) {
+				if (!this.parentWidget.open) this.showThis();
+				//dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
+				this.changeSearchForm(null,"map");
+
+				this.activateMapSearch();
+				this.mapsearch_auto=true;
+				//this.activeMenu='map';
+				if (mode=="box") {
+					this.modeBox();
+				} else if (mode=="point") {
+					this.modePoint();
+				}
+		    } else {
+				this.mapsearch_auto=false;
+				this.clearGraphics();
+				this.connectMapClick();
+			}
+		}
 		, modePoint: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='point';
@@ -398,6 +433,7 @@ define([
 			topic.publish('mapClickMode/setCurrent', 'draw');
 		}
 		, connectMapClick: function () {
+			 console.log("connectMapClick ",this.mapsearch_auto);
 			this.map.setMapCursor('auto');
 			topic.publish('mapClickMode/setDefault');
 		}
@@ -427,7 +463,9 @@ define([
 				    qry_gm=this.qryPolyGeom;
 		       }
 		       //console.log("runMapSearch",qry_gm);
-		       this.connectMapClick();
+		       //if (this.mapsearch_auto) this.mapsearch_auto="false";
+		       console.log("runMapSearch this.mapsearch_auto ",this.mapsearch_auto);
+		       if (!this.mapsearch_auto) this.connectMapClick();
 		       this.mapSearch(qry_gm);
 		}
 		,mapSearch: function(geom){
@@ -647,11 +685,14 @@ define([
 				 })));
 		   }
  		}
+
         ,changeSearchForm:function(evt,selForm){
 			//this.clearSearch();
+
 			var SearchPane  = registry.byId("psearchForm");
 			//var selForm=evt.target.value;
 			if (typeof selForm == "undefined")  selForm=evt.target.value;
+            console.log("changeSearchForm ",selForm);
 
             var frmObj=null;
             this.activeMenu=selForm;
@@ -675,8 +716,14 @@ define([
 
 			} else if (selForm=="map") {
 				 frmObj=dijit.byId("pMapFrm");
+
 				 this.activateMapSearch();
 			}
+
+			//if (selForm != "map" && this.mapsearch_auto) this.mapsearch_auto=false;
+
+			//this.mapsearch_auto=false;
+
 
 			// hide all the forms then only show the active form
 			dijit.byId("pSubForm").set("style", "display:none");
@@ -686,6 +733,27 @@ define([
             dijit.byId("pSalesDataFrm").set("style", "display:none");
             dijit.byId("pMapFrm").set("style", "display:none");
             if (frmObj) frmObj.set("style", "display:block");
+
+            var sfs=document.getElementById("selSearchType") ;
+            //document.getElementById("selSearchType").selectedIndex = 5;
+			for (var i = 0; i < sfs.options.length; i++) {
+				 if (sfs.options[i].value.toLowerCase() == selForm.toLowerCase()) {
+					 if (sfs.selectedIndex != i) {
+						 sfs.selectedIndex = i;
+						 //if (change) sfs.onchange();
+					 }
+					 break;
+				 }
+			 }
+
+			if (this.mapsearch_auto) {
+				this.mapsearch_auto=false;
+				this.clearGraphics();
+				this.connectMapClick();
+				this.drawToolbar.deactivate();
+				topic.publish('mapClickMode/setDefault');
+			}
+
 		}
 		,salesDataPopType: function(){
 			var select = document.getElementById('selSaleDataType');
@@ -999,7 +1067,7 @@ define([
 
 		}
 		,handleXHR_Err:function(error,usr_msg){
-			console.log("Error Occurred: " + error);
+			console.log("Error Occurred: " + error,"  ",usr_msg);
 			this.hideWait();
             var srd=dom.byId("pSearchResults");
 			domConstruct.empty("pSearchResults");
@@ -1246,6 +1314,7 @@ define([
 
 		    this.pinlist=[];
 			for (var i = 0; i < pobj.length; i++) {
+
 				 pobj[i].pin=pobj[i].pin.trim();
 				 pobj[i].owner= pobj[i].owner.trim();
 				 //pobj[i].addr= pobj[i].addr.trim();
@@ -1260,6 +1329,7 @@ define([
 				 mailing_addr=mailing_addr +  ((pobj[i].PEFLCNTRY.trim()=="") ? "" : "<br>" + pobj[i].PEFLCNTRY.trim());
 
 				 pobj[i].addr= mailing_addr;
+
 				 pobj[i].hstead=pobj[i].hstead.trim();
 
 				 this.pinlist.push(pobj[i].pin);
@@ -1267,7 +1337,9 @@ define([
 				 {
 				   pin: pobj[i].pin,
 				   owner: pobj[i].owner,
-				   address: pobj[i].addr,
+				   //address: pobj[i].addr,
+				   address: pobj[i].SiteAddr,
+
 				   homestead:pobj[i].hstead
 				 });
 

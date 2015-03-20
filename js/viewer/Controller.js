@@ -98,7 +98,7 @@ define([
 		   try {
 			   if (performance && ptmrSt != null) {
 				   var ptmrEnd = performance.now();
-				   console.log(" page load perftime.... ",(ptmrEnd-ptmrSt)," ms");
+				   //console.log(" page load perftime.... ",(ptmrEnd-ptmrSt)," ms");
 			   }
 			} catch (ex){}
 

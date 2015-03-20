@@ -35,8 +35,7 @@ define([
 ,ready
 ,registry
 ,topic
-
-, css
+,css
 ) {
     return declare([_WidgetBase, _TemplatedMixin,  _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
@@ -59,6 +58,8 @@ define([
 			this.pcPIN.innerHTML=this.pin;
 			this.pcOwner.innerHTML=this.owner;
 			this.pcAddr.innerHTML=this.address;
+
+
 			this.pcHMSTD.innerHTML=this.homestead;
 
 	    }

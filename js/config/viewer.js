@@ -185,6 +185,33 @@ define([
 			//,identifyLayerInfos: { layerIds: [11] }
 		}
 
+      /*,{
+			type: 'dynamic',
+			url: 'http://gisvm101:6080/arcgis/rest/services/background/MapServer',
+			title: 'Demo_Basemap',
+			slider: true,
+			noLegend: false,
+			collapsed: false,
+			options: {
+				id: 'Demo_Basemap',
+				opacity: 1,
+				visible: true,
+				imageParameters: imageParameters
+				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
+			},
+			layerControlLayerInfos: {
+				swipe: true,
+				metadataUrl: true,
+				expanded: true
+			}
+			//,identifyLayerInfos: { layerIds: [11] }
+		}
+		*/
+
+
+
+
+
 
 		],
 		// set include:true to load. For titlePane type set position the the desired order in the sidebar

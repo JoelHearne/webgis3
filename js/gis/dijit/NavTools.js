@@ -19,6 +19,7 @@ define([
         widgetsInTemplate: true,
         templateString: NavToolsTemplate,
         navTools: null,
+        select_on:false,
         postCreate: function(){
 		  //console.log("navtools postcreate");
           this.navTools = new Navigation(this.map);
@@ -82,8 +83,15 @@ define([
         },
         deactivate: function () {
             this.navTools.deactivate();
-            //this.map.setMapCursor('default');
+            this.map.setMapCursor('default');
             this.connectMapClick();
+
+			if (this.select_on) {
+                topic.publish('property/toggleSpatial', {mode:"box",state:false });
+				this.map.setMapCursor('default');
+			}
+
+
         },
         zoomIn: function() {
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomin.cur'),auto");
@@ -107,7 +115,24 @@ define([
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
             this.navTools.activate(Navigation.PAN);
         },
+        selecttool: function (e) {
+			console.log("navtools select",Navigation,e,this.select_on);
 
+			if (!this.select_on) {
+				this.select_on=true;
+				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+				//this.map.setMapCursor('crosshair');
+				this.map.setMapCursor('pointer');
+				//this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
+				//this.navTools.activate(Navigation.PAN);
+
+		    } else {
+				this.select_on=false;
+                topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+				this.map.setMapCursor('default');
+			}
+
+        },
         disconnectMapClick: function() {
             // cmv 1.3.0
             topic.publish('mapClickMode/setCurrent', 'navTools');
@@ -119,6 +144,7 @@ define([
         },
 
         connectMapClick: function() {
+			console.log("navtools connectMapClick");
             // cmv 1.3.0
             topic.publish('mapClickMode/setDefault');
             // cmv v1.2.0
@@ -132,7 +158,7 @@ define([
         extentHistoryChangeHandler: function (evt) {
            //registry.byId('zoomprev').disabled = navTools.isFirstExtent();
            //registry.byId('zoomnext').disabled = navTools.isLastExtent();
-            this.deactivate();
+           //this.deactivate();
             //this.connectMapClick();
         }
     });

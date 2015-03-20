@@ -791,8 +791,8 @@ namespace WebGIS
 
             String sqlStr = "";
             //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
-            
+            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, site_address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+
             sqlStr = sqlStr + " FROM CAMVIEW_PropertyList ";
 
             String osqlStr = sqlStr;
@@ -851,14 +851,14 @@ namespace WebGIS
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
                 sqlStr = sqlStr + osqlStr;
-                sqlStr = sqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%'";
+                sqlStr = sqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%' ";
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
 
                 csqlStr = csqlStr + " WHERE Site_Address like '%" + sqlWhereVal + "%'";
 
-                rawSQLQuery = osqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%'";
+                rawSQLQuery = osqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%' ";
 
             }
             else if (searchtype == "owner")
@@ -968,6 +968,9 @@ namespace WebGIS
 
             csqlStr = "Select Count(*) FROM (" + csqlStr + ") c";
 
+            rawSQLQuery = rawSQLQuery + " ORDER BY site_address";
+            sqlStr = sqlStr + " ORDER BY site_address";
+
 
             SqlCommand ccmd = new SqlCommand(csqlStr, cn);
             
@@ -1010,7 +1013,8 @@ namespace WebGIS
 
                 String ownadd  = (String)dt.Rows[i]["Owner_Address"];
                 ownadd = ownadd.Trim();
-                 
+
+
          
                 String sardate = "";
                 try
@@ -1032,8 +1036,17 @@ namespace WebGIS
                 PropertySearchResult pr = new PropertySearchResult(pin, owner, ownadd, isHomeStead);
                 pr.lastSale = sardate;
                 pr.legal = legl;
- 
 
+                String pa_SiteAddr  = "";
+                try
+                {
+                    pa_SiteAddr = (String)dt.Rows[i]["Site_Address"];
+                    pr.SiteAddr = pa_SiteAddr;
+                }
+                catch
+                {
+
+                }
                 try
                 {
                     pr.PEFLADDR1 = (String)dt.Rows[i]["PEFLADDR1"];
@@ -1514,6 +1527,7 @@ namespace WebGIS
         public String hstead;
         public String legal;
         public String lastSale;
+        public String SiteAddr= "";
         public String PEFLADDR1 = "";
         public String PEFLADDR2 = "";
         public String PEFLADDR3 = "";

@@ -33,18 +33,12 @@ define([
             aspect.after(this.measure, 'closeTool', lang.hitch(this, 'checkMeasureTool'));
             //aspect.after(this.measure, 'measure-start', lang.hitch(this, 'measure_start'));
 
-
-
-
-
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
             if (this.parentWidget && this.parentWidget.toggleable) {
                 this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
                     this.onLayoutChange(this.parentWidget.open);
                 })));
             }
-
-
 
         },
 		startup: function() {
@@ -64,13 +58,14 @@ define([
 			console.log("...measure_start ",this.measure);
 
 			this.measure.resultValue.style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
-
+            /*
             try {
                document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
 		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
 		    } catch (ex){
 			   console.log("error setting measurement style",ex);
 		    }
+		    */
 		}
        , checkMeasureTool: function () {
             // no measurement tool is active
@@ -84,12 +79,14 @@ define([
                     this.disconnectMapClick();
                 }
             }
+            /*
             try {
                document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
-		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
+		       //console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
 		    } catch (ex){
 			   console.log("error setting measurement style",ex);
 		    }
+		    */
 
 
 

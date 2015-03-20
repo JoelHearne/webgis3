@@ -72,7 +72,11 @@
 	width: 16px;
 	height: 16px; 
 }
-
+.gis_NavToolsDijit .selIcon {
+	 background-image: url(../images/LocationGetPoint16.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .deactivateIcon {
 	 background-image: url(../images/nav_decline.png);
 	width: 16px;
@@ -84,7 +88,7 @@
     position: absolute;
     top: 11px;
     //left: 85%;
-    width: 217px;
+    width: 237px;
     float: right;
      padding: 0px;
     //margin: 70px 0px 0px 80px;
