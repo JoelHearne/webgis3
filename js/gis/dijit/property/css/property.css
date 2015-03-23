@@ -69,6 +69,11 @@ select {
 
 }
 */
+#pcMinDet {
+  height:93% !important;
+
+}
+ 
 .propertyDijit .listdbootstrapFix{
     padding: 0 0 0 25px;
     //overflow: hidden !important;

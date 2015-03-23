@@ -92,6 +92,8 @@ define([
 			}
 
 
+
+
         },
         zoomIn: function() {
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomin.cur'),auto");
@@ -116,14 +118,13 @@ define([
             this.navTools.activate(Navigation.PAN);
         },
         selecttool: function (e) {
-			console.log("navtools select",Navigation,e,this.select_on);
-
 			if (!this.select_on) {
 				this.select_on=true;
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
-				//this.map.setMapCursor('crosshair');
-				this.map.setMapCursor('pointer');
-				//this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
+
+				topic.publish('identify/proxySelect', 'select');
+
+				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
 
 		    } else {
@@ -144,7 +145,6 @@ define([
         },
 
         connectMapClick: function() {
-			console.log("navtools connectMapClick");
             // cmv 1.3.0
             topic.publish('mapClickMode/setDefault');
             // cmv v1.2.0

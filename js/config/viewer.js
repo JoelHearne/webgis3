@@ -325,7 +325,7 @@ define([
 				path: 'gis/dijit/Identify',
 				title: 'Identify',
 				open: false,
-				position: 3,
+				position: 2,
 				options: 'config/identify'
 			}
 			,goto: {
@@ -539,7 +539,7 @@ define([
 				path: 'gis/dijit/Bookmarks',
 				title: 'Bookmarks',
 				open: false,
-				position: 2,
+				position: 3,
 				options: 'config/bookmarks'
 			}
 

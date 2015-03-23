@@ -394,6 +394,7 @@ define([
 				}
 		    } else {
 				this.mapsearch_auto=false;
+				this.drawToolbar.deactivate();
 				this.clearGraphics();
 				this.connectMapClick();
 			}
@@ -464,7 +465,7 @@ define([
 		       }
 		       //console.log("runMapSearch",qry_gm);
 		       //if (this.mapsearch_auto) this.mapsearch_auto="false";
-		       console.log("runMapSearch this.mapsearch_auto ",this.mapsearch_auto);
+		       //console.log("runMapSearch this.mapsearch_auto ",this.mapsearch_auto);
 		       if (!this.mapsearch_auto) this.connectMapClick();
 		       this.mapSearch(qry_gm);
 		}
@@ -692,7 +693,6 @@ define([
 			var SearchPane  = registry.byId("psearchForm");
 			//var selForm=evt.target.value;
 			if (typeof selForm == "undefined")  selForm=evt.target.value;
-            console.log("changeSearchForm ",selForm);
 
             var frmObj=null;
             this.activeMenu=selForm;
@@ -1154,7 +1154,7 @@ define([
                /*topic.publish('InitZoomer/ZoomParcel', {
 			 		 pin:pcObj.pin
                });*/
-               this.zoomPIN(pcObj.pin);
+               this.zoomPIN(pcObj.pin,false);
             } else if (actntype == "pc_zoom_min") {
                this.zoomPIN(pcObj.pin,false);
 			} else if (actntype == "pc_fulldet") {

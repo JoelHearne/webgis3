@@ -37,6 +37,7 @@ define([
             if (this.parentWidget && this.parentWidget.toggleable) {
                 this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
                     this.onLayoutChange(this.parentWidget.open);
+                    topic.publish('property/toggleSpatial', {mode:"box",state:false });
                 })));
             }
 
@@ -44,18 +45,23 @@ define([
 		startup: function() {
 			this.inherited(arguments);
 
+            /*
             try {
                document.getElementById('dijit_layout_ContentPane_2').style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
 		       console.log("changed style ",document.getElementById('dijit_layout_ContentPane_2'));
 		    } catch (ex){
 			   console.log("error setting measurement style",ex);
 		    }
+		    */
 
 
 
 	    },
 	    measure_start:function(){
 			console.log("...measure_start ",this.measure);
+
+			//topic.publish('property/toggleSpatial', {mode:"box",state:false });
+			//this.map.setMapCursor('default');
 
 			this.measure.resultValue.style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
             /*

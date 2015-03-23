@@ -184,7 +184,16 @@ font-size: 15pt;
     text-decoration: none;  
 }
 
+.dijitArrowButtonInner {
+    width: 15px !important;
+    height: 15px !important;
+    margin: 0px auto !important;
+    background-image: url("../images/buttonArrows.png") !important;
+    background-repeat: no-repeat !important;
+    background-position: -51px 53% !important;
+}
 
+ 
 .panetop {
     border-top: 1px solid #B5BCC7;
 }

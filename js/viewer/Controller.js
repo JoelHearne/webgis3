@@ -498,13 +498,14 @@ define([
 				   //var sec = (timerEnd-_this.timerStart)/1000;
 
                   // console.log("map load time: ",sec," seconds" );
-
+                   /*
                    try {
 					   if (performance && ptmrSt != null) {
 							var ptmrEnd = performance.now();
 							console.log(" map load perftime.... ",(ptmrEnd-ptmrSt)," ms");
 					   }
 		           } catch (ex){}
+		           */
 
 			   }
 			});

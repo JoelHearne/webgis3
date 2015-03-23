@@ -117,8 +117,41 @@ define([
             if (this.draggable) {
                 this.setupDraggable();
             }
-        },
-        addRightClickMenu: function () {
+
+
+
+            // if a selection is made using the select tool and
+            // parcels in not the active layer or there is no
+            // active layer then identify becomes the proxy for select
+            var _this=this;
+			topic.subscribe('identify/proxySelect', lang.hitch(this, function (arg) {
+				console.log("identify/proxySelect",arg);
+				_this.proxySelect();
+
+
+			}));
+
+
+
+
+
+        }
+        ,proxySelect:function(){
+			console.log("proxySelect");
+			var sLyr=this.getSelectedLayer();
+			console.log("proxySelect active layer: ",sLyr);
+
+			if (sLyr !="***" && sLyr!="WebGIS||1"){ // TODO: verify that "WebGIS||1" is Parcels
+               console.log("activating proxy");
+               this.mapClickMode = 'identify'
+			}
+
+			//topic.publish('property/toggleSpatial', {mode:"point",state:false });
+
+
+
+		}
+        ,addRightClickMenu: function () {
             this.map.on('MouseDown', lang.hitch(this, function (evt) {
                 this.mapRightClick = evt;
             }));
