@@ -22,7 +22,7 @@ define([
         // TODO Is this array necessary when the same keys are explicitly included/excluded below?
         //basemapsToShow: ['ortho_mapserv','ortho_2013','streets', 'satellite', 'hybrid', 'topo', 'lightGray', 'gray', 'national-geographic', 'osm', 'oceans'],
 
- basemapsToShow: [ 'ortho_2013','hybrid','openstreet', 'esri_terrain','esri_streets','esri_topo','esri_imagery','nav_charts'  ],
+ basemapsToShow: [ 'ortho_2013','hybrid','openstreet','noaa_nautical', 'esri_terrain','esri_streets','esri_topo','esri_imagery','nav_charts'  ],
 
         // define all valid custom basemaps here. Object of Basemap objects. For custom basemaps, the key name and basemap id must match.
         basemaps: { // agol basemaps
@@ -67,7 +67,17 @@ define([
                 thumbnailUrl:'images/OpenStreetMap.png'
             })
           },
-
+          noaa_nautical: {
+ 				title: 'NOAA Nautical',
+ 				basemap: new  Basemap({
+ 					id: 'noaa_nautical',
+ 					title:'noaa_nautical',
+ 					layers: [
+ 					   new  BasemapLayer({ url: 'http://seamlessrnc.nauticalcharts.noaa.gov/arcgis/rest/services/RNC/NOAA_RNC/ImageServer' })
+ 					   ,new  BasemapLayer({ url: 'http://wrecks.nauticalcharts.noaa.gov/arcgis/rest/services/public_wrecks/Wrecks_And_Obstructions/MapServer' })
+ 					]
+ 				})
+            },
 
  /*           ortho_mapserv: {
  				title: 'ortho_mapserv',

@@ -61,13 +61,15 @@
  
  
  
- .CSSTableGenerator {
- 	margin:7px 0px 0px 0px;
+ .gis_PRCMinDijit .CSSTableGenerator {
+ 	margin:0px 0px 0px 0px;
  	padding:0px;
  	width:100%;
  	box-shadow: 10px 10px 5px #888888;
  	border:1px solid #15157f;
+ 	border-radius: 5px;
  	
+ 	/*
  	-moz-border-radius-bottomleft:0px;
  	-webkit-border-bottom-left-radius:0px;
  	border-bottom-left-radius:0px;
@@ -84,38 +86,43 @@
  	-webkit-border-top-left-radius:0px;
  	border-top-left-radius:0px; 
  	border-top-left-radius:0px;
+ 	*/
  	
  	//background-image: radial-gradient(2px at 15px 50% , #000000 50%, rgba(0, 255, 0, 0.3) 8px, rgba(255, 0, 0, 0.3) 13px, rgba(0, 0, 255, 0.0) 17px);
  }
- .CSSTableGenerator table tr:first-child td:last-child {
+ .gis_PRCMinDijit .CSSTableGenerator table tr:first-child td:last-child {
  	-moz-border-radius-topright:0px;
  	-webkit-border-top-right-radius:0px;
  	border-top-right-radius:0px;
- }.CSSTableGenerator tr:last-child td:first-child{
+ }
+ 
+ .gis_PRCMinDijit .CSSTableGenerator tr:last-child td:first-child{
  	-moz-border-radius-bottomleft:0px;
  	-webkit-border-bottom-left-radius:0px;
  	border-bottom-left-radius:0px;
- }.CSSTableGenerator tr:hover td{
+ }
+ 
+ .gis_PRCMinDijit .CSSTableGenerator tr:hover td{
  	
  }
  /*.CSSTableGenerator tr:nth-child(odd){ background-color:#e7f9d4; }
  .CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }
  */
-  .CSSTableGenerator tr:nth-child(odd){
+  .gis_PRCMinDijit  .CSSTableGenerator tr:nth-child(odd){
       /* 
       background-color:#e7f9d4; 
       */ 
        background-color:#ffffff;
      
   }
-  .CSSTableGenerator tr:nth-child(even)    { 
+  .gis_PRCMinDijit  .CSSTableGenerator tr:nth-child(even)    { 
       /*
       background-color:#ffffff; 
        background-color:#7696bc; 
        */
       background-color:#8dd6f9; 
  }
- .CSSTableGenerator td{
+  .gis_PRCMinDijit  .CSSTableGenerator td{
  	vertical-align:middle;
  	border:1px solid #15157f;
  	border-width:0px 1px 1px 0px;
@@ -125,15 +132,19 @@
  	font-family:Arial;
  	font-weight:normal;
  	color:#000000;
- }.CSSTableGenerator tr:last-child td{
+ }
+ 
+  .gis_PRCMinDijit  .CSSTableGenerator tr:last-child td{
  	border-width:0px 1px 0px 0px;
- }.CSSTableGenerator tr td:last-child{
+ }
+ 
+  .gis_PRCMinDijit  .CSSTableGenerator tr td:last-child{
  	border-width:0px 0px 1px 0px;
  }.CSSTableGenerator tr:last-child td:last-child{
  	border-width:0px 0px 0px 0px;
  }
  
- .CSSTableGenerator tr:first-child td{
+ .gis_PRCMinDijit  .CSSTableGenerator tr:first-child td{
  /*	
  	background:-o-linear-gradient(bottom, #3f7f00 5%, #ffffaa 100%);	
  	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3f7f00), color-stop(1, #ffffaa) );
@@ -170,7 +181,7 @@
  	font-weight:bold;
  	color:#050404;
  }
- .CSSTableGenerator tr:first-child:hover td{
+  .gis_PRCMinDijit .CSSTableGenerator tr:first-child:hover td{
  	/*
  	background:-o-linear-gradient(bottom, #8dd6f9 5%, #69908d 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #8dd6f9), color-stop(1, #69908d) );
  	background:-moz-linear-gradient( center top, #8dd6f9 5%, #69908d 100% );
@@ -186,12 +197,12 @@
  	background-image: -ms-linear-gradient(top, #8dd6f9 0%, #009081 100%);
   	background-color:#8dd6f9; 	
  }
- .CSSTableGenerator tr:first-child td:first-child{
+  .gis_PRCMinDijit .CSSTableGenerator tr:first-child td:first-child{
  	
  	/* border-width:0px 0px 1px 0px; */
  	 border-width:0px 0px 0px 0px; 
  }
- .CSSTableGenerator tr:first-child td:last-child{
+  .gis_PRCMinDijit .CSSTableGenerator tr:first-child td:last-child{
  	/*border-width:0px 0px 1px 1px;*/
          border-width:0px 0px 0px 0px;	
 }

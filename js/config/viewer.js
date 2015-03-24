@@ -163,6 +163,28 @@ define([
 		// The 'options' object is passed as the layers options for constructor. Title will be used in the legend only. id's must be unique and have no spaces.
 		// 3 'mode' options: MODE_SNAPSHOT = 0, MODE_ONDEMAND = 1, MODE_SELECTION = 2
 		operationalLayers: [
+
+        /*{
+			type: 'dynamic',
+			url: 'http://wrecks.nauticalcharts.noaa.gov/arcgis/rest/services/public_wrecks/Wrecks_And_Obstructions/MapServer',
+			title: 'NOAA Wrecks and Obstructions',
+			slider: true,
+			noLegend: false,
+			collapsed: true,
+			options: {
+				id: 'NOAAOB',
+				opacity: 1,
+				visible: false,
+				imageParameters: imageParameters
+				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
+			},
+			layerControlLayerInfos: {
+				swipe: true,
+				metadataUrl: true,
+				expanded: false
+			}
+			//,identifyLayerInfos: { layerIds: [11] }
+		},*/
         {
 			type: 'dynamic',
 			url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
@@ -184,6 +206,12 @@ define([
 			}
 			//,identifyLayerInfos: { layerIds: [11] }
 		}
+
+
+
+
+
+
 
       /*,{
 			type: 'dynamic',

@@ -77,6 +77,11 @@
 	width: 16px;
 	height: 16px; 
 }
+.gis_NavToolsDijit .selboxIcon {
+	 background-image: url(../images/LocationGetBox.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .deactivateIcon {
 	 background-image: url(../images/nav_decline.png);
 	width: 16px;
@@ -88,7 +93,7 @@
     position: absolute;
     top: 11px;
     //left: 85%;
-    width: 237px;
+    width: 271px;
     float: right;
      padding: 0px;
     //margin: 70px 0px 0px 80px;

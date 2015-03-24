@@ -673,7 +673,9 @@ define([
 					//sx=show.pageX;
 					//sy=show.pageY;
 				}
-				var stylestr="z-index:9999999 !important;font-size:15px;position:absolute;top:" + sy + "px;left:" + sx + "px;background-color:rgb(118,150,188);color:white;font-weight:bold";
+
+
+				var stylestr="z-index:9999999 !important;font-size:12px;position:absolute;top:" + sy + "px;left:" + sx + "px;background-color:rgb(118,150,188);color:white;font-weight:bold;border:1px solid #15157f;border-radius: 5px;";
 				n.innerHTML= "<p>Click Here to Open Tools Panel</p>" ;
 				n.style=stylestr;
 			}

@@ -28,7 +28,6 @@ define([
         templateString: IdentifyTemplate,
         baseClass: 'gis_IdentifyDijit',
         i18n: i18n,
-
         mapClickMode: null,
         identifies: {},
         infoTemplates: {},
@@ -37,7 +36,6 @@ define([
         draggable: false,
         layerSeparator: '||',
         allLayersId: '***',
-
         postCreate: function () {
             this.inherited(arguments);
             if (!this.identifies) {
@@ -118,8 +116,6 @@ define([
                 this.setupDraggable();
             }
 
-
-
             // if a selection is made using the select tool and
             // parcels in not the active layer or there is no
             // active layer then identify becomes the proxy for select
@@ -127,29 +123,15 @@ define([
 			topic.subscribe('identify/proxySelect', lang.hitch(this, function (arg) {
 				console.log("identify/proxySelect",arg);
 				_this.proxySelect();
-
-
 			}));
-
-
-
-
-
         }
         ,proxySelect:function(){
-			console.log("proxySelect");
 			var sLyr=this.getSelectedLayer();
-			console.log("proxySelect active layer: ",sLyr);
-
 			if (sLyr !="***" && sLyr!="WebGIS||1"){ // TODO: verify that "WebGIS||1" is Parcels
                console.log("activating proxy");
                this.mapClickMode = 'identify'
 			}
-
 			//topic.publish('property/toggleSpatial', {mode:"point",state:false });
-
-
-
 		}
         ,addRightClickMenu: function () {
             this.map.on('MouseDown', lang.hitch(this, function (evt) {

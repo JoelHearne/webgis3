@@ -77,57 +77,8 @@ define([
 	//,'xstyle/css!./property/css/adw-icons.css'
 	 ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
-,dom
-,Style
-,query
-,request
-,script
-,ready
-,parser
-,registry
-,topic
-,number
-,aspect
-,keys
-,Memory
-,template
-,Button
-,TabContainer
-,ContentPane
-,ToggleButton
-,CheckBox
-,DropDownButton
-,ComboBox
-,TooltipDialog
-,Form
-//,Select
-,array
-,ioQuery
-,functional
-,JSON
-,cookie
-,parser
-,FilteringSelect
-,validationtextBox
-,DateTextBox
-,Cache,JsonRest
-,prc
-,prcmin
-,Color
-,GraphicsLayer
-,Graphic
-,graphicsUtils
-,SimpleRenderer
-,PictureMarkerSymbol
-,Geometry
-,Point
-,Polygon
-,Polyline
-,SpatialReference
-,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
-, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,InfoTemplate
+,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry,Point,Polygon,Polyline,SpatialReference,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,InfoTemplate
 //, i18n
-
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 		widgetsInTemplate: true,
@@ -171,6 +122,7 @@ define([
 		export_dia:null,
 	    ptmrStrt:null,
 	    mapsearch_auto:false,
+	    isAutoFl:false,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -230,12 +182,11 @@ define([
 
 			}));
 
-
-
 		}
 		,startup: function() {
 			this.inherited(arguments);
 			var _this=this;
+			/*
 			this.setautofill("tbAddr");
 			//this.setautofill("tbOwner");
 			this.setautofill("tbPIN");
@@ -243,6 +194,7 @@ define([
 			this.setautofill("tbSub");
 			//this.setautofill("tbSalesList");
 			//this.setautofill("tbSalesData");
+			*/
 
 		    // handle results pager
 		    var sp = document.getElementById("selResPage");
@@ -299,6 +251,17 @@ define([
 			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
 			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			  this.changeSearchForm(null,"property");
+
+			if (!this.isAutoFl){
+				this.setautofill("tbAddr");
+				//this.setautofill("tbOwner");
+				this.setautofill("tbPIN");
+				this.setautofill("tbBus");
+				this.setautofill("tbSub");
+				//this.setautofill("tbSalesList");
+				//this.setautofill("tbSalesData");
+				this.isAutoFl=true;
+		   }
 		}
         ,createGraphicsLayer: function () {
 			 //this.pointSymbol = new PictureMarkerSymbol(require.toUrl('gis/dijit/StreetView/images/blueArrow.png'), 30, 30);
@@ -485,6 +448,22 @@ define([
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,mapqRes: function(results) {
+			console.log(arguments.callee," ",results);
+
+
+			// check if result count exceeded threshhold
+			if (results.exceededTransferLimit) {
+				// notify the user that the result count exceeds the maximum threshhold
+				topic.publish('growler/growl', {
+					title: 'Query Threshhold Exceeded',
+					message: 'You have exceeded the allowable request size.  Not all of the results were returned.  Please try reducing your search footprint.',
+					level: 'warning', //can be: 'default', 'warning', 'info', 'error', 'success'.
+					timeout: 1500, //set to 0 for no timeout
+					opacity: 0.8
+				});
+			}
+
+
 			//console.log("mapqRes");
 			//console.log("mapqRes",results);
 			//this.clearGraphics();
@@ -544,6 +523,7 @@ define([
            //this.map.infoWindow.show(mapPoint);
 		}
 		,mapqResNoQry: function(results) {
+			//console.log(arguments.callee," ",results);
 			var _this=this;
             var zoomExtent = null;
             var feats=[];
@@ -828,6 +808,8 @@ define([
 		   this.btnPrLbls.domNode.style.display="none";
 		   document.getElementById("pResCount").style.display="none";
 		   document.getElementById("pPageSelDiv").style.display="none";
+		   document.getElementById("pPageSelDiv2").style.display="none";
+		   document.getElementById("pPageSelDiv3").style.display="none";
 
 		   var srd=dom.byId("pSearchResults");
 		   if (srd) {
@@ -1040,7 +1022,14 @@ define([
 					} ,
 					function (error){
 						console.log("Error Occurred: " + error);
-						_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
+						 topic.publish('growler/growl', {
+								title: 'DB Query Error',
+								message: 'There was an error getting your query from the database ' + error,
+								level: 'error', //can be: 'default', 'warning', 'info', 'error', 'success'.
+								timeout: 2500, //set to 0 for no timeout
+								opacity: 0.8
+			            });
+						//_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
 					}
 				 );
 			}  else {
@@ -1054,10 +1043,18 @@ define([
 						endrec:endrec
 					}}).then(
 					function (data){
+
 						_this.showResults(data);
 					} ,
 					function (error){
-						_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
+						 topic.publish('growler/growl', {
+								title: 'DB Query Error',
+								message: 'There was an error getting your query from the database ' + error,
+								level: 'error', //can be: 'default', 'warning', 'info', 'error', 'success'.
+								timeout: 2500, //set to 0 for no timeout
+								opacity: 0.8
+			            });
+						//_this.handleXHR_Err(error,"Property Search Failed (doSearch)");
 						console.log("Error Occurred: " + error.message," ",error.lineNumber);
 					}
 				);
@@ -1251,30 +1248,78 @@ define([
 			    document.getElementById("pResCount").style.display="block";
 				// build paging control
 				if (dobj.rec_count > 50) {
+
 					document.getElementById("pPageSelDiv").style.display="block";
+					document.getElementById("pPageSelDiv2").style.display="block";
+					document.getElementById("pPageSelDiv3").style.display="block";
 					pgcnt = Math.ceil(dobj.rec_count / 50);
 					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
+
 					for (var p = 0; p < pgcnt; p++) {
 						select.options[select.options.length]=new Option(p + 1);
 					}
+					if (rec_page==1) {
+						document.getElementById("pPagePrev2").style.display="none";
+						document.getElementById("pPagePrev").style.display="none";
+				    } else {
+					    document.getElementById("pPagePrev2").style.display="block";
+					    document.getElementById("pPagePrev").style.display="block";
+				    }
+					if (rec_page==pgcnt) {
+						document.getElementById("pPageNext2").style.display="none";
+						document.getElementById("pPageNext").style.display="none";
+				    } else {
+					    document.getElementById("pPageNext2").style.display="block";
+					    document.getElementById("pPageNext").style.display="block";
+				    }
+
+
 				} else {
 					document.getElementById("pPageSelDiv").style.display="none";
+					document.getElementById("pPageSelDiv2").style.display="none";
+					document.getElementById("pPageSelDiv3").style.display="none";
 				}
-				if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
+				//if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
 		   } else {  // no results
 			   	this.btnZoomAll.domNode.style.display="none";
 			    this.btnPrLbls.domNode.style.display="none";
 			    document.getElementById("pPageSelDiv").style.display="none";
+			    document.getElementById("pPageSelDiv2").style.display="none";
+			    document.getElementById("pPageSelDiv3").style.display="none";
 		   }
 		    // show the record count
 		    var rc = document.getElementById("pResCount");
-		    rc.innerHTML='<br><b><p>' + dobj.rec_count + ' total records</p></b><br>page ' + rec_page + ' of ' + pgcnt;
+		    //rc.innerHTML='<b><p>Records ' + dobj.start_rec + "-" + (dobj.start_rec + 49) " of " + dobj.rec_count + '</p></b><br>page ' + rec_page + ' of ' + pgcnt;
+		    rc.innerHTML='<b><p style="font-size:8px">Records ' + dobj.start_rec + "-" + (dobj.start_rec + 49) + " of " + dobj.rec_count + '</p></b>' ;
+
+             var s  = dom.byId("selResPage");
+             s.value=this.resPage;
+
 		}
 		,changePage:function(e){
-             var pg=e.target.selectedIndex-1;
-             console.log("changePage changing page",pg );
+
+			var pg=1;
+			if (e.target.selectedIndex) {
+              pg=e.target.selectedIndex-1;
+
+		    } else {
+				//console.log("...changePage using button",e.target);
+				//var selobj = dom.byId("selResPage");
+				//selobj.options[select.options.length]
+				//console.log(".......changePage using butt ",selobj);
+				//pg=parseInt(selobj.value);
+				pg=this.resPage;
+
+				if (e.target.id.indexOf("Next") > 0){
+					pg=pg+1;
+				} else if (e.target.id.indexOf("Prev") > 0){
+					pg=pg-1;
+				}
+			}
 
              this.resPage=pg;
+
+
              this.doSearch();
 		}
 		,showResults: function (results){
@@ -1300,8 +1345,7 @@ define([
 				 console.log("error getting results",results);
 			 }
 
-			// Set the page menu and select current page
-            this.resultsAddPager(dobj);
+
 
             // show minimal detail if there is only one results
             if (pobj.length==1) {
@@ -1310,6 +1354,9 @@ define([
 			   this.addPRC_Min(pobj[0].pin);
 		    }
 
+		    // Set the page menu and select current page
+            //this.resultsAddPager(dobj);
+
             if (dobj.rec_count) this.qObj.rec_count=dobj.rec_count;
 
 		    this.pinlist=[];
@@ -1317,9 +1364,11 @@ define([
 
 				 pobj[i].pin=pobj[i].pin.trim();
 				 pobj[i].owner= pobj[i].owner.trim();
-				 //pobj[i].addr= pobj[i].addr.trim();
+				 pobj[i].addr= pobj[i].addr.trim();
+				 pobj[i].GIS_SiteAddr=pobj[i].GIS_SiteAddr.trim();
 
-				 var mailing_addr="";
+				/*
+				var mailing_addr="";
 				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR1.trim()=="") ? "" : pobj[i].PEFLADDR1.trim() + "<br>");
 				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR2.trim()=="") ? "" : pobj[i].PEFLADDR2.trim() + "<br>");
 				 mailing_addr=mailing_addr +  ((pobj[i].PEFLADDR3.trim()=="") ? "" : pobj[i].PEFLADDR3.trim() + "<br>");
@@ -1330,7 +1379,10 @@ define([
 
 				 pobj[i].addr= mailing_addr;
 
+				 */
+
 				 pobj[i].hstead=pobj[i].hstead.trim();
+
 
 				 this.pinlist.push(pobj[i].pin);
 				 var tprc =new prc(
@@ -1338,7 +1390,8 @@ define([
 				   pin: pobj[i].pin,
 				   owner: pobj[i].owner,
 				   //address: pobj[i].addr,
-				   address: pobj[i].SiteAddr,
+				   //address: pobj[i].SiteAddr,
+				   address: pobj[i].GIS_SiteAddr,
 
 				   homestead:pobj[i].hstead
 				 });
@@ -1368,6 +1421,9 @@ define([
 				 tprc.startup();
 				 tprc.placeAt(srd);
 			 }
+
+			 this.resultsAddPager(dobj);
+
 			 document.getElementById("pResultListTab").scrollTop=0;
              //console.table()
 			 //console.timeEnd("res");
@@ -1588,6 +1644,15 @@ define([
              prcob.set("open", "true");
              this.zoomPIN(pinv,false);
              topic.publish('print/printmap', {pin:pinv });
+
+			 topic.publish('growler/growl', {
+					title: 'Print Started',
+					message: 'Your print job has been sent to the server.  See the print menu in the left panel for the status of your print job.',
+					level: 'success', //can be: 'default', 'warning', 'info', 'error', 'success'.
+					timeout: 2500, //set to 0 for no timeout
+					opacity: 0.8
+			 });
+
 		}
 		,clearSearch: function(){
            var dobj=dijit.byId("pane1").domNode;
@@ -1600,7 +1665,9 @@ define([
 		   domConstruct.empty("pSearchResults");
            domConstruct.empty("pcMinDet");
            domConstruct.empty("pResCount");
-           document.getElementById("pPageSelDiv").style.visibility="hidden";
+           document.getElementById("pPageSelDiv").style.display="none";
+           document.getElementById("pPageSelDiv2").style.display="none";
+           document.getElementById("pPageSelDiv3").style.display="none";
            this.btnZoomAll.domNode.style.display="none";
 		   this.btnPrLbls.domNode.style.display="none";
            this.clearGraphics();

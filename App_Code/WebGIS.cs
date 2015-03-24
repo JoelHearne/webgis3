@@ -791,9 +791,11 @@ namespace WebGIS
 
             String sqlStr = "";
             //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, site_address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, GIS_site_address,site_address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
 
             sqlStr = sqlStr + " FROM CAMVIEW_PropertyList ";
+
+
 
             String osqlStr = sqlStr;
             String csqlStr = "SELECT distinct PIN FROM CAMVIEW_PropertyList ";
@@ -1047,6 +1049,19 @@ namespace WebGIS
                 {
 
                 }
+                
+                String gis_SiteAddr = "";
+                try
+                {
+                    gis_SiteAddr = (String)dt.Rows[i]["GIS_Site_Address"];
+                    pr.GIS_SiteAddr = gis_SiteAddr;
+                }
+                catch
+                {
+
+                }
+                
+
                 try
                 {
                     pr.PEFLADDR1 = (String)dt.Rows[i]["PEFLADDR1"];
@@ -1528,6 +1543,7 @@ namespace WebGIS
         public String legal;
         public String lastSale;
         public String SiteAddr= "";
+        public String GIS_SiteAddr = "";
         public String PEFLADDR1 = "";
         public String PEFLADDR2 = "";
         public String PEFLADDR3 = "";

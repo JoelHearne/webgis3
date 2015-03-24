@@ -121,12 +121,9 @@ define([
 			if (!this.select_on) {
 				this.select_on=true;
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
-
 				topic.publish('identify/proxySelect', 'select');
-
 				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
-
 		    } else {
 				this.select_on=false;
                 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
@@ -134,6 +131,19 @@ define([
 			}
 
         },
+        selectboxtool: function (e) {
+			if (!this.select_on) {
+  				this.select_on=true;
+				topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });
+				topic.publish('identify/proxySelect', 'select');
+		    } else {
+				this.select_on=false;
+                topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });
+				this.map.setMapCursor('default');
+			}
+        },
+
+
         disconnectMapClick: function() {
             // cmv 1.3.0
             topic.publish('mapClickMode/setCurrent', 'navTools');

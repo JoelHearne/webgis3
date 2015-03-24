@@ -63,7 +63,8 @@
   	width:100%;
   	box-shadow: 10px 10px 5px #888888;
   	border:1px solid #15157f;
-  	
+  	border-radius: 5px;
+  	/*
   	-moz-border-radius-bottomleft:0px;
   	-webkit-border-bottom-left-radius:0px;
   	border-bottom-left-radius:0px;
@@ -80,6 +81,7 @@
   	-webkit-border-top-left-radius:0px;
   	border-top-left-radius:0px; 
   	border-top-left-radius:0px;
+  	*/
   	
   	//background-image: radial-gradient(2px at 15px 50% , #000000 50%, rgba(0, 255, 0, 0.3) 8px, rgba(255, 0, 0, 0.3) 13px, rgba(0, 0, 255, 0.0) 17px);
   }
