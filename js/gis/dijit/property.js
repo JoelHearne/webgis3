@@ -458,7 +458,7 @@ define([
 					title: 'Query Threshhold Exceeded',
 					message: 'You have exceeded the allowable request size.  Not all of the results were returned.  Please try reducing your search footprint.',
 					level: 'warning', //can be: 'default', 'warning', 'info', 'error', 'success'.
-					timeout: 1500, //set to 0 for no timeout
+					timeout: 2000, //set to 0 for no timeout
 					opacity: 0.8
 				});
 			}
@@ -524,6 +524,19 @@ define([
 		}
 		,mapqResNoQry: function(results) {
 			//console.log(arguments.callee," ",results);
+
+			// check if result count exceeded threshhold
+			if (results.exceededTransferLimit) {
+				// notify the user that the result count exceeds the maximum threshhold
+				topic.publish('growler/growl', {
+					title: 'Query Threshhold Exceeded',
+					message: 'You have exceeded the allowable request size.  Not all of the results were returned.  Please try reducing your search footprint.',
+					level: 'warning', //can be: 'default', 'warning', 'info', 'error', 'success'.
+					timeout: 2000, //set to 0 for no timeout
+					opacity: 0.8
+				});
+			}
+
 			var _this=this;
             var zoomExtent = null;
             var feats=[];
@@ -1649,7 +1662,7 @@ define([
 					title: 'Print Started',
 					message: 'Your print job has been sent to the server.  See the print menu in the left panel for the status of your print job.',
 					level: 'success', //can be: 'default', 'warning', 'info', 'error', 'success'.
-					timeout: 2500, //set to 0 for no timeout
+					timeout: 1500, //set to 0 for no timeout
 					opacity: 0.8
 			 });
 
