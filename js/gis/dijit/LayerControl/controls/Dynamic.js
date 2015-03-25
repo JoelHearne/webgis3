@@ -110,6 +110,7 @@ define([
         },
         // add folder/sublayer controls per layer.layerInfos
         _createSublayers: function (layer) {
+			console.log("dynamic _createSublayers",layer);
 
             // check for single sublayer - if so no sublayer/folder controls
             if (layer.layerInfos.length > 1) {

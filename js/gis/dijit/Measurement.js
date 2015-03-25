@@ -1,6 +1,8 @@
 define([
     'dojo/_base/declare',
     'dijit/_WidgetBase',
+   'dijit/_WidgetsInTemplateMixin',
+   'gis/dijit/_FloatingWidgetMixin',
     'esri/dijit/Measurement',
     'dojo/aspect',
     'dojo/_base/lang',
@@ -8,9 +10,18 @@ define([
 	'dojo/dom',
     'dojo/dom-style',
     'dojo/topic'
-], function (declare, _WidgetBase, Measurement, aspect, lang, domConstruct,dom,Style, topic) {
+], function (declare, _WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin, Measurement, aspect, lang, domConstruct,dom,Style, topic) {
 
-    return declare([_WidgetBase], {
+    return declare([_WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
+
+        widgetsInTemplate: true,
+		title: 'Measure Tool',
+		//html: '<a href="#">Draw</a>',
+		html: '',
+		domTarget: 'measureDijit',
+		draggable: true,
+		//baseClass: 'gis_DrawDijit',
+
         declaredClass: 'gis.dijit.Measurement',
         mapClickMode: null,
         postCreate: function () {
@@ -53,11 +64,17 @@ define([
 			   console.log("error setting measurement style",ex);
 		    }
 		    */
+			var _this=this;
+			topic.subscribe('measure/showMe', lang.hitch(this, function (arg) {
+				_this.showThis();
+			}));
+	    }
+        ,showThis: function(){
+			console.log("measure showThis");
+           this.parentWidget.show();
 
-
-
-	    },
-	    measure_start:function(){
+		}
+	   , measure_start:function(){
 			console.log("...measure_start ",this.measure);
 
 			//topic.publish('property/toggleSpatial', {mode:"box",state:false });

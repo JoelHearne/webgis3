@@ -4,23 +4,33 @@ define([
     'dijit/_TemplatedMixin',
     'dijit/_WidgetsInTemplateMixin',
     'esri/toolbars/navigation',
+    "dojo/parser",
     'dijit/form/Button',
     'dijit/Menu',
     'dijit/MenuItem',
     'dijit/PopupMenuItem',
     'dijit/MenuSeparator',
-    'dojo/_base/lang',
+    "dijit/form/Select",
+    'dijit/layout/ContentPane',
+    'dojo/dom-construct',
     'dojo/on',
+    'dojo/_base/lang',
+    'dojo/dom',
+    'dojo/dom-style',
+
     'dojo/text!./NavTools/templates/NavTools.html',
     'dojo/topic',
     'xstyle/css!./NavTools/css/NavTools.css'
-], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Navigation, Button, Menu, MenuItem, PopupMenuItem, MenuSeparator, lang, on, NavToolsTemplate, topic, css) {
+    , "dojo/domReady!"
+], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Navigation,parser, Button, Menu, MenuItem, PopupMenuItem, MenuSeparator,Select,ContentPane, domConstruct, on, lang
+,dom,Style, NavToolsTemplate, topic, css) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: NavToolsTemplate,
         navTools: null,
         select_on:false,
         postCreate: function(){
+		  this.inherited(arguments);
 		  //console.log("navtools postcreate");
           this.navTools = new Navigation(this.map);
           this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode', 'navTools')));
@@ -29,8 +39,33 @@ define([
           if (this.mapRightClickMenu) {
             this.addRightClickMenu();
             }
-        },
-           addRightClickMenu: function () {
+
+
+
+        }
+        ,startup: function() {
+			this.inherited(arguments);
+			//parser.parse();
+
+/*
+            var sel= new Select({
+				name: "selWTool",
+				id: "selWTool",
+				class:"selTool",
+				options: [
+					{ label: "Print", value: "print" }
+					//,{ label: "Bookmarks", value: "bookmarks", selected: true }
+					,{ label: "Bookmarks", value: "bookmarks"  }
+					,{ label: "Draw", value: "draw" }
+					,{ label: "Measure", value: "measure" }
+					,{ label: "Identify", value: "identify" }
+					,{ label: "Goto", value: "goto" }
+
+				]
+           }).placeAt(dijit.byId("ntWidgSel")).startup();
+*/
+		}
+        ,addRightClickMenu: function () {
             //future functionality - zoom here, pan here
             // capture map right click position
             /*this.map.on('MouseDown', lang.hitch(this, function (evt) {
@@ -86,21 +121,18 @@ define([
             this.map.setMapCursor('default');
             this.connectMapClick();
 
-			if (this.select_on) {
-                topic.publish('property/toggleSpatial', {mode:"box",state:false });
-				this.map.setMapCursor('default');
-			}
-
-
+			if (this.select_on)  this.dieselecttool();
 
 
         },
         zoomIn: function() {
+			this.dieselecttool();
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomin.cur'),auto");
             this.disconnectMapClick();
             this.navTools.activate(Navigation.ZOOM_IN);
         },
         zoomOut: function() {
+			this.dieselecttool();
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomout.cur'),auto");
             this.navTools.activate(Navigation.ZOOM_OUT);
         },
@@ -112,39 +144,78 @@ define([
         },
         nextExtent: function () {
             this.navTools.zoomToNextExtent();
-        },
-        pan: function () {
+        }
+        ,pan: function () {
+			this.dieselecttool();
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
             this.navTools.activate(Navigation.PAN);
-        },
-        selecttool: function (e) {
-			if (!this.select_on) {
+        }
+        ,identify:function(){
+			this.dieselecttool();
+            //this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
+            //this.map.setMapCursor('default');
+            topic.publish('identify/makeActive', "button");
+
+		}
+        ,dieselecttool:function(){
+			this.connectMapClick();
+			 this.select_on=false;
+             topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+			 this.map.setMapCursor('default');
+
+		}
+        ,selecttool: function (e) {
+			//if (!this.select_on) {
 				this.select_on=true;
+				this.navTools.deactivate();
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 				topic.publish('identify/proxySelect', 'select');
 				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
-		    } else {
+		    /*} else {
 				this.select_on=false;
                 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 				this.map.setMapCursor('default');
-			}
+			}*/
 
         },
         selectboxtool: function (e) {
-			if (!this.select_on) {
+			//if (!this.select_on) {
   				this.select_on=true;
 				topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });
 				topic.publish('identify/proxySelect', 'select');
-		    } else {
+		    /*} else {
 				this.select_on=false;
                 topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });
 				this.map.setMapCursor('default');
-			}
+			}*/
         },
+        selectbeta: function(){
+
+			topic.publish('draw/showMe', "button");
 
 
-        disconnectMapClick: function() {
+		}
+        ,selectbeta2: function(){
+
+			//topic.publish('measure/showMe', "button");
+			//topic.publish('bookmarks/showMe', "button");
+			topic.publish('identify/showMe', "button");
+			//topic.publish('goto/showMe', "button");
+			//topic.publish('print/showMe', "button");
+
+		}
+		,selectToolWdgt:function(e){
+			 console.log("selectToolWdgt",e);
+			 if (e=="print") topic.publish('print/showMe', "sel");
+			 if (e=="bookmarks") topic.publish('bookmarks/showMe', "sel");
+			 if (e=="draw") topic.publish('draw/showMe', "sel");
+			 if (e=="measure") topic.publish('measure/showMe', "sel");
+			 if (e=="identify") topic.publish('identify/showMe', "sel");
+             if (e=="goto") topic.publish('goto/showMe', "sel");
+
+		}
+        ,disconnectMapClick: function() {
             // cmv 1.3.0
             topic.publish('mapClickMode/setCurrent', 'navTools');
             // cmv v1.2.0

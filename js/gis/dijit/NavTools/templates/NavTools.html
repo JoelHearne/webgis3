@@ -29,9 +29,29 @@
 
 	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'selboxIcon',showLabel:false"
 		data-dojo-attach-event="onClick:selectboxtool"><b>Select Parcels by Box</b></button>
+<!--
+	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'betaIcon',showLabel:false"
+		data-dojo-attach-event="onClick:selectbeta"><b>beta test function</b></button>
+-->
+	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'identifyIcon',showLabel:false"
+		data-dojo-attach-event="onClick:identify"><b>Identify</b></button>
 
 
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'deactivateIcon',showLabel:false"
-		data-dojo-attach-event="onClick:deactivate">Deactivate</button
+
+	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'deactivateIcon',showLabel:false" data-dojo-attach-event="onClick:deactivate">Deactivate</button>
+
+	<!--<div id="ntWidgSel" data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="ntWidgSel" style="background-color:blue"  >-->
+	<select id="selWTool" data-dojo-id="selWTool" name="selWTool" style="padding:0px 0px 0px 25px" data-dojo-attach-event="onChange:selectToolWdgt"    data-dojo-type="dijit/form/Select">
+		<option value="">Select Menu</option>
+		<option value="identify">Identify</option>
+		<option value="print">Print</option>
+		<option value="draw">Draw</option>
+		<option value="measure">Measure</option>
+		<option type="separator"></option>
+		<option value="bookmarks">Bookmarks</option>
+		<option value="goto">Goto</option>
+	</select>
+
+
 
 	</div>

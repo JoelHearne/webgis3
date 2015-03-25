@@ -7,6 +7,7 @@ define([
   'dojo/keys',
   'dijit/TooltipDialog',
   'dijit/popup',
+  'dojo/topic',
   'put-selector',
   '//cdnjs.cloudflare.com/ajax/libs/proj4js/2.2.1/proj4.js',
   // mixins & base classes
@@ -23,7 +24,7 @@ define([
 ], function(
   declare, lang, array,
   on, keys,
-  TooltipDialog, popup,
+  TooltipDialog, popup,topic,
   put,
   proj4,
   _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
@@ -53,8 +54,18 @@ define([
     postCreate: function() {
       this.inherited(arguments);
       this.setupConnections();
-    },
-    setupConnections: function() {
+
+	  var _this=this;
+	  topic.subscribe('goto/showMe', lang.hitch(this, function (arg) {
+			 _this.showThis();
+	  }));
+
+    }
+    ,showThis: function(){
+		console.log("goto showThis");
+	     this.parentWidget.show();
+	}
+    ,setupConnections: function() {
       this.helpTooltip = new TooltipDialog({
         id: this.baseClass + '_helpTooltip',
         style: 'width: 300px;',

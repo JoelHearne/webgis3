@@ -70,10 +70,16 @@ define([
 			topic.subscribe('print/printmap', lang.hitch(this, function (args) {
 				this.print();
 			}));
+			var _this=this;
+			topic.subscribe('print/showMe', lang.hitch(this, function (arg) {
+				_this.showThis();
+			}));
 
-
-        },
-        operationalLayersInspector: function (opLayers) {
+        }
+        ,showThis: function(){
+           this.parentWidget.show();
+		}
+        ,operationalLayersInspector: function (opLayers) {
 			console.log("operationalLayersInspector",opLayers);
 
             array.forEach(opLayers, function (layer) {

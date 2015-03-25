@@ -42,6 +42,7 @@ define([
 	'dijit/form/DateTextBox',
 	'dojo/store/Cache'
 	,'dojo/store/JsonRest',
+	'put-selector',
 	'./prc',
 	'./prcmin',
 	//'dojo/_base/Color',
@@ -71,13 +72,18 @@ define([
     "esri/geometry/normalizeUtils",
     "esri/tasks/GeometryService",
     "esri/tasks/BufferParameters",
+    "esri/dijit/Legend",
 	'esri/InfoTemplate',
+	'./LayerControl',
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
 	//,'xstyle/css!./property/css/adw-icons.css'
 	 ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
-,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry,Point,Polygon,Polyline,SpatialReference,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,InfoTemplate
+,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
+,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,put,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry
+,Point,Polygon,Polyline,SpatialReference,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
+, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,Legend,InfoTemplate,LayerControl
 //, i18n
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -123,6 +129,7 @@ define([
 	    ptmrStrt:null,
 	    mapsearch_auto:false,
 	    isAutoFl:false,
+	    legendDijit:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -182,6 +189,26 @@ define([
 
 			}));
 
+			 /// Add Legend widget
+			 /*
+			 this.map.on("layers-add-result", function (evt) {  // not firing off ..probably because map has already loaded
+						 console.log("property fired layers-add-result",evt);
+						var layerInfo = arrayUtils.map(evt.layers, function (layer, index) {
+						  return {layer:layer.layer, title:layer.layer.name};
+						});
+
+						console.log("property fired layers-add-result  ....",layerInfo);
+						if (layerInfo.length > 0) {
+						  var legendDijit = new Legend({
+							map: this.map,
+							layerInfos: layerInfo
+						  }, "pLegendTabCnt");
+						  legendDijit.startup();
+						}
+			 });
+			 */
+		    /////////END  Add Legend widget   ///
+
 		}
 		,startup: function() {
 			this.inherited(arguments);
@@ -240,6 +267,46 @@ define([
 				 //console.log(" property widget load perftime from widget init.... ",(ptmrEnd-this.ptmrStrt)," ms");
 		    }
 		    */
+
+
+            /// Add LayerControls widget (TOC)
+            var lcOptions={
+				id:"layerControl_widget"
+				,layerControlLayerInfos:true
+				,layerInfos:this.layerInfos
+				,map:this.map
+				,overlayReorder:true
+				,parentWidget:dijit.byId("pLayersTabCnt")
+				,seperated:true
+				,vectorReorder:true
+
+			};
+            //var lyrctrl= new WidgetClass(lcOptions, put('div')).placeAt(dijit.byId("pLayersTabCnt").containerNode);
+		     //var lyrctrl=new LayerControl(lcOptions, put('div')).placeAt(dijit.byId("pLayersTabCnt").containerNode);
+		    var lyrctrl=new LayerControl(lcOptions, put('div')).placeAt(dijit.byId("pLayersTabCnt") );
+		    lyrctrl.startup();
+
+		    //lyrctrl.placeAt(dijit.byId("pLayersTabCnt"));
+		    /////////END   Add LayerControls widget (TOC) ///
+
+
+			// Legend Widget
+            //console.log("property:this.legendLayerInfos",this.layerInfos,this.legendLayerInfos.length);
+		    if (this.layerInfos.length > 0) {
+			  this.legendDijit = new Legend({
+				map: this.map,
+				layerInfos: this.layerInfos
+			  }, "pLegendDiv");
+			  this.legendDijit.placeAt(dijit.byId("pLegendTabCnt") );
+			  this.legendDijit.startup();
+		    }
+
+
+
+			this.map.on('update-end', function (layer) {
+				 _this.legendDijit.refresh();
+			});
+
 
  			 return this.pshowAtStartup;
         }
@@ -1667,7 +1734,16 @@ define([
 			 });
 
 		}
+		,createTab: function(){
+			console.log("createTab");
+             var tab = new dijit.layout.ContentPane({ className: "ContentTab", title: "Tab", content: 'Tab Content', selected: true });
+             tab.startup();
+             this.pSearchTabs.addChild(tab, 3);
+
+
+		}
 		,clearSearch: function(){
+
            var dobj=dijit.byId("pane1").domNode;
            var iboxes=dobj.getElementsByTagName('input');
            for (var i=0;i<iboxes.length;i++){

@@ -1,5 +1,9 @@
 define([
     'dojo/_base/declare',
+    'dijit/_WidgetBase',
+    //'dijit/_TemplatedMixin',
+    'dijit/_WidgetsInTemplateMixin',
+  'dijit/_AttachMixin',
     'dojo/_base/array',
     'dojo/_base/lang',
     'dojo/topic',
@@ -15,6 +19,10 @@ define([
     'xstyle/css!./LayerControl/css/LayerControl.css'
 ], function (
     declare,
+    _WidgetBase,
+    //_TemplatedMixin,
+    _WidgetsInTemplateMixin,
+    _AttachMixin,
     array,
     lang,
     topic,
@@ -28,7 +36,8 @@ define([
     esriConfig,
     require
 ) {
-    var LayerControl = declare([WidgetBase, Container], {
+    var LayerControl = declare([WidgetBase, _WidgetsInTemplateMixin, Container], {
+
         map: null,
         layerInfos: [],
         icons: {
@@ -82,8 +91,10 @@ define([
         postCreate: function () {
             this.inherited(arguments);
 
+
             if (this.separated) {
                 var ControlContainer = declare([WidgetBase, Container]);
+
                 // vector layer label
                 if (this.vectorLabel !== false) {
                     this.addChild(new ContentPane({

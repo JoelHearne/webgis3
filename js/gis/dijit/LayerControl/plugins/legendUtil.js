@@ -115,6 +115,7 @@ define([
         ////////////////////////////////////////
         // image layers will most likely have own legend methods...but use this for now
         layerLegend: function (layer, expandNode) {
+
             // a stop gap
             var legend = new Legend({
                 map: layer.getMap(),
@@ -138,6 +139,7 @@ define([
         /////////////////////////////
         // create legends for dynamic control w/ sublayers
         dynamicSublayerLegend: function (layer, expandNode) {
+
             // check version and handle accordingly
             if (layer.version >= 10.01) {
                 this._legendRequest(layer, expandNode, '_createDynamicSublayerLegend', '_dynamicSublayerLegendError');
@@ -150,6 +152,7 @@ define([
         //       could remove id's from sublayer controls and simplify some
         //       is query a better option or not?
         _createDynamicSublayerLegend: function (layer, expandNode, r) {
+
             array.forEach(r.layers, function (_layer) {
                 var layerId = _layer.layerId;
                 // create legend table
@@ -183,6 +186,7 @@ define([
         },
         // handle error
         _dynamicSublayerLegendError: function (layer, expandNode, e) {
+
             if (layer.layerInfos.length === 1) {
                 html.set(expandNode, 'No Legend');
             }
@@ -198,6 +202,7 @@ define([
         _surfaceDims: [20, 20],
         // determine what the renderer is and handle appropriately
         vectorLegend: function (layer, expandNode) {
+
             //  layer.renderer.symbol = single symbol (esri.renderer.SimpleRenderer, etc)
             //  layer.renderer.infos = multiple symbols (esri.renderer.UniqueValueRenderer, etc)
             //  TODO: read up on every single renderer! (just to be a better person)

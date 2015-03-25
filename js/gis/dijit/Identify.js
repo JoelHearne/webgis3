@@ -121,10 +121,24 @@ define([
             // active layer then identify becomes the proxy for select
             var _this=this;
 			topic.subscribe('identify/proxySelect', lang.hitch(this, function (arg) {
-				console.log("identify/proxySelect",arg);
 				_this.proxySelect();
 			}));
+
+			topic.subscribe('identify/showMe', lang.hitch(this, function (arg) {
+				_this.showThis();
+
+			}));
+			topic.subscribe('identify/makeActive', lang.hitch(this, function (arg) {
+				_this.setMapClickMode('identify');
+
+			}));
+
         }
+        ,showThis: function(){
+           this.parentWidget.show();
+           this.setMapClickMode('identify');
+           //this.mapClickMode = 'identify'
+		}
         ,proxySelect:function(){
 			var sLyr=this.getSelectedLayer();
 			if (sLyr !="***" && sLyr!="WebGIS||1"){ // TODO: verify that "WebGIS||1" is Parcels

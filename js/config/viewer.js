@@ -130,7 +130,8 @@ define([
             //slider: true,
 			//sliderStyle: 'large'
             //,sliderLabels: webLods
-		},
+		}
+
 		// panes: {
 		// 	left: {
 		// 		splitter: true
@@ -162,7 +163,7 @@ define([
 		// operationalLayers: Array of Layers to load on top of the basemap: valid 'type' options: 'dynamic', 'tiled', 'feature'.
 		// The 'options' object is passed as the layers options for constructor. Title will be used in the legend only. id's must be unique and have no spaces.
 		// 3 'mode' options: MODE_SNAPSHOT = 0, MODE_ONDEMAND = 1, MODE_SELECTION = 2
-		operationalLayers: [
+		,operationalLayers: [
 
         /*{
 			type: 'dynamic',
@@ -283,6 +284,8 @@ define([
 				    ,tocLayerInfos:true
 				}
 			}
+
+			/*
 			,legend: {
 				include: true,
 				id: 'legend',
@@ -296,6 +299,9 @@ define([
 					legendLayerInfos: true
 				}
 			}
+			*/
+
+/*
 			,layerControl: {
 				include: true,
 				id: 'layerControl',
@@ -312,6 +318,24 @@ define([
 					overlayReorder: true
 				}
 			}
+*/
+		/*	,layerControl: {
+				include: true,
+				id: 'layerControl',
+				type: 'domNode',
+				path: 'gis/dijit/LayerControl',
+				srcNodeRef: 'pLayersTab',
+				title: 'Layers',
+
+				options: {
+					map: true,
+					layerControlLayerInfos: true,
+					separated: true,
+					vectorReorder: true,
+					overlayReorder: true
+				}
+			}*/
+
             ,navtools: {
 				include: true,
 				id: 'navtools',
@@ -346,6 +370,7 @@ define([
 					map: true
 				}
 			}
+/*
 			,identify: {
 				include: true,
 				id: 'identify',
@@ -366,7 +391,23 @@ define([
 				position: 12,
 				options: { map: true }
 			}
-
+*/
+			,identify: {
+				include: true,
+				id: 'identify',
+				type: 'floating',
+				path: 'gis/dijit/Identify',
+				title: 'Identify',
+				options: 'config/identify'
+			}
+			,goto: {
+				include: true,
+				id: 'goto',
+				type: 'floating',
+				path: 'gis/dijit/Goto',
+				title: 'Go to Coordinate',
+				options: { map: true }
+			}
 
 
             /*
@@ -559,7 +600,7 @@ define([
 			}
 
 
-
+/*
 			,bookmarks: {
 				include: true,
 				id: 'bookmarks',
@@ -570,7 +611,8 @@ define([
 				position: 3,
 				options: 'config/bookmarks'
 			}
-
+			*/
+/*
 			,find: {
 				include: true,
 				id: 'find',
@@ -582,8 +624,9 @@ define([
 				position: 3,
 				options: 'config/find'
 			}
+*/
 
-		   ,draw: {
+/*		   ,draw: {
 				include: true,
 				id: 'draw',
 				type: 'titlePane',
@@ -597,6 +640,45 @@ define([
 					mapClickMode: true
 				}
 			}
+*/
+
+			,bookmarks: {
+				include: true,
+				id: 'bookmarks',
+				type: 'floating',
+				path: 'gis/dijit/Bookmarks',
+				title: 'Bookmarks',
+
+				options: 'config/bookmarks'
+			}
+		   ,draw: {
+				include: true,
+				id: 'draw',
+				type: 'floating',
+				path: 'gis/dijit/Draw',
+				title: 'Draw',
+
+				options: {
+					map: true,
+					mapClickMode: true
+				}
+			}
+			,measure: {
+				include: true,
+				id: 'measurement',
+				type: 'floating',
+				path: 'gis/dijit/Measurement',
+				title: 'Measurement',
+				options: {
+					map: true,
+					mapClickMode: true,
+					defaultAreaUnit: units.SQUARE_MILES,
+					defaultLengthUnit: units.MILES
+				}
+			}
+
+
+/*
 			,measure: {
 				include: true,
 				id: 'measurement',
@@ -613,7 +695,8 @@ define([
 					defaultLengthUnit: units.MILES
 				}
 			}
-			,print: {
+*/
+/*			,print: {
 				include: true,
 				id: 'print',
 				type: 'titlePane',
@@ -633,6 +716,26 @@ define([
 					defaultLayout: 'Letter ANSI A Landscape'
 				}
 			}
+*/
+			,print: {
+				include: true,
+				id: 'print',
+				type: 'floating',
+				path: 'gis/dijit/Print',
+				title: 'Print',
+				options: {
+					map: true,
+					//printTaskURL: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+					printTaskURL: 'http://gisvm101:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+					copyrightText: 'Copyright 2014',
+					authorText: 'OCGIS',
+					defaultTitle: 'Okaloosa Map',
+					defaultFormat: 'PDF',
+					defaultLayout: 'Letter ANSI A Landscape'
+				}
+			}
+
+
 			 ,basemaps: {
 				include: true,
 				id: 'basemaps',

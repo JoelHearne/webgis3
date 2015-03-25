@@ -36,6 +36,51 @@
     vertical-align: middle;
 }
 
+#ntWidgSel {
+   border:1px solid green;
+   background-color:blue;
+   padding: 0px !important;
+   margin: 0px !important;
+   /*width:35px;
+   height:25px;*/
+}
+
+.gis_NavToolsDijit .selTool {
+   border:1px solid red;
+   background-color:yellow;
+   padding: 0px !important;
+   margin: 0px !important;
+   font-size:8px;
+   /*height:20px;*/
+   width:50px;
+
+}
+#selWTool {
+   padding: 0px !important;
+   margin: 0px !important;
+   font-size:8px;
+   width: 120px;
+   height:14px;
+}
+.dj_ie6 .dijitSelect .dijitSelectLabel, .dj_ie7 .dijitSelect .dijitSelectLabel, .dj_ie8 .dijitSelect .dijitSelectLabel, .dj_iequirks .dijitSelect .dijitSelectLabel, .dijitSelect td, .dj_ie6 .dijitSelect input, .dj_iequirks .dijitSelect input, .dj_ie6 .dijitSelect .dijitValidationContainer, .dj_ie6 .dijitTextBox input, .dj_ie6 input.dijitTextBox, .dj_iequirks .dijitTextBox input.dijitValidationInner, .dj_iequirks .dijitTextBox input.dijitArrowButtonInner, .dj_iequirks .dijitTextBox input.dijitSpinnerButtonInner, .dj_iequirks .dijitTextBox input.dijitInputInner, .dj_iequirks input.dijitTextBox {
+    line-height: 0%;
+}
+.dbootstrap .dijitComboButton .dijitArrowButton, .dbootstrap .dijitComboBox .dijitButtonNode.dijitArrowButton, .dbootstrap .dijitSpinnerButtonContainer.dijitButtonNode, .dbootstrap .dijitSelect .dijitButtonNode.dijitArrowButton {
+    border-left-width: 0px;
+    padding: 10px 0px 10px  0px;
+    margin: 0px 0px 0px 0px;
+    border-radius: 0px 4px 4px 0px;
+}
+
+ 
+
+.dijitValidationTextBoxError input.dijitValidationInner, .dijitSelect input, .dijitTextBox input.dijitArrowButtonInner {
+    text-indent: -2em !important;
+    direction: ltr !important;
+    text-align: left !important;
+    height: 10px !important;
+}
+
 .gis_NavToolsDijit .zoominIcon {
     background-image: url(../images/nav_zoomin.png);
     width: 16px;
@@ -72,6 +117,21 @@
 	width: 16px;
 	height: 16px; 
 }
+.gis_NavToolsDijit .identifyIcon {
+	 background-image: url(../images/identify.png);
+	width: 16px;
+	height: 16px; 
+}
+.gis_NavToolsDijit .betaIcon {
+	 background-image: url(../images/beta.png);
+	width: 16px;
+	height: 16px; 
+}
+.gis_NavToolsDijit .betaIcon2 {
+	 background-image: url(../images/three-dollars.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .selIcon {
 	 background-image: url(../images/LocationGetPoint16.png);
 	width: 16px;
@@ -89,23 +149,20 @@
 }
 .gis_NavToolsDijit .formContainer {
     /*border: 1px solid #bbb;*/
-    //width: 100%;
+    
     position: absolute;
     top: 11px;
-    //left: 85%;
-    width: 271px;
-    float: right;
+    /*left: 85%;*/
+     width: 521px;
+    /*width: auto;*/
+    /*float: right;*/
+    float: left;
      padding: 0px;
-    //margin: 70px 0px 0px 80px;
-    //margin: 4px 0px 0px 75px;
+     
     margin-left:2px auto 2px auto;
-    //margin-right: 2px auto 2px auto;
+ 
     z-index:999;
-    //background: rgb(250,250,250);
-    //background: rgb(90,90,90);
-    //background: rgb(141,214,249);
-    //background: rgb(0,164,172);
-    //background: rgb(118,154,132);
+   
     background:rgb(1, 109, 141);
     border:  1px solid rgb(1,109,138); 
     border-radius:  4px;

@@ -35,6 +35,7 @@ define([
 		editorLayerInfos: [],
 		identifyLayerInfos: [],
 		layerControlLayerInfos: [],
+		/*
 		panes: {
 			left: {
 				id: 'sidebarLeft',
@@ -49,6 +50,16 @@ define([
 				content: mapOverlay
 			}
 		},
+		*/
+		panes: {
+			center: {
+				id: 'mapCenter',
+				placeAt: 'outer',
+				region: 'center',
+				content: mapOverlay
+			}
+		},
+
 		collapseButtons: {},
 		timerStart:null,
 		isMapInit:false,
@@ -633,6 +644,7 @@ define([
 			}
 			for (var pane in this.panes) {
 				if (this.panes.hasOwnProperty(pane) && (pane !== 'outer' || pane !== 'center')) {
+
 					paneWidgets = array.filter(widgets, function (widget) {
 						return (widget.placeAt && widget.placeAt === pane);
 					});
@@ -652,6 +664,7 @@ define([
 			});
 
 			array.forEach(paneWidgets, function (widget, i) {
+				//console.log("!..Controller loading widget ",widget, i);
 				this.widgetLoader(widget, i);
 			}, this);
 		},
@@ -771,7 +784,7 @@ define([
 			return tp;
 		},
 		_createFloatingWidget: function (parentId, title) {
-			//console.log("controller","_createFloatingWidget");
+		    //console.log("controller","_createFloatingWidget",parentId, title);
 
 			var options = {
 				title: title
@@ -807,7 +820,7 @@ define([
 		},
 		widgetLoader: function (widgetConfig, position) {
 
-			//console.log("controller","widgetLoader");
+		    //console.log("controller","widgetLoader",widgetConfig, position);
 
 			var parentId, pnl;
 
@@ -842,8 +855,8 @@ define([
 			}
 		},
 		createWidget: function (widgetConfig, options, WidgetClass) {
-
-			//console.log("controller","createWidget","widgetConfig ",widgetConfig );
+            //console.log("controller","createWidget" ,  options, WidgetClass  );
+			 //console.log("controller","createWidget", widgetConfig, options, WidgetClass );
 
 			// set any additional options
 			options.id = widgetConfig.id + '_widget';

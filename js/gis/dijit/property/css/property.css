@@ -47,7 +47,7 @@ select {
   //overflow: hidden !important;
 
 }
-
+*/
 
 .pResultListTab {
     overflow: auto !important;
@@ -68,11 +68,13 @@ select {
 }
 #pSavedTab {
   overflow: auto !important;
-
+  /*display:none;*/
 }
-*/
+ 
+
+
 #pcMinDet {
-  height:97% !important;
+ /* height:97% !important;*/
   width: 99% !important;
 
 }

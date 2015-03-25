@@ -5,8 +5,9 @@ define([
 	'dojo/json',
 	'dojo/cookie',
 	'dojo/_base/lang',
+	'dojo/topic',
 	'xstyle/css!./Bookmarks/css/Bookmarks.css'
-], function (declare, _WidgetBase, Bookmarks, json, cookie, lang) {
+], function (declare, _WidgetBase, Bookmarks, json, cookie, lang,topic) {
 
 	return declare([_WidgetBase], {
 		declaredClass: 'gis.digit.Bookmarks',
@@ -28,13 +29,22 @@ define([
 
 			this.connect(this.bookmarks, 'onEdit', 'setBookmarks');
 			this.connect(this.bookmarks, 'onRemove', 'setBookmarks');
+
+			var _this=this;
+			topic.subscribe('bookmarks/showMe', lang.hitch(this, function (arg) {
+				_this.showThis();
+			}));
 		},
 		setBookmarks: function () {
 			cookie('bookmarkItems', json.stringify(this.bookmarks.toJson()), {
 				expires: 365
 			});
-		},
-		_export: function () {
+		}
+        ,showThis: function(){
+           this.parentWidget.show();
+
+		}
+		,_export: function () {
 			return json.stringify(this.bookmarks.toJson());
 		}
 	});

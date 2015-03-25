@@ -3,6 +3,8 @@ define({
 	mapClickMode: true,
 	openOnStartup: false,
 	mapRightClickMenu: true,
+	legendLayerInfos: true,
+	layerControlLayerInfos:true,
 	property_mapsrvc:'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
 	parcel_lyrid:1,
 	pin_field:"PATPCL_PIN",

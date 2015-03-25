@@ -3,8 +3,16 @@ define([
    'dijit/_WidgetBase',
    'dijit/_TemplatedMixin',
    'dijit/_WidgetsInTemplateMixin',
+   'gis/dijit/_FloatingWidgetMixin',
    'dojo/_base/lang',
    'dojo/_base/Color',
+    'dojo/dom-construct',
+    'dojo/on',
+    'dojo/_base/lang',
+    'dojo/dom',
+    'dojo/dom-style',
+
+
    'esri/toolbars/draw',
    'esri/layers/GraphicsLayer',
    'esri/graphic',
@@ -22,17 +30,28 @@ define([
    'dijit/form/Button',
    'xstyle/css!./Draw/css/Draw.css',
    'xstyle/css!./Draw/css/adw-icons.css'
-], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, lang, Color, Draw, GraphicsLayer, Graphic, SimpleRenderer, drawTemplate, UniqueValueRenderer, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, FeatureLayer, topic, aspect, i18n) {
+], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin, lang, Color, domConstruct, on, lang
+,dom,Style, Draw, GraphicsLayer, Graphic, SimpleRenderer, drawTemplate, UniqueValueRenderer, SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, FeatureLayer, topic, aspect, i18n) {
 
     // main draw dijit
-    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
+    return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
         widgetsInTemplate: true,
         templateString: drawTemplate,
+		title: 'Draw Tools',
+		//html: '<a href="#">Draw</a>',
+		html: '',
+		domTarget: 'drawDijit',
+		draggable: true,
+		baseClass: 'gis_DrawDijit',
+
         i18n: i18n,
         drawToolbar: null,
         mapClickMode: null,
         postCreate: function () {
             this.inherited(arguments);
+
+            var _this=this;
+
             this.drawToolbar = new Draw(this.map);
             this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
 
@@ -43,9 +62,28 @@ define([
                 this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
                     this.onLayoutChange(this.parentWidget.open);
                 })));
-            }
+            } else {
+
+				/*
+				var dlg = domConstruct.place(this.html, this.domTarget);
+				on(dlg, 'click', lang.hitch(this , 'showThis'));
+				*/
+
+			}
+			var _this=this;
+			topic.subscribe('draw/showMe', lang.hitch(this, function (arg) {
+				console.log("draw/showMe",arg);
+				_this.showThis();
+
+			}));
+
+
         },
-        createGraphicLayers: function () {
+        showThis: function(){
+           this.parentWidget.show();
+
+		}
+        ,createGraphicLayers: function () {
             this.pointSymbol = new SimpleMarkerSymbol(SimpleMarkerSymbol.STYLE_CIRCLE, 10, new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color([255, 0, 0]), 1), new Color([255, 0, 0, 1.0]));
             this.polylineSymbol = new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASH, new Color([255, 0, 0]), 1);
             this.polygonSymbol = new SimpleFillSymbol(SimpleFillSymbol.STYLE_SOLID, new SimpleLineSymbol(SimpleLineSymbol.STYLE_DASHDOT, new Color([255, 0, 0]), 2), new Color([255, 255, 0, 0.0]));
