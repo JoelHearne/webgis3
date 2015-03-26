@@ -34,6 +34,7 @@ define([
     'dojo/_base/array',
     'dojo/io-query',
     'dojox/lang/functional',
+
     'dojo/json',
     'dojo/cookie',
     "dojo/parser",
@@ -74,6 +75,7 @@ define([
     "esri/tasks/BufferParameters",
     "esri/dijit/Legend",
 	'esri/InfoTemplate',
+	 "dojox/layout/ResizeHandle",
 	'./LayerControl',
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
@@ -83,7 +85,7 @@ define([
 ,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
 ,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,put,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry
 ,Point,Polygon,Polyline,SpatialReference,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
-, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,Legend,InfoTemplate,LayerControl
+, IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,Legend,InfoTemplate,ResizeHandle,LayerControl
 //, i18n
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
@@ -137,6 +139,8 @@ define([
 
             var _this=this;
 			this.parentWidget.draggable = this.draggable;
+			this.parentWidget.resizable=true;
+
 			if (this.parentWidget.toggleable) {
 				this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
 					    this.propctrNode.resize();
@@ -208,6 +212,8 @@ define([
 			 });
 			 */
 		    /////////END  Add Legend widget   ///
+
+
 
 		}
 		,startup: function() {
@@ -302,10 +308,30 @@ define([
 		    }
 
 
-
 			this.map.on('update-end', function (layer) {
 				 _this.legendDijit.refresh();
 			});
+
+			//console.log("property ",this.parentWidget);
+
+
+		    var rsz=new  ResizeHandle ({
+			   targetId: this.parentWidget,
+			   minWidth:125,
+			   minHeight:100
+			   //,resizeAxis:"y"
+			}).placeAt("propSrchActnBar");
+			rsz.startup();
+
+dojo.subscribe("/dojo/resize/stop", function(inst){
+   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
+   console.log("resize stopped",inst);
+
+   		// this.parentWidget.toggleable
+   		_this.propctrNode.resize();
+		_this.parentWidget.resize();
+		//_this.containerNode.resize();
+});
 
 
  			 return this.pshowAtStartup;

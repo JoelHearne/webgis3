@@ -200,6 +200,7 @@ define([
 			this.cookieObj.disclaimer=true;
 			this._writeCookie();
 		    dijit.byId("hHelpTabs").selectChild(dijit.byId("hWelcomeTab"));
+		    this.parentWidget.hide();
  		}
  		,checkDisclaimer:function(){
 			var isDiscl=false;

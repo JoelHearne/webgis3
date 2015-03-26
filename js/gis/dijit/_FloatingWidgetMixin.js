@@ -1,10 +1,23 @@
 define([
 	'dojo/_base/declare',
 	'dojo/on',
-	'dojo/_base/lang'
-], function (declare, on, lang) {
+	'dojo/_base/lang',
+	"dojox/layout/ResizeHandle"
+], function (declare, on, lang,ResizeHandle) {
 	return declare(null, {
-		startup: function () {
+
+		postCreate: function () {
+			this.inherited(arguments);
+
+
+			var rz = new ResizeHandle();
+			//console.log("floatingwidget resize handle",rz);
+
+			//on(rz.resizeHandle, "touchstart", "_init);
+
+		}
+		,startup: function () {
+			//console.log("_FloatingWidgetMixin",this);
 			// var parentWidget = this.getParent();
 			if (this.parentWidget && this.parentWidget.declaredClass === 'gis.dijit.FloatingWidget' && this.onOpen) {
 				on(this.parentWidget, 'show', lang.hitch(this, 'onOpen'));
