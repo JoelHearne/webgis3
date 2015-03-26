@@ -10,7 +10,7 @@ define([
 			this.inherited(arguments);
 
 
-			var rz = new ResizeHandle();
+			//var rz = new ResizeHandle();
 			//console.log("floatingwidget resize handle",rz);
 
 			//on(rz.resizeHandle, "touchstart", "_init);

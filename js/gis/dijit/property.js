@@ -80,7 +80,7 @@ define([
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
 	//,'xstyle/css!./property/css/adw-icons.css'
-	 ,'dojo/domReady!'
+	// ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
 ,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
 ,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,put,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry
@@ -235,7 +235,6 @@ define([
 				 sp.addEventListener("change",
 				   function(e){
 					   _this.resPage=e.target.selectedIndex+1;
-					   console.log("page change",_this.resPage,"\n",_this.activeMenu,"\n",_this.mapsearchpins);
 
                        if (_this.activeMenu=='map') {
 						   _this.doSearch_Pins(_this.mapsearchpins);
@@ -321,27 +320,49 @@ define([
 			   minHeight:100
 			   //,resizeAxis:"y"
 			}).placeAt("propSrchActnBar");
+			//closeBtn propSrchActnBar
 			rsz.startup();
 
-dojo.subscribe("/dojo/resize/stop", function(inst){
-   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
-   console.log("resize stopped",inst);
+			dojo.subscribe("/dojo/resize/stop", function(inst){
+			   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
+			         //console.log("resize stopped",inst);
 
-   		// this.parentWidget.toggleable
-   		_this.propctrNode.resize();
-		_this.parentWidget.resize();
-		//_this.containerNode.resize();
-});
+
+					 _this.propctrNode.resize();
+					 _this.parentWidget.resize();
+					lang.hitch(_this, 'resizeContents')
+					//_this.resizeContents();
+					//propertyDijitC propertyNode pSearchTabs
+			});
+
+			//dijit.byId("propertyNode").set('style', 'width:350px;');
 
 
  			 return this.pshowAtStartup;
         }
+        ,resizeContents:function(){
+			console.log("resizeContents");
+
+		    dom.byId("propertyNode").set('style', 'width:100%;height:100%');
+
+
+
+
+
+
+		}
         ,showThis:function(){
 			 this.parentWidget.show();
 			 this.pSearchTabs.resize();
+			 //this.propertyDijitC.resize();
+			 //this.propertyNode.resize();
+
+			 //this.propctrNode.resize();
+			 //this.parentWidget.resize();
+			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
 			 var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
+			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
 			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			  this.changeSearchForm(null,"property");
 
@@ -900,13 +921,17 @@ dojo.subscribe("/dojo/resize/stop", function(inst){
 		,onOpen: function () {
 			if (!this.openOnStartup) {
 				this.showThis();
+				//this.resizeContents();
 				//this.containerNode.resize();
 			}
 		},
 		close: function () {
+
+			/*
 			if (this.parentWidget.hide) {
 				this.parentWidget.hide();
 			}
+			*/
 		}
 		,showWait:function() {
            document.getElementById("pResCount").innerHTML='';

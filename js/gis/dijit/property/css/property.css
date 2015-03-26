@@ -110,15 +110,19 @@ select {
 	padding: 15px;
 }
 .propertyDijit .propertyNode {
-    width: 98%;
+    /*width: 98%;*/
     height: 575px;
     
 }
 
+ /* this sets the width for the whole floating panel
+    removing width causes it to init to narrow
  
+ 
+ */
 .floatingWidget .propertyDijit .propertyNode {
-    width: 350px;
-     	
+   /* width: 350px; */
+     
 }
 .propertyDijit .propertyTabContainer {
 	width: 100%;
@@ -195,9 +199,7 @@ select {
     display: none;
     content:"";
 }
-
-
-
+ 
 .propertyDijit .propertyError {
     color: #FF0000;
     font-size: 12px;
@@ -216,6 +218,9 @@ select {
 .propertyDijit .dijitDialogPaneActionBar {
     padding: 5px;
     text-align: center;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
 }
 .propertyDijit .dijitTitlePane .dijitTitlePaneContentInner UL {
     margin-left: -10px;
@@ -224,11 +229,7 @@ select {
     margin: 0 10px 10px;
     font-size: 11px;
 }
-
-
-
-
-
+ 
 .pContRes {
   display:none;
   text-align: left;
@@ -277,9 +278,11 @@ select {
 }
 .ptabActnBar {
  
-  height: 25px;
-  //padding: 0px 0px 0px 0px;
+ /*height: 3%;*/
+  
  padding: 0px !important;
+ margin:0px !important;
+ bottom:0px;
 
 }
 #property_parent_underlay {
