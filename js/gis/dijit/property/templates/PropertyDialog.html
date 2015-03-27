@@ -342,7 +342,7 @@
 
 
 
-                    <div id="pResultsSubTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer">
+                    <div id="pResultsSubTabs" data-dojo-attach-point="pResultsSubTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer">
 
                         <div id="pResultListTab" class="pResultListTab" data-dojo-type="dijit/layout/ContentPane" title="List">
 
@@ -409,18 +409,13 @@
                         <!-- end pResultListTab -->
 
 
+
+                        <!--
                         <div id="pResultDetailTab" data-dojo-type="dijit/layout/ContentPane" title="Detail">
-                               <!-- <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br>-->
-
                                     <div id="pcMinDet" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;">
-
-
-
                                      </div>
-
-                               <!-- </div>-->
-
-                        </div>
+                         </div>
+                         -->
                         <!-- end pResultDetailTab -->
 
 
@@ -434,35 +429,22 @@
                 </div>
 
 
-                <div id="pSavedTab" data-dojo-type="dijit/layout/ContentPane" title="Saved" style="display:none">
+              <div id="pSavedTab" data-dojo-type="dijit/layout/ContentPane" title="Saved" style="display:none">
 
 
-                    <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
-                             <br>
                              <div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;">
                                       <input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input>
 
                                      <input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input>
-
                             </div>
 
-                            <br>
-                         <div class="ptabContent ptabContMain">
 
-                          <br>
                             <div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px !important;margin:0px !important;">
-
-
-
-
-
-
-
-
                             </div>
-                      </div>
-                    </div>
-                </div>
+
+
+             </div>
+             <!-- end pSavedTab-->
 
 
            <div id="pLayersTab"   data-dojo-type="dijit/layout/ContentPane" title="Layers" style="overflow-y:auto;padding:0px !important;margin:0px !important;">
@@ -482,11 +464,13 @@
         </div>
 
     </div>
-    <div id="propSrchActnBar" class="dijitDialogPaneActionBar ptabActnBar">
+
+    <div id="propSrchActnBar" data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="propSrchActnBar"  class="dijitDialogPaneActionBar ptabActnBar">
         <div id="closeBtn" class="closeButton" data-dojo-attach-point="closebtnDijitDiv">
             <input id="propertyclosebtn" type="button" style="z-index: 900;font-size:9px;margin:0px;padding:0px;height:20px" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Close" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:close">
             </input>
 
        </div>
     </div>
+
 </div>

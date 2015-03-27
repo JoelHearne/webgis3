@@ -46,6 +46,7 @@ define([
         ,startup: function() {
 			this.inherited(arguments);
 			//parser.parse();
+			//this.selecttool();  // Dan wants the select tool to be on by default
 
 /*
             var sel= new Select({
@@ -117,11 +118,19 @@ define([
             }
         },
         deactivate: function () {
+
+            /*
             this.navTools.deactivate();
             this.map.setMapCursor('default');
             this.connectMapClick();
 
 			if (this.select_on)  this.dieselecttool();
+			*/
+
+			 this.select_on=true;
+			 //this.navTools.deactivate();
+			 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+			 topic.publish('identify/proxySelect', 'select');
 
 
         },
@@ -158,10 +167,14 @@ define([
 
 		}
         ,dieselecttool:function(){
-			this.connectMapClick();
+
+			 this.connectMapClick();
 			 this.select_on=false;
              topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
-			 this.map.setMapCursor('default');
+			 //this.map.setMapCursor('default');
+
+
+
 
 		}
         ,selecttool: function (e) {

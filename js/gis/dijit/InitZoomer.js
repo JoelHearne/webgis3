@@ -50,6 +50,8 @@ define([
 			 var qo = dojo.queryToObject(query);
 
              if (qo.pin) {
+				    /*
+				    // AGS style query
 				    // TODO: Add options for setting up query parameters
 					var findParams = new FindParameters();
 					findParams.returnGeometry = true;
@@ -65,7 +67,18 @@ define([
                     // TODO: make the AGS mapservice to query an option/parameter
 					var findTask = new FindTask("http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer");
                     findTask.execute(findParams,lang.hitch(this, 'findRes') );
-			 }
+                    */
+
+                    // DB query
+ 			 }
+           /*
+             if (qo.searchtype) {
+                    console.log("init DB query",qo.searchtype,qo.searchvalue);
+                    // DB query
+                    topic.publish('property/external_search', {search_type:qo.searchtype,search_value:qo.searchvalue });
+
+ 			 }
+ 			 */
 
 
 		    if (qo.layers) {  // mod TOC state to reflect

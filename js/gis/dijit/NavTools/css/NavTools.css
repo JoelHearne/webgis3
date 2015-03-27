@@ -74,7 +74,7 @@
 
  
 
-.dijitValidationTextBoxError input.dijitValidationInner, .dijitSelect input, .dijitTextBox input.dijitArrowButtonInner {
+.gis_NavToolsDijit .dijitValidationTextBoxError input.dijitValidationInner, .dijitSelect input, .dijitTextBox input.dijitArrowButtonInner {
     text-indent: -2em !important;
     direction: ltr !important;
     text-align: left !important;
@@ -87,33 +87,81 @@
     height: 16px;  
     padding: 0px !important;
 }
+ 
+.gis_NavToolsDijit .zoominIcon:hover {
+    background-image: url(../images/selected/nav_zoomin.png);
+    width: 16px;
+    height: 16px;  
+    padding: 0px !important;
+ 
+}
+
+ /*
+.gis_NavToolsDijit .zoominIcon:hover {
+    background-image: url(../images/nav_zoomin.png);
+    width: 13px;
+    height: 13px;  
+    padding: 0px !important;
+    margin: 0px !important;
+}
+ 
+.gis_NavToolsDijit .dijitToggleButton:hover , .dijitButton:hover , .dijitDropDownButton:hover , .dijitComboButton:hover  {
+   border:0.5px solid rgba(112, 162,  71, 1.0 );
+    
+    border:1px solid rgba(112, 162,  71, 1.0 ); 
+   
+   margin: -0.2em;
+   vertical-align: middle;
+}
+*/ 
 
  .gis_NavToolsDijit .zoomoutIcon {
 	 background-image: url(../images/nav_zoomout.png);
 	width: 16px;
 	height: 16px; 
 }
-
+ .gis_NavToolsDijit .zoomoutIcon:hover {
+	 background-image: url(../images/selected/nav_zoomout.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .zoomfullextIcon {
 	 background-image: url(../images/nav_fullextent.png);
 	width: 16px;
 	height: 16px; 
 }
-
+.gis_NavToolsDijit .zoomfullextIcon:hover {
+	 background-image: url(../images/selected/nav_fullextent.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .zoomprevIcon {
 	 background-image: url(../images/nav_previous.png);
 	width: 16px;
 	height: 16px; 
 }
-
+.gis_NavToolsDijit .zoomprevIcon:hover {
+	 background-image: url(../images/selected/nav_previous.png);
+	width: 16px;
+	height: 16px; 
+}
  .gis_NavToolsDijit .zoomnextIcon {
 	 background-image: url(../images/nav_next.png);
 	width: 16px;
 	height: 16px; 
 }
-
+ .gis_NavToolsDijit .zoomnextIcon:hover {
+	 background-image: url(../images/selected/nav_next.png);
+	width: 16px;
+	height: 16px; 
+}
 .gis_NavToolsDijit .panIcon {
 	 background-image: url(../images/nav_pan.png);
+	width: 16px;
+	height: 16px; 
+}
+.gis_NavToolsDijit .panIcon:hover {
+	 background-image: url(../images/selected/nav_pan.png);
 	width: 16px;
 	height: 16px; 
 }
@@ -122,16 +170,12 @@
 	width: 16px;
 	height: 16px; 
 }
-.gis_NavToolsDijit .betaIcon {
-	 background-image: url(../images/beta.png);
+.gis_NavToolsDijit .identifyIcon:hover {
+	 background-image: url(../images/selected/identify.png);
 	width: 16px;
 	height: 16px; 
 }
-.gis_NavToolsDijit .betaIcon2 {
-	 background-image: url(../images/three-dollars.png);
-	width: 16px;
-	height: 16px; 
-}
+ 
 .gis_NavToolsDijit .selIcon {
 	 background-image: url(../images/LocationGetPoint16.png);
 	width: 16px;
@@ -142,26 +186,46 @@
 	width: 16px;
 	height: 16px; 
 }
+.gis_NavToolsDijit .selIcon:hover {
+	 background-image: url(../images/selected/LocationGetPoint16.png);
+	width: 16px;
+	height: 16px; 
+}
+.gis_NavToolsDijit .selboxIcon:hover {
+	 background-image: url(../images/selected/LocationGetBox.png);
+	width: 16px;
+	height: 16px; 
+}
+
+
 .gis_NavToolsDijit .deactivateIcon {
 	 background-image: url(../images/nav_decline.png);
 	width: 16px;
 	height: 16px; 
 }
+
+.gis_NavToolsDijit .deactivateIcon:hover {
+	 background-image: url(../images/selected/nav_decline.png);
+	width: 16px;
+	height: 16px; 
+}
+
+
 .gis_NavToolsDijit .formContainer {
     /*border: 1px solid #bbb;*/
     
-    position: absolute;
+    /*position: absolute;*/
     top: 11px;
     /*left: 85%;*/
-     width: 521px;
+     width: 451px;
     /*width: auto;*/
     /*float: right;*/
-    float: left;
+   /* float: left;*/
      padding: 0px;
      
     margin-left:2px auto 2px auto;
  
-    z-index:999;
+    /*z-index:999;*/
    
     background:rgb(1, 109, 141);
     border:  1px solid rgb(1,109,138); 

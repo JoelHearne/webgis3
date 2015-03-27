@@ -10,7 +10,9 @@ define([
 	'dojo/dom',
     'dojo/dom-style',
     'dojo/topic'
-], function (declare, _WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin, Measurement, aspect, lang, domConstruct,dom,Style, topic) {
+    ,"dijit/form/Button"
+    , "dojo/domReady!"
+], function (declare, _WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin, Measurement, aspect, lang, domConstruct,dom,Style, topic,Button) {
 
     return declare([_WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 
@@ -24,6 +26,7 @@ define([
 
         declaredClass: 'gis.dijit.Measurement',
         mapClickMode: null,
+        clearbtn:null,
         postCreate: function () {
             this.inherited(arguments);
             this.measure = new Measurement({
@@ -68,11 +71,15 @@ define([
 			topic.subscribe('measure/showMe', lang.hitch(this, function (arg) {
 				_this.showThis();
 			}));
+
+
+
+
 	    }
         ,showThis: function(){
-			console.log("measure showThis");
            this.parentWidget.show();
-
+           this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
+           //this.parentWidget.set('style', 'left:0px');
 		}
 	   , measure_start:function(){
 			console.log("...measure_start ",this.measure);
@@ -89,6 +96,19 @@ define([
 			   console.log("error setting measurement style",ex);
 		    }
 		    */
+
+             if (this.clearbtn==null) {
+				 clearbtn = new Button({
+					label: "Clear",
+					style:"float:right;font-size:smaller !important;",
+					onClick: function(){
+						_this.clearMeasurement();
+						 //lang.hitch(this, "clearMeasurement");
+					}
+				}  );
+				clearbtn.placeAt(this.parentWidget);
+				clearbtn.startup()
+		    }
 		}
        , checkMeasureTool: function () {
             // no measurement tool is active
@@ -130,7 +150,10 @@ define([
                 this.connectMapClick();
             }
         },
-        setMapClickMode: function (mode) {
+        clearMeasurement: function (mode) {
+           this.measure.clearResult();
+        }
+        ,setMapClickMode: function (mode) {
             this.mapClickMode = mode;
             if (mode !== 'measure') {
                 this.measure.setTool('area', false);

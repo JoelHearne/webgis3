@@ -914,6 +914,7 @@ define([
 		//centralized error handler
 		handleError: function (options) {
 			if (this.config.isDebug) {
+				console.error("error handler reported an error...",options,arguments);
 				if (typeof (console) === 'object') {
 
 

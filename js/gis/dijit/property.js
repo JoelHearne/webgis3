@@ -80,7 +80,7 @@ define([
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
 	//,'xstyle/css!./property/css/adw-icons.css'
-	// ,'dojo/domReady!'
+	  ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
 ,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
 ,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,put,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry
@@ -156,6 +156,11 @@ define([
 
 			window.addEventListener('resize', function(event){
 			    _this.parentWidget.set('style', 'left:' + (document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -5) + 'px;top:42px');
+			      //_this.parentWidget.set('style', 'width:350px;left:' + (document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -5) + 'px;top:42px');
+			      // _this.propctrNode.resize();
+			      // _this.pSearchTab.set('style', 'width:350px');
+			      // _this.propSrchActnBar.set('style', 'width:350px');
+
 			});
 
 
@@ -192,6 +197,22 @@ define([
 				_this.external_setMapSrchMode(arg.mode,arg.state);
 
 			}));
+
+           /*
+		    topic.subscribe('property/external_search',  lang.hitch(this, function (arg) {
+				 console.log("property/external_search request received",arg);
+
+				 // set textbox values
+				 if (arg.searchtype=="address"){
+					 _this.searchAddr.value=arg.searchvalue;
+					 _this.showThis();
+					 _this.doSearch();
+				 }
+		    }));
+		    */
+
+
+
 
 			 /// Add Legend widget
 			 /*
@@ -313,11 +334,10 @@ define([
 
 			//console.log("property ",this.parentWidget);
 
-
 		    var rsz=new  ResizeHandle ({
 			   targetId: this.parentWidget,
-			   minWidth:125,
-			   minHeight:100
+			   minWidth:305,
+			   minHeight:300
 			   //,resizeAxis:"y"
 			}).placeAt("propSrchActnBar");
 			//closeBtn propSrchActnBar
@@ -325,12 +345,9 @@ define([
 
 			dojo.subscribe("/dojo/resize/stop", function(inst){
 			   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
-			         //console.log("resize stopped",inst);
-
-
-					 _this.propctrNode.resize();
-					 _this.parentWidget.resize();
-					lang.hitch(_this, 'resizeContents')
+ 					 _this.propctrNode.resize();
+					 //_this.parentWidget.resize();
+					//lang.hitch(_this, 'resizeContents')
 					//_this.resizeContents();
 					//propertyDijitC propertyNode pSearchTabs
 			});
@@ -338,22 +355,34 @@ define([
 			//dijit.byId("propertyNode").set('style', 'width:350px;');
 
 
+
+			// handle querystring search
+			 var query = document.location.search.substring(document.location.search.indexOf("?") + 1, document.location.search.length);
+			 var qo = dojo.queryToObject(query);
+			 if (qo.searchtype) {
+				 if (qo.searchtype=="address"){
+					 //console.log("this.searchAddr",this.searchAddr);
+
+					 this.showThis();
+					 //this.searchAddr.textbox.value=qo.searchvalue;
+					 document.getElementById("af_tbAddr").value=qo.searchvalue;
+					 //registry.byId("af_tbAddr").textbox.value=qo.searchvalue;
+					 this.doSearch();
+				 }
+			 }
+
+
  			 return this.pshowAtStartup;
         }
         ,resizeContents:function(){
 			console.log("resizeContents");
 
-		    dom.byId("propertyNode").set('style', 'width:100%;height:100%');
-
-
-
-
-
+		    //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
 		}
         ,showThis:function(){
-			 this.parentWidget.show();
-			 this.pSearchTabs.resize();
+			this.parentWidget.show();
+			this.pSearchTabs.resize();
 			 //this.propertyDijitC.resize();
 			 //this.propertyNode.resize();
 
@@ -361,10 +390,10 @@ define([
 			 //this.parentWidget.resize();
 			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
-			 var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-			 this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
-			  dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
-			  this.changeSearchForm(null,"property");
+			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
+		    this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
+			this.changeSearchForm(null,"property");
 
 			if (!this.isAutoFl){
 				this.setautofill("tbAddr");
@@ -454,11 +483,10 @@ define([
 			this.mapClickMode = mode;
 		}
 		,external_setMapSrchMode: function(mode,state) {
-			console.log("external_setMapSrchMode",mode,state);
 
 			if (state) {
+				// uncomment to make the map menu automatically appear
 				if (!this.parentWidget.open) this.showThis();
-				//dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 				this.changeSearchForm(null,"map");
 
 				this.activateMapSearch();
@@ -693,6 +721,26 @@ define([
 			this.disconnectMapClick();
 		}
         ,addPRC_Min: function(pinv){
+
+			// check if detail tab has been created and create it if not
+			try {
+				if (dijit.byId("pResultDetailTab")==null || dijit.byId("pResultDetailTab")===undefined) {
+                   var title="Detail";
+                   var idx=1;
+                   var   //content='<div id="pResultDetailTab" data-dojo-type="dijit/layout/ContentPane" title="Detail"><div id="pcMinDet" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div></div>';
+                   content='<div id="pcMinDet" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div>';
+
+                   this.createResTab("pResultDetailTab",title,idx,content);
+                   //this.pResultsSubTabs.forward() ;
+				}
+			} catch (ex){
+				console.log("error adding min detail tab", ex);
+			}
+
+
+			 dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+            dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+
 			domConstruct.empty("pcMinDet");
 			var _this=this;
 			var srmd=dom.byId("pcMinDet");
@@ -703,8 +751,7 @@ define([
 			tpcmd.startup();
 			tpcmd.placeAt(srmd);
 
-			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
-            dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+
 
 			tpcmd.on("click", function (e) {
 			    var actntype=e.target.id;
@@ -855,7 +902,7 @@ define([
 
 			if (this.mapsearch_auto) {
 				this.mapsearch_auto=false;
-				this.clearGraphics();
+				//this.clearGraphics();
 				this.connectMapClick();
 				this.drawToolbar.deactivate();
 				topic.publish('mapClickMode/setDefault');
@@ -1087,9 +1134,11 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,doSearch: function(){
-			//console.log("doSearch",this.activeMenu);
-            domConstruct.empty("pSearchResults");
-            domConstruct.empty("pcMinDet");
+		    console.log("doSearch",this.activeMenu);
+            //domConstruct.empty("pSearchResults");
+
+            //domConstruct.empty("pcMinDet");
+
             this.showWait();
             if (this.activeMenu=='map') { this.runMapSearch(); return; }
 
@@ -1468,9 +1517,7 @@ define([
 			 var dobj=results;
 			 var pobj = results.ps_res;
 
-			 domConstruct.empty("pSearchResults");
-             domConstruct.empty("pcMinDet");
-             domConstruct.empty("pResCount");
+
 
 			 if (!pobj) {
 				 console.log("error getting results",results);
@@ -1480,10 +1527,18 @@ define([
 
             // show minimal detail if there is only one results
             if (pobj.length==1) {
-               dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
-			   dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+               //dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			   //dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
+			   console.log("adding single result");
 			   this.addPRC_Min(pobj[0].pin);
+			   return;
 		    }
+
+		    console.log("showResults clearing search reslts");
+
+			 domConstruct.empty("pSearchResults");
+             //domConstruct.empty("pcMinDet");
+             domConstruct.empty("pResCount");
 
 		    // Set the page menu and select current page
             //this.resultsAddPager(dobj);
@@ -1785,12 +1840,23 @@ define([
 			 });
 
 		}
-		,createTab: function(){
-			console.log("createTab");
-             var tab = new dijit.layout.ContentPane({ className: "ContentTab", title: "Tab", content: 'Tab Content', selected: true });
-             tab.startup();
-             this.pSearchTabs.addChild(tab, 3);
+		,createTab: function(titlev,idx,contentv){
 
+             var tab = new dijit.layout.ContentPane({ className: "ContentTab", title: titlev, content: contentv, selected: true });
+             tab.startup();
+             this.pSearchTabs.addChild(tab, idx);
+		}
+		,createResTab: function(idv,titlev,idx,contentv){
+             console.log("createResTab ",idx);
+             var tab = new dijit.layout.ContentPane({ id:idv,className: "ContentTab", title: titlev, content: contentv, selected: true });
+             this.pResultsSubTabs.addChild(tab, idx);
+             tab.startup();
+             dijit.byId("pResultsSubTabs").selectChild(dijit.byId(idv));
+
+		}
+		,selMinDet:function(){
+			console.log("selMinDet");
+			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
 
 		}
 		,clearSearch: function(){
@@ -1802,8 +1868,12 @@ define([
                     iboxes[i].value="";
 				}
 		   }
+
 		   domConstruct.empty("pSearchResults");
-           domConstruct.empty("pcMinDet");
+           try {
+              domConstruct.empty("pcMinDet");
+	       } catch (ex){}
+
            domConstruct.empty("pResCount");
            document.getElementById("pPageSelDiv").style.display="none";
            document.getElementById("pPageSelDiv2").style.display="none";
@@ -1811,6 +1881,7 @@ define([
            this.btnZoomAll.domNode.style.display="none";
 		   this.btnPrLbls.domNode.style.display="none";
            this.clearGraphics();
+
   		}
 		,zoomPIN:function(pin,doDBSearch) {
 				if (typeof doDBSearch == "undefined") {
