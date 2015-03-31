@@ -125,11 +125,13 @@ select {
      
 }
 .propertyDijit .propertyTabContainer {
-	width: 100%;
-	height: 100%;
+	 width: 100%;
+	/*height: 100%; */
+	height: 300px;
 	//position: absolute;
 	//top:0px;
 	//left:0px;
+	overflow: hidden !important;
 }
 
 #property_parent {

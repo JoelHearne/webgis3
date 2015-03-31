@@ -125,6 +125,9 @@ define([
 
             if (!this.hasCookie)
                  this._writeCookie();
+
+             //console.log("this.userPreferences",this.userPreferences);
+
             // uncomment to open at startup
             if (this.userPreferences.showWelcome || !this.checkDisclaimer() ) {
 				this.parentWidget.show();
@@ -139,7 +142,7 @@ define([
 
 			 this.vers_str.textContent="version " + this.webgis_version;
 
-			 //console.log("help parent widget",this.parentWidget);
+			 ////console.log("help parent widget",this.parentWidget);
 
 			 //dijit.byId("discbtn").set('style', "color:red;background-color:blue");
 
@@ -208,10 +211,10 @@ define([
 			return isDiscl;
  		}
 		,onbtnclick: function(e) {
-			console.log("button clicked",e);
+			//console.log("button clicked",e);
 		}
 		,stopTimer: function(e){
-			console.log("stopTimer button clicked",e );
+			//console.log("stopTimer button clicked",e );
 		}
 		,sendToDeveloper:function(e){
 
@@ -222,14 +225,21 @@ define([
 			this._updateUserPreferences({ showStartupMetrics: showw });
 		}
 		,_onStartupChange: function(e){
+			//console.log("_onStartupChange",e);
             var showw=true;
             if (e==false) showw=false;
+
+            if (showw) { showw=false; } // reverse the context .. now checked is "do not show"
+            else { showw=true; }
+
 			this._updateUserPreferences({ showWelcome: showw });
 		}
 		, _writeCookie: function() {
+			//console.log("_writeCookie",this.cookieObj);
             cookie('userPreferences', JSON.stringify(this.cookieObj), { expires: 99999 });
         }
         , _updateUserPreferences: function(objPref) {
+			//console.log("_updateUserPreferences",objPref);
 			//var prefName = functional.keys(objPref)[0];
 			//lang.mixin(window.userPreferences, objPref);
 			lang.mixin(this.cookieObj, objPref);

@@ -127,8 +127,12 @@ define([
 			if (this.select_on)  this.dieselecttool();
 			*/
 
+             // turn it off to clear selection
+			 this.select_on=false;
+			 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+
+             // turn it back on
 			 this.select_on=true;
-			 //this.navTools.deactivate();
 			 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 			 topic.publish('identify/proxySelect', 'select');
 

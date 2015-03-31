@@ -453,7 +453,7 @@ font-size: 15pt;
 }
 
 .esriPopup .titlePane {
-    background-color: rgb(112, 162, 171);
+    background-color: rgb(112, 162, 171) !important;
     line-height: 20px;
     padding-left: 6px;
     border-radius: 5px 5px 0px 0px;

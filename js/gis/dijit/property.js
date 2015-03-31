@@ -282,10 +282,9 @@ define([
 			} else {
 				dc.attachEvent('change',  this.salesListYearChange)  ;
 			}
-            var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
-            //this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px !important;position:absolute');
-			this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
-            //console.log("query test",query(".propertyContainer"));
+
+            //var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
+			//this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px');
 
            /* if (performance && ptmrSt != null) {
 				 var ptmrEnd = performance.now();
@@ -336,8 +335,8 @@ define([
 
 		    var rsz=new  ResizeHandle ({
 			   targetId: this.parentWidget,
-			   minWidth:305,
-			   minHeight:300
+			   minWidth:305
+			   ,minHeight:250
 			   //,resizeAxis:"y"
 			}).placeAt("propSrchActnBar");
 			//closeBtn propSrchActnBar
@@ -345,10 +344,10 @@ define([
 
 			dojo.subscribe("/dojo/resize/stop", function(inst){
 			   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
- 					 _this.propctrNode.resize();
+ 					 //_this.propctrNode.resize();
 					 //_this.parentWidget.resize();
 					//lang.hitch(_this, 'resizeContents')
-					//_this.resizeContents();
+					 _this.resizeContents();
 					//propertyDijitC propertyNode pSearchTabs
 			});
 
@@ -372,12 +371,51 @@ define([
 			 }
 
 
+			  on(document, "keypress", function(evt){
+				//console.log("keyed",evt  );
+                switch(evt.key){
+				  case "r":
+					break;
+ 				 }
+			  });
+
+			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
         ,resizeContents:function(){
-			console.log("resizeContents");
 
-		    //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
+		    var actbr=dom.byId("propSrchActnBar");
+		    var ab_ohgt=actbr.offsetHeight + 28;
+
+			var parntcn_hgt=this.parentWidget.domNode.offsetHeight-ab_ohgt ;
+			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
+			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
+			Style.set(this.pSearchTabs  , 'height', (parntcn_hgt) + "px");
+			//Style.set(this.pTestTab.containerNode  , 'height', (parntcn_hgt) + "px");
+
+			//this.pTestTab.resize();
+
+			var tcpa2=dojo.query(".dijitTabContainerTop-container",this.parentWidget.domNode);
+
+			//console.dir(tcpa2);
+
+			tcpa2.forEach(function(node){
+				  //console.log("tab container node",node );
+				  //node.style("height", (parntcn_hgt ) + "px");
+
+			  }).style("height", (parntcn_hgt ) + "px");
+
+			var tcpc=dojo.query(".propertyTabContainer",this.parentWidget.domNode);
+
+			//console.dir(tcpa);
+
+			tcpc.forEach(function(node){
+				  //console.log("tab container node",node );
+				   //node.style("height", (parntcn_hgt-8) + "px");
+
+			  }).style("height", (parntcn_hgt ) + "px");
+
+			 this.propctrNode.resize();
 
 		}
         ,showThis:function(){
@@ -394,6 +432,8 @@ define([
 		    this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			this.changeSearchForm(null,"property");
+
+			this.resizeContents();
 
 			if (!this.isAutoFl){
 				this.setautofill("tbAddr");
@@ -974,11 +1014,10 @@ define([
 		},
 		close: function () {
 
-			/*
 			if (this.parentWidget.hide) {
 				this.parentWidget.hide();
 			}
-			*/
+
 		}
 		,showWait:function() {
            document.getElementById("pResCount").innerHTML='';
@@ -1727,14 +1766,28 @@ define([
          console.log("export2CSV...");
             if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
-            Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
-            dom.byId("expstatus").innerHTML="preparing data ... please standby ";
-
 
             var iurl='./webgis.asmx/ExportMailingLabelCSVSession'
             if (isSavedTab) iurl='./webgis.asmx/ExportMailingLabelCSVPINs?pinlist=' + this.savedlist.join(",");
+
+
+
+
+            Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
+            dom.byId("expstatus").innerHTML="preparing data ... please standby ";
+
 		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
-            request.get(iurl,{ handleAs: "text" }).then(
+
+			// TODO: spatially returned results are breaking the mailing labels and csv for all results because there is no session saved on the server
+			//if (!this.mapsearch_auto)
+			if (this.activeMenu=="map" && !isSavedTab) {
+                 iurl='./webgis.asmx/ExportMailingLabelCSVPINs';
+
+               request.post(iurl, { handleAs: "text"
+                ,data: {
+			  		pinlist:this.mapsearchpins.join(",")
+				 }
+              }).then(
                 function (text){
 					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 					 //dom.byId("expstatus").innerHTML="success";
@@ -1752,9 +1805,30 @@ define([
 					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
+ 	            }
+ 	          );
+
+			} else {
+            request.get(iurl,{ handleAs: "text" }).then(
+                function (text){
+					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
+					 //dom.byId("expstatus").innerHTML="success";
+
+					 document.getElementById("expstatus").style.display="none";
+					 dom.byId("expstatus").innerHTML="";
+					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
+ 	            } ,
+ 	            function (error){
+					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
+					dom.byId("expstatus").innerHTML="failed to get data";
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
+ 	                console.log("Error Occurred: " + error);
 
  	            }
  	        );
+	      }
 	}
    ,printMailLblsAll: function(isSavedTab){
 
@@ -1787,9 +1861,23 @@ define([
 	}
    ,printMailLbls: function(isSavedTab){
 
-		     console.log("printMailLbls",isSavedTab);
+		    console.log("printMailLbls",isSavedTab);
 
 		    if (typeof isSavedTab == "undefined")  isSavedTab = false;
+
+
+
+
+
+
+            var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
+            if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
+
+		    // TODO: spatially returned results are breaking the mailing labels and csv for all results because there is no session saved on the server
+            //if (!this.mapsearch_auto)
+			if (this.activeMenu=="map" && !isSavedTab) {
+
+			}
 
             document.getElementById("expstatus").style="height:15px;width: 95%;padding:0px;margin:auto;font-size:small;float:center;background-color:rgb(0,215,45)";
             document.getElementById("expstatus").innerHTML="getting data";
@@ -1797,8 +1885,6 @@ define([
             dom.byId("expstatus").innerHTML="preparing data ... please standby ";
 
 
-            var iurl='./pa.asmx/PrintMailingLabels?search_type=' + this.qObj.querytype + '&search_string=' + this.qObj.queryvalue
-            if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
 		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
