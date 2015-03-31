@@ -171,7 +171,8 @@ namespace WebGIS
             {
                 if (rawSQL != null && rawSQL != "")
                 {
-                    Mapserv.clsMailLabels lb = new Mapserv.clsMailLabels(rawSQL + " AND PACONF <> 'Y'");
+                    //Mapserv.clsMailLabels lb = new Mapserv.clsMailLabels(rawSQL + " AND PACONF <> 'Y'");
+                    Mapserv.clsMailLabels lb = new Mapserv.clsMailLabels(rawSQL  );
                     lb.DoItRawSql();
                     FileInfo fi = new FileInfo(lb.PDFPth);
                     pdfUrl = baseOutputURL + fi.Name;
@@ -203,7 +204,7 @@ namespace WebGIS
             {
                 if (rawSQL != null && rawSQL != "")
                 {
-                    Mapserv.TableExport te = new Mapserv.TableExport(rawSQL + " AND PACONF <> 'Y'");
+                    Mapserv.TableExport te = new Mapserv.TableExport(rawSQL );
                     te.DoItRawSql();
 
                     FileInfo fi = new FileInfo(te.PDFPth);

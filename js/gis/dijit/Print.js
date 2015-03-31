@@ -66,11 +66,13 @@ define([
                 error: lang.hitch(this, '_handleError')
             });
             //aspect.after(this.printTask, '_createOperationalLayers', this.operationalLayersInspector, false);
+            var _this=this;
 
 			topic.subscribe('print/printmap', lang.hitch(this, function (args) {
+
 				this.print();
 			}));
-			var _this=this;
+
 			topic.subscribe('print/showMe', lang.hitch(this, function (arg) {
 				_this.showThis();
 			}));

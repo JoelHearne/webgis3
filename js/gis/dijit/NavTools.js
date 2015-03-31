@@ -128,6 +128,7 @@ define([
 			*/
 
              // turn it off to clear selection
+             /*
 			 this.select_on=false;
 			 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 
@@ -135,6 +136,8 @@ define([
 			 this.select_on=true;
 			 topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 			 topic.publish('identify/proxySelect', 'select');
+			 */
+			  topic.publish('property/clearSpatial', {mode:"clear"  });
 
 
         },

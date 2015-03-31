@@ -80,6 +80,8 @@ define([
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
 	//,'xstyle/css!./property/css/adw-icons.css'
+	,"dojo/NodeList-traverse"
+	//,"./NodeList-walk"  // !!! your NodeList-walk module
 	  ,'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
 ,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
@@ -132,6 +134,7 @@ define([
 	    mapsearch_auto:false,
 	    isAutoFl:false,
 	    legendDijit:null,
+	    printPIN:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -155,12 +158,9 @@ define([
 			}
 
 			window.addEventListener('resize', function(event){
-			    _this.parentWidget.set('style', 'left:' + (document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -5) + 'px;top:42px');
-			      //_this.parentWidget.set('style', 'width:350px;left:' + (document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -5) + 'px;top:42px');
-			      // _this.propctrNode.resize();
-			      // _this.pSearchTab.set('style', 'width:350px');
-			      // _this.propSrchActnBar.set('style', 'width:350px');
-
+                //console.log("window resized ",event);
+               // _this.resizeContents();
+               _this.fixWidth();
 			});
 
 
@@ -195,8 +195,12 @@ define([
 			topic.subscribe('property/toggleSpatial', lang.hitch(this, function (arg) {
 				console.log("property/toggleSpatial",arg);
 				_this.external_setMapSrchMode(arg.mode,arg.state);
-
 			}));
+			topic.subscribe('property/clearSpatial', lang.hitch(this, function (arg) {
+				console.log("property/clearSpatial",arg);
+				_this.clearGraphics();
+			}));
+
 
            /*
 		    topic.subscribe('property/external_search',  lang.hitch(this, function (arg) {
@@ -375,13 +379,42 @@ define([
 				//console.log("keyed",evt  );
                 switch(evt.key){
 				  case "r":
+				    // _this.resizeContents();
 					break;
+
  				 }
+
 			  });
 
 			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
+        ,fixWidth:function(){
+
+			var actbr=dom.byId("propSrchActnBar");
+			var ab_owd=actbr.offsetWidth ;
+
+			if (ab_owd <=280) {
+				var tcpc= dojo.query(".dijitDialogTitleBar",this.parentWidget.domNode);
+
+				tcpc.forEach(function(node){
+				}).style("width", "350px");
+
+				tcpc= dojo.query(".dijitDialogPaneContent",this.parentWidget.domNode);
+				tcpc.forEach(function(node){
+				}).style("width", "350px");
+
+				tcpc= dojo.query(".propertyNode",this.parentWidget.domNode);
+				tcpc.forEach(function(node){
+				}).style("width", "350px");
+
+				this.propctrNode.resize();
+
+				this.parentWidget.set('style', 'width:350px');
+				this.parentWidget.resize();
+		  }
+
+		}
         ,resizeContents:function(){
 
 		    var actbr=dom.byId("propSrchActnBar");
@@ -753,6 +786,14 @@ define([
 
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
 			pMapBuffr.style.display="block";
+
+			if (this.printPIN!=null) {
+				var pinv=this.printPIN;
+				this.printPIN=null;
+				//topic.publish('print/showMe', {pin:pinv });
+                topic.publish('print/printmap', {pin:pinv });
+			}
+
 		}
 		,activateMapSearch: function(){
 			//this.createGraphicsLayer();
@@ -1173,7 +1214,7 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,doSearch: function(){
-		    console.log("doSearch",this.activeMenu);
+		    //console.log("doSearch",this.activeMenu);
             //domConstruct.empty("pSearchResults");
 
             //domConstruct.empty("pcMinDet");
@@ -1399,9 +1440,35 @@ define([
 			 }
 		}
 		,addPRC2Saved:function(pcObj,widgetID){
+
+			 try {
+				if (dijit.byId("pSavedTab")==null || dijit.byId("pSavedTab")===undefined) {
+				   var title="Saved";
+				   var idx=2;
+				   var content='<div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;"><input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:b" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input><input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input></div><br><div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br><div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div><br></div>';
+
+				   this.createTab("pSavedTab",title,idx,content);
+				   //this.pResultsSubTabs.forward() ;
+
+				   var btn = dom.byId("btnZoomAllSaved");
+                   on( btn, "click", lang.hitch(this, 'zoomAllListSaved')  );
+
+				   var btn2 = dom.byId("btnSavedPrLbls");
+                   on( btn2, "click", lang.hitch(this, 'printMailLblsSaved'));
+
+				}
+			 } catch (ex){
+				 console.log("error adding min detail tab", ex);
+			 }
+
+			 console.log("addPRC2Saved",this.savedlist);
+
 			 if (this.savedlist.indexOf(pcObj.pin) != -1) return;
-			 this.btnSavedZoomAll.domNode.style.display="block";
-			 this.btnSavedPrLbls.domNode.style.display="block";
+
+			 this.savedlist.push(pcObj.pin);
+
+			 //this.btnSavedZoomAll.domNode.style.display="block";
+			 //this.btnSavedPrLbls.domNode.style.display="block";
 			 var _this=this;
              var srd=dom.byId("pSearchSaved");
 			 var prcob=registry.byId(widgetID);
@@ -1451,7 +1518,7 @@ define([
 			  tprc.startup();
 			  tprc.saveMe();
 			  tprc.placeAt(srd);
-			  this.savedlist.push(pcObj.pin);
+
 		}
 		,resultsAddPager: function(dobj){
             var rec_page = 0;
@@ -1573,7 +1640,7 @@ define([
 			   return;
 		    }
 
-		    console.log("showResults clearing search reslts");
+		     //console.log("showResults clearing search reslts");
 
 			 domConstruct.empty("pSearchResults");
              //domConstruct.empty("pcMinDet");
@@ -1665,7 +1732,7 @@ define([
 
 		    if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
-            console.log("printMailLbls",e,isSavedTab);
+            //console.log("printMailLbls",e,isSavedTab);
             var _this=this;
 
 
@@ -1674,7 +1741,7 @@ define([
 
 			//if (this.export_dia==null) {
 					 this.export_dia= new Dialog({
-								title: "Export Mailing Labels",
+								title: "Export/Mailing Labels",
 								//content: "export.....",
 								content: form,
 								style: "width: 300px",
@@ -1698,6 +1765,7 @@ define([
 
 
 
+					/*
 					var btn1=new Button({
 					  label: "Mailing Labels for Displayed Results",
 					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
@@ -1710,9 +1778,10 @@ define([
 					  }
 
 					}).placeAt(cp);
+					*/
 
 					var btn2=new Button({
-					  label: "Mailing Labels for All Results",
+					  label: "Export Mailing Labels for Results",
 					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
 					  onClick: function(){
 						 console.log("Mailing Labels for All Results" );
@@ -1726,7 +1795,7 @@ define([
 
 
 					var btn3=new Button({
-					  label: "Export Results to Excel",
+					  label: "Export CSV for Results",
 					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
 					  onClick: function(){
 						 console.log("Exporting to CSV" );
@@ -1743,13 +1812,13 @@ define([
 					 try {
 
 						//Style.set(btn1.domNode, "font-size", "8px");
-						Style.set(btn1.domNode.firstChild, "font-size", "10px");
+						//Style.set(btn1.domNode.firstChild, "font-size", "10px");
 						Style.set(btn2.domNode.firstChild, "font-size", "10px");
 						Style.set(btn3.domNode.firstChild, "font-size", "10px");
-						Style.set(btn1.domNode.firstChild, "width", "75%;");
+						//Style.set(btn1.domNode.firstChild, "width", "75%;");
 						Style.set(btn2.domNode.firstChild, "width", "75%;")
 						Style.set(btn3.domNode.firstChild, "width", "75%;")
-						Style.set(btn1.domNode  , "margin", "7px");
+						//Style.set(btn1.domNode  , "margin", "7px");
 						Style.set(btn2.domNode  , "margin", "7px");
 						Style.set(btn3.domNode  , "margin", "7px");
 
@@ -1763,7 +1832,7 @@ define([
 
 	 }
    ,export2CSV: function(isSavedTab){
-         console.log("export2CSV...");
+
             if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
 
@@ -1838,10 +1907,41 @@ define([
             dom.byId("expstatus").innerHTML="preparing data ... please standby ";
 
 
-            var iurl='./webgis.asmx/PrintMailingLabelsSession'
+            var iurl='./webgis.asmx/PrintMailingLabelsSession';
             if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
 		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
-            request.get(iurl,{ handleAs: "text" }).then(
+
+
+			if (this.activeMenu=="map" && !isSavedTab) {
+               iurl='./pa.asmx/PrintMailingLabels';
+               request.post(iurl, { handleAs: "text"
+                ,data: {
+					search_type:"pinlist"
+			  		,search_string:this.mapsearchpins.join(",")
+				 }
+               }).then(
+                function (text){
+					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
+					 //dom.byId("expstatus").innerHTML="success";
+
+					 document.getElementById("expstatus").style.display="none";
+					 dom.byId("expstatus").innerHTML="";
+
+
+					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
+ 	            } ,
+ 	            function (error){
+					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
+					dom.byId("expstatus").innerHTML="failed to get data";
+					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
+ 	                console.log("Error Occurred: " + error);
+ 	            }
+ 	          );
+
+			} else {
+				request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
 					 document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 
@@ -1857,7 +1957,8 @@ define([
  	                console.log("Error Occurred: " + error);
 
  	            }
- 	        );
+ 	          );
+		 }
 	}
    ,printMailLbls: function(isSavedTab){
 
@@ -1910,27 +2011,34 @@ define([
 			this.printMailLblsMenu(null,true);
 		}
 		,GetPrintMap:function(pinv){
-             Style.set(dijit.byId("sidebarLeft").domNode, 'display', "block");
-             topic.publish('viewer/togglePane', {pane:"left",show:"true"});
-             var prcob=dijit.byId("print_parent");
-             prcob.set("open", "true");
-             this.zoomPIN(pinv,false);
-             topic.publish('print/printmap', {pin:pinv });
+             //Style.set(dijit.byId("sidebarLeft").domNode, 'display', "block");
+             //topic.publish('viewer/togglePane', {pane:"left",show:"true"});
+             //var prcob=dijit.byId("print_parent");
+             //prcob.set("open", "true");
 
-			 topic.publish('growler/growl', {
+             this.printPIN=pinv;
+
+             this.zoomPIN(pinv,false);
+             topic.publish('print/showMe', {pin:pinv });
+             //topic.publish('print/printmap', {pin:pinv });
+
+			/* topic.publish('growler/growl', {
 					title: 'Print Started',
 					message: 'Your print job has been sent to the server.  See the print menu in the left panel for the status of your print job.',
 					level: 'success', //can be: 'default', 'warning', 'info', 'error', 'success'.
 					timeout: 1500, //set to 0 for no timeout
 					opacity: 0.8
 			 });
+			 */
 
 		}
-		,createTab: function(titlev,idx,contentv){
+		,createTab: function(idv,titlev,idx,contentv){
 
-             var tab = new dijit.layout.ContentPane({ className: "ContentTab", title: titlev, content: contentv, selected: true });
-             tab.startup();
+             var tab = new dijit.layout.ContentPane({ id:idv,className: "ContentTab", title: titlev, content: contentv, selected: true });
              this.pSearchTabs.addChild(tab, idx);
+             tab.startup();
+             dijit.byId("pSearchTabs").selectChild(dijit.byId(idv));
+
 		}
 		,createResTab: function(idv,titlev,idx,contentv){
              console.log("createResTab ",idx);
@@ -1970,6 +2078,7 @@ define([
 
   		}
 		,zoomPIN:function(pin,doDBSearch) {
+			    console.log("zoom to pin");
 				if (typeof doDBSearch == "undefined") {
 					doDBSearch = true;
 				}
@@ -1989,6 +2098,8 @@ define([
 				}
 		}
 		,zoomAllListSaved:function() {
+			    console.log("zoomAllListSaved");
+
 			    var whereclause=this.pin_field + "='" + this.savedlist.join("' OR " + this.pin_field + "='") + "'";
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;
 				this.qry = new  Query();

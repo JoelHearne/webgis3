@@ -5,6 +5,7 @@ define([
     'gis/dijit/_FloatingWidgetMixin',
     'esri/dijit/Measurement',
     'dojo/aspect',
+    'dojo/on',
     'dojo/_base/lang',
     'dojo/dom-construct',
 	'dojo/dom',
@@ -12,7 +13,7 @@ define([
     'dojo/topic'
     ,"dijit/form/Button"
     , "dojo/domReady!"
-], function (declare, _WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin, Measurement, aspect, lang, domConstruct,dom,Style, topic,Button) {
+], function (declare, _WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin, Measurement, aspect, on,lang, domConstruct,dom,Style, topic,Button) {
     return declare([_WidgetBase, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
         widgetsInTemplate: true,
 		title: 'Measure Tool',
@@ -43,6 +44,13 @@ define([
             aspect.after(this.measure, 'closeTool', lang.hitch(this, 'checkMeasureTool'));
             //aspect.after(this.measure, 'measure-start', lang.hitch(this, 'measure_start'));
 
+
+		    on(this.parentWidget, 'hide', lang.hitch(this, function () {
+					    console.log("hidden");
+					    _this.clearMeasurement();
+					    _this.connectMapClick();
+			 }));
+
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
             if (this.parentWidget && this.parentWidget.toggleable) {
                 this.own(aspect.after(this.parentWidget, 'toggle', lang.hitch(this, function () {
@@ -65,7 +73,18 @@ define([
 			topic.subscribe('measure/showMe', lang.hitch(this, function (arg) {
 				_this.showThis();
 			}));
+
+			/*
+			var ev = '', out = [];
+			for (ev in this.parentWidget.domNode) {
+			    if (/^on/.test(ev)) {
+			        out[out.length] = ev;
+			    }
+			}
+             console.log(out.join(', '));
+             */
  	    }
+
         ,showThis: function(){
            this.parentWidget.show();
            this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
@@ -137,6 +156,7 @@ define([
             // end measurement on close of title pane
             if (!open && this.mapClickMode === 'measure') {
                 this.connectMapClick();
+                this.clearMeasurement();
             }
         },
         clearMeasurement: function (mode) {
