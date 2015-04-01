@@ -47,4 +47,5 @@ define([
       this.map.addLayer(wmsLayer);
     }
   });
+
 });

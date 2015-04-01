@@ -30,7 +30,6 @@ define([
   _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,
   template, css
 ) {
-
   return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
     widgetsInTemplate: true,
     templateString: template,
@@ -50,7 +49,6 @@ define([
         helpText: 'The input accepts a grid zone designator (4Q), grid square id (FJ), and an even number of additional precision numbers (12345678). See <a href="http://en.wikipedia.org/wiki/Military_grid_reference_system" target="_blank">wikipedia entry</a> for additional info.'
       }
     },
-
     postCreate: function() {
       this.inherited(arguments);
       this.setupConnections();

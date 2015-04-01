@@ -11,8 +11,6 @@ define([
     'dojo/_base/lang',
     'dojo/dom',
     'dojo/dom-style',
-
-
    'esri/toolbars/draw',
    'esri/layers/GraphicsLayer',
    'esri/graphic',

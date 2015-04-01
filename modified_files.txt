@@ -1,0 +1,6 @@
+js\gis\dijit\Draw.js
+js\gis\dijit\Goto.js
+js\gis\dijit\WMSLayer.js
+js\gis\dijit\property.js
+js\gis\dijit\property\css\property.css
+js\gis\dijit\property\templates\PropertyDialog.html

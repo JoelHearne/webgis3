@@ -471,7 +471,6 @@ define([
 			   md.style.height=md_calch+"px";
 		     }
 
-
 		}
         ,showThis:function(){
 			this.parentWidget.show();
