@@ -135,6 +135,10 @@ define([
 	    isAutoFl:false,
 	    legendDijit:null,
 	    printPIN:null,
+	    pResultsSubTabs:null,
+	    btnZoomAll:null,
+	    btnPrLbls:null,
+	    //pSearchResults:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -170,7 +174,7 @@ define([
 
 
             //this.parentWidget.show() ;
-            this.drawToolbar = new Draw(this.map);
+            this.drawToolbar = new Draw(this.map,{showTooltips: false});
             this.drawToolbar.on('draw-end', lang.hitch(this, 'onDrawToolbarDrawEnd'));
             this.createGraphicsLayer();
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
@@ -244,6 +248,7 @@ define([
 		,startup: function() {
 			this.inherited(arguments);
 			var _this=this;
+
 			/*
 			this.setautofill("tbAddr");
 			//this.setautofill("tbOwner");
@@ -255,6 +260,7 @@ define([
 			*/
 
 		    // handle results pager
+		    /*
 		    var sp = document.getElementById("selResPage");
 		    if (sp.addEventListener) {
 				 sp.addEventListener("change",
@@ -279,6 +285,8 @@ define([
 					   }
 				   }) ;
 			}
+			*/
+
 			// handle sales list year selection change
 			var dc = document.getElementById("selSaleListYear");
 			if (dc.addEventListener) {
@@ -374,7 +382,6 @@ define([
 				 }
 			 }
 
-
 			  on(document, "keypress", function(evt){
 				//console.log("keyed",evt  );
                 switch(evt.key){
@@ -449,6 +456,21 @@ define([
 			  }).style("height", (parntcn_hgt ) + "px");
 
 			 this.propctrNode.resize();
+
+			 var actbr=dom.byId("propSrchActnBar");
+			 var psr=document.getElementById("pSearchResults");
+			 var zd=document.getElementById("pZmDv");
+			 if ((psr && psr!=null) && (zd && zd!=null)) {
+			   var psr_calch=actbr.offsetTop - psr.offsetTop - zd.offsetTop-21;
+			   psr.style.height=psr_calch+"px";
+		     }
+
+		     var md=document.getElementById("pcMinDet");
+			 if ((md && md!=null)) {
+			   var md_calch=actbr.offsetTop - md.offsetTop-21;
+			   md.style.height=md_calch+"px";
+		     }
+
 
 		}
         ,showThis:function(){
@@ -813,6 +835,7 @@ define([
 
                    this.createResTab("pResultDetailTab",title,idx,content);
                    //this.pResultsSubTabs.forward() ;
+                   this.resizeContents();
 				}
 			} catch (ex){
 				console.log("error adding min detail tab", ex);
@@ -860,6 +883,8 @@ define([
 					}
 			   }
 		    });
+
+		    this.resizeContents();
 		     this.zoomPIN(pinv,false);
 		}
       ,setautofill: function(inputobj_key) {
@@ -1052,8 +1077,183 @@ define([
 				//this.resizeContents();
 				//this.containerNode.resize();
 			}
-		},
-		close: function () {
+		}
+		,createResultsTab:function(){
+
+			//console.log("createResultsTab-----");
+
+             // create the Results tab
+			 try {
+			   if (dijit.byId("pResultsTab")==null || dijit.byId("pResultsTab")===undefined) {
+				 var title="Results";
+				 var idx=1;
+				 var  content='';
+				 this.createTab("pResultsTab",title,idx,content);
+
+				 // create the pResultsSubTabs tabs object
+				 if (this.pResultsSubTabs==null) {
+					 this.pResultsSubTabs = new TabContainer({
+						 id:"pResultsSubTabs"
+						 ,class:"propertyTabContainer"
+						 ,nested:true
+						 //,isLayoutContainer:true
+						 ,useMenu:false
+						 ,useSlider:false
+						 ,doLayout: false
+						 //,"data-dojo-attach-point": "pResultsSubTabs"
+						// ,style: attr.get("pResultsTab", "style")
+						,style: "margin-top:0px !important"
+					}, dijit.byId("pResultsTab").containerNode);
+
+
+					this.pResultsSubTabs.startup();
+
+
+
+					// add jump list tab to resultssubtabs
+					var stitle="List";
+					var sidx=0;
+					var  scontent='<div id="pResCount" style="float:center; padding:0px;margin;0px;display:none;">res count</div>';
+					this.createResTab("pResultListTab",stitle,sidx,scontent);
+
+					var rlt=dijit.byId("pResultListTab").containerNode;
+					dojo.place('<div id="pPageSelDiv" style="display:none;padding: 0px; font-size: 9px;"><div style="float:left; padding:0px;margin;0px;">jump to page: </div><div style="padding: 0px; float: left; padding:0px;margin;0px;"><select id="selResPage" style="font-size:9pt;padding:0px;margin;0px"><option value="1" selected="true">1</option></select></div></div><br>', rlt,"last");
+					dojo.place('<center><div id="pPageSelDiv3" style="display:none;margin:5px 0px 5px 0px;padding: 0px; font-size: 8px;"><a id="pPagePrev" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center>', rlt,"last");
+
+
+					//dojo.place('<div id="pZmDv" style="float:center; padding:0px;margin;0px;"><input id="btnZoomAlllIST" data-dojo-attach-point="btnZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllList"></input><input id="btnPrLbls" data-dojo-attach-point="btnPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="export/mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsMenu"></input></div><br>', rlt,"last");
+					 dojo.place('<div id="pZmDv" style="float:left; padding:9px 0px 0px 0px;margin:0px;width:335px"></div><br>', rlt,"last");
+					 // create buttons programmatically
+					 var _this=this;
+					 this.btnZoomAll=new Button({
+					   label: "zoom to records",
+						style: "z-index: 900;font-size:10px;margin:0px;padding:0px;height:18px;float:right;display:block;",
+					   onClick: function(){
+						 console.log("clicked zoomall button" );
+						 _this.zoomAllList();
+					   }
+					 }).placeAt(dom.byId("pZmDv"));
+
+					 this.btnPrLbls=new Button({
+					   label: "export/mailing labels",
+						style: "z-index: 900;font-size:10px;margin:0px;padding:0px;height:18px;float:left;display:block;",
+					   onClick: function(){
+						 console.log("clicked printMailLblsMenu button" );
+						 _this.printMailLblsMenu();
+					   }
+					 }).placeAt(dom.byId("pZmDv"));
+
+					  dojo.place('<br><div id="pSearchResults" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;height:250px;overflow-y:scroll"></div><br>', rlt,"last");
+
+
+					/*this.pSearchResults=new ContentPane({
+						id:"pSearchResults"
+						,content:"<p>Searchresults</p>"
+						,style:"padding:0px 0px 7px 0px !important;margin:0px !important;height:355px"
+					} ,dijit.byId("pResultListTab"))
+
+					//dojo.place(this.pSearchResults,dijit.byId("pResultListTab"));
+
+
+					 this.pSearchResults.startup();
+					 */
+
+
+					//dojo.place('<center><div id="pPageSelDiv2" style="display:none;margin:3px 0px 0px 0px;padding: 0px;font-size:9px; z-index: 900;height:15px;"><a id="pPagePrev2" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext2" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center><br>', rlt,"last");
+
+
+                    var _this=this;
+					var cp = document.getElementById("pPageNext");
+					if (cp.addEventListener) {
+						 cp.addEventListener("click",
+						   function(e){
+							   _this.resPage+=1;
+
+							   if (_this.activeMenu=='map') {
+								   _this.doSearch_Pins(_this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+
+						   }, false);
+					} else {
+						 cp.attachEvent('click',  function(e){
+							   _this.resPage+=1;
+							   //this.doSearch();
+							   if (this.activeMenu=='map') {
+								   _this.doSearch_Pins(this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+						   }) ;
+					}
+
+					cp = document.getElementById("pPagePrev");
+					if (cp.addEventListener) {
+						 cp.addEventListener("click",
+						   function(e){
+							   _this.resPage-=1;
+
+							   if (_this.activeMenu=='map') {
+								   _this.doSearch_Pins(_this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+
+						   }, false);
+					} else {
+						 cp.attachEvent('click',  function(e){
+							   _this.resPage-=1;
+							   //this.doSearch();
+							   if (_this.activeMenu=='map') {
+								   _this.doSearch_Pins(_this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+						   }) ;
+					}
+
+					// add pager handler
+					var sp = document.getElementById("selResPage");
+					if (sp.addEventListener) {
+						 sp.addEventListener("change",
+						   function(e){
+							   _this.resPage=e.target.selectedIndex+1;
+							   if (_this.activeMenu=='map') {
+								   _this.doSearch_Pins(_this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+						   }, false);
+					} else {
+						 sp.attachEvent('change',  function(e){
+							   _this.resPage=e.target.selectedIndex+1;
+							   //this.doSearch();
+							   if (_this.activeMenu=='map') {
+								   _this.doSearch_Pins(_this.mapsearchpins);
+							   } else {
+								   _this.doSearch();
+							   }
+						   }) ;
+					}
+
+
+					//this.fixWidth();
+					this.resizeContents();
+					//this.parentWidget.resize();
+
+			    }
+		      }
+			 } catch (ex){
+			    console.log("error creating results tab tab", ex);
+			 }
+
+
+		}
+		,close: function () {
+
+			//this.createResultsTab();
+			//this.showWait();
 
 			if (this.parentWidget.hide) {
 				this.parentWidget.hide();
@@ -1061,31 +1261,42 @@ define([
 
 		}
 		,showWait:function() {
-           document.getElementById("pResCount").innerHTML='';
-		   this.btnZoomAll.domNode.style.display="none";
-		   this.btnPrLbls.domNode.style.display="none";
-		   document.getElementById("pResCount").style.display="none";
-		   document.getElementById("pPageSelDiv").style.display="none";
-		   document.getElementById("pPageSelDiv2").style.display="none";
-		   document.getElementById("pPageSelDiv3").style.display="none";
+           if (dijit.byId("pResultsTab")==null || dijit.byId("pResultsTab")===undefined) {
+		   } else {
+			   try {
+				   document.getElementById("pResCount").innerHTML='';
+				   this.btnZoomAll.domNode.style.display="none";
+				   this.btnPrLbls.domNode.style.display="none";
+				   document.getElementById("pResCount").style.display="none";
+				   document.getElementById("pPageSelDiv").style.display="none";
+				   //document.getElementById("pPageSelDiv2").style.display="none";
+				   document.getElementById("pPageSelDiv3").style.display="none";
 
-		   var srd=dom.byId("pSearchResults");
-		   if (srd) {
-			   var img = dojo.doc.createElement('img');
-				dojo.attr(img, {
-					id:"waitimg",
-					src: "images/ajax-loader3.gif",
-					alt: "Please Standbye while I search",
-					//style: {float: "center",  padding:"0px 0px 0px 59px",margin:"80px"}
-					style: {float: "center",  padding:"0px 0px 0px 90px",margin:"0px"}
-				});
-			   dojo.place(img, srd, "after");
-	      }
+				   var srd=dom.byId("pSearchResults");
+				   if (srd) {
+					   var img = dojo.doc.createElement('img');
+						dojo.attr(img, {
+							id:"waitimg",
+							src: "images/ajax-loader3.gif",
+							alt: "Please Standbye while I search",
+							//style: {float: "center",  padding:"0px 0px 0px 59px",margin:"80px"}
+							style: {float: "center",top:"5px",  padding:"0px 0px 0px 90px",margin:"0px"}
+						});
+					   //dojo.place(img, srd, "after");
+					   dojo.place(img, srd, "before");
+
+
+				  }
+		      } catch (ex){ console.error("error showWait",ex); }
+
+	     }
 		}
 		,hideWait:function() {
 		   var wi=dom.byId("waitimg");
 		   if (wi) {
 			   wi.parentNode.removeChild(wi);
+		   } else {
+			   console.log("cant hide the wait");
 		   }
 		}
 		,preBuffer:function(){
@@ -1214,12 +1425,15 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,doSearch: function(){
-		    //console.log("doSearch",this.activeMenu);
+		     //console.log("doSearch",this.activeMenu);
             //domConstruct.empty("pSearchResults");
 
             //domConstruct.empty("pcMinDet");
 
+            this.createResultsTab();
+
             this.showWait();
+
             if (this.activeMenu=='map') { this.runMapSearch(); return; }
 
             var startrec = 1;
@@ -1461,7 +1675,7 @@ define([
 				 console.log("error adding min detail tab", ex);
 			 }
 
-			 console.log("addPRC2Saved",this.savedlist);
+			 //console.log("addPRC2Saved",this.savedlist);
 
 			 if (this.savedlist.indexOf(pcObj.pin) != -1) return;
 
@@ -1536,7 +1750,7 @@ define([
 				if (dobj.rec_count > 50) {
 
 					document.getElementById("pPageSelDiv").style.display="block";
-					document.getElementById("pPageSelDiv2").style.display="block";
+					//document.getElementById("pPageSelDiv2").style.display="block";
 					document.getElementById("pPageSelDiv3").style.display="block";
 					pgcnt = Math.ceil(dobj.rec_count / 50);
 					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
@@ -1545,24 +1759,24 @@ define([
 						select.options[select.options.length]=new Option(p + 1);
 					}
 					if (rec_page==1) {
-						document.getElementById("pPagePrev2").style.display="none";
+						//document.getElementById("pPagePrev2").style.display="none";
 						document.getElementById("pPagePrev").style.display="none";
 				    } else {
-					    document.getElementById("pPagePrev2").style.display="block";
+					    //document.getElementById("pPagePrev2").style.display="block";
 					    document.getElementById("pPagePrev").style.display="block";
 				    }
 					if (rec_page==pgcnt) {
-						document.getElementById("pPageNext2").style.display="none";
+						//document.getElementById("pPageNext2").style.display="none";
 						document.getElementById("pPageNext").style.display="none";
 				    } else {
-					    document.getElementById("pPageNext2").style.display="block";
+					   // document.getElementById("pPageNext2").style.display="block";
 					    document.getElementById("pPageNext").style.display="block";
 				    }
 
 
 				} else {
 					document.getElementById("pPageSelDiv").style.display="none";
-					document.getElementById("pPageSelDiv2").style.display="none";
+					//document.getElementById("pPageSelDiv2").style.display="none";
 					document.getElementById("pPageSelDiv3").style.display="none";
 				}
 				//if (dobj.rec_count > 50) select.selectedIndex = rec_page-1;
@@ -1570,7 +1784,7 @@ define([
 			   	this.btnZoomAll.domNode.style.display="none";
 			    this.btnPrLbls.domNode.style.display="none";
 			    document.getElementById("pPageSelDiv").style.display="none";
-			    document.getElementById("pPageSelDiv2").style.display="none";
+			    //document.getElementById("pPageSelDiv2").style.display="none";
 			    document.getElementById("pPageSelDiv3").style.display="none";
 		   }
 		    // show the record count
@@ -1613,7 +1827,7 @@ define([
 			 //console.clear();
 			 //console.group("-----showResults-------");
 			 //console.groupCollapsed("-----showResults-------");
-			 //console.log("showResults");
+			 //console.log("showResults----------------");
 			 //console.time("res");
 
 			 this.hideWait();
@@ -1622,7 +1836,6 @@ define([
 			 var dlgcont = "";
 			 var dobj=results;
 			 var pobj = results.ps_res;
-
 
 
 			 if (!pobj) {
@@ -1641,7 +1854,7 @@ define([
 		    }
 
 		     //console.log("showResults clearing search reslts");
-
+             console.log("showResults 2" );
 			 domConstruct.empty("pSearchResults");
              //domConstruct.empty("pcMinDet");
              domConstruct.empty("pResCount");
@@ -2063,17 +2276,24 @@ define([
 				}
 		   }
 
-		   domConstruct.empty("pSearchResults");
+
            try {
               domConstruct.empty("pcMinDet");
 	       } catch (ex){}
 
-           domConstruct.empty("pResCount");
-           document.getElementById("pPageSelDiv").style.display="none";
-           document.getElementById("pPageSelDiv2").style.display="none";
-           document.getElementById("pPageSelDiv3").style.display="none";
-           this.btnZoomAll.domNode.style.display="none";
-		   this.btnPrLbls.domNode.style.display="none";
+           try {
+			   domConstruct.empty("pSearchResults");
+			   domConstruct.empty("pResCount");
+			   document.getElementById("pPageSelDiv").style.display="none";
+			   //document.getElementById("pPageSelDiv2").style.display="none";
+			   document.getElementById("pPageSelDiv3").style.display="none";
+			   this.btnZoomAll.domNode.style.display="none";
+			   this.btnPrLbls.domNode.style.display="none";
+	       } catch (ex){}
+
+
+
+
            this.clearGraphics();
 
   		}
