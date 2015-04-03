@@ -51,11 +51,13 @@ select {
 */
 
 .pResultListTab {
-    overflow: auto !important;
+   /*overflow: auto !important;*/
+    overflow: none !important;
 
 }
 #pResultListTab {
-   overflow: auto !important;
+   /*overflow: auto !important;*/
+    overflow: none !important;
 }
 #pResultDetailTab {
    //overflow: auto !important;
@@ -85,7 +87,13 @@ select {
   margin:0px !important;
 }
 
+.resTabs {
+  overflow: none !important;
+}
 
+.propertyDijit  {
+   height:550px;
+}
 
 
 .propertyDijit a{
@@ -125,8 +133,8 @@ select {
 	padding: 15px;
 }
 .propertyDijit .propertyNode {
-    /*width: 98%;*/
-    height: 575px;
+    /*width: 98%;
+    height: 550px;*/
     
 }
 
@@ -331,14 +339,15 @@ select {
 
 .dbootstrap .dijitTab {
     color: rgb(0, 136, 204);
-    text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
+    
     margin-right: 2px;
-    padding: 4px 6px;
-    line-height: 17px;
+    padding: 1px 3px;
+    line-height: 18px;
     //border: 1px solid transparent;
-    border: 1px solid  rgba(245, 245, 215, 0 ); 
-    border-radius: 4px;
+    border: 1px solid  rgba(42, 45, 55, 0.5 ); 
+    border-radius: 5px 5px 0px 0px;
     background-color: lightgrey;
+     border-bottom: none thick green;
 }
 .dbootstrap .dijitTabHover {
    background-color: rgba(243, 243, 245, 0.5);
@@ -346,22 +355,76 @@ select {
   //text-shadow: 0px 2px 0px rgba(255, 55, 55, 0.5);
     
 }
-.dbootstrap .dijitTabChecked {
+ 
+
+
+ .dbootstrap .dijitTabChecked {
   color: #555;
-  background-color: #fff;
-  border-color: #ddd;
-  background-color: rgba(205, 205, 205, 0.5);
-  border-color: rgba(245, 245, 215, 0 );  
+ 
+  /*background-color: rgba(205, 205, 205, 1);*/
+  background-color: rgba(89, 152, 141,0.5);
+  border-color: rgba(245, 245, 215, 1 );  
   //color: rgb(0, 136, 204);
   //text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.5);
    margin-right: 2px;
-   padding: 4px 6px;
-   line-height: 17px;
-    border: 3px solid rgb(0, 136, 204);
-    border-radius: 4px;  
+   padding: 1px 3px;
+   line-height: 18px;
+    border: 1px solid rgb(0, 136, 204);
+    border-radius: 5px 5px 0px 0px;  
+    border-bottom: none thick green;
 
   cursor: default;
 }
+
+#pResultsSubTabs {
+   overflow:hidden !important;
+   margin-top:0px !important;
+
+}
+#pResultsSubTabs_tablist .dijitTabChecked {
+    color: rgb(85, 85, 85);
+    background-color: rgba(89, 152, 141,0.5);
+   margin-right: 2px;
+   padding: 1px 15px;
+   line-height: 15px;
+    border: 1px solid rgb(0, 136, 204);
+    border-radius: 7px 7px 0px 0px;
+    cursor: default;
+    border-bottom: none thick green;
+    
+}
+
+#pResultsSubTabs_tablist > div {
+    color: rgb(0, 136, 204);
+    margin: 0px 2px 0px 4px;
+   margin-right: 2px;
+   padding: 1px 15px;
+   line-height: 15px;
+    border: 1px solid rgb(0, 136, 204);
+    border-radius: 7px 7px 0px 0px;
+    cursor: default;
+    border-bottom: none thick green;    
+ 
+    background-color: rgba(229, 236, 250,0.7);
+}
+
+#pResultsSubTabs_tablist {
+   padding: 8px 0px 0px;
+   border-bottom: 2px solid rgb(1,109,150);
+ 
+}
+#pSearchTabs_tablist {
+   /*box-shadow: 1px 3px rgb(1,129,130);*/
+   border-bottom: 1px solid rgb(1,109,150);
+   
+}
+
+#pSearchTabs .dijitTabSpacer .dijitTabContainerTop-spacer .dijitAlignTop {
+   padding: 3px 0px 0px;
+   border-bottom: 4px solid rgb(1,109,150);
+
+}
+
 
 .dbootstrap .dijitContentPane {
     padding: 2px;

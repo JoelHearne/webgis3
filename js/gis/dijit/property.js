@@ -93,8 +93,8 @@ define([
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 		widgetsInTemplate: true,
 		templateString: template,
-		title: 'Okaloosa County Property Search',
-		html: '<a href="#">Property Search</a>',
+		title: 'WebGIS Main Menu',
+		html: '<a href="#">Main Menu</a>',
 		domTarget: 'propertyDijit',
 		draggable: true,
 		baseClass: 'propertyDijit',
@@ -162,7 +162,7 @@ define([
 			}
 
 			window.addEventListener('resize', function(event){
-                //console.log("window resized ",event);
+                //console.log("window resized ",event);z
                // _this.resizeContents();
                _this.fixWidth();
 			});
@@ -384,12 +384,297 @@ define([
 
 			  on(document, "keypress", function(evt){
 				//console.log("keyed",evt  );
-                switch(evt.key){
+
+				var actbr=dom.byId("propSrchActnBar");
+				var pw=document.getElementById("property_widget");
+				var pp=document.getElementById("property_parent");
+
+				 var psr=document.getElementById("pSearchResults");
+				 var prt=document.getElementById("pResultListTab");
+
+
+				 var  tbs=registry.byId("pSearchTabs");
+				 var subtbs=registry.byId("pResultsSubTabs");
+
+
+			    var ab_owd=actbr.offsetWidth ;
+			    var ab_ohgt=actbr.offsetHeight + 28 ;
+                var ab_oht=actbr.offsetTop   ;
+
+			    //var parntcn_hgt=_this.parentWidget.domNode.offsetHeight-ab_ohgt ;
+			    var parntcn_hgt=psr.offsetTop-ab_ohgt ;
+			    //var parntcn_ht=_this.parentWidget.domNode.offsetHeight-ab_oht ;
+
+			    var pwht=pw.offsetTop + -actbr.offsetTop ;
+			    var pwhgt=(_this.parentWidget.domNode.offsetHeight + _this.parentWidget.domNode.offsetTop)  - psr.offsetTop  ;
+
+			    var parntcn_ht=pwhgt ;
+
+			   console.log("pwht",evt,pwht,pwhgt,parntcn_hgt,pp.offsetHeight,pp.offsetTop,pw.offsetHeight,pw.offsetTop,actbr.offsetTop,actbr.offsetHeight ,(_this.parentWidget.domNode.offsetHeight + _this.parentWidget.domNode.offsetTop) );
+
+              var charCode = evt.which || evt.keyCode;
+               var charStr = String.fromCharCode(charCode);
+
+
+                switch(charStr){
 				  case "r":
-				    // _this.resizeContents();
+				    _this.resizeContents();
+					break;
+				  case "t":
+				     _this.fixWidth();
+					break;
+				  case "y":
+
+					tcpc= dojo.query(".dijitDialogPaneContent",_this.parentWidget.domNode);
+					tcpc.forEach(function(node){
+					}).style("height", parntcn_hgt + 'px');
+
+					tcpc= dojo.query(".propertyNode",_this.parentWidget.domNode);
+					tcpc.forEach(function(node){
+					}).style("height", parntcn_hgt + 'px');
+
+					_this.propctrNode.resize();
+
+					//_this.parentWidget.set('style', 'height:' + parntcn_hgt + 'px');
+					//_this.parentWidget.resize();
+					break;
+				  case "u":
+
+				     dom.byId("pResultListTab").set('style', 'height:' + parntcn_hgt + 'px');
+
+
+					break;
+  				  case "i":
+				     _this.propctrNode.resize();
+					break;
+  				  case "o":
+
+					_this.parentWidget.resize();
+					break;
+  				  case "p":
+
+					  var rlt=dijit.byId("pResultListTab");
+					  var pnd=document.getElementById("property_widget");
+					  var tbht= Style.get(rlt.domNode,"height");
+					  var actbr=dom.byId("propSrchActnBar");
+					  var zd=document.getElementById("pZmDv");
+
+					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
+
+
+
+
+
+				     //_this.parentWidget.set('style', 'height:' + parntcn_hgt + 'px');
+
+				     //_this.parentWidget.domNode.style.setProperty("height", nv + 'px', "important");
+
+				     console.log("pw",pw,pw.offsetParent,pw.parentNode,pw.parentNode.offsetHeight);
+				     var nv = prompt("Please enter value", pw.parentNode.offsetHeight);
+
+
+				     pw.style.setProperty("height", pw.parentNode.offsetHeight + 'px', "important");
+
+
+					break;
+  				  case "l":
+					tcpc= dojo.query(".dijitDialogPaneContent",_this.parentWidget.domNode);
+					tcpc.forEach(function(node){
+					}).style("height", parntcn_hgt + 'px');
+					break;
+  				  case "k":
+					tcpc= dojo.query(".propertyNode",_this.parentWidget.domNode);
+					tcpc.forEach(function(node){
+					}).style("height", parntcn_hgt + 'px');
+					break;
+  				  case "j":
+
+                    //psr.style.height=parntcn_hgt + 'px';
+                     prt.style.setProperty("height", pw.offsetHeight + 'px', "important");
+					//dom.byId("pSearchResults").set('style', 'height:' + parntcn_hgt + 'px');
+					break;
+  				  case "h":
+
+
+                    //psr.style.height=parntcn_hgt + 'px';
+                     var rlt=dijit.byId("pResultListTab");
+                     var tbht=Style.get(rlt.domNode,"height");
+                     var nv = prompt("Please enter value", parntcn_hgt);
+
+                     psr.style.setProperty("height", nv + 'px', "important")
+					//dom.byId("pSearchResults").set('style', 'height:' + parntcn_hgt + 'px');
+					break;
+  				  case "g":
+
+
+                    var nv = prompt("Please enter value", parntcn_hgt);
+                   // prt.style.setProperty("height", nv + 'px', "important")
+
+					 tcpc= dojo.query(".dijitDialogPaneContent",subtbs.domNode);
+					 tcpc.forEach(function(node){
+					 }).style("height", nv + 'px');
+
+					break;
+  				  case "f":
+
+
+                    var nv = prompt("Please enter value", parntcn_ht);
+                    psr.style.setProperty("height", nv + 'px', "important");
+
+					//tcpc= dojo.query(".propertyDijit",_this.parentWidget.domNode);
+					//tcpc.forEach(function(node){
+					//}).style("height", parntcn_ht + 'px');
+
+					break;
+  				  case "d":
+
+                  //dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
+
+                     var rlt=dijit.byId("pResultListTab");
+                     var tbht=Style.get(rlt.domNode,"height");
+                     var nv = prompt("Please enter value", tbht);
+
+
+					 var tcpc= dojo.query(".dijitTabPaneWrapperNested",subtbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--got content pane: ",node);
+					 }).style("height", nv + 'px');
+
+					  tcpc= dojo.query(".dijitTabContainerTopChildWrapper",subtbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--1 got content pane: ",node);
+					 }).style("height", nv + 'px');
+/*
+
+					 tcpc= dojo.query(".dijitTabContainer", tbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--2 got content pane: ",node);
+					 }).style("height", nv + 'px');
+
+					 tcpc= dojo.query(".dijitTabPaneWrapper", tbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--3 got content pane: ",node);
+					 }).style("height", nv + 'px');
+*/
+
+					 /*
+					 dijitTabPaneWrapper dijitTabContainerTop-container dijitAlignCenter
+					 dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
+					 dijitTabContainerTopChildWrapper dijitVisible
+					 dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
+					 dijitTabContainer dijitTabContainerTop dijitContainer dijitLayoutContainer dijitTabContainerNoLayout dijitTabContainerNested resTabs
+                     dijitTabContainerTopChildWrapper dijitVisible
+                      */
+
+					break;
+  				  case "m":
+
+                  //dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
+
+                     var rlt=dijit.byId("pResultListTab");
+                     var tbht=Style.get(rlt.domNode,"height");
+                     var nv = prompt("Please enter value", tbht);
+
+
+					 tcpc= dojo.query(".dijitTabContainer", tbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--2 got content pane: ",node);
+					 }).style("height", nv + 'px');
+
+					 tcpc= dojo.query(".dijitTabPaneWrapper", tbs.domNode);
+					 tcpc.forEach(function(node){
+						 console.log("--3 got content pane: ",node);
+					 }).style("height", nv + 'px');
+
+
+					break;
+  				  case "n":
+
+
+                     //var tbht=dom.byId("pResultListTab").style.getProperty("height"); // get height from pResultListTab
+                     var rlt=dijit.byId("pResultListTab");
+                     console.log("rlt",rlt);
+                     var tbht=rlt.domNode.style.height;
+
+                     tbht=Style.get(rlt.domNode,"height");
+
+                     console.log("tabht",tbht);
+
+                     var nv = prompt("Please enter value", tbht);
+
+					 dom.byId("propertyNode").style.setProperty("height", nv+15  + 'px', "important");
+
+					break;
+  				  case "b":
+
+                     console.group();
+                     console.log("calculated heights and tops------------------");
+
+					  var rlt=dijit.byId("pResultListTab");
+					  var pnd=document.getElementById("property_widget");
+					  var tbht= Style.get(rlt.domNode,"height");
+					  var actbr=dom.byId("propSrchActnBar");
+					  var zd=document.getElementById("pZmDv");
+
+					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
+
+					  console.log("pResultListTab height,",tbht,dijit.byId("pResultListTab").domNode.offsetTop);
+					  console.log("property_widget osheight,",document.getElementById("property_widget").offsetHeight,",",document.getElementById("property_widget").offsetTop);
+					  console.log("propertyNode osheight,",document.getElementById("propertyNode").offsetHeight,",",document.getElementById("propertyNode").offsetTop);
+					  console.log("propSrchActnBar osheight ostop,",actbr.offsetHeight,actbr.offsetTop,",");
+					  console.log("pZmDv osheight ostop,",document.getElementById("pZmDv").offsetHeight,",",document.getElementById("pZmDv").offsetTop);
+					  console.log("parentWidget osheight ostop,",_this.parentWidget.domNode.offsetHeight,",",_this.parentWidget.domNode.offsetTop);
+                      console.log("pSearchResults osheight ostop,",psr.offsetHeight,",",psr.offsetTop);
+
+                      console.log("pSearchResults ideal height calc,",calc_ht);
+
+					 console.groupEnd()
+
 					break;
 
+  				  case "s":
+
+
+                     //var tbht=dom.byId("pResultListTab").style.getProperty("height"); // get height from pResultListTab
+					  var rlt=dijit.byId("pResultListTab");
+					  var pnd=document.getElementById("property_widget");
+					  var tbht= Style.get(rlt.domNode,"height");
+					  var actbr=dom.byId("propSrchActnBar");
+					  var zd=document.getElementById("pZmDv");
+
+					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
+
+                     console.log("rlt",rlt);
+                     var tbht=rlt.domNode.style.height;
+
+                     tbht=Style.get(rlt.domNode,"height");
+
+                     console.log("tabht",calc_ht,tbht,Style.get(subtbs.domNode,"height"),Style.get( tbs.domNode,"height"),pnd.style.offsetHeight,psr.style.offsetHeight);
+
+                     var nv = prompt("Please enter value", calc_ht);
+
+                     //dom.byId("propertyNode").style.setProperty("height", nv+35  + 'px', "important");
+
+                     //pnd.style.setProperty("height", nv+35  + 'px', "important");
+					 tbs.domNode.style.setProperty("height", nv+3 + 'px', "important");
+					 subtbs.domNode.style.setProperty("height", nv+2  + 'px', "important");
+					 //dom.byId("pResultListTab").style.setProperty("height", nv-4  + 'px', "important");
+					 psr.style.setProperty("height", nv-27 + 'px', "important");
+					 //dom.byId("propertyNode").style.setProperty("height", nv+15  + 'px', "important");
+
+					break;
+  				  case "z":
+					 tbs.resize();
+
+					break;
+  				  case "x":
+
+					 subtbs.resize();
+					break;
  				 }
+
+
+
 
 			  });
 
@@ -426,8 +711,18 @@ define([
 
 		    var actbr=dom.byId("propSrchActnBar");
 		    var ab_ohgt=actbr.offsetHeight + 28;
+			var psr=document.getElementById("pSearchResults");
+			var zd=document.getElementById("pZmDv");
+		    var ab_owd=actbr.offsetWidth ;
+            var  tbs=registry.byId("pSearchTabs");
+			var subtbs=registry.byId("pResultsSubTabs");
 
-			var parntcn_hgt=this.parentWidget.domNode.offsetHeight-ab_ohgt ;
+	        var rlt=dijit.byId("pResultListTab");
+		    var pnd=document.getElementById("property_widget");
+
+
+			 var parntcn_hgt=this.parentWidget.domNode.offsetHeight-ab_ohgt ;
+
 			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
 			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
 			Style.set(this.pSearchTabs  , 'height', (parntcn_hgt) + "px");
@@ -457,19 +752,44 @@ define([
 
 			 this.propctrNode.resize();
 
-			 var actbr=dom.byId("propSrchActnBar");
-			 var psr=document.getElementById("pSearchResults");
-			 var zd=document.getElementById("pZmDv");
+
+              if ((psr && psr!=null) ) {
+				   psr.style.setProperty("width", ab_owd-3 + 'px', "important");
+
+			  }
 			 if ((psr && psr!=null) && (zd && zd!=null)) {
-			   var psr_calch=actbr.offsetTop - psr.offsetTop - zd.offsetTop-21;
-			   psr.style.height=psr_calch+"px";
+
+			  // var psr_calch=actbr.offsetTop - psr.offsetTop - zd.offsetTop-21;
+			   //var psr_calch=actbr.offsetTop - psr.offsetTop ;
+			   var psr_calch=actbr.offsetTop - zd.offsetTop -psr.offsetTop;
+
+			   console.log("resizing pSearch Results",psr_calch,actbr.offsetTop,actbr.offsetHeight , psr.offsetTop, psr.offsetHeight , zd.offsetTop,psr);
+			   //psr.style.height=psr_calch ;
+			   //psr.setAttribute('style', psr_calch + "px !important");
+			   psr.style.setProperty("height", psr_calch + 'px', "important");
+			   //this.parentWidget.resize();
+
 		     }
 
 		     var md=document.getElementById("pcMinDet");
 			 if ((md && md!=null)) {
-			   var md_calch=actbr.offsetTop - md.offsetTop-21;
+			   var md_calch=actbr.offsetTop - md.offsetTop-31;
 			   md.style.height=md_calch+"px";
 		     }
+
+		     this.propctrNode.resize();
+		     if (subtbs) subtbs.resize();
+		     if (tbs) tbs.resize();
+
+             if ((psr && psr!=null) ) {
+				  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
+				  psr.style.setProperty("height", calc_ht + 'px', "important");
+				  //odocument.getElementById("propertyNode").style.setProperty("height", calc_ht + 'px', "important");
+			 }
+			 var pw=document.getElementById("property_widget");
+			 if (pw)
+			     pw.style.setProperty("height", pw.parentNode.offsetHeight + 'px', "important");
+
 
 		}
         ,showThis:function(){
@@ -1091,9 +1411,11 @@ define([
 
 				 // create the pResultsSubTabs tabs object
 				 if (this.pResultsSubTabs==null) {
+
 					 this.pResultsSubTabs = new TabContainer({
 						 id:"pResultsSubTabs"
-						 ,class:"propertyTabContainer"
+						 //,class:"propertyTabContainer"
+						 ,class:"resTabs"
 						 ,nested:true
 						 //,isLayoutContainer:true
 						 ,useMenu:false
@@ -1101,27 +1423,31 @@ define([
 						 ,doLayout: false
 						 //,"data-dojo-attach-point": "pResultsSubTabs"
 						// ,style: attr.get("pResultsTab", "style")
-						,style: "margin-top:0px !important"
+						//,style: "margin-top:0px !important"
 					}, dijit.byId("pResultsTab").containerNode);
 
-
 					this.pResultsSubTabs.startup();
-
-
 
 					// add jump list tab to resultssubtabs
 					var stitle="List";
 					var sidx=0;
-					var  scontent='<div id="pResCount" style="float:center; padding:0px;margin;0px;display:none;">res count</div>';
+					var  scontent='<div id="pResCount" style="float:center; padding:0px;margin;0px;display:none">res count</div>';
 					this.createResTab("pResultListTab",stitle,sidx,scontent);
 
-					var rlt=dijit.byId("pResultListTab").containerNode;
-					dojo.place('<div id="pPageSelDiv" style="display:none;padding: 0px; font-size: 9px;"><div style="float:left; padding:0px;margin;0px;">jump to page: </div><div style="padding: 0px; float: left; padding:0px;margin;0px;"><select id="selResPage" style="font-size:9pt;padding:0px;margin;0px"><option value="1" selected="true">1</option></select></div></div><br>', rlt,"last");
-					dojo.place('<center><div id="pPageSelDiv3" style="display:none;margin:5px 0px 5px 0px;padding: 0px; font-size: 8px;"><a id="pPagePrev" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center>', rlt,"last");
+
+					 var rlt=dijit.byId("pResultListTab").containerNode;
+					//var rlt=dijit.byId("pResultListTab").domNode;
+
+					dojo.place('<div id="pPageSelDiv" style="display:none;padding: 0px; font-size: 9px"><div style="float:left; padding:0px;margin;0px;">jump to page: </div><div style="padding: 0px; float: left; padding:0px;margin;0px;"><select id="selResPage" style="font-size:9pt;padding:0px;margin;0px"><option value="1" selected="true">1</option></select></div></div>', rlt,"last");
+					dojo.place('<center><div id="pPageSelDiv3" style="display:none;margin:5px 0px 5px 0px;padding: 0px; font-size: 8px"><a id="pPagePrev" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center>', rlt,"last");
 
 
 					//dojo.place('<div id="pZmDv" style="float:center; padding:0px;margin;0px;"><input id="btnZoomAlllIST" data-dojo-attach-point="btnZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllList"></input><input id="btnPrLbls" data-dojo-attach-point="btnPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="export/mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsMenu"></input></div><br>', rlt,"last");
-					 dojo.place('<div id="pZmDv" style="float:left; padding:9px 0px 0px 0px;margin:0px;width:335px"></div><br>', rlt,"last");
+
+					dojo.place('<div id="pZmDv" style="padding:9px 0px 0px 0px;margin:0px 0px 10px 0px;width:335px;height:10px;border-bottom:1pz solid black"></div> ', rlt,"last");
+
+
+
 					 // create buttons programmatically
 					 var _this=this;
 					 this.btnZoomAll=new Button({
@@ -1142,7 +1468,8 @@ define([
 					   }
 					 }).placeAt(dom.byId("pZmDv"));
 
-					  dojo.place('<br><div id="pSearchResults" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;height:250px;overflow-y:scroll"></div><br>', rlt,"last");
+
+					  dojo.place('<div id="pSearchResults" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;overflow-y:scroll"></div>', rlt,"last");
 
 
 					/*this.pSearchResults=new ContentPane({
@@ -1264,11 +1591,11 @@ define([
 		   } else {
 			   try {
 				   document.getElementById("pResCount").innerHTML='';
-				   this.btnZoomAll.domNode.style.display="none";
+				    this.btnZoomAll.domNode.style.display="none";
 				   this.btnPrLbls.domNode.style.display="none";
 				   document.getElementById("pResCount").style.display="none";
-				   document.getElementById("pPageSelDiv").style.display="none";
-				   //document.getElementById("pPageSelDiv2").style.display="none";
+				  document.getElementById("pPageSelDiv").style.display="none";
+				   ////document.getElementById("pPageSelDiv2").style.display="none";
 				   document.getElementById("pPageSelDiv3").style.display="none";
 
 				   var srd=dom.byId("pSearchResults");
@@ -1841,8 +2168,6 @@ define([
 				 console.log("error getting results",results);
 			 }
 
-
-
             // show minimal detail if there is only one results
             if (pobj.length==1) {
                //dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
@@ -1928,6 +2253,8 @@ define([
 
 			 this.resultsAddPager(dobj);
 
+			 this.resizeContents();
+
 			 document.getElementById("pResultListTab").scrollTop=0;
              //console.table()
 			 //console.timeEnd("res");
@@ -1946,8 +2273,6 @@ define([
 
             //console.log("printMailLbls",e,isSavedTab);
             var _this=this;
-
-
 			var form = new Form();
 		    //var dia  = new Dialog({
 

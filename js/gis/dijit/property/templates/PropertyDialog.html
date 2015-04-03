@@ -6,7 +6,7 @@
 
         <div id="propertyNode" data-dojo-attach-point="propertyNode" class="propertyNode" style="overflow:hidden !important">
 
-            <div id="pSearchTabs" data-dojo-attach-point="pSearchTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer"  >
+            <div id="pSearchTabs" data-dojo-attach-point="pSearchTabs" data-dojo-type="dijit/layout/TabContainer" class="propertyTabContainer" >
 
                 <div id="pSearchTab" data-dojo-attach-point="pSearchTab" data-dojo-type="dijit/layout/ContentPane" title="Search">
                     <div class="ptabContBG">
@@ -332,29 +332,7 @@
                     </div>
                 </div>
 
-                <!--end property results tab
-
-              <!--
-              <div id="pSavedTab" data-dojo-type="dijit/layout/ContentPane" title="Saved" style="display:none">
-                             <div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;">
-                                      <input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input>
-
-                                     <input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:none" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input>
-                            </div>
-                            <br>
-                             <div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;">
-                                <br>
-                                    <div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;">
-                                    </div>
-                             <br>
-                          </div>
-             </div>
-             -->
-
-             <!-- end pSavedTab-->
-
-
-           <div id="pLayersTab"   data-dojo-type="dijit/layout/ContentPane" title="Layers" style="overflow-y:auto;padding:0px !important;margin:0px !important;">
+           <div id="pLayersTab"   hidden="true" data-dojo-type="dijit/layout/ContentPane" title="Layers" style="overflow-y:auto;padding:0px !important;margin:0px !important;">
                 <div id="pLayersTabCnt"   data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="pLayersTabCnt" class="ptabContent ptabContMain" style="overflow-y:auto;padding:0px !important;margin:0px !important;"></div>
 
            </div>
@@ -362,8 +340,6 @@
                 <div id="pLegendTabCnt"   data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="pLegendTabCnt" class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"></div>
 
            </div>
-
-
 
 
             </div>

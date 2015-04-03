@@ -258,7 +258,7 @@ define([
 				id: 'property',
 				type: 'floating',
 				path: 'gis/dijit/property',
-				title: 'Property Search',
+				title: 'Menu',
 				options:'config/property'
 				//options: { map: true }
 			}
