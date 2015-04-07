@@ -94,7 +94,6 @@ define([
             this.own(topic.subscribe('mapClickMode/currentSet', lang.hitch(this, 'setMapClickMode')));
 
             this.map.on('click', lang.hitch(this, function (evt) {
-
                 if (this.mapClickMode === 'identify') {
                     this.executeIdentifyTask(evt);
                 }
@@ -198,16 +197,36 @@ define([
             var identifiedlayers = [];
             var selectedLayer = this.getSelectedLayer();
 
+
+            //console.log("identify  selectedLayer",selectedLayer);
+            //console.log("identify  identifyParams",identifyParams);
+
+
             array.forEach(this.layers, lang.hitch(this, function (layer) {
+                //console.log("identify layer",layer,layer.layerInfos);
                 var layerIds = this.getLayerIds(layer, selectedLayer);
                 if (layerIds.length > 0) {
                     var params = lang.clone(identifyParams);
                     params.layerDefinitions = layer.ref.layerDefinitions;
                     params.layerIds = layerIds;
+
+
                     identifies.push(layer.identifyTask.execute(params));
                     identifiedlayers.push(layer);
                 }
             }));
+
+            // Only if parcels is in identifies ... remove parcel layer from identifies and display in property results pane instead.  Or, do just the later.
+           // console.log("sending identify to property select",mapPoint,identifies,identifiedlayers);
+
+             //console.log("  identify identifiedlayers" ,identifiedlayers,identifiedlayers[0],identifiedlayers[0].layerInfo.layer.layerInfos);
+
+            //if (identifiedlayers[0].layerInfo.visibleLayers
+
+
+
+            //topic.publish('property/searchSpatial', {geometry:mapPoint});
+
 
             if (identifies.length > 0) {
                 this.map.infoWindow.setTitle( this.i18n.mapInfoWindow.identifyingTitle );
@@ -308,23 +327,35 @@ define([
         },
 
         identifyCallback: function (identifiedlayers, responseArray) {
+			var isPcl=false;
+			var pins=[];
+
             var fSet = [];
             array.forEach(responseArray, function (response, i) {
                 var ref = identifiedlayers[i].ref;
                 array.forEach(response, function (result) {
                     result.feature.geometry.spatialReference = this.map.spatialReference; //temp workaround for ags identify bug. remove when fixed.
-                    if (result.feature.infoTemplate === undefined) {
-                        var infoTemplate = this.getInfoTemplate(ref, null, result);
-                        if (infoTemplate) {
-                            result.feature.setInfoTemplate(infoTemplate);
-                        } else {
-                            return;
-                        }
-                    }
+                     if (result.layerName=="Parcels"){
+						isPcl=true;
+						pins.push(result.value);
+					}
+
+					if (result.feature.infoTemplate === undefined) {
+							var infoTemplate = this.getInfoTemplate(ref, null, result);
+							if (infoTemplate) {
+								result.feature.setInfoTemplate(infoTemplate);
+							} else {
+								return;
+							}
+					}
                     fSet.push(result.feature);
                 }, this);
             }, this);
+
             this.map.infoWindow.setFeatures(fSet);
+
+            if (isPcl) topic.publish('property/searchPINs', {pins:pins});
+
         },
         identifyError: function (err) {
             this.map.infoWindow.hide();

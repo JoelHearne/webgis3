@@ -197,15 +197,21 @@ define([
 			}));
 
 			topic.subscribe('property/toggleSpatial', lang.hitch(this, function (arg) {
-				console.log("property/toggleSpatial",arg);
+				//console.log("property/toggleSpatial",arg);
 				_this.external_setMapSrchMode(arg.mode,arg.state);
 			}));
 			topic.subscribe('property/clearSpatial', lang.hitch(this, function (arg) {
-				console.log("property/clearSpatial",arg);
+				//console.log("property/clearSpatial",arg);
 				_this.clearGraphics();
 			}));
-
-
+			topic.subscribe('property/searchSpatial', lang.hitch(this, function (arg) {
+				//console.log("property/searchSpatial",arg);
+				_this.external_SelSpatial(arg.geometry);
+			}));
+			topic.subscribe('property/searchPINs', lang.hitch(this, function (arg) {
+				 //console.log("property/searchPINs",arg);
+				_this.external_SelPINs(arg.pins);
+			}));
            /*
 		    topic.subscribe('property/external_search',  lang.hitch(this, function (arg) {
 				 console.log("property/external_search request received",arg);
@@ -248,6 +254,8 @@ define([
 		,startup: function() {
 			this.inherited(arguments);
 			var _this=this;
+
+			//console.clear();
 
 			/*
 			this.setautofill("tbAddr");
@@ -385,32 +393,6 @@ define([
 			  on(document, "keypress", function(evt){
 				//console.log("keyed",evt  );
 
-				var actbr=dom.byId("propSrchActnBar");
-				var pw=document.getElementById("property_widget");
-				var pp=document.getElementById("property_parent");
-
-				 var psr=document.getElementById("pSearchResults");
-				 var prt=document.getElementById("pResultListTab");
-
-
-				 var  tbs=registry.byId("pSearchTabs");
-				 var subtbs=registry.byId("pResultsSubTabs");
-
-
-			    var ab_owd=actbr.offsetWidth ;
-			    var ab_ohgt=actbr.offsetHeight + 28 ;
-                var ab_oht=actbr.offsetTop   ;
-
-			    //var parntcn_hgt=_this.parentWidget.domNode.offsetHeight-ab_ohgt ;
-			    var parntcn_hgt=psr.offsetTop-ab_ohgt ;
-			    //var parntcn_ht=_this.parentWidget.domNode.offsetHeight-ab_oht ;
-
-			    var pwht=pw.offsetTop + -actbr.offsetTop ;
-			    var pwhgt=(_this.parentWidget.domNode.offsetHeight + _this.parentWidget.domNode.offsetTop)  - psr.offsetTop  ;
-
-			    var parntcn_ht=pwhgt ;
-
-			   console.log("pwht",evt,pwht,pwhgt,parntcn_hgt,pp.offsetHeight,pp.offsetTop,pw.offsetHeight,pw.offsetTop,actbr.offsetTop,actbr.offsetHeight ,(_this.parentWidget.domNode.offsetHeight + _this.parentWidget.domNode.offsetTop) );
 
               var charCode = evt.which || evt.keyCode;
                var charStr = String.fromCharCode(charCode);
@@ -423,258 +405,8 @@ define([
 				  case "t":
 				     _this.fixWidth();
 					break;
-				  case "y":
 
-					tcpc= dojo.query(".dijitDialogPaneContent",_this.parentWidget.domNode);
-					tcpc.forEach(function(node){
-					}).style("height", parntcn_hgt + 'px');
-
-					tcpc= dojo.query(".propertyNode",_this.parentWidget.domNode);
-					tcpc.forEach(function(node){
-					}).style("height", parntcn_hgt + 'px');
-
-					_this.propctrNode.resize();
-
-					//_this.parentWidget.set('style', 'height:' + parntcn_hgt + 'px');
-					//_this.parentWidget.resize();
-					break;
-				  case "u":
-
-				     dom.byId("pResultListTab").set('style', 'height:' + parntcn_hgt + 'px');
-
-
-					break;
-  				  case "i":
-				     _this.propctrNode.resize();
-					break;
-  				  case "o":
-
-					_this.parentWidget.resize();
-					break;
-  				  case "p":
-
-					  var rlt=dijit.byId("pResultListTab");
-					  var pnd=document.getElementById("property_widget");
-					  var tbht= Style.get(rlt.domNode,"height");
-					  var actbr=dom.byId("propSrchActnBar");
-					  var zd=document.getElementById("pZmDv");
-
-					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
-
-
-
-
-
-				     //_this.parentWidget.set('style', 'height:' + parntcn_hgt + 'px');
-
-				     //_this.parentWidget.domNode.style.setProperty("height", nv + 'px', "important");
-
-				     console.log("pw",pw,pw.offsetParent,pw.parentNode,pw.parentNode.offsetHeight);
-				     var nv = prompt("Please enter value", pw.parentNode.offsetHeight);
-
-
-				     pw.style.setProperty("height", pw.parentNode.offsetHeight + 'px', "important");
-
-
-					break;
-  				  case "l":
-					tcpc= dojo.query(".dijitDialogPaneContent",_this.parentWidget.domNode);
-					tcpc.forEach(function(node){
-					}).style("height", parntcn_hgt + 'px');
-					break;
-  				  case "k":
-					tcpc= dojo.query(".propertyNode",_this.parentWidget.domNode);
-					tcpc.forEach(function(node){
-					}).style("height", parntcn_hgt + 'px');
-					break;
-  				  case "j":
-
-                    //psr.style.height=parntcn_hgt + 'px';
-                     prt.style.setProperty("height", pw.offsetHeight + 'px', "important");
-					//dom.byId("pSearchResults").set('style', 'height:' + parntcn_hgt + 'px');
-					break;
-  				  case "h":
-
-
-                    //psr.style.height=parntcn_hgt + 'px';
-                     var rlt=dijit.byId("pResultListTab");
-                     var tbht=Style.get(rlt.domNode,"height");
-                     var nv = prompt("Please enter value", parntcn_hgt);
-
-                     psr.style.setProperty("height", nv + 'px', "important")
-					//dom.byId("pSearchResults").set('style', 'height:' + parntcn_hgt + 'px');
-					break;
-  				  case "g":
-
-
-                    var nv = prompt("Please enter value", parntcn_hgt);
-                   // prt.style.setProperty("height", nv + 'px', "important")
-
-					 tcpc= dojo.query(".dijitDialogPaneContent",subtbs.domNode);
-					 tcpc.forEach(function(node){
-					 }).style("height", nv + 'px');
-
-					break;
-  				  case "f":
-
-
-                    var nv = prompt("Please enter value", parntcn_ht);
-                    psr.style.setProperty("height", nv + 'px', "important");
-
-					//tcpc= dojo.query(".propertyDijit",_this.parentWidget.domNode);
-					//tcpc.forEach(function(node){
-					//}).style("height", parntcn_ht + 'px');
-
-					break;
-  				  case "d":
-
-                  //dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
-
-                     var rlt=dijit.byId("pResultListTab");
-                     var tbht=Style.get(rlt.domNode,"height");
-                     var nv = prompt("Please enter value", tbht);
-
-
-					 var tcpc= dojo.query(".dijitTabPaneWrapperNested",subtbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--got content pane: ",node);
-					 }).style("height", nv + 'px');
-
-					  tcpc= dojo.query(".dijitTabContainerTopChildWrapper",subtbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--1 got content pane: ",node);
-					 }).style("height", nv + 'px');
-/*
-
-					 tcpc= dojo.query(".dijitTabContainer", tbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--2 got content pane: ",node);
-					 }).style("height", nv + 'px');
-
-					 tcpc= dojo.query(".dijitTabPaneWrapper", tbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--3 got content pane: ",node);
-					 }).style("height", nv + 'px');
-*/
-
-					 /*
-					 dijitTabPaneWrapper dijitTabContainerTop-container dijitAlignCenter
-					 dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
-					 dijitTabContainerTopChildWrapper dijitVisible
-					 dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
-					 dijitTabContainer dijitTabContainerTop dijitContainer dijitLayoutContainer dijitTabContainerNoLayout dijitTabContainerNested resTabs
-                     dijitTabContainerTopChildWrapper dijitVisible
-                      */
-
-					break;
-  				  case "m":
-
-                  //dijitTabPaneWrapper dijitTabContainerTop-container dijitTabPaneWrapperNested
-
-                     var rlt=dijit.byId("pResultListTab");
-                     var tbht=Style.get(rlt.domNode,"height");
-                     var nv = prompt("Please enter value", tbht);
-
-
-					 tcpc= dojo.query(".dijitTabContainer", tbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--2 got content pane: ",node);
-					 }).style("height", nv + 'px');
-
-					 tcpc= dojo.query(".dijitTabPaneWrapper", tbs.domNode);
-					 tcpc.forEach(function(node){
-						 console.log("--3 got content pane: ",node);
-					 }).style("height", nv + 'px');
-
-
-					break;
-  				  case "n":
-
-
-                     //var tbht=dom.byId("pResultListTab").style.getProperty("height"); // get height from pResultListTab
-                     var rlt=dijit.byId("pResultListTab");
-                     console.log("rlt",rlt);
-                     var tbht=rlt.domNode.style.height;
-
-                     tbht=Style.get(rlt.domNode,"height");
-
-                     console.log("tabht",tbht);
-
-                     var nv = prompt("Please enter value", tbht);
-
-					 dom.byId("propertyNode").style.setProperty("height", nv+15  + 'px', "important");
-
-					break;
-  				  case "b":
-
-                     console.group();
-                     console.log("calculated heights and tops------------------");
-
-					  var rlt=dijit.byId("pResultListTab");
-					  var pnd=document.getElementById("property_widget");
-					  var tbht= Style.get(rlt.domNode,"height");
-					  var actbr=dom.byId("propSrchActnBar");
-					  var zd=document.getElementById("pZmDv");
-
-					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
-
-					  console.log("pResultListTab height,",tbht,dijit.byId("pResultListTab").domNode.offsetTop);
-					  console.log("property_widget osheight,",document.getElementById("property_widget").offsetHeight,",",document.getElementById("property_widget").offsetTop);
-					  console.log("propertyNode osheight,",document.getElementById("propertyNode").offsetHeight,",",document.getElementById("propertyNode").offsetTop);
-					  console.log("propSrchActnBar osheight ostop,",actbr.offsetHeight,actbr.offsetTop,",");
-					  console.log("pZmDv osheight ostop,",document.getElementById("pZmDv").offsetHeight,",",document.getElementById("pZmDv").offsetTop);
-					  console.log("parentWidget osheight ostop,",_this.parentWidget.domNode.offsetHeight,",",_this.parentWidget.domNode.offsetTop);
-                      console.log("pSearchResults osheight ostop,",psr.offsetHeight,",",psr.offsetTop);
-
-                      console.log("pSearchResults ideal height calc,",calc_ht);
-
-					 console.groupEnd()
-
-					break;
-
-  				  case "s":
-
-
-                     //var tbht=dom.byId("pResultListTab").style.getProperty("height"); // get height from pResultListTab
-					  var rlt=dijit.byId("pResultListTab");
-					  var pnd=document.getElementById("property_widget");
-					  var tbht= Style.get(rlt.domNode,"height");
-					  var actbr=dom.byId("propSrchActnBar");
-					  var zd=document.getElementById("pZmDv");
-
-					  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
-
-                     console.log("rlt",rlt);
-                     var tbht=rlt.domNode.style.height;
-
-                     tbht=Style.get(rlt.domNode,"height");
-
-                     console.log("tabht",calc_ht,tbht,Style.get(subtbs.domNode,"height"),Style.get( tbs.domNode,"height"),pnd.style.offsetHeight,psr.style.offsetHeight);
-
-                     var nv = prompt("Please enter value", calc_ht);
-
-                     //dom.byId("propertyNode").style.setProperty("height", nv+35  + 'px', "important");
-
-                     //pnd.style.setProperty("height", nv+35  + 'px', "important");
-					 tbs.domNode.style.setProperty("height", nv+3 + 'px', "important");
-					 subtbs.domNode.style.setProperty("height", nv+2  + 'px', "important");
-					 //dom.byId("pResultListTab").style.setProperty("height", nv-4  + 'px', "important");
-					 psr.style.setProperty("height", nv-27 + 'px', "important");
-					 //dom.byId("propertyNode").style.setProperty("height", nv+15  + 'px', "important");
-
-					break;
-  				  case "z":
-					 tbs.resize();
-
-					break;
-  				  case "x":
-
-					 subtbs.resize();
-					break;
  				 }
-
-
-
 
 			  });
 
@@ -716,6 +448,7 @@ define([
 		    var ab_owd=actbr.offsetWidth ;
             var  tbs=registry.byId("pSearchTabs");
 			var subtbs=registry.byId("pResultsSubTabs");
+			var pcmin=document.getElementById("pcMinDet");
 
 	        var rlt=dijit.byId("pResultListTab");
 		    var pnd=document.getElementById("property_widget");
@@ -763,7 +496,7 @@ define([
 			   //var psr_calch=actbr.offsetTop - psr.offsetTop ;
 			   var psr_calch=actbr.offsetTop - zd.offsetTop -psr.offsetTop;
 
-			   console.log("resizing pSearch Results",psr_calch,actbr.offsetTop,actbr.offsetHeight , psr.offsetTop, psr.offsetHeight , zd.offsetTop,psr);
+			   //console.log("resizing pSearch Results",psr_calch,actbr.offsetTop,actbr.offsetHeight , psr.offsetTop, psr.offsetHeight , zd.offsetTop,psr);
 			   //psr.style.height=psr_calch ;
 			   //psr.setAttribute('style', psr_calch + "px !important");
 			   psr.style.setProperty("height", psr_calch + 'px', "important");
@@ -789,6 +522,13 @@ define([
 			 var pw=document.getElementById("property_widget");
 			 if (pw)
 			     pw.style.setProperty("height", pw.parentNode.offsetHeight + 'px', "important");
+
+			 if (pcmin && (pcmin !=null)) {
+				 //console.log("resizing pcmin ",pcmin);
+				 var pmn_calch=(actbr.offsetTop  - pcmin.offsetTop) - actbr.offsetHeight  -document.getElementById("propertyNode").offsetTop - 37;
+                 //console.log("resizing pcmin 2",pmn_calch,subtbs.domNode.offsetHeight);
+			     pcmin.style.setProperty("height", pmn_calch + 'px', "important");
+		     }
 
 
 		}
@@ -896,8 +636,59 @@ define([
 		,setMapClickMode: function (mode) {
 			this.mapClickMode = mode;
 		}
-		,external_setMapSrchMode: function(mode,state) {
+		,external_SelPINs: function(pins) {
+			//console.log("external_SelPINs",pins);
+			if (!this.parentWidget.open) this.showThis();
+            //if (!this.mapsearch_auto) this.drawToolbar.deactivate();
+            this.doSearch_Pins(pins);
 
+
+		}
+		,external_SelSpatial: function(geometry) {
+			//console.log("external_SelSpatial",geometry);
+			if (!this.parentWidget.open) this.showThis();
+            if (!this.mapsearch_auto) this.drawToolbar.deactivate();
+            var graphic;
+
+            //this.createResultsTab();
+            //this.showWait();
+
+            this.mapSearchMode=geometry.type;
+            switch (geometry.type) {
+                case 'point':
+                    //graphic = new Graphic(geometry);
+                    //this.pointGraphics.add(graphic);
+                    this.qryPtGeom=geometry;
+                    break;
+                case 'polyline':
+                    //graphic = new Graphic(geometry);
+                    //graphic.setSymbol(this.polylineSymbol);
+                    this.polylineGraphics.add(graphic);
+                    this.qryPlineGeom=geometry;
+                    break;
+                case 'polygon':
+                    //graphic = new Graphic(geometry );
+                    //graphic.setSymbol(this.polygonsymbol);
+                    this.polygonGraphics.add(graphic);
+                    this.qryPolyGeom=geometry;
+                    break;
+                case 'extent':
+                    //graphic = new Graphic(geometry );
+                    //graphic.setSymbol(this.polygonsymbol);
+                    this.polygonGraphics.add(graphic);
+                    this.qryPolyGeom=geometry;
+                    break;
+                default:
+			  }
+
+                //if (this.mapsearch_auto)
+                var prev_actmenu=this.activeMenu;
+                this.activeMenu='map';
+                //this.mapSearch(geometry);
+                this.doSearch();
+                this.activeMenu=prev_actmenu;
+		}
+		,external_setMapSrchMode: function(mode,state) {
 			if (state) {
 				// uncomment to make the map menu automatically appear
 				if (!this.parentWidget.open) this.showThis();
@@ -953,7 +744,7 @@ define([
 			topic.publish('mapClickMode/setCurrent', 'draw');
 		}
 		, connectMapClick: function () {
-			 console.log("connectMapClick ",this.mapsearch_auto);
+			//console.log("connectMapClick ",this.mapsearch_auto);
 			this.map.setMapCursor('auto');
 			topic.publish('mapClickMode/setDefault');
 		}
@@ -1004,7 +795,7 @@ define([
 				this.qryTask.execute(this.qry, lang.hitch(this, 'mapqRes') );
 		}
 		,mapqRes: function(results) {
-			console.log(arguments.callee," ",results);
+			//console.log(arguments.callee," ",results);
 
 
 			// check if result count exceeded threshhold
@@ -1719,6 +1510,12 @@ define([
 
         }
 		,doSearch_Pins: function(pins){
+
+			//console.log("doSearch_Pins",pins);
+
+            this.createResultsTab();
+            this.showWait();
+
             var startrec = 1;
             var endrec = 50;
 
@@ -1751,7 +1548,7 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 		}
 		,doSearch: function(){
-		     //console.log("doSearch",this.activeMenu);
+		    //console.log("doSearch",this.activeMenu);
             //domConstruct.empty("pSearchResults");
 
             //domConstruct.empty("pcMinDet");
@@ -1782,6 +1579,8 @@ define([
 			} else if (registry.byId("af_tbPIN") && registry.byId("af_tbPIN").textbox.value && (registry.byId("af_tbPIN").textbox.value !="")){
 			          stype="pin";
 			          sval=registry.byId("af_tbPIN").textbox.value;
+			          sval=this.validatePIN(sval);
+
 			} else if (registry.byId("af_tbBus") && registry.byId("af_tbBus").textbox.value && (registry.byId("af_tbBus").textbox.value !="")){
 			          stype="bus";
 			          sval=registry.byId("af_tbBus").textbox.value;
@@ -1863,6 +1662,14 @@ define([
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultListTab"));
 
 		}
+       ,validatePIN: function (pstr){
+          var pr=pstr;
+          if (pstr.indexOf("-")==-1){
+             pr=pstr.substring(2,0) +  "-" +  pstr.substring(2,4) + "-" + pstr.substring(4,6) + "-" + pstr.substring(10,6) + "-" + pstr.substring(14,10) + "-" + pstr.substring(18,14);
+          }
+          console.log("validated pin" ,pr);
+          return pr;
+        }
 		,handleXHR_Err:function(error,usr_msg){
 			console.log("Error Occurred: " + error,"  ",usr_msg);
 			this.hideWait();
@@ -1945,7 +1752,7 @@ define([
 		}
 		,handlePRCevent: function(actntype,pcObj,prcID) {
 
-            console.log("handlePRCevent",actntype);
+            //console.log("handlePRCevent",actntype);
 			var prcob=registry.byId(prcID);
  			if (actntype == "pc_zoom") {
                /*topic.publish('InitZoomer/ZoomParcel', {
@@ -2172,13 +1979,13 @@ define([
             if (pobj.length==1) {
                //dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
 			   //dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
-			   console.log("adding single result");
+
 			   this.addPRC_Min(pobj[0].pin);
 			   return;
 		    }
 
 		     //console.log("showResults clearing search reslts");
-             console.log("showResults 2" );
+             //console.log("showResults 2" );
 			 domConstruct.empty("pSearchResults");
              //domConstruct.empty("pcMinDet");
              domConstruct.empty("pResCount");
@@ -2578,7 +2385,7 @@ define([
 
 		}
 		,createResTab: function(idv,titlev,idx,contentv){
-             console.log("createResTab ",idx);
+
              var tab = new dijit.layout.ContentPane({ id:idv,className: "ContentTab", title: titlev, content: contentv, selected: true });
              this.pResultsSubTabs.addChild(tab, idx);
              tab.startup();
@@ -2586,7 +2393,7 @@ define([
 
 		}
 		,selMinDet:function(){
-			console.log("selMinDet");
+
 			dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
 
 		}
@@ -2622,7 +2429,7 @@ define([
 
   		}
 		,zoomPIN:function(pin,doDBSearch) {
-			    console.log("zoom to pin");
+			    //console.log("zoom to pin");
 				if (typeof doDBSearch == "undefined") {
 					doDBSearch = true;
 				}
@@ -2642,7 +2449,7 @@ define([
 				}
 		}
 		,zoomAllListSaved:function() {
-			    console.log("zoomAllListSaved");
+			    //console.log("zoomAllListSaved");
 
 			    var whereclause=this.pin_field + "='" + this.savedlist.join("' OR " + this.pin_field + "='") + "'";
 				var q_url=this.property_mapsrvc + "/" + this.parcel_lyrid;

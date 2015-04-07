@@ -63,6 +63,7 @@ define([
 		collapseButtons: {},
 		timerStart:null,
 		isMapInit:false,
+		mapInitCnt:0,
 
 		startup: function (config) {
 			this.config = config;
@@ -113,7 +114,8 @@ define([
 			   }
 			} catch (ex){}
 
-          // console.log("finished loading loadtime.... ",sec," seconds");
+          //console.log("finished loading loadtime.... ",sec," seconds");
+
 		}
 		,showSpatialSearchMenu:function(){
 			console.log("showSpatialSearchMenu");
@@ -502,11 +504,24 @@ define([
 		       }
 			});
 			this.map.on('update-end', function (layer) {
-				if (!_this.isMapInit) {
+
+	 			//var timerEnd =  (new Date()).getTime();
+				//var sec = (timerEnd-_this.timerStart)/1000;
+
+                if (!_this.isMapInit) _this.mapInitCnt++;
+
+
+                //console.log("update-end ",sec,_this.mapInitCnt,layer);
+
+				if (!_this.isMapInit && _this.mapInitCnt>1) {
 					_this.isMapInit=true;
-				   //console.log("update-end");
- 				   //var timerEnd =  (new Date()).getTime();
-				   //var sec = (timerEnd-_this.timerStart)/1000;
+
+                    // TODO: maybe check if browser has been resized first
+					setTimeout(function () {
+					    dijit.byId("borderContainerOuter").resize();
+					    dijit.byId("mapCenter").resize();
+						_this.map.resize();
+					}, 500);
 
                   // console.log("map load time: ",sec," seconds" );
                    /*
