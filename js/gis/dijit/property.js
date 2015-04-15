@@ -640,7 +640,13 @@ define([
 			//console.log("external_SelPINs",pins);
 			if (!this.parentWidget.open) this.showThis();
             //if (!this.mapsearch_auto) this.drawToolbar.deactivate();
+
+            this.mapsearchpins=pins;
+            var prev_actmenu=this.activeMenu;
+            this.activeMenu='map';
             this.doSearch_Pins(pins);
+            this.activeMenu=prev_actmenu;
+            this.mapsearchpins=pins;
 
 
 		}
@@ -1256,12 +1262,11 @@ define([
 					   onClick: function(){
 						 console.log("clicked printMailLblsMenu button" );
 						 _this.printMailLblsMenu();
+						 //lang.hitch(this, 'printMailLblsMenu')
 					   }
 					 }).placeAt(dom.byId("pZmDv"));
 
-
 					  dojo.place('<div id="pSearchResults" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;overflow-y:scroll"></div>', rlt,"last");
-
 
 					/*this.pSearchResults=new ContentPane({
 						id:"pSearchResults"
@@ -1790,9 +1795,10 @@ define([
 
 			 try {
 				if (dijit.byId("pSavedTab")==null || dijit.byId("pSavedTab")===undefined) {
+
 				   var title="Saved";
 				   var idx=2;
-				   var content='<div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;"><input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:b" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input><input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input></div><br><div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br><div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div><br></div>';
+				   var content='<div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;"><input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input><input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input></div><br><div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br><div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div><br></div>';
 
 				   this.createTab("pSavedTab",title,idx,content);
 				   //this.pResultsSubTabs.forward() ;
@@ -1828,6 +1834,7 @@ define([
 						   res_type:"saved"
 			    });
 			 tprc.on("click", function (e) {
+
 			     var actntype=e.target.id;
 			     if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
 												   || (actntype == "pc_print")) {
@@ -2078,7 +2085,7 @@ define([
 
 		    if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
-            //console.log("printMailLbls",e,isSavedTab);
+            console.log("printMailLbls",this.mapsearchpins,isSavedTab);
             var _this=this;
 			var form = new Form();
 		    //var dia  = new Dialog({
@@ -2142,7 +2149,7 @@ define([
 					  label: "Export CSV for Results",
 					  style: "height:17px;width: 75%;margin:0px auto 10px auto 0px;background-color: rgb(200,215,245);font-family:Leelawadee;font-size:xx-small;",
 					  onClick: function(){
-						 console.log("Exporting to CSV" );
+						 console.log("Exporting to CSV",_this.mapsearchpins );
 						 _this.export2CSV(isSavedTab);
 						 //lang.hitch(_this, 'export2CSV') ;
 					  }
@@ -2177,6 +2184,8 @@ define([
 	 }
    ,export2CSV: function(isSavedTab){
 
+	   console.log("export2CSV",isSavedTab);
+
             if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
 
@@ -2184,7 +2193,7 @@ define([
             if (isSavedTab) iurl='./webgis.asmx/ExportMailingLabelCSVPINs?pinlist=' + this.savedlist.join(",");
 
 
-
+               console.log("export2CSV 2", iurl,this.mapsearchpins);
 
             Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
             dom.byId("expstatus").innerHTML="preparing data ... please standby ";
@@ -2194,6 +2203,7 @@ define([
 			// TODO: spatially returned results are breaking the mailing labels and csv for all results because there is no session saved on the server
 			//if (!this.mapsearch_auto)
 			if (this.activeMenu=="map" && !isSavedTab) {
+				console.log("getting csv for pins");
                  iurl='./webgis.asmx/ExportMailingLabelCSVPINs';
 
                request.post(iurl, { handleAs: "text"
@@ -2202,34 +2212,37 @@ define([
 				 }
               }).then(
                 function (text){
+					 console.log("got results",text);
 					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 					 //dom.byId("expstatus").innerHTML="success";
 
-					 document.getElementById("expstatus").style.display="none";
-					 dom.byId("expstatus").innerHTML="";
-
-
+					document.getElementById("expstatus").style.display="none";
+					document.getElementById("expstatus").innerHTML='';
+					document.getElementById("expstatus").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
+					 //dom.byId("expstatus").innerHTML="";
 					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
-                     dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
+                     //dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
  	            } ,
  	            function (error){
+					console.log("Error Occurred: " + error);
 					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
 					dom.byId("expstatus").innerHTML="failed to get data";
 					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
- 	                console.log("Error Occurred: " + error);
+
  	            }
  	          );
 
 			} else {
+				console.log("getting export data",iurl);
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
 					 //document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 					 //dom.byId("expstatus").innerHTML="success";
-
+                     console.log("results...",text);
 					 document.getElementById("expstatus").style.display="none";
 					 dom.byId("expstatus").innerHTML="";
-					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					 //Style.set(dom.byId("btnPrLbls_label")bj , 'color', "black");
                      dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
  	            } ,
  	            function (error){

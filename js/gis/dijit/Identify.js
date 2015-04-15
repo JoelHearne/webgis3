@@ -354,7 +354,7 @@ define([
 
             this.map.infoWindow.setFeatures(fSet);
 
-            if (isPcl) topic.publish('property/searchPINs', {pins:pins});
+            //if (isPcl) topic.publish('property/searchPINs', {pins:pins});
 
         },
         identifyError: function (err) {

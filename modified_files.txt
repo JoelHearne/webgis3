@@ -1,8 +1,7 @@
 js\config\basemaps.js
 js\config\viewer.js
 js\gis\dijit\Identify.js
+js\gis\dijit\prcmin\templates\prcmin.html
 js\gis\dijit\property.js
-js\gis\dijit\property\css\property.css
-js\gis\dijit\property\templates\PropertyDialog.html
 js\viewer\Controller.js
 modified_files.txt
