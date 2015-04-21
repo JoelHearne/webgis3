@@ -10,6 +10,11 @@ select {
 .propertyDijit * {
      overflow: hidden !important;
 }
+.propertyDijit   {
+     min-width:350px;
+}
+
+
  
 .dijitDialogPaneContent  * {
    overflow: hidden !important;
@@ -18,11 +23,13 @@ select {
 
 #propertyNode  {
   overflow: hidden !important;
+   min-width:350px; 
 
 }
-*/
+ 
 .dijitDialogPaneContent  {
    overflow: hidden !important;
+   min-width:350px;
 
 }
  
@@ -69,6 +76,8 @@ select {
 }
 #pane1 {
    overflow: auto !important;
+   min-width:350px; 
+   
 }
 #pSavedTab {
   overflow: auto !important;
@@ -93,6 +102,7 @@ select {
 
 .propertyDijit  {
    height:550px;
+   min-width:350px;
 }
 
 
@@ -111,7 +121,25 @@ select {
     //overflow: hidden !important;
 }
 
+ 
+.propertyDijit .floatingWidget .dijitLayoutContainer .dijitDialog {
+   min-width:350px;
+
+}
+/*
+ .floatingWidget dijitLayoutContainer dijitDialog {
+   min-width:350px;
+}
+*/
+
+.propertyDijit .dijitDialogPaneContent .dijitAlignCenter {
+   min-width:350px;
+}
+.propertyDijit .floatingWidget .dijitLayoutContainer .dijitDialog .dijitDialogFocused .dijitFocused {
+   min-width:350px;
+}
 .propertyDijit .propertyContainer {
+      min-width:350px;
      //overflow: hidden !important;
 	padding: 0px;
 	font-size: 11px;
@@ -123,6 +151,7 @@ select {
      //overflow: hidden !important;
 	padding: 0px;
 	font-size: 11px;
+	min-width:350px;
 	//font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
 
 }
@@ -131,10 +160,12 @@ select {
 }
 .floatingWidget .propertyDijit .propertyContainer {
 	padding: 15px;
+	min-width:350px;
 }
 .propertyDijit .propertyNode {
     /*width: 98%;
     height: 550px;*/
+    min-width:350px;
     
 }
 
@@ -145,9 +176,11 @@ select {
  */
 .floatingWidget .propertyDijit .propertyNode {
    /* width: 350px; */
+   min-width:350px;
      
 }
 .propertyDijit .propertyTabContainer {
+min-width:350px;
 	 width: 100%;
 	/*height: 100%; */
 	height: 300px;
@@ -161,6 +194,7 @@ select {
    //position: absolute !important;
    //top:40px !important;
    //left:80% !important;
+   min-width:350px;
 
 }
 
@@ -168,6 +202,10 @@ select {
     font-size: 11px  !important;
     font-weight: bold  !important;
     margin: 0px;
+}
+
+.propertyDijit .dijitDialogTitleBar .dijitAlignTop {
+   min-width:350px;
 }
  
 .propertyDijit .progressIcon {
@@ -308,7 +346,8 @@ select {
  padding: 0px !important;
  margin:0px !important;
  bottom:0px;
-
+/* width:350px;*/
+   min-width:350px;
 }
 #property_parent_underlay {
      
@@ -443,8 +482,15 @@ select {
  
 .propertyDijit .dbootstrap .dijitContentPane {
     padding: 2px;
+    min-width:350px;
 }
- 
+
+.propertyDijit .dijitDialogPaneContent {
+   min-width:350px;
+}
+  .dijitDialogPaneContent {
+    min-width:350px;
+}
 .progressDialog h2 {
     color: #000000;
     cursor: pointer;

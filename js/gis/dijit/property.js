@@ -138,11 +138,13 @@ define([
 	    pResultsSubTabs:null,
 	    btnZoomAll:null,
 	    btnPrLbls:null,
+	    lastWidth:350,
 	    //pSearchResults:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
 			//this.ptmrStrt= performance.now();
+			console.log("property postCreate");
 
             var _this=this;
 			this.parentWidget.draggable = this.draggable;
@@ -162,9 +164,11 @@ define([
 			}
 
 			window.addEventListener('resize', function(event){
-                //console.log("window resized ",event);z
-               // _this.resizeContents();
-               _this.fixWidth();
+                console.log("window resized ",event);
+
+
+                 //_this.resizeContents();
+                 _this.fixWidth();
 			});
 
 
@@ -368,6 +372,7 @@ define([
 					 //_this.parentWidget.resize();
 					//lang.hitch(_this, 'resizeContents')
 					 _this.resizeContents();
+					 //_this.fixWidth();
 					//propertyDijitC propertyNode pSearchTabs
 			});
 
@@ -410,31 +415,48 @@ define([
 
 			  });
 
+			 // this.parentWidget.domNode.setProperty("min-width", '350px', "important");
+
 			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
         ,fixWidth:function(){
 
-			var actbr=dom.byId("propSrchActnBar");
-			var ab_owd=actbr.offsetWidth ;
+			//console.log("fixWidth--------------",arguments.callee.caller.toString());
+			console.log("fixWidth--------------" );
 
-			if (ab_owd <=280) {
+			var actbr=dom.byId("propSrchActnBar");
+			var actbrr=document.getElementById("propSrchActnBar");
+			var ab_owd=actbr.offsetWidth ;
+			var  tbs=registry.byId("pSearchTabs");
+
+
+			console.log("     ","ab_owd: ",ab_owd,actbrr.offsetWidth,actbr);
+			console.log("     ","parentWidget.domNode: ",this.parentWidget.domNode.offsetWidth );
+			console.log("       this.lastWidth:" ,this.lastWidth);
+			console.log("       pSearchTabs:" ,tbs,tbs.domNode.offsetWidth);
+			console.log("       pSearchTabs dom:" ,document.getElementById("pSearchTabs").offsetWidth);
+
+            this.lastWidth=350;
+
+			//if (ab_owd <=280 && this.lastWidth >= 280) {
+			if (ab_owd <=250  ) {
 				var tcpc= dojo.query(".dijitDialogTitleBar",this.parentWidget.domNode);
 
 				tcpc.forEach(function(node){
-				}).style("width", "350px");
+				}).style("width", this.lastWidth + "px");
 
 				tcpc= dojo.query(".dijitDialogPaneContent",this.parentWidget.domNode);
 				tcpc.forEach(function(node){
-				}).style("width", "350px");
+				}).style("width", this.lastWidth + "px");
 
 				tcpc= dojo.query(".propertyNode",this.parentWidget.domNode);
 				tcpc.forEach(function(node){
-				}).style("width", "350px");
+				}).style("width", this.lastWidth + "px");
 
 				this.propctrNode.resize();
 
-				this.parentWidget.set('style', 'width:350px');
+				this.parentWidget.set('style', 'width:' + this.lastWidth + 'px');
 				this.parentWidget.resize();
 		  }
 
@@ -450,12 +472,18 @@ define([
 			var subtbs=registry.byId("pResultsSubTabs");
 			var pcmin=document.getElementById("pcMinDet");
 
+
+
 	        var rlt=dijit.byId("pResultListTab");
 		    var pnd=document.getElementById("property_widget");
 
 
 			 var parntcn_hgt=this.parentWidget.domNode.offsetHeight-ab_ohgt ;
 
+			 console.log("resizeContents",this.parentWidget,this.parentWidget.domNode ,this);
+             console.log("resizeContents titleBar",this.parentWidget.titleBar );
+
+            if (this.parentWidget.titleBar.offsetWidth < 350) this.parentWidget.titleBar.style.setProperty("width", '346px');
 			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
 			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
 			Style.set(this.pSearchTabs  , 'height', (parntcn_hgt) + "px");
@@ -530,6 +558,16 @@ define([
 			     pcmin.style.setProperty("height", pmn_calch + 'px', "important");
 		     }
 
+
+             if (actbr.offsetWidth < 350) {
+				 //console.log("adjusting action bar width",pw.parentNode.offsetWidth,actbr.offsetWidth,this.parentWidget.domNode.offsetWidth);
+		          //actbr.style.setProperty("width", pw.parentNode.offsetWidth + 'px', "important");
+			  }
+			  //console.log("titleBar.domNode ",this.titleBar.domNode,this.titleBar.domNode.offsetWidth);
+
+
+
+		     this.lastWidth=actbr.offsetWidth;
 
 		}
         ,showThis:function(){
@@ -940,6 +978,8 @@ define([
 			this.disconnectMapClick();
 		}
         ,addPRC_Min: function(pinv){
+
+			this.hideWait();
 
 			// check if detail tab has been created and create it if not
 			try {
@@ -1395,7 +1435,8 @@ define([
 				   document.getElementById("pPageSelDiv3").style.display="none";
 
 				   var srd=dom.byId("pSearchResults");
-				   if (srd) {
+				   var wi=dom.byId("waitimg");
+				   if (srd && !wi) {
 					   var img = dojo.doc.createElement('img');
 						dojo.attr(img, {
 							id:"waitimg",

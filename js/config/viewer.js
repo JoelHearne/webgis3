@@ -188,8 +188,8 @@ define([
 		},*/
         {
 			type: 'dynamic',
-			 url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
-			//url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis/MapServer',
+			 //url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
+			 url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis/MapServer',
 			title: 'Okaloosa WebGIS',
 			slider: true,
 			noLegend: false,
@@ -208,7 +208,22 @@ define([
 			}
 			//,identifyLayerInfos: { layerIds: [11] }
 		}
-
+	/*	,{
+			type: 'feature',
+			url: 'http://204.49.20.75:6080/arcgis/rest/services/fs_test/FeatureServer/4',
+			title: 'Test FS',
+			options: {
+			id: 'test_edit',
+			opacity: 1.0,
+			visible: true,
+			outFields: ['*'],
+			mode: 0
+			},
+			editorLayerInfos: {
+			   disableGeometryUpdate: false
+			}
+		 }
+*/
 
 
 
@@ -677,6 +692,34 @@ define([
 					defaultLengthUnit: units.MILES
 				}
 			}
+		/*	  ,editor: {
+				include: true,
+				id: 'editor',
+				type: 'floating',
+				path: 'gis/dijit/Editor',
+				title: 'Editor',
+				open: false,
+				position: 8,
+				options: {
+					map: true,
+					mapClickMode: true,
+					editorLayerInfos: true,
+					settings: {
+						toolbarVisible: true,
+						showAttributesOnClick: true,
+						enableUndoRedo: true,
+						createOptions: {
+							polygonDrawTools: ['freehandpolygon', 'autocomplete']
+						},
+						toolbarOptions: {
+							reshapeVisible: true,
+							cutVisible: true,
+							mergeVisible: true
+						}
+					}
+				}
+			}
+*/
 
 
 /*

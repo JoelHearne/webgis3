@@ -116,7 +116,8 @@ define([
 			this.pcWaterServ.innerHTML=dobj.WATER;
 			this.pcSub.innerHTML=dobj.SUBDIVISION;
 			//this.pcBCCDist.innerHTML=dobj.COMMISSION;
-			this.pcBCCDist.innerHTML='<a href="http://www.co.okaloosa.fl.us/bcc_welcome.html" target="_blank">' + dobj.commissioner + " (" + dobj.COMMISSION + ')</a>';
+
+			this.pcBCCDist.innerHTML='<a href="http://www.okaloosafl.com/bcc/home" target="_blank">' + dobj.commissioner + " (" + dobj.COMMISSION + ')</a>';
 
 			//this.pcFireDist.innerHTML=dobj.FIRE;
 			this.pcFireDist.innerHTML='<a href="http://www.firedepartments.net/county/FL/OkaloosaCounty.html" target="_blank">' + dobj.FIRE + '</a>';

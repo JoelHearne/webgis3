@@ -233,7 +233,7 @@ define([
 			 if (e=="measure") topic.publish('measure/showMe', "sel");
 			 if (e=="identify") topic.publish('identify/showMe', "sel");
              if (e=="goto") topic.publish('goto/showMe', "sel");
-
+             if (e=="editor") topic.publish('editor/showMe', "sel");
 		}
         ,disconnectMapClick: function() {
             // cmv 1.3.0

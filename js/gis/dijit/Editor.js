@@ -28,8 +28,27 @@ define([
                     this.onLayoutChange(this.parentWidget.open);
                 })));
             }
-        },
-        toggleEditing: function () {
+
+
+
+
+
+        }
+        ,startup: function() {
+			this.inherited(arguments);
+
+			var _this=this;
+			topic.subscribe('editor/showMe', lang.hitch(this, function (arg) {
+				console.log("editor - got showme message");
+				_this.showThis();
+			}));
+
+	    }
+        ,showThis: function(){
+           this.parentWidget.show();
+
+		}
+        ,toggleEditing: function () {
             if (!this.isEdit) {
                 var ops = lang.clone(this.settings);
                 ops.map = this.map;
