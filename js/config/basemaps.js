@@ -53,8 +53,8 @@ define([
                   //,new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
 
 				   new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
-				   // , new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11,12] } )
-                  // ,new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
+				   , new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11,12] } )
+                   ,new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/OrthoMosaic_2013/MapServer",  displayLevels: [8, 9, 10, 11, 12] ,copyright:"Okaloosa County WebGIS" })
 				]
 				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
 			  })

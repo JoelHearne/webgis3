@@ -6,17 +6,27 @@
     width: 13px;
     height: 13px;
     z - index: 20;
-    background - image: url('icons/resize.png');
+    
+     background-image: url('../icons/resizeRtl.png') !important;
     line - height: 0px;
-}.dijitRtl.dojoxResizeHandle {
+    cursor: ne-resize;
+}
+ .dojoxResizeNW {
+  
+     cursor: ne-resize;
+}
+
+.dijitRtl .dojoxResizeHandle {
     float: right;
     left: 0px;
     right: auto;
-    background - image: url('icons/resizeRtl.png');
-}.dojoxResizeNW {
-    cursor: nw - resize;
-}.dijitRtl.dojoxResizeNW {
-    cursor: ne - resize;
+    background-image: url('../icons/resizeRtl.png');
+    border: 3px solid red; 
+}
+ 
+
+.dijitRtl .dojoxResizeNW {
+    cursor: ne-resize ;
 }.dojoxResizeNE {
     cursor: ne - resize;
 }.dijitRtl.dojoxResizeNE {
@@ -30,3 +40,8 @@
     top: 0;
     left: 0;
     border: 1px dashed #666; z-index:999;}
+.dojoxResizeHandleCloneC {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1px dashed #666; z-index:999;}    

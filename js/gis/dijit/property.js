@@ -261,7 +261,7 @@ define([
 			this.inherited(arguments);
 			var _this=this;
 
-			console.log("property startup");
+			//console.log("property startup");
 
 			//console.clear();
 
@@ -361,24 +361,28 @@ define([
 
 			//console.log("property ",this.parentWidget);
 
-			console.log("property startup 2");
-			console.log("property startup 2.5",ResizeHandle,InfoTemplate);
-
-
+			//console.log("property startup 2");
+			//console.log("property startup 2.5",ResizeHandle,InfoTemplate);
 
 		    var rsz=new  ResizeHandle ({
 			   targetId: this.parentWidget,
+			   class:"dijitRtl dojoxResizeHandle",
 			   minWidth:350
 			   ,minHeight:250
+			   ,dir: 'rtl'
+			   ,animateMethod: 'combine'
+			   ,style:"bottom: 2px; left: 2px; position: absolute;"
+			   // ,style:"bottom: 2px; left: 2px; position: absolute;background-image:'../icons/resizeRtl.png'"
+
 			   //,resizeAxis:"y"
 			}).placeAt("propSrchActnBar");
 			//closeBtn propSrchActnBar
 			rsz.startup();
 
 
-			console.log("property startup 3");
+			//console.log("property startup 3");
 
-			console.log("resizeHandle",rsz);
+			//console.log("resizeHandle",rsz);
 
 			dojo.subscribe("/dojo/resize/stop", function(inst){
 			   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
@@ -392,7 +396,7 @@ define([
 
 			//dijit.byId("propertyNode").set('style', 'width:350px;');
 
-			console.log("property startup 4");
+			//console.log("property startup 4");
 
 
 
@@ -615,7 +619,7 @@ define([
 			 //this.parentWidget.resize();
 			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
-			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -5;
+			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -55;
 		    this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			this.changeSearchForm(null,"property");

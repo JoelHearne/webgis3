@@ -24,25 +24,52 @@ define(
 		 kernel, lang, connect, array, event, fx, window, dfx, dom, dom_class, dom_geometry, domStyle, manager, _Widget, _TemplatedMixin, declare
 	  ,rztemplate
 	 ) {
+
+
+    //anonymous function to load CSS files required for this module
+    (function() {
+        var css = [require.toUrl("gis/dijit/ResizeHandle/css/ResizeHandle.css")];
+        var head = document.getElementsByTagName("head").item(0),
+            link;
+        for (var i = 0, il = css.length; i < il; i++) {
+            link = document.createElement("link");
+            link.type = "text/css";
+            link.rel = "stylesheet";
+            link.href = css[i].toString();
+            head.appendChild(link);
+        }
+    }());
+
+
+
    // kernel.experimental("dojox.layout.ResizeHandle");
     var y = declare("dojox.layout._ResizeHelper", _Widget, {
         show: function () {
             domStyle.set(this.domNode, "display", "")
+
         },
         hide: function () {
             domStyle.set(this.domNode,
                 "display", "none")
         },
         resize: function (a) {
+			//console.log("do the resize");
+			//console.log("resize",this.domNode);
             dom_geometry.setMarginBox(this.domNode, a)
         }
     });
-    return declare("dojox.layout.ResizeHandle", [_Widget, _TemplatedMixin], {
+
+
+
+    //return declare("dojox.layout.ResizeHandle", [_Widget, _TemplatedMixin], {
+    return declare("gis.dijit.ResizeHandle", [_Widget, _TemplatedMixin], {
         targetId: "",
         targetContainer: null,
         resizeAxis: "xy",
         activeResize: !1,
-        activeResizeClass: "dojoxResizeHandleClone",
+
+        activeResizeClass: "dojoxResizeHandleCloneC",
+        baseClass: 'dojoxResizeHandle',
         animateSizing: !0,
         animateMethod: "chain",
         animateDuration: 225,
@@ -62,11 +89,17 @@ define(
         postCreate: function () {
 			 this.inherited(arguments);
 
-            console.log("ResizeHandle");
+             console.log("ResizeHandle",this,this.activeResizeClass,this.activeResize);
+
             this.connect(this.resizeHandle, "onmousedown", "_beginSizing");
             this.activeResize ? this.animateSizing = !1 : (this._resizeHelper = manager.byId("dojoxGlobalResizeHelper"), this._resizeHelper || (this._resizeHelper = (new y({
                 id: "dojoxGlobalResizeHelper"
             })).placeAt(window.body()), dom_class.add(this._resizeHelper.domNode, this.activeResizeClass)));
+
+
+
+            console.log("this._resizeHelper",this._resizeHelper);
+
             this.minSize || (this.minSize = {
                 w: this.minWidth,
                 h: this.minHeight
@@ -75,12 +108,47 @@ define(
                 w: this.maxWidth,
                 h: this.maxHeight
             });
+
+
+
+
+            console.log("this.resizeHandle",this.resizeHandle);
+
+
+
+
             this._resizeX = this._resizeY = !1;
             var a = lang.partial(dom_class.add, this.resizeHandle);
+            var ar = lang.partial(dom_class.replace, this.resizeHandle);
+            var ad = lang.partial(dom_class.remove, this.resizeHandle);
+
+           if (this.dir=="rtl") {
+                 //ar("dojoxResizeHandle","dojoxResizeHandleRTL");
+                 // ad("dojoxResizeHandle");
+				 // ad("dijitRtl");
+                  //a("cojoxResizeHandle");
+				 // a("cijitRtl");
+
+				 //a("dojoxResizeHandleRTL");
+				// a("dojoxResizeHandle");
+
+			}
+
             switch (this.resizeAxis.toLowerCase()) {
                 case "xy":
                     this._resizeX = this._resizeY = !0;
-                    a("dojoxResizeNW");
+                    if (this.dir=="rtl") {
+						//console.log(" ---this.resizeHandle a",a);
+
+						//a("dojoxResizeHandleRTL");
+						//a("dijitRtl");
+						 //a("dojoxResizeNWRTL");
+						  //a("dijitRtl");
+						  a("dojoxResizeNW");
+
+				    } else {
+                       a("dojoxResizeNW");
+				    }
                     break;
                 case "x":
                     this._resizeX = !0;
@@ -89,6 +157,18 @@ define(
                 case "y":
                     this._resizeY = !0, a("dojoxResizeN")
             }
+
+            if (this.dir=="rtl") {
+				  //console.log(" ---1 ",this.resizeHandle  );
+				 //domStyle.set(this.resizeHandle.domNode, "background-image", "icons/resizeRtl.png");
+				 //dom_class.toggle(this.resizeHandle.domNode, "dojoxResizeHandleRTL"); //dijitRtl
+				 //dom_class.replace(this.resizeHandle  , "dojoxResizeHandle","dojoxResizeHandleRTL"); //dijitRtl
+				 //console.log(" ---2" );
+				 //dom_class.replace(this.resizeHandle  , "dojoxResizeNW","dojoxResizeNWRTL");
+				 //console.log(" ---3" );
+
+			}
+
         },
         _beginSizing: function (a) {
             if (!this._isSizing && (connect.publish(this.startTopic, [this]), this.targetDomNode = (this.targetWidget = manager.byId(this.targetId)) ? this.targetWidget.domNode : dom.byId(this.targetId), this.targetContainer && (this.targetDomNode = this.targetContainer), this.targetDomNode)) {
@@ -119,13 +199,18 @@ define(
                     r = dom_geometry.getMarginExtents(this.targetDomNode, b);
                 this.startSize = {
                     w: domStyle.get(this.targetDomNode, "width", b),
-                    h: domStyle.get(this.targetDomNode, "height",
-                    b),
+                    h: domStyle.get(this.targetDomNode, "height", b),
+                    l: domStyle.get(this.targetDomNode, 'left', b),
+                    r: domStyle.get(this.targetDomNode, 'right', b),
                     pbw: c.w,
                     pbh: c.h,
                     mw: r.w,
                     mh: r.h
                 };
+
+                console.log("_beginSizing",this.isLeftToRight());
+
+
                 !this.isLeftToRight() && "absolute" == domStyle.get(this.targetDomNode, "position") && (b = dom_geometry.position(this.targetDomNode, !0), this.startPosition = {
                     l: b.x,
                     t: b.y
@@ -185,7 +270,9 @@ define(
         _changeSizing: function (a) {
             var b = this.targetWidget && lang.isFunction(this.targetWidget.resize),
                 c = this._getNewCoords(a, b && "margin");
-            if (!1 !== c && (b ? this.targetWidget.resize(c) : this.animateSizing ? v[this.animateMethod]([fx.animateProperty({
+            if (!1 !== c && (b ? this.targetWidget.resize(c) : this.animateSizing ? v[this.animateMethod]([
+
+            fx.animateProperty({
                 node: this.targetDomNode,
                 properties: {
                     width: {
