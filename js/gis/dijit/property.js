@@ -75,7 +75,8 @@ define([
     "esri/tasks/BufferParameters",
     "esri/dijit/Legend",
 	'esri/InfoTemplate',
-	 "dojox/layout/ResizeHandle",
+	 // "dojox/layout/ResizeHandle",
+	 "./ResizeHandle",
 	'./LayerControl',
 	//'dojo/i18n!./property/nls/resource',
 	'xstyle/css!./property/css/property.css'
@@ -144,7 +145,7 @@ define([
 		postCreate: function () {
 			this.inherited(arguments);
 			//this.ptmrStrt= performance.now();
-			console.log("property postCreate");
+			//console.log("property postCreate");
 
             var _this=this;
 			this.parentWidget.draggable = this.draggable;
@@ -163,9 +164,9 @@ define([
 				//on(help, 'click',  this.showThis );
 			}
 
-			window.addEventListener('resize', function(event){
-                console.log("window resized ",event);
 
+			window.addEventListener('resize', function(event){
+                //console.log("window resized ",event);
 
                  //_this.resizeContents();
                  _this.fixWidth();
@@ -254,10 +255,13 @@ define([
 
 
 
+
 		}
 		,startup: function() {
 			this.inherited(arguments);
 			var _this=this;
+
+			console.log("property startup");
 
 			//console.clear();
 
@@ -357,14 +361,24 @@ define([
 
 			//console.log("property ",this.parentWidget);
 
+			console.log("property startup 2");
+			console.log("property startup 2.5",ResizeHandle,InfoTemplate);
+
+
+
 		    var rsz=new  ResizeHandle ({
 			   targetId: this.parentWidget,
-			   minWidth:305
+			   minWidth:350
 			   ,minHeight:250
 			   //,resizeAxis:"y"
 			}).placeAt("propSrchActnBar");
 			//closeBtn propSrchActnBar
 			rsz.startup();
+
+
+			console.log("property startup 3");
+
+			console.log("resizeHandle",rsz);
 
 			dojo.subscribe("/dojo/resize/stop", function(inst){
 			   // inst.targetDomNode is the node resized. sometimes there will be a inst.targetWidget. inst is the ResizeHandle instance.
@@ -377,6 +391,8 @@ define([
 			});
 
 			//dijit.byId("propertyNode").set('style', 'width:350px;');
+
+			console.log("property startup 4");
 
 
 
@@ -425,17 +441,20 @@ define([
 			//console.log("fixWidth--------------",arguments.callee.caller.toString());
 			console.log("fixWidth--------------" );
 
+
 			var actbr=dom.byId("propSrchActnBar");
 			var actbrr=document.getElementById("propSrchActnBar");
 			var ab_owd=actbr.offsetWidth ;
-			var  tbs=registry.byId("pSearchTabs");
 
+			/*
+			var  tbs=registry.byId("pSearchTabs");
 
 			console.log("     ","ab_owd: ",ab_owd,actbrr.offsetWidth,actbr);
 			console.log("     ","parentWidget.domNode: ",this.parentWidget.domNode.offsetWidth );
 			console.log("       this.lastWidth:" ,this.lastWidth);
 			console.log("       pSearchTabs:" ,tbs,tbs.domNode.offsetWidth);
 			console.log("       pSearchTabs dom:" ,document.getElementById("pSearchTabs").offsetWidth);
+			*/
 
             this.lastWidth=350;
 
@@ -460,6 +479,22 @@ define([
 				this.parentWidget.resize();
 		  }
 
+
+	      var psr=document.getElementById("pSearchResults");
+	      var actbr=dom.byId("propSrchActnBar");
+
+            if ((psr && psr!=null) ) {
+		      psr.style.setProperty("width", actbr.offsetWidth-3 + 'px', "important");
+	        }
+
+
+			var  tbs=registry.byId("pSearchTabs");
+			var subtbs=registry.byId("pResultsSubTabs");
+			this.propctrNode.resize();
+			if (subtbs) subtbs.resize();
+			if (tbs) tbs.resize();
+
+
 		}
         ,resizeContents:function(){
 
@@ -480,10 +515,10 @@ define([
 
 			 var parntcn_hgt=this.parentWidget.domNode.offsetHeight-ab_ohgt ;
 
-			 console.log("resizeContents",this.parentWidget,this.parentWidget.domNode ,this);
-             console.log("resizeContents titleBar",this.parentWidget.titleBar );
+			// console.log("resizeContents",this.parentWidget,this.parentWidget.domNode ,this);
+            //console.log("resizeContents titleBar",this.parentWidget.titleBar );
 
-            if (this.parentWidget.titleBar.offsetWidth < 350) this.parentWidget.titleBar.style.setProperty("width", '346px');
+            if (this.parentWidget.titleBar.offsetWidth < 350) this.parentWidget.titleBar.style.setProperty("width", '350px');
 			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
 			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
 			Style.set(this.pSearchTabs  , 'height', (parntcn_hgt) + "px");

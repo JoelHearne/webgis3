@@ -7,7 +7,11 @@ define([
 		title: 'Floating Widget',
 		draggable: true,
 		'class': 'floatingWidget',
-		close: function () {
+        postCreate: function () {
+            this.inherited(arguments);
+           // console.log("FloatingWidgetDialog",arguments,this);
+	    }
+		,close: function () {
 			this.hide();
 		},
 		focus: function () {}

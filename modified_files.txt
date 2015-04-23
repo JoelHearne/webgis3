@@ -1,12 +1,12 @@
 js\config\basemaps.js
 js\config\viewer.js
 js\gis\dijit\Editor.js
-js\gis\dijit\Identify.js
+js\gis\dijit\FloatingWidgetDialog.js
 js\gis\dijit\NavTools.js
 js\gis\dijit\NavTools\templates\NavTools.html
+js\gis\dijit\_FloatingWidgetMixin.js
 js\gis\dijit\prcmin.js
 js\gis\dijit\prcmin\templates\prcmin.html
 js\gis\dijit\property.js
 js\gis\dijit\property\css\property.css
-js\gis\dijit\sdeCopy.py
 modified_files.txt

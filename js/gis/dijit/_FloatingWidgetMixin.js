@@ -1,17 +1,19 @@
 define([
 	'dojo/_base/declare',
 	'dojo/on',
-	'dojo/_base/lang',
-	"dojox/layout/ResizeHandle"
-], function (declare, on, lang,ResizeHandle) {
+	'dojo/_base/lang'
+	,,"dojox/layout/ResizeHandle"
+], function (
+	 declare, on, lang
+     //,ResizeHandle
+  ) {
 	return declare(null, {
 
 		postCreate: function () {
 			this.inherited(arguments);
 
-
 			//var rz = new ResizeHandle();
-			//console.log("floatingwidget resize handle",rz);
+			// console.log("_FloatingWidgetMixin ",arguments,this);
 
 			//on(rz.resizeHandle, "touchstart", "_init);
 
