@@ -368,7 +368,10 @@ define([
 			   targetId: this.parentWidget,
 			   class:"dijitRtl dojoxResizeHandle",
 			   minWidth:350
-			   ,minHeight:250
+			   ,minHeight:330
+			   ,maxWidth:600
+			   ,maxHeight:700
+
 			   ,dir: 'rtl'
 			   ,animateMethod: 'combine'
 			   ,style:"bottom: 2px; left: 2px; position: absolute;"
@@ -392,7 +395,7 @@ define([
 					 _this.resizeContents();
 					 //_this.fixWidth();
 					//propertyDijitC propertyNode pSearchTabs
-					window.setTimeout(lang.hitch(_this, 'resizeContents'), 1000);
+					window.setTimeout(lang.hitch(_this, 'resizeContents'), 700);
 
 
 

@@ -1,6 +1,2 @@
-js\config\basemaps.js
-js\gis\dijit\ResizeHandle.js
-js\gis\dijit\ResizeHandle\css\ResizeHandle.css
-js\gis\dijit\ResizeHandle\templates\ResizeHandle.html
 js\gis\dijit\property.js
 modified_files.txt
