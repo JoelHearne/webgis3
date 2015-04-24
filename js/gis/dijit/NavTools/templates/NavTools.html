@@ -43,16 +43,18 @@
 
 	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'deactivateIcon',showLabel:false" data-dojo-attach-event="onClick:deactivate">Clear Selection</button>
 
-	<!--<div id="ntWidgSel" data-dojo-type="dijit/layout/ContentPane" data-dojo-attach-point="ntWidgSel" style="background-color:blue"  >-->
-	<select id="selWTool" data-dojo-id="selWTool" name="selWTool" style="padding:0px 0px 0px 25px" data-dojo-attach-event="onChange:selectToolWdgt"    data-dojo-type="dijit/form/Select">
-		<option value="">Select Menu</option>
-		<option value="identify">Identify</option>
-		<option value="print">Print</option>
-		<option value="draw">Draw</option>
-		<option value="measure">Measure</option>
-		<option type="separator"></option>
-		<option value="bookmarks">Bookmarks</option>
-		<option value="goto">Goto</option>
+
+	<!--<select id="selWTool" data-dojo-id="selWTool" name="selWTool" style="padding:0px 0px 0px 25px" data-dojo-attach-event="onChange:selectToolWdgt"    data-dojo-type="dijit/form/Select">-->
+
+	<select id="selWTool" data-dojo-id="selWTool" name="selWTool" style="padding:0px 0px 0px 25px" data-dojo-attach-event="onChange:selectToolWdgt" >
+		<option value="" >Select a Tool</option>
+		<option value="identify" style="font-weight:bold" >Identify</option>
+		<option value="print" style="font-weight:bold" >Print</option>
+		<option value="draw" style="font-weight:bold" >Draw</option>
+		<option value="measure" style="font-weight:bold" >Measure</option>
+		<!--<option type="separator"></option>-->
+		<option value="bookmarks" style="font-weight:bold" >Bookmarks</option>
+		<option value="goto" style="font-weight:bold" >Goto</option>
 		<!--<option value="editor">Editor</option>-->
 	</select>
 

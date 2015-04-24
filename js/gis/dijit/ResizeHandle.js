@@ -89,7 +89,7 @@ define(
         postCreate: function () {
 			 this.inherited(arguments);
 
-             console.log("ResizeHandle",this,this.activeResizeClass,this.activeResize);
+            //console.log("ResizeHandle",this,this.activeResizeClass,this.activeResize);
 
             this.connect(this.resizeHandle, "onmousedown", "_beginSizing");
             this.activeResize ? this.animateSizing = !1 : (this._resizeHelper = manager.byId("dojoxGlobalResizeHelper"), this._resizeHelper || (this._resizeHelper = (new y({
@@ -98,7 +98,7 @@ define(
 
 
 
-            console.log("this._resizeHelper",this._resizeHelper);
+            //console.log("this._resizeHelper",this._resizeHelper);
 
             this.minSize || (this.minSize = {
                 w: this.minWidth,
@@ -109,13 +109,7 @@ define(
                 h: this.maxHeight
             });
 
-
-
-
-            console.log("this.resizeHandle",this.resizeHandle);
-
-
-
+            //console.log("this.resizeHandle",this.resizeHandle);
 
             this._resizeX = this._resizeY = !1;
             var a = lang.partial(dom_class.add, this.resizeHandle);
@@ -208,7 +202,7 @@ define(
                     mh: r.h
                 };
 
-                console.log("_beginSizing",this.isLeftToRight());
+                //console.log("_beginSizing",this.isLeftToRight());
 
 
                 !this.isLeftToRight() && "absolute" == domStyle.get(this.targetDomNode, "position") && (b = dom_geometry.position(this.targetDomNode, !0), this.startPosition = {

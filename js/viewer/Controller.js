@@ -512,8 +512,8 @@ define([
 
 
                 //console.log("update-end ",sec,_this.mapInitCnt,layer);
-
-				if (!_this.isMapInit && _this.mapInitCnt>1) {
+                //if (!_this.isMapInit && _this.mapInitCnt > 1 ) {
+				if (!_this.isMapInit && _this.mapInitCnt > 0 ) {
 					_this.isMapInit=true;
 
                     // TODO: maybe check if browser has been resized first

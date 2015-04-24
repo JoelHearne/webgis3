@@ -425,6 +425,8 @@ define([
 				 }
 			 }
 
+
+
 			  on(document, "keypress", function(evt){
 				//console.log("keyed",evt  );
 
@@ -440,9 +442,20 @@ define([
 				  case "t":
 				     _this.fixWidth();
 					break;
+				  case "m":
+					  var offst_left=document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -1555;
+					  _this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px;width:350px');
+				    break;
+				  case "n":
+					  console.log("this.containerNode",_this.parentWidget.containerNode);
+					  //_this.parentWidget.containerNode.overflow="hidden";
+
+						var tcpc= dojo.query(".dijitDialogPaneContent",this.parentWidget );
+						tcpc.forEach(function(node){}).style("overflow", "hidden");
+
+ 				    break;
 
  				 }
-
 			  });
 
 			 // this.parentWidget.domNode.setProperty("min-width", '350px', "important");
@@ -614,10 +627,11 @@ define([
 			  }
 			  //console.log("titleBar.domNode ",this.titleBar.domNode,this.titleBar.domNode.offsetWidth);
 
-
+			 var tctnt=dojo.query(".dijitDialogPaneContent",this.parentWidget.domNode );
+ 			 tctnt.forEach(function(node){
+				 }).style("overflow", "hidden");
 
 		     this.lastWidth=actbr.offsetWidth;
-
 		}
         ,showThis:function(){
 			this.parentWidget.show();
@@ -629,7 +643,7 @@ define([
 			 //this.parentWidget.resize();
 			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
-			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -55;
+			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
 		    this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
 			dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 			this.changeSearchForm(null,"property");
@@ -785,7 +799,7 @@ define([
 			if (state) {
 				// uncomment to make the map menu automatically appear
 				if (!this.parentWidget.open) this.showThis();
-				this.changeSearchForm(null,"map");
+				//this.changeSearchForm(null,"map");
 
 				this.activateMapSearch();
 				this.mapsearch_auto=true;
@@ -952,6 +966,7 @@ define([
 			}); // end array.forEach
 
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
+			this.resPage=1;
 			this.doSearch_Pins(this.mapsearchpins);
 
 			pMapBuffr.style.display="block";
@@ -2185,18 +2200,18 @@ define([
 								title: "Export/Mailing Labels",
 								//content: "export.....",
 								content: form,
-								style: "width: 300px",
+								style: "width: 340px",
 								hide: function(){ _this.export_dia.destroy(); }
 							});
 
 					  var cp = new dijit.layout.ContentPane(
 					  {
 					   title:"Property Search Results"
-					   ,content: '<div   style="width: 95%;margin: 0px 0px 20px 0px;"><div id="expoptn" style="width: 95%;float:center">Please select an export option</div><div id="expstatus" style="height:15px;width: 95%;padding:0px;font-size:small;margin: auto;;background-color: rgb(141,214,249)"></div><div id="expres" style="margin: auto;height:12px;width: 95%;float:center;padding:0px;font-size:small;text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8), 0 0 1.2em rgba(1,14,39,0.5),0 0 0.2em rgba(1,114,139,0.5);"></div></div>'
+					   ,content: '<div   style="padding:0px 0px 0px 20px;width: 90%;margin: 0px 0px 10px 0px;"><div id="expoptn" style="width: 90%;float:center">Please select an export option</div><div id="expstatus" style="height:15px;width: 70%;padding:0px 0px 0px 0px;font-size:small;margin: auto;;background-color: rgb(141,214,249)"></div><div id="expres" style="margin: auto;height:12px;width: 90%;float:center;padding:0px;font-size:small;text-shadow: 0px 2px 0.7em rgba(1,84,239,0.8), 0 0 1.2em rgba(1,14,39,0.5),0 0 0.2em rgba(1,114,139,0.5);"></div></div>'
 
 					   //,id:'cpPropresults'
 					   //,class:"claro"
-					   ,style: "height:180px;width: 99%;background-color: rgb(141,214,249);font-size:10px;text-align: center;",
+					   ,style: "height:180px;width: 100%;background-color: rgb(141,214,249);font-size:10px;text-align: center;",
 					   //class:"claro",
 						class:'nonModal',
 						draggable:true,
@@ -2274,7 +2289,7 @@ define([
 	 }
    ,export2CSV: function(isSavedTab){
 
-	   console.log("export2CSV",isSavedTab);
+	   //console.log("export2CSV",isSavedTab);
 
             if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
@@ -2283,17 +2298,20 @@ define([
             if (isSavedTab) iurl='./webgis.asmx/ExportMailingLabelCSVPINs?pinlist=' + this.savedlist.join(",");
 
 
-               console.log("export2CSV 2", iurl,this.mapsearchpins);
+            //console.log("export2CSV 2", iurl,this.mapsearchpins);
 
             Style.set(dom.byId("expstatus") , 'background-color', "rgb(246,190,5)");
             dom.byId("expstatus").innerHTML="preparing data ... please standby ";
 
-		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+		    //Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+
+
+		    // console.log("export2CSV 3" );
 
 			// TODO: spatially returned results are breaking the mailing labels and csv for all results because there is no session saved on the server
 			//if (!this.mapsearch_auto)
 			if (this.activeMenu=="map" && !isSavedTab) {
-				console.log("getting csv for pins");
+				//console.log("getting csv for pins");
                  iurl='./webgis.asmx/ExportMailingLabelCSVPINs';
 
                request.post(iurl, { handleAs: "text"
@@ -2314,7 +2332,7 @@ define([
                      //dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
  	            } ,
  	            function (error){
-					console.log("Error Occurred: " + error);
+					//console.log("Error Occurred: " + error);
 					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
 					dom.byId("expstatus").innerHTML="failed to get data";
 					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
@@ -2324,6 +2342,7 @@ define([
  	          );
 
 			} else {
+				 //console.log("export2CSV 4" );
 				console.log("getting export data",iurl);
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
@@ -2345,8 +2364,11 @@ define([
  	            }
  	        );
 	      }
+
 	}
    ,printMailLblsAll: function(isSavedTab){
+
+	   console.log("printMailLblsAll 1" );
 
 	        if (typeof isSavedTab == "undefined")  isSavedTab = false;
 
@@ -2356,8 +2378,9 @@ define([
 
             var iurl='./webgis.asmx/PrintMailingLabelsSession';
             if (isSavedTab) iurl='./pa.asmx/PrintMailingLabels?search_type=pinlist&search_string=' + this.savedlist.join(",");
-		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+		    //Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
 
+            console.log("printMailLblsAll 2",iurl );
 
 			if (this.activeMenu=="map" && !isSavedTab) {
                iurl='./pa.asmx/PrintMailingLabels';
@@ -2375,13 +2398,13 @@ define([
 					 dom.byId("expstatus").innerHTML="";
 
 
-					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					 //Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
                      dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download CSV Here</a> ';
  	            } ,
  	            function (error){
 					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
 					dom.byId("expstatus").innerHTML="failed to get data";
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
  	            }
@@ -2393,13 +2416,13 @@ define([
 					 document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 
 					 dom.byId("expstatus").innerHTML="success";
-					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					 //Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
                      dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download Labels Here</a> ';
  	            } ,
  	            function (error){
 					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
 					dom.byId("expstatus").innerHTML="failed to get data";
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
 
@@ -2433,13 +2456,13 @@ define([
             dom.byId("expstatus").innerHTML="preparing data ... please standby ";
 
 
-		    Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
+		    //Style.set(dom.byId("btnPrLbls_label") , 'color', "green");
             request.get(iurl,{ handleAs: "text" }).then(
                 function (text){
 					 document.getElementById("expstatus").style.backgroundColor="rgb(0,175,45)";
 
 					 dom.byId("expstatus").innerHTML="success";
-					 Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
+					 //Style.set(dom.byId("btnPrLbls_label") , 'color', "black");
                      dom.byId("expres").innerHTML='<a target="_blank" href="' + text + '" download>Download Labels Here</a> ';
                      //window.open( text,"prcprint");
  	            } ,
@@ -2447,7 +2470,7 @@ define([
 					//Style.set(dom.byId("expstatus") , 'background-color', "rgb(200,15,15);");
 					document.getElementById("expstatus").style.backgroundColor="rgb(200,15,15)";
 					dom.byId("expstatus").innerHTML="failed to get data";
-					Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
+					//Style.set(dom.byId("btnPrLbls_label") , 'color', "red");
 					//this.handleXHR_Err(error,"Printing Mailing Labels Failed (printMailLbls)");
  	                console.log("Error Occurred: " + error);
  	                //alert("Error Printing Labels : " + error);

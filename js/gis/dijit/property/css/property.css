@@ -121,6 +121,9 @@ select {
     //overflow: hidden !important;
 }
 
+ dijitDialogPaneContent dijitAlignCenter {
+     overflow: hidden !important;
+  }
  
 .propertyDijit .floatingWidget .dijitLayoutContainer .dijitDialog {
    min-width:350px;

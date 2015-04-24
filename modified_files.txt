@@ -1,2 +1,9 @@
+js\config\basemaps.js
+js\gis\dijit\NavTools.js
+js\gis\dijit\NavTools\css\NavTools.css
+js\gis\dijit\NavTools\templates\NavTools.html
+js\gis\dijit\ResizeHandle.js
 js\gis\dijit\property.js
+js\gis\dijit\property\css\property.css
+js\viewer\Controller.js
 modified_files.txt

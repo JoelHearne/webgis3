@@ -10,7 +10,7 @@ define([
     'dijit/MenuItem',
     'dijit/PopupMenuItem',
     'dijit/MenuSeparator',
-    "dijit/form/Select",
+    //"dijit/form/Select",
     'dijit/layout/ContentPane',
     'dojo/dom-construct',
     'dojo/on',
@@ -22,7 +22,10 @@ define([
     'dojo/topic',
     'xstyle/css!./NavTools/css/NavTools.css'
     , "dojo/domReady!"
-], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Navigation,parser, Button, Menu, MenuItem, PopupMenuItem, MenuSeparator,Select,ContentPane, domConstruct, on, lang
+], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, Navigation,parser, Button, Menu, MenuItem, PopupMenuItem
+, MenuSeparator
+//,Select
+,ContentPane, domConstruct, on, lang
 ,dom,Style, NavToolsTemplate, topic, css) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
@@ -40,11 +43,11 @@ define([
             this.addRightClickMenu();
             }
 
-
-
         }
         ,startup: function() {
 			this.inherited(arguments);
+
+			var _this=this;
 			//parser.parse();
 			//this.selecttool();  // Dan wants the select tool to be on by default
 
@@ -65,6 +68,21 @@ define([
 				]
            }).placeAt(dijit.byId("ntWidgSel")).startup();
 */
+
+            //console.log("selWTool",selWTool);
+
+ 			/*
+ 			topic.subscribe('NavTools/resetSel', lang.hitch(this, function (arg) {
+				console.log("FYDYSMF");
+
+				//_this.selWTool.setValue("draw");
+
+
+
+			}));
+            */
+
+
 		}
         ,addRightClickMenu: function () {
             //future functionality - zoom here, pan here
@@ -189,7 +207,7 @@ define([
 				this.select_on=true;
 				this.navTools.deactivate();
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
-				topic.publish('identify/proxySelect', 'select');
+				//topic.publish('identify/proxySelect', 'select');
 				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
 		    /*} else {
@@ -226,14 +244,25 @@ define([
 
 		}
 		,selectToolWdgt:function(e){
-			 console.log("selectToolWdgt",e);
-			 if (e=="print") topic.publish('print/showMe', "sel");
-			 if (e=="bookmarks") topic.publish('bookmarks/showMe', "sel");
-			 if (e=="draw") topic.publish('draw/showMe', "sel");
-			 if (e=="measure") topic.publish('measure/showMe', "sel");
-			 if (e=="identify") topic.publish('identify/showMe', "sel");
-             if (e=="goto") topic.publish('goto/showMe', "sel");
-             if (e=="editor") topic.publish('editor/showMe', "sel");
+			 //console.log("selectToolWdgt",e.target.value,e.target);
+
+			 if (e.target.value=="print") topic.publish('print/showMe', "sel");
+			 if (e.target.value=="bookmarks") topic.publish('bookmarks/showMe', "sel");
+			 if (e.target.value=="draw") topic.publish('draw/showMe', "sel");
+			 if (e.target.value=="measure") topic.publish('measure/showMe', "sel");
+			 if (e.target.value=="identify") topic.publish('identify/showMe', "sel");
+             if (e.target.value=="goto") topic.publish('goto/showMe', "sel");
+             if (e.target.value=="editor") topic.publish('editor/showMe', "sel");
+
+             e.target.value="";
+
+             //document.getElementById("selWTool").value = "";
+             //document.getElementById("selWTool").selectedIndex = 1;
+             //document.getElementById("selWTool").options[0].selected = true;
+             //this.selWTool.set("displayedValue", "");
+            // topic.publish('NavTools/resetSel', "sel");
+
+
 		}
         ,disconnectMapClick: function() {
             // cmv 1.3.0
