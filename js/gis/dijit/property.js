@@ -392,6 +392,13 @@ define([
 					 _this.resizeContents();
 					 //_this.fixWidth();
 					//propertyDijitC propertyNode pSearchTabs
+					window.setTimeout(lang.hitch(_this, 'resizeContents'), 1000);
+
+
+
+
+
+
 			});
 
 			//dijit.byId("propertyNode").set('style', 'width:350px;');
