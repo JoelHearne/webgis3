@@ -60,6 +60,9 @@
    font-size:11px !important;
    width: 120px;
    height:23px;
+   background-color: rgba(220,220,220,0.7);
+   border-radius: 5px ;
+   margin: 0px 0px 0px 20px;
 }
 .dj_ie6 .dijitSelect .dijitSelectLabel, .dj_ie7 .dijitSelect .dijitSelectLabel, .dj_ie8 .dijitSelect .dijitSelectLabel, .dj_iequirks .dijitSelect .dijitSelectLabel, .dijitSelect td, .dj_ie6 .dijitSelect input, .dj_iequirks .dijitSelect input, .dj_ie6 .dijitSelect .dijitValidationContainer, .dj_ie6 .dijitTextBox input, .dj_ie6 input.dijitTextBox, .dj_iequirks .dijitTextBox input.dijitValidationInner, .dj_iequirks .dijitTextBox input.dijitArrowButtonInner, .dj_iequirks .dijitTextBox input.dijitSpinnerButtonInner, .dj_iequirks .dijitTextBox input.dijitInputInner, .dj_iequirks input.dijitTextBox {
     line-height: 0%;

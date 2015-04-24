@@ -1,4 +1,3 @@
-js\config\basemaps.js
 js\gis\dijit\NavTools.js
 js\gis\dijit\NavTools\css\NavTools.css
 js\gis\dijit\NavTools\templates\NavTools.html
