@@ -188,8 +188,8 @@ define([
 		},*/
         {
 			type: 'dynamic',
-			 //url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
-			 url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis/MapServer',
+			//url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
+			url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis/MapServer',
 			title: 'Okaloosa WebGIS',
 			slider: true,
 			noLegend: false,
@@ -770,8 +770,8 @@ define([
 				options: {
 					map: true,
 					//printTaskURL: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
-					 //printTaskURL: 'http://gisvm101:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
-					 printTaskURL: 'http://204.49.20.75/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+					// printTaskURL: 'http://gisvm101:6080/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
+					printTaskURL: 'http://204.49.20.75/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',
 
 					copyrightText: 'Copyright 2014',
 					authorText: 'OCGIS',

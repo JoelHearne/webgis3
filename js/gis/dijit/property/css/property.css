@@ -115,6 +115,16 @@ select {
    cursor: hand;
    cursor: pointer;
 }
+
+#widget_af_tbPIN {
+  width:95% !important;
+}
+
+#widget_af_tbAddr{
+  width:95% !important;
+}
+ 
+
  
 .propertyDijit .listdbootstrapFix{
     padding: 0 0 0 25px;

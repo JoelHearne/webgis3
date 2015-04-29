@@ -140,6 +140,7 @@ define([
 	    btnZoomAll:null,
 	    btnPrLbls:null,
 	    lastWidth:350,
+	    isExtSel:false,
 	    //pSearchResults:null,
 
 		postCreate: function () {
@@ -434,7 +435,6 @@ define([
               var charCode = evt.which || evt.keyCode;
                var charStr = String.fromCharCode(charCode);
 
-
                 switch(charStr){
 				  case "r":
 				    _this.resizeContents();
@@ -442,6 +442,18 @@ define([
 				  case "t":
 				     _this.fixWidth();
 					break;
+				  case "y":
+				     //_this.parentWidget.titleBar.style.setProperty("width", '350px', "important");
+				     console.log("pSearchTabs",_this.pSearchTabs);
+				     console.log("pSearchTabs.containerNode",_this.pSearchTabs.containerNode);
+
+				     _this.pSearchTabs.containerNode.style.setProperty("width", '350px', "important");
+
+					break;
+				  case "u":
+					       //if (dom.byId("propSrchActnBar"))
+								   //dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
+				    break
 				  case "m":
 					  var offst_left=document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -1555;
 					  _this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px;width:350px');
@@ -457,17 +469,14 @@ define([
 
  				 }
 			  });
-
 			 // this.parentWidget.domNode.setProperty("min-width", '350px', "important");
 
 			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
         ,fixWidth:function(){
-
 			//console.log("fixWidth--------------",arguments.callee.caller.toString());
-			console.log("fixWidth--------------" );
-
+			//console.log("fixWidth--------------" );
 
 			var actbr=dom.byId("propSrchActnBar");
 			var actbrr=document.getElementById("propSrchActnBar");
@@ -475,7 +484,6 @@ define([
 
 			/*
 			var  tbs=registry.byId("pSearchTabs");
-
 			console.log("     ","ab_owd: ",ab_owd,actbrr.offsetWidth,actbr);
 			console.log("     ","parentWidget.domNode: ",this.parentWidget.domNode.offsetWidth );
 			console.log("       this.lastWidth:" ,this.lastWidth);
@@ -484,7 +492,6 @@ define([
 			*/
 
             this.lastWidth=350;
-
 			//if (ab_owd <=280 && this.lastWidth >= 280) {
 			if (ab_owd <=250  ) {
 				var tcpc= dojo.query(".dijitDialogTitleBar",this.parentWidget.domNode);
@@ -506,22 +513,18 @@ define([
 				this.parentWidget.resize();
 		  }
 
+	       var psr=document.getElementById("pSearchResults");
+	       var actbr=dom.byId("propSrchActnBar");
 
-	      var psr=document.getElementById("pSearchResults");
-	      var actbr=dom.byId("propSrchActnBar");
-
-            if ((psr && psr!=null) ) {
+           if ((psr && psr!=null) ) {
 		      psr.style.setProperty("width", actbr.offsetWidth-3 + 'px', "important");
-	        }
+	       }
 
-
-			var  tbs=registry.byId("pSearchTabs");
-			var subtbs=registry.byId("pResultsSubTabs");
-			this.propctrNode.resize();
-			if (subtbs) subtbs.resize();
-			if (tbs) tbs.resize();
-
-
+		   var  tbs=registry.byId("pSearchTabs");
+		   var subtbs=registry.byId("pResultsSubTabs");
+	       this.propctrNode.resize();
+		   if (subtbs) subtbs.resize();
+		   if (tbs) tbs.resize();
 		}
         ,resizeContents:function(){
 
@@ -546,6 +549,14 @@ define([
             //console.log("resizeContents titleBar",this.parentWidget.titleBar );
 
             if (this.parentWidget.titleBar.offsetWidth < 350) this.parentWidget.titleBar.style.setProperty("width", '350px');
+
+
+
+
+
+			if (dom.byId("propSrchActnBar"))
+					dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
+
 			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
 			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
 			Style.set(this.pSearchTabs  , 'height', (parntcn_hgt) + "px");
@@ -649,6 +660,16 @@ define([
 			this.changeSearchForm(null,"property");
 
 			this.resizeContents();
+
+
+			 if (dom.byId("propSrchActnBar"))
+					 dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
+
+			 this.parentWidget.titleBar.style.setProperty("width", '350px', "important");
+
+			 _this.pSearchTabs.containerNode.style.setProperty("width", '350px', "important");
+
+
 
 			if (!this.isAutoFl){
 				this.setautofill("tbAddr");
@@ -798,17 +819,19 @@ define([
 		,external_setMapSrchMode: function(mode,state) {
 			if (state) {
 				// uncomment to make the map menu automatically appear
-				if (!this.parentWidget.open) this.showThis();
+				 if (!this.parentWidget.open) this.showThis();
 				//this.changeSearchForm(null,"map");
 
 				this.activateMapSearch();
 				this.mapsearch_auto=true;
-				//this.activeMenu='map';
+				this.isExtSel=true;
+				this.activeMenu='map';
 				if (mode=="box") {
 					this.modeBox();
 				} else if (mode=="point") {
 					this.modePoint();
 				}
+				//this.activeMenu='property';
 		    } else {
 				this.mapsearch_auto=false;
 				this.drawToolbar.deactivate();
@@ -1667,7 +1690,9 @@ define([
 
             this.showWait();
 
-            if (this.activeMenu=='map') { this.runMapSearch(); return; }
+			//this.mapsearch_auto=true;
+			//this.isExtSel=true;
+            if (this.activeMenu=='map' || this.mapsearch_auto) { this.runMapSearch(); return; }
 
             var startrec = 1;
             var endrec = 50;
