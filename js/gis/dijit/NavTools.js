@@ -17,7 +17,8 @@ define([
     'dojo/_base/lang',
     'dojo/dom',
     'dojo/dom-style',
-
+    "dojo/query",
+    'dojo/_base/array',
     'dojo/text!./NavTools/templates/NavTools.html',
     'dojo/topic',
     'xstyle/css!./NavTools/css/NavTools.css'
@@ -26,7 +27,7 @@ define([
 , MenuSeparator
 //,Select
 ,ContentPane, domConstruct, on, lang
-,dom,Style, NavToolsTemplate, topic, css) {
+,dom,Style,query,array, NavToolsTemplate, topic, css) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         widgetsInTemplate: true,
         templateString: NavToolsTemplate,
@@ -164,11 +165,14 @@ define([
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomin.cur'),auto");
             this.disconnectMapClick();
             this.navTools.activate(Navigation.ZOOM_IN);
+            this.mngActiveTool("btn_zoomin");
         },
         zoomOut: function() {
 			this.dieselecttool();
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/zoomout.cur'),auto");
             this.navTools.activate(Navigation.ZOOM_OUT);
+            this.mngActiveTool("btn_zoomout");
+
         },
         fullExtent: function () {
             this.navTools.zoomToFullExtent();
@@ -183,12 +187,76 @@ define([
 			this.dieselecttool();
             this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
             this.navTools.activate(Navigation.PAN);
+            this.mngActiveTool("btn_pan");
         }
         ,identify:function(){
 			this.dieselecttool();
             //this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
             //this.map.setMapCursor('default');
             topic.publish('identify/makeActive', "button");
+            this.mngActiveTool("btn_identify");
+
+		}
+		,mngActiveTool:function(actv){
+
+			var btnids=["btn_zoomin","btn_zoomout","btn_pan","btn_identify","btn_selbox","btn_selpoint"];
+
+			var idx=btnids.indexOf(actv);
+			//console.log("idx",idx);
+
+			if (idx > -1) {
+				btnids.splice( idx, 1);
+			}
+
+			//console.log("btnids",btnids);
+
+			for(var i=0;i < btnids.length; i++) {
+				dom.byId(btnids[i]).style.setProperty('background-color', 'rgb(230, 230, 230)', "important");
+            }
+
+            dom.byId(actv).style.setProperty('background-color', 'rgba(187, 7, 7,0.2)', "important");
+
+
+			//var b_id=document.getElementById("btn_identify");
+			//console.log("identidy button active ", this.btn_identify );
+
+			//psr.style.setProperty("height", calc_ht + 'px', "important");
+
+			//b_id.class="identifyIcon_active";
+
+            //background-image: url(../images/selected_on/identify.png);
+
+            //Style.set(this.btn_identify , 'background-image', 'url(../images/selected_on/identify.png)');
+            //dojo.query("button", dangerButton.domNode).attr("style", {width:"500px"}));
+
+            //dijit dijitReset dijitInline dijitButton
+            //dijitReset dijitInline dijitButtonNode
+            //dijitReset dijitStretch dijitButtonContents
+            //dijitReset dijitInline dijitIcon identifyIcon
+
+			//var tcpc=  query(".dijit .dijitReset .dijitInline .dijitButton",this.btn_identify);
+			//var tcpc=  dojo.query(".dijitButton",dom.byId("btn_identify") );
+
+			//Style.set(dom.byId("btn_identify") , 'border-color', 'rgb(187, 7, 7) rgb(187, 7, 7) rgb(168, 8, 8)');
+			//Style.set(dom.byId("btn_identify") , 'display', 'hidden !important');
+
+			 //dom.byId("btn_identify").style.setProperty('border-color', 'rgb(187, 7, 7)', "important");
+			 //dom.byId("btn_identify").style.setProperty('background-color', 'rgba(187, 7, 7,0.2)', "important");
+             //dom.byId("btn_identify").style.setProperty('width', '100px', "important");
+
+/*
+
+			var tcpc=  dojo.query("*",dom.byId("btn_identify") );
+
+		   console.log("button element ",tcpc);
+		   tcpc.forEach(function(node){
+
+				console.log("button node ",node);
+			}).style("border-color",  "rgb(187, 7, 7) rgb(187, 7, 7) rgb(168, 8, 8)");
+*/
+			//border-color: rgb(187, 7, 7) rgb(187, 7, 7) rgb(168, 8, 8);
+
+
 
 		}
         ,dieselecttool:function(){
@@ -207,6 +275,7 @@ define([
 				this.select_on=true;
 				this.navTools.deactivate();
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
+				this.mngActiveTool("btn_selpoint");
 				//topic.publish('identify/proxySelect', 'select');
 				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
@@ -222,6 +291,7 @@ define([
   				this.select_on=true;
 				topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });
 				topic.publish('identify/proxySelect', 'select');
+				this.mngActiveTool("btn_selbox");
 		    /*} else {
 				this.select_on=false;
                 topic.publish('property/toggleSpatial', {mode:"box",state:this.select_on });

@@ -12,9 +12,9 @@
  <!--<i title="Deactivate Navigation Tool" data-dojo-attach-event="onClick:deactivate" class="fa fa-ban fa-2x" style="color:red"></i>-->
 
 
-	 <button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoominIcon',showLabel:false"
+	 <button  id="btn_zoomin"  data-dojo-attach-point="btn_zoomin" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoominIcon',showLabel:false"
 		data-dojo-attach-event="onClick:zoomIn">Zoom In</button>
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoomoutIcon',showLabel:false"
+	<button  id="btn_zoomout"  data-dojo-attach-point="btn_zoomout" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoomoutIcon',showLabel:false"
 		data-dojo-attach-event="onClick:zoomOut">Zoom Out</button>
 	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoomfullextIcon',showLabel:false"
 		data-dojo-attach-event="onClick:fullExtent">Full Extent</button>
@@ -22,17 +22,17 @@
 		data-dojo-attach-event="onClick:prevExtent">Prev Extent</button>
 	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'zoomnextIcon',showLabel:false"
 		data-dojo-attach-event="onClick:nextExtent">Next Extent</button>
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'panIcon',showLabel:false"
+	<button  id="btn_pan"  data-dojo-attach-point="btn_pan" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'panIcon',showLabel:false"
 		data-dojo-attach-event="onClick:pan">Pan</button>
 
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'identifyIcon',showLabel:false"
+	<button id="btn_identify"  data-dojo-attach-point="btn_identify" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'identifyIcon',showLabel:false"
 		data-dojo-attach-event="onClick:identify"><b>Identify</b></button>
 
 
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'selIcon',showLabel:false"
+	<button id="btn_selpoint"  data-dojo-attach-point="btn_selpoint" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'selIcon',showLabel:false"
 		data-dojo-attach-event="onClick:selecttool"><b>Select Parcels by Point</b></button>
 
-	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'selboxIcon',showLabel:false"
+	<button  id="btn_selbox"  data-dojo-attach-point="btn_selbox" data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'selboxIcon',showLabel:false"
 		data-dojo-attach-event="onClick:selectboxtool"><b>Select Parcels by Box</b></button>
 <!--
 	<button data-dojo-type="dijit.form.Button" data-dojo-props="iconClass:'betaIcon',showLabel:false"

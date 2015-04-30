@@ -689,16 +689,23 @@ define([
 
 			 console.log("this.showThisCount",this.showThisCount);
 
+			 //var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
+             var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth - 100;
+
 			if (this.showThisCount==0) {
 
-				var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
 				this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
 				dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
 				this.changeSearchForm(null,"property");
 
 				this.resizeContents();
 
-		    }
+		    } else {
+				//this.parentWidget.setProperty("left", offst_left + 'px', "important");
+				//this.parentWidget.domNode.setProperty("left", offst_left + 'px');
+				this.parentWidget.domNode.style.left= offst_left + 'px';
+				this.parentWidget.domNode.style.overflow= 'hidden';
+			}
 
 		    this.showThisCount++;
 

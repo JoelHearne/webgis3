@@ -167,16 +167,30 @@
 	width: 16px;
 	height: 16px; 
 }
+
+
+
 .gis_NavToolsDijit .identifyIcon {
 	 background-image: url(../images/identify.png);
 	width: 16px;
 	height: 16px; 
 }
+
+.gis_NavToolsDijit .identifyIcon_active {
+	 background-image: url(../images/selected_on/identify.png);
+	width: 16px;
+	height: 16px; 
+}
+
 .gis_NavToolsDijit .identifyIcon:hover {
 	 background-image: url(../images/selected/identify.png);
 	width: 16px;
 	height: 16px; 
 }
+ 
+ 
+ 
+ 
  
 .gis_NavToolsDijit .selIcon {
 	 background-image: url(../images/LocationGetPoint16.png);
