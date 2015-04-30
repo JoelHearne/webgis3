@@ -1,6 +1,5 @@
 js\config\basemaps.js
 js\config\viewer.js
-js\gis\dijit\NavTools\css\NavTools.css
 js\gis\dijit\property.js
 js\gis\dijit\property\css\property.css
 modified_files.txt

@@ -139,8 +139,9 @@ define([
 	    pResultsSubTabs:null,
 	    btnZoomAll:null,
 	    btnPrLbls:null,
-	    lastWidth:350,
+	    //lastWidth:350,
 	    isExtSel:false,
+	    showThisCount:0,
 	    //pSearchResults:null,
 
 		postCreate: function () {
@@ -397,13 +398,9 @@ define([
 					 //_this.fixWidth();
 					//propertyDijitC propertyNode pSearchTabs
 					window.setTimeout(lang.hitch(_this, 'resizeContents'), 700);
-
-
-
-
-
-
 			});
+
+
 
 			//dijit.byId("propertyNode").set('style', 'width:350px;');
 
@@ -453,7 +450,33 @@ define([
 				  case "u":
 					       //if (dom.byId("propSrchActnBar"))
 								   //dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
-				    break
+				    break;
+				  case "i":
+                       var mdtl=document.getElementById("pcMinDet");
+
+
+
+				    break;
+				  case "o":
+					   var subtbs=registry.byId("pResultsSubTabs");
+					   if (subtbs) subtbs.resize();
+				    break;
+				  case "p":
+					   var  tbs=registry.byId("pSearchTabs");
+					   if (tbs) tbs.resize();
+				    break;
+				  case "a":
+					   //_this.titleBar.style.setProperty("width", '350px', "important");
+
+					    var ttb= dojo.query(".dijitDialogTitleBar",_this.parentWidget.domNode);
+       					ttb.forEach(function(node){
+							console.log("got titlebar node",node);
+						}).style("width",   "350px");
+
+				    break;
+
+
+
 				  case "m":
 					  var offst_left=document.body.clientWidth - _this.parentWidget.domNode.offsetWidth -1555;
 					  _this.parentWidget.set('style', 'left:' + offst_left + 'px !important;top:42px;width:350px');
@@ -471,10 +494,19 @@ define([
 			  });
 			 // this.parentWidget.domNode.setProperty("min-width", '350px', "important");
 
+
+
+		   var tabs = registry.byId('pSearchTabs');
+		   aspect.after(tabs, "selectChild", function (event) {
+			   console.log("You selected ", tabs.selectedChildWidget.id);
+		   });
+
+
 			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
         ,fixWidth:function(){
+
 			//console.log("fixWidth--------------",arguments.callee.caller.toString());
 			//console.log("fixWidth--------------" );
 
@@ -491,25 +523,27 @@ define([
 			console.log("       pSearchTabs dom:" ,document.getElementById("pSearchTabs").offsetWidth);
 			*/
 
-            this.lastWidth=350;
+            //this.lastWidth=350;
+            var lastWidth=350;
 			//if (ab_owd <=280 && this.lastWidth >= 280) {
 			if (ab_owd <=250  ) {
+				console.log("resizing width");
 				var tcpc= dojo.query(".dijitDialogTitleBar",this.parentWidget.domNode);
 
 				tcpc.forEach(function(node){
-				}).style("width", this.lastWidth + "px");
+				}).style("width",  lastWidth + "px");
 
 				tcpc= dojo.query(".dijitDialogPaneContent",this.parentWidget.domNode);
 				tcpc.forEach(function(node){
-				}).style("width", this.lastWidth + "px");
+				}).style("width",  lastWidth + "px");
 
 				tcpc= dojo.query(".propertyNode",this.parentWidget.domNode);
 				tcpc.forEach(function(node){
-				}).style("width", this.lastWidth + "px");
+				}).style("width",  lastWidth + "px");
 
 				this.propctrNode.resize();
 
-				this.parentWidget.set('style', 'width:' + this.lastWidth + 'px');
+				this.parentWidget.set('style', 'width:' +  lastWidth + 'px');
 				this.parentWidget.resize();
 		  }
 
@@ -550,12 +584,8 @@ define([
 
             if (this.parentWidget.titleBar.offsetWidth < 350) this.parentWidget.titleBar.style.setProperty("width", '350px');
 
-
-
-
-
-			if (dom.byId("propSrchActnBar"))
-					dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
+			//if (dom.byId("propSrchActnBar"))
+			//		dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
 
 			//Style.set(this.pTestTab  , 'height', (parntcn_hgt) + "px");
 			//Style.set(this.pTestCnt , 'height', (parntcn_hgt) + "px");
@@ -629,6 +659,7 @@ define([
 				 var pmn_calch=(actbr.offsetTop  - pcmin.offsetTop) - actbr.offsetHeight  -document.getElementById("propertyNode").offsetTop - 37;
                  //console.log("resizing pcmin 2",pmn_calch,subtbs.domNode.offsetHeight);
 			     pcmin.style.setProperty("height", pmn_calch + 'px', "important");
+			     pcmin.style.setProperty("width", ab_owd-3 + 'px', "important");
 		     }
 
 
@@ -645,6 +676,8 @@ define([
 		     this.lastWidth=actbr.offsetWidth;
 		}
         ,showThis:function(){
+
+
 			this.parentWidget.show();
 			this.pSearchTabs.resize();
 			 //this.propertyDijitC.resize();
@@ -654,21 +687,38 @@ define([
 			 //this.parentWidget.resize();
 			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
-			var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
-		    this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
-			dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
-			this.changeSearchForm(null,"property");
+			 console.log("this.showThisCount",this.showThisCount);
 
-			this.resizeContents();
+			if (this.showThisCount==0) {
+
+				var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
+				this.parentWidget.set('style', 'left:' + offst_left + 'px;top:42px;width:350px');
+				dijit.byId("pSearchTabs").selectChild(dijit.byId("pSearchTab"));
+				this.changeSearchForm(null,"property");
+
+				this.resizeContents();
+
+		    }
+
+		    this.showThisCount++;
 
 
-			 if (dom.byId("propSrchActnBar"))
-					 dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
+			//if (dom.byId("propSrchActnBar"))
+			//		 dom.byId("propSrchActnBar").style.setProperty("width", '350px', "important");
 
-			 this.parentWidget.titleBar.style.setProperty("width", '350px', "important");
+			//this.parentWidget.titleBar.style.setProperty("width", '350px', "important");
 
-			 _this.pSearchTabs.containerNode.style.setProperty("width", '350px', "important");
+			//this.pSearchTabs.containerNode.style.setProperty("width", '350px', "important");
 
+			 /*
+			 var ttb= dojo.query(".dijitDialogTitleBar",_this.parentWidget.domNode);
+       		 ttb.forEach(function(node){
+				  console.log("got titlebar node",node);
+			 }).style("width",   "350px");
+			 */
+
+
+			//this.resizeContents();
 
 
 			if (!this.isAutoFl){
@@ -1350,6 +1400,9 @@ define([
 						//,style: "margin-top:0px !important"
 					}, dijit.byId("pResultsTab").containerNode);
 
+
+
+
 					this.pResultsSubTabs.startup();
 
 					// add jump list tab to resultssubtabs
@@ -1490,6 +1543,16 @@ define([
 					//this.fixWidth();
 					this.resizeContents();
 					//this.parentWidget.resize();
+
+
+			      var tabs = registry.byId('pResultsSubTabs');
+		          aspect.after(tabs, "selectChild", function (event) {
+			         console.log("You selected ", tabs.selectedChildWidget.id);
+			         _this.resizeContents();
+		          });
+
+
+
 
 			    }
 		      }
