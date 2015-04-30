@@ -496,10 +496,12 @@ define([
 
 
 
+		   /*
 		   var tabs = registry.byId('pSearchTabs');
 		   aspect.after(tabs, "selectChild", function (event) {
 			   console.log("You selected ", tabs.selectedChildWidget.id);
 		   });
+		   */
 
 
 			//this.resizeContents();
@@ -687,7 +689,7 @@ define([
 			 //this.parentWidget.resize();
 			 //dom.byId("propertyNode").set('style', 'width:100%;height:100%');
 
-			 console.log("this.showThisCount",this.showThisCount);
+			 //console.log("this.showThisCount",this.showThisCount);
 
 			 //var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth -255;
              var offst_left=document.body.clientWidth - this.parentWidget.domNode.offsetWidth - 100;
@@ -1554,7 +1556,7 @@ define([
 
 			      var tabs = registry.byId('pResultsSubTabs');
 		          aspect.after(tabs, "selectChild", function (event) {
-			         console.log("You selected ", tabs.selectedChildWidget.id);
+			         //console.log("You selected ", tabs.selectedChildWidget.id);
 			         _this.resizeContents();
 		          });
 

@@ -766,7 +766,7 @@ define([
 				id: 'print',
 				type: 'floating',
 				path: 'gis/dijit/Print',
-				title: 'Print',
+				title: 'Generate Print',
 				options: {
 					map: true,
 					//printTaskURL: 'https://utility.arcgisonline.com/arcgis/rest/services/Utilities/PrintingTools/GPServer/Export%20Web%20Map%20Task',

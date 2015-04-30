@@ -28,6 +28,14 @@ define([
         clearbtn:null,
         postCreate: function () {
             this.inherited(arguments);
+
+            // place instructive text at the top
+			 var cp = new dijit.layout.ContentPane( {
+				   title:"Measure Instructions"
+				   ,content: '<div   style="padding:0px 0px 0px 20px;width: 90%;margin: 0px 0px 10px 0px;font-size:9px">Double-Click to finish measurement</div>'
+			 }).placeAt(this.domNode);
+
+
             this.measure = new Measurement({
                 map: this.map,
                 defaultAreaUnit: this.defaultAreaUnit,
@@ -46,7 +54,6 @@ define([
 
 
 		    on(this.parentWidget, 'hide', lang.hitch(this, function () {
-					    console.log("hidden");
 					    _this.clearMeasurement();
 					    _this.connectMapClick();
 			 }));
@@ -119,10 +126,13 @@ define([
 						 _this.clearMeasurement();
 						 //lang.hitch(this, "clearMeasurement");
 					}
-			});
-			this.clearbtn.placeAt(this.parentWidget);
-			this.clearbtn.startup()
-		    }
+			     });
+			    this.clearbtn.placeAt(this.parentWidget);
+			    this.clearbtn.startup();
+ 		    }
+
+
+
 		}
        , checkMeasureTool: function () {
             // no measurement tool is active

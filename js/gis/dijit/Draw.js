@@ -75,6 +75,19 @@ define([
 
 			}));
 
+		    on(this.parentWidget, 'hide', lang.hitch(this, function () {
+                _this.endDrawing();
+                this.connectMapClick();
+                _this.drawModeTextNode.innerText = 'None';
+                _this.drawToolbar.deactivate();
+                _this.pointGraphics.clear();
+                _this.polylineGraphics.clear();
+                _this.polygonGraphics.clear();
+                _this.drawToolbar.deactivate();
+                _this.disableStopButtons();
+			 }));
+
+
 
         },
         showThis: function(){
