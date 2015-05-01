@@ -26,6 +26,7 @@ namespace WebGIS
         public int rec_count = 0;
         public String search_type = "";
         public String sqlWhere = "";
+        public String sqlDateWhere = "";
          
         public String rawSQLQuery = "";
 
@@ -78,7 +79,7 @@ namespace WebGIS
             String msqlStr = "SELECT * FROM CAMVIEW_PropertyCardSalesWebGIS WHERE pin in (";
             msqlStr = msqlStr + "select pin from CAMVIEW_Sales ";
             msqlStr = msqlStr + sqlWhere;
-            msqlStr = msqlStr + ")";
+            msqlStr = msqlStr + ") AND " + sqlWhere.Replace("WHERE", "");
 
             String sqlStr = "";
             sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
@@ -92,7 +93,7 @@ namespace WebGIS
             String csqlStr = "SELECT COUNT(*) FROM CAMVIEW_PropertyCardSalesWebGIS WHERE pin in (";
             csqlStr = csqlStr + "select pin from CAMVIEW_Sales ";
             csqlStr = csqlStr + sqlWhere;
-            csqlStr = csqlStr + ")";
+            csqlStr = csqlStr + ") AND " + sqlWhere.Replace("WHERE", "");
 
 
             SqlCommand ccmd = new SqlCommand(csqlStr, cn);
@@ -155,7 +156,7 @@ namespace WebGIS
             String sqlStr = "SELECT * FROM CAMVIEW_PropertyCardSales WHERE pin in (";
             sqlStr = sqlStr + "select pin from CAMVIEW_Sales ";
             sqlStr = sqlStr + sqlWhere;
-            sqlStr = sqlStr + ")";
+            sqlStr = sqlStr + ") AND " +  sqlWhere.Replace("WHERE","");
             
 
 
@@ -407,6 +408,7 @@ namespace WebGIS
             String whereStr = "";
 
             ArrayList al = new ArrayList();
+            sqlDateWhere = "";
 
 
             if (qo.startAcreage >= 0 && qo.endAcreage > 0)
@@ -422,11 +424,13 @@ namespace WebGIS
             if (qo.startPrice >= 0 && qo.endPrice > 0)
             {
                 al.Add((String.Format(" SalePrice >={0} AND SalePrice <={1}", qo.startPrice, qo.endPrice)));
+                sqlDateWhere = String.Format(" SalePrice >={0} AND SalePrice <={1}", qo.startPrice, qo.endPrice);
             }
 
             if (qo.startDate !="" && qo.endDate !="")
             {
                 al.Add((String.Format(" SaleDate >='{0}' AND SaleDate <='{1}'", qo.startDate, qo.endDate)));
+                sqlDateWhere = String.Format(" SaleDate >='{0}' AND SaleDate <='{1}'", qo.startDate, qo.endDate);
             }
 
            /*

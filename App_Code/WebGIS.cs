@@ -915,12 +915,14 @@ namespace WebGIS
                 */
 
                 csqlStr = "";
-                csqlStr = csqlStr + "SELECT  COUNT(*)  ";
+                csqlStr = csqlStr + "SELECT  distinct p.pin ";
                 csqlStr = csqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 csqlStr = csqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
-                rawSQLQuery = osqlStr + " WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
-
+                //rawSQLQuery = osqlStr + " WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
+                rawSQLQuery = "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5  ";
+                rawSQLQuery = rawSQLQuery + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                rawSQLQuery = rawSQLQuery + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
             }
             else if (searchtype == "bus")
@@ -942,13 +944,17 @@ namespace WebGIS
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString() ;
+                
                 csqlStr = "";
-                csqlStr = csqlStr + "  SELECT   COUNT(PIN)  FROM  CAMVIEW_PropertyList  p";
+                csqlStr = csqlStr + "  SELECT   distinct p.pin  FROM  CAMVIEW_PropertyList  p";
                 csqlStr = csqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 csqlStr = csqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
 
-                rawSQLQuery = osqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
-
+                //rawSQLQuery = osqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
+                rawSQLQuery = "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD , PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5";
+                rawSQLQuery = rawSQLQuery + " FROM CAMVIEW_PropertyList  p  ";
+                rawSQLQuery = rawSQLQuery + " JOIN PA_WBusName b  ON p.PRPROP=b.OWFLPROP";
+                rawSQLQuery = rawSQLQuery + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
             }
 
             //sqlStr = sqlStr + " and l.lerecn=1";

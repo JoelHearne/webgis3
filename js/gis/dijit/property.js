@@ -1,95 +1,12 @@
 //define.amd.jQuery = true;
 define([
-	'dojo/_base/declare',
-    'dijit/_WidgetBase',
-    'dijit/_TemplatedMixin',
-    'dijit/_WidgetsInTemplateMixin',
-    'gis/dijit/_FloatingWidgetMixin',
-    "dijit/Dialog",
-    'dojo/dom-construct',
-    'dojo/on',
-    'dojo/_base/lang',
-    'dojo/dom',
-    'dojo/dom-style',
-    "dojo/query",
-    'dojo/request',
-    'dojo/request/script',
-    'dojo/ready', 'dojo/parser', 'dijit/registry',
-    'dojo/topic',
-    'dojo/number',
-    'dojo/aspect',
-    'dojo/keys',
-	'dojo/store/Memory',
-	'dojo/text!./property/templates/PropertyDialog.html',
-    'dijit/form/Button',
-	'dijit/layout/TabContainer',
-	'dijit/layout/ContentPane',
-	'dijit/form/ToggleButton',
-    'dijit/form/CheckBox',
-    'dijit/form/DropDownButton',
-    "dijit/form/ComboBox",
-    'dijit/TooltipDialog',
-    'dijit/form/Form',
-    //"dijit/form/Select",
-    'dojo/_base/array',
-    'dojo/io-query',
-    'dojox/lang/functional',
-
-    'dojo/json',
-    'dojo/cookie',
-    "dojo/parser",
-    'dijit/form/FilteringSelect',
-	'dijit/form/ValidationTextBox',
-	'dijit/form/DateTextBox',
-	'dojo/store/Cache'
-	,'dojo/store/JsonRest',
-	'put-selector',
-	'./prc',
-	'./prcmin',
-	//'dojo/_base/Color',
-	"esri/Color",
-	'esri/layers/GraphicsLayer',
-	'esri/graphic',
-	'esri/graphicsUtils',
-	'esri/renderers/SimpleRenderer',
-	'esri/symbols/PictureMarkerSymbol',
-	 "esri/geometry/Geometry",
-	'esri/geometry/Point',
-	"esri/geometry/Polygon",
-	"esri/geometry/Polyline",
-	'esri/SpatialReference',
-	'esri/symbols/SimpleMarkerSymbol',
-	'esri/symbols/SimpleLineSymbol',
-	'esri/symbols/SimpleFillSymbol',
-	'esri/toolbars/draw',
-	'esri/graphicsUtils',
-	'esri/tasks/FindTask',
-	'esri/tasks/FindParameters',
-	"esri/tasks/QueryTask",
-	"esri/tasks/query",
-	'esri/geometry/Extent',
-	'esri/tasks/IdentifyTask',
-	'esri/tasks/IdentifyParameters',
-    "esri/geometry/normalizeUtils",
-    "esri/tasks/GeometryService",
-    "esri/tasks/BufferParameters",
-    "esri/dijit/Legend",
-	'esri/InfoTemplate',
-	 // "dojox/layout/ResizeHandle",
-	 "./ResizeHandle",
-	'./LayerControl',
-	//'dojo/i18n!./property/nls/resource',
-	'xstyle/css!./property/css/property.css'
-	//,'xstyle/css!./property/css/adw-icons.css'
-	,"dojo/NodeList-traverse"
-	//,"./NodeList-walk"  // !!! your NodeList-walk module
-	  ,'dojo/domReady!'
+'dojo/_base/declare','dijit/_WidgetBase','dijit/_TemplatedMixin','dijit/_WidgetsInTemplateMixin','gis/dijit/_FloatingWidgetMixin',"dijit/Dialog",'dojo/dom-construct','dojo/on','dojo/_base/lang','dojo/dom','dojo/dom-style',"dojo/query",'dojo/request','dojo/request/script','dojo/ready', 'dojo/parser', 'dijit/registry','dojo/topic','dojo/number','dojo/aspect','dojo/keys','dojo/store/Memory','dojo/text!./property/templates/PropertyDialog.html','dijit/form/Button','dijit/layout/TabContainer','dijit/layout/ContentPane','dijit/form/ToggleButton','dijit/form/CheckBox','dijit/form/DropDownButton',"dijit/form/ComboBox",'dijit/TooltipDialog','dijit/form/Form','dojo/_base/array','dojo/io-query','dojox/lang/functional','dojo/json','dojo/cookie',"dojo/parser",'dijit/form/FilteringSelect','dijit/form/ValidationTextBox','dijit/form/DateTextBox','dojo/store/Cache','dojo/store/JsonRest','put-selector','./prc','./prcmin',"esri/Color",'esri/layers/GraphicsLayer','esri/graphic','esri/graphicsUtils','esri/renderers/SimpleRenderer','esri/symbols/PictureMarkerSymbol',"esri/geometry/Geometry",'esri/geometry/Point',"esri/geometry/Polygon","esri/geometry/Polyline",'esri/SpatialReference','esri/symbols/SimpleMarkerSymbol','esri/symbols/SimpleLineSymbol','esri/symbols/SimpleFillSymbol','esri/toolbars/draw','esri/graphicsUtils','esri/tasks/FindTask','esri/tasks/FindParameters',"esri/tasks/QueryTask","esri/tasks/query",'esri/geometry/Extent','esri/tasks/IdentifyTask','esri/tasks/IdentifyParameters',"esri/geometry/normalizeUtils","esri/tasks/GeometryService","esri/tasks/BufferParameters","esri/dijit/Legend",'esri/InfoTemplate',"./ResizeHandle",'./LayerControl','xstyle/css!./property/css/property.css',"dojo/NodeList-traverse",'dojo/domReady!'
 ], function (declare, _WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin,Dialog, domConstruct, on, lang
 ,dom,Style,query,request,script,ready,parser,registry,topic,number,aspect,keys,Memory,template,Button,TabContainer,ContentPane,ToggleButton,CheckBox,DropDownButton,ComboBox,TooltipDialog,Form,array
 ,ioQuery,functional,JSON,cookie,parser,FilteringSelect,validationtextBox,DateTextBox,Cache,JsonRest,put,prc,prcmin,Color,GraphicsLayer,Graphic,graphicsUtils,SimpleRenderer,PictureMarkerSymbol,Geometry
 ,Point,Polygon,Polyline,SpatialReference,SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol, Draw, graphicsUtils, FindTask, FindParameters,QueryTask,Query, Extent,IdentifyTask
 , IdentifyParameters, normalizeUtils, GeometryService, BufferParameters,Legend,InfoTemplate,ResizeHandle,LayerControl
-//, i18n
+
 ) {
 	return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin, _FloatingWidgetMixin], {
 		widgetsInTemplate: true,
@@ -109,6 +26,7 @@ define([
 		afStore:null,
 		queryIdx:0,
 		resPage:1,
+		resPageCnt:0,
 		activeMenu:"property",
 		mapClickMode: null,
 		pointGraphics:null,
@@ -529,7 +447,7 @@ define([
             var lastWidth=350;
 			//if (ab_owd <=280 && this.lastWidth >= 280) {
 			if (ab_owd <=250  ) {
-				console.log("resizing width");
+				//console.log("resizing width");
 				var tcpc= dojo.query(".dijitDialogTitleBar",this.parentWidget.domNode);
 
 				tcpc.forEach(function(node){
@@ -623,11 +541,17 @@ define([
 				   psr.style.setProperty("width", ab_owd-3 + 'px', "important");
 
 			  }
-			 if ((psr && psr!=null) && (zd && zd!=null)) {
+			 /*if ((psr && psr!=null) && (zd && zd!=null)) {
 
 			  // var psr_calch=actbr.offsetTop - psr.offsetTop - zd.offsetTop-21;
 			   //var psr_calch=actbr.offsetTop - psr.offsetTop ;
 			   var psr_calch=actbr.offsetTop - zd.offsetTop -psr.offsetTop;
+			   console.log("this.resPageCnt",this.resPageCnt);
+			   if (this.resPageCnt > 0 && this.resPageCnt < 2) {
+				   console.log("this.resPageCnt -- resizing" );
+				   psr_calch=psr_calch-290;
+
+			   }
 
 			   //console.log("resizing pSearch Results",psr_calch,actbr.offsetTop,actbr.offsetHeight , psr.offsetTop, psr.offsetHeight , zd.offsetTop,psr);
 			   //psr.style.height=psr_calch ;
@@ -636,6 +560,7 @@ define([
 			   //this.parentWidget.resize();
 
 		     }
+		     */
 
 		     var md=document.getElementById("pcMinDet");
 			 if ((md && md!=null)) {
@@ -649,7 +574,8 @@ define([
 
              if ((psr && psr!=null) ) {
 				  var calc_ht=(actbr.offsetTop-psr.offsetTop)-zd.offsetHeight-zd.offsetTop-document.getElementById("propertyNode").offsetTop;
-				  psr.style.setProperty("height", calc_ht + 'px', "important");
+			      if (this.resPageCnt > 0 && this.resPageCnt < 2)  calc_ht=calc_ht-20;
+ 				  psr.style.setProperty("height", calc_ht + 'px', "important");
 				  //odocument.getElementById("propertyNode").style.setProperty("height", calc_ht + 'px', "important");
 			 }
 			 var pw=document.getElementById("property_widget");
@@ -1268,6 +1194,8 @@ define([
             var frmObj=null;
             this.activeMenu=selForm;
 
+            document.getElementById("searchbuttondiv").style.display="block";
+
 			if (selForm=="property") {
 				frmObj=dijit.byId("pPropSearchForm");
 
@@ -1286,6 +1214,7 @@ define([
 				 frmObj=dijit.byId("pBusForm");
 
 			} else if (selForm=="map") {
+				 document.getElementById("searchbuttondiv").style.display="none";
 				 frmObj=dijit.byId("pMapFrm");
 
 				 this.activateMapSearch();
@@ -2010,7 +1939,7 @@ define([
 
 				   var title="Saved";
 				   var idx=2;
-				   var content='<div id="pSavedZmDv" style="float:center;padding:0px;margin;0px;"><input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input><input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input></div><br><div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br><div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div><br></div>';
+				   var content='<div id="pSavedZmDv" style="float:center;padding:0px;margin:30px 0px 0px 0px;"><input id="btnZoomAllSaved" data-dojo-attach-point="btnSavedZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllListSaved"></input><input id="btnSavedPrLbls" data-dojo-attach-point="btnSavedPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="print mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsSaved"></input></div><br><div class="ptabContent ptabContMain" style="padding:0px !important;margin:0px !important;"><br><div id="pSearchSaved" data-dojo-type="dijit/layout/ContentPane" style="padding:0px 0px 7px 0px !important;margin:0px !important;"></div><br></div>';
 
 				   this.createTab("pSavedTab",title,idx,content);
 				   //this.pResultsSubTabs.forward() ;
@@ -2094,6 +2023,7 @@ define([
 				select.options.length=0;
 				rec_page = 1;
 				pgcnt = 1;
+				this.resPageCnt=pgcnt;
 
 			    this.btnZoomAll.domNode.style.display="block";
 			    this.btnPrLbls.domNode.style.display="block";
@@ -2105,6 +2035,7 @@ define([
 					//document.getElementById("pPageSelDiv2").style.display="block";
 					document.getElementById("pPageSelDiv3").style.display="block";
 					pgcnt = Math.ceil(dobj.rec_count / 50);
+					this.resPageCnt=pgcnt;
 					if (dobj.start_rec > 50) rec_page = Math.ceil(dobj.start_rec / 50);
 
 					for (var p = 0; p < pgcnt; p++) {

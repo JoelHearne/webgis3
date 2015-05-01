@@ -1,9 +1,6 @@
-js\config\viewer.js
-js\gis\dijit\Draw.js
+App_Code\WebGIS.cs
+App_Code\clsSalesData.cs
 js\gis\dijit\Identify.js
-js\gis\dijit\Measurement.js
-js\gis\dijit\NavTools\templates\NavTools.html
-js\gis\dijit\Print\templates\Print.html
 js\gis\dijit\property.js
 js\gis\dijit\property\css\property.css
 js\gis\dijit\property\templates\PropertyDialog.html

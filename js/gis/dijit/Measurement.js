@@ -26,14 +26,17 @@ define([
         declaredClass: 'gis.dijit.Measurement',
         mapClickMode: null,
         clearbtn:null,
+        isRes:false,
         postCreate: function () {
             this.inherited(arguments);
 
             // place instructive text at the top
-			 var cp = new dijit.layout.ContentPane( {
+
+			var cp = new dijit.layout.ContentPane( {
 				   title:"Measure Instructions"
 				   ,content: '<div   style="padding:0px 0px 0px 20px;width: 90%;margin: 0px 0px 10px 0px;font-size:9px">Double-Click to finish measurement</div>'
 			 }).placeAt(this.domNode);
+
 
 
             this.measure = new Measurement({
@@ -81,6 +84,8 @@ define([
 				_this.showThis();
 			}));
 
+			//this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
+
 			/*
 			var ev = '', out = [];
 			for (ev in this.parentWidget.domNode) {
@@ -94,15 +99,15 @@ define([
 
         ,showThis: function(){
            this.parentWidget.show();
-           this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
+           if (!isRes) {
+              this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
+	          this.isRes=true;
+	       }
            //this.parentWidget.set('style', 'left:0px');
-
            // turn off any selection tools or any other tools
            topic.publish('property/toggleSpatial', {mode:"point",state:false });
-
            // TODO: prevent selection from getting cleared so user can measure the selection
            // TODO: remember what tool was active before measure started and toggle it back on after measure finishes
-
 		}
 	   , measure_start:function(){
 			////console.log("...measure_start ",this.measure);
