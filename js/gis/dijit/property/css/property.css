@@ -85,6 +85,33 @@ select {
 }
  
 
+#mapsearchinfo   {
+   font-size:6pt;
+   font-weight:bold;
+   font-style: italic;
+   width:305px;
+}
+
+#active_mapsearch  {
+   font-size:8px;
+   font-weight:bold;
+   color:rgb(1,109,138)
+   background-color: rgba(89, 152, 141,0.5);
+   padding: 1px 1px;
+   border: 1px solid rgb(0, 136, 204);
+   border-radius: 3px 3px 3px 3px;
+   width:305px;
+}
+
+ #mapsearchbfrinfo {
+   font-size:6pt;
+   font-weight:bold;
+   font-style: italic;
+   border: 1px solid rgb(0, 136, 204);
+   border-radius: 3px 3px 3px 3px;   
+   width:305px;
+}
+
 
 #pcMinDet {
  /* height:97% !important;*/

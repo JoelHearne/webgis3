@@ -200,26 +200,14 @@
 
 
                                                 <div id="pMapFrm" class="pContRes" data-dojo-attach-point="pMapFrm" data-dojo-type="dijit/layout/ContentPane" style="display:none;font-size:12px">
-                                                    <p>Use these map search tools to select parcels on the map. Draw a selection shape on the map and double click your mouse to complete the shape.</p>
+
+                                                    <div id="mapsearchinfo" >
+                                                    <p>Use these map search tools to select parcels on the map. Choose one of the tools below then draw a selection shape on the map to perform the search.</p>
+                                                    <br>
+                                                    <div id="active_mapsearch" >click one of the spatial selection tools below to get started</div>
+                                                    </div>
 
 
-                                                    <!--
-                                                    <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePoint"  label="Select By Point" iconClass="dijitNoIcon" ></input>
-                                                      <br>
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePolyline"  label="Select By Line" iconClass="dijitNoIcon" ></input>
-                                                      <br>
-
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modePolygon"  label="Select By Polygon" iconClass="dijitNoIcon" ></input>
-                                                      <br>
-
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modeFreehandLine"  label="Select By Freehand Line" iconClass="dijitNoIcon" ></input>
-                                                      <br>
-
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modeFreehandPolygon"  label="Select By Freehand Polygon" iconClass="dijitNoIcon" ></input>
-                                                      <br>
-
-                                                      <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:modeBox"  label="Select By Box" iconClass="dijitNoIcon" ></input>
-                                                      -->
                                                       <br>
 
 													<div style="padding:5px;">
@@ -283,12 +271,17 @@
                                                       <!-- Buffer Menu displays when results are present -->
                                                       <div id="pMapBuffr" class="pContRes" data-dojo-attach-point="pMapBuffr" data-dojo-type="dijit/layout/ContentPane" style="display:none;font-size:12px">
 
+														  <div id="mapsearchbfrinfo" >
+															<p>Search additional properties within a specified distance of the currently selected parcels using the "Select By Buffer" tool below.  Enter the desired distance, set the length units, and click the "Select By Buffer" button calculate the buffer and perform the search.</p>
+
+														  </div>
+
                                                           <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:preBuffer"  label="Select By Buffer" iconClass="dijitNoIcon" style="float:left"></input>
 
-                                                          <input id="tbBuffr" type="text"  data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbBuffr" style="width: 49px;float:center"></input>
+                                                          <input id="tbBuffr" type="text"  data-dojo-type="dijit/form/ValidationTextBox" data-dojo-attach-point="tbBuffr" style="width: 85px;float:center"></input>
 
 
- 														  <select id="selBufUnit" data-dojo-attach-point="selBufUnit" style="font-size:9pt; width: 90px; padding:0px;margin;0px;float:right">
+ 														  <select id="selBufUnit" data-dojo-attach-point="selBufUnit" style="font-size:9pt; width: 90px; padding:0px;margin:0px 30px 0px 0px;float:right">
 																<option value="ft" selected="true">Feet</option>
 																<option value="mi">Miles</option>
 																<option value="m">Meters</option>
@@ -297,17 +290,21 @@
                                                        </div>
                                                        <br>
 
-                                                     <div style="width:42%;margin: 3px 3px 5px 50px; font-size: 9px;">
+
+                                                     <div style="width:42%;margin: 3px 3px 5px 70px; font-size: 9px;">
                                                       <input type="button"   style="float:right;" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearGraphics"  label="Clear Map Search" iconClass="dijitNoIcon" ></input>
-                                                    </div>
+                                                     </div>
+
+
                                                     <br>
                                                 </div>
                                                 <br><br>
 
                                                 <div style="width:58%;margin: 3px 3px 5px 50px; font-size: 9px;">
-                                                    <input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
+                                                    <!--<input type="button" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="Search" iconClass="dijitNoIcon" style="float:left;" data-dojo-attach-event="onClick:doSearch"></input>
 
                                                     <input type="button" data-dojo-type="dijit/form/Button" data-dojo-attach-event="onClick:clearSearch"  label="Clear" iconClass="dijitNoIcon" style="float:right"></input>
+                                                    -->
                                                 </div>
 
 

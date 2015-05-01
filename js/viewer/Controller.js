@@ -101,7 +101,7 @@ define([
            //dom.byId("spatialDijit").innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
            //var node = document.getElementById('spatialDijit');
            //domAttr.set(node, "innerHTML", "<a id=\"qrySpatLnk\" >Spatial Search</a>");
-           document.getElementById('spatialDijit').innerHTML="<a id=\"qrySpatLnk\" >Spatial Search</a>";
+           document.getElementById('spatialDijit').innerHTML="<a  id=\"qrySpatLnk\" >Spatial Search</a>";
            document.getElementById('qrySpatLnk').onclick = function(){ _this.showSpatialSearchMenu(); };
 
 		   //var timerEnd =  (new Date()).getTime();
@@ -337,6 +337,11 @@ define([
 			} else {
 				this.initWidgets();
 			}
+
+			this.map.infoWindow.on('onShow', lang.hitch(this, function () {
+                          alert("infoWindowShow");
+            }));
+
 
 
 

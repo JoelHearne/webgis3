@@ -132,6 +132,9 @@ define([
 
 			}));
 
+            // This tells the infowindow what side of the anchor point to display on
+			this.map.infoWindow.set("anchor", "left");
+
         }
         ,showThis: function(){
            this.parentWidget.show();
@@ -197,11 +200,8 @@ define([
             var identifiedlayers = [];
             var selectedLayer = this.getSelectedLayer();
 
-
             //console.log("identify  selectedLayer",selectedLayer);
             //console.log("identify  identifyParams",identifyParams);
-
-
             array.forEach(this.layers, lang.hitch(this, function (layer) {
                 //console.log("identify layer",layer,layer.layerInfos);
                 var layerIds = this.getLayerIds(layer, selectedLayer);
@@ -219,23 +219,19 @@ define([
             // Only if parcels is in identifies ... remove parcel layer from identifies and display in property results pane instead.  Or, do just the later.
            // console.log("sending identify to property select",mapPoint,identifies,identifiedlayers);
 
-             //console.log("  identify identifiedlayers" ,identifiedlayers,identifiedlayers[0],identifiedlayers[0].layerInfo.layer.layerInfos);
+           //console.log("  identify identifiedlayers" ,identifiedlayers,identifiedlayers[0],identifiedlayers[0].layerInfo.layer.layerInfos);
 
-            //if (identifiedlayers[0].layerInfo.visibleLayers
+           //if (identifiedlayers[0].layerInfo.visibleLayers
+           //topic.publish('property/searchSpatial', {geometry:mapPoint});
+           //console.log("this.map.infoWindow",this.map.infoWindow);
 
-
-
-            //topic.publish('property/searchSpatial', {geometry:mapPoint});
-
-
-            if (identifies.length > 0) {
+           if (identifies.length > 0) {
                 this.map.infoWindow.setTitle( this.i18n.mapInfoWindow.identifyingTitle );
                 this.map.infoWindow.setContent('<div class="loading"></div>');
                 this.map.infoWindow.show(mapPoint);
                 all(identifies).then(lang.hitch(this, 'identifyCallback', identifiedlayers), lang.hitch(this, 'identifyError'));
             }
         },
-
         checkForGraphicInfoTemplate: function (evt) {
             if (evt.graphic) {
                 // handle feature layers that come from a feature service
@@ -256,12 +252,9 @@ define([
                         return false;
                     }
                 }
-
             }
-
             return true;
         },
-
         createIdentifyParams: function (point) {
             var identifyParams = new IdentifyParameters();
             identifyParams.tolerance = this.identifyTolerance;
@@ -275,7 +268,6 @@ define([
 
             return identifyParams;
         },
-
         getSelectedLayer: function () {
             var selectedLayer = this.allLayersId; // default is all layers
             // if we have a UI, then get the selected layer
@@ -289,7 +281,6 @@ define([
             }
             return selectedLayer;
         },
-
         getLayerIds: function (layer, selectedLayer) {
             var arrIds = selectedLayer.split(this.layerSeparator);
             var allLayersId = this.allLayersId;
@@ -313,7 +304,6 @@ define([
             }
             return layerIds;
         },
-
         getLayerInfos: function (ref, selectedIds) {
             var layerIds = [];
             array.forEach(ref.layerInfos, lang.hitch(this, function (layerInfo) {
@@ -325,7 +315,6 @@ define([
             return layerIds;
 
         },
-
         identifyCallback: function (identifiedlayers, responseArray) {
 			var isPcl=false;
 			var pins=[];
@@ -351,11 +340,9 @@ define([
                     fSet.push(result.feature);
                 }, this);
             }, this);
-
             this.map.infoWindow.setFeatures(fSet);
-
             //if (isPcl) topic.publish('property/searchPINs', {pins:pins});
-
+            //document.getElementById('map_infowindow').style.zIndex = 9999;
         },
         identifyError: function (err) {
             this.map.infoWindow.hide();
@@ -388,23 +375,19 @@ define([
                     }
                 }
             }
-
             // if no Popup config found, create one with all attributes or layer fields
             if (!popup) {
                 popup = this.createInfoTemplate(layer, layerId, result);
             }
-
             return popup;
         },
 
         createInfoTemplate: function (layer, layerId, result) {
             var popup = null, fieldInfos = [];
-
             var layerName = this.getLayerName(layer);
             if (result) {
                 layerName = result.layerName;
             }
-
             // from the results
             if (result && result.feature) {
                 var attributes = result.feature.attributes;
@@ -418,7 +401,6 @@ define([
                         }
                     }
                 }
-
             // from the outFields of the layer
             } else if (layer._outFields && (layer._outFields.length) && (layer._outFields[0] !== '*')) {
 
@@ -435,7 +417,6 @@ define([
                         });
                     }
                 });
-
             // from the fields layer
             } else if (layer.fields) {
 
@@ -447,7 +428,6 @@ define([
                     });
                 });
             }
-
             if (fieldInfos.length > 0) {
                 popup = new PopupTemplate({
                     title: layerName,
@@ -462,7 +442,6 @@ define([
 
             return popup;
         },
-
         createIdentifyLayerList: function () {
             var id = null;
             var identifyItems = [];

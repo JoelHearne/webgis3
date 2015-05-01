@@ -468,10 +468,10 @@ define([
 				  case "a":
 					   //_this.titleBar.style.setProperty("width", '350px', "important");
 
-					    var ttb= dojo.query(".dijitDialogTitleBar",_this.parentWidget.domNode);
+					    var ttb= dojo.query("*",_this.parentWidget.domNode);
        					ttb.forEach(function(node){
-							console.log("got titlebar node",node);
-						}).style("width",   "350px");
+
+						}).style("z-index",   "20");
 
 				    break;
 
@@ -810,7 +810,10 @@ define([
                     break;
                 default:
             }
-            if (!this.mapsearch_auto) this.connectMapClick();
+            if (!this.mapsearch_auto) {
+				this.connectMapClick();
+				this.doSearch();
+			}
 
             if (this.mapsearch_auto) this.doSearch();
         }
@@ -902,31 +905,38 @@ define([
 			this.disconnectMapClick();
 			this.mapSearchMode='point';
             this.drawToolbar.activate(Draw.POINT);
+            document.getElementById("active_mapsearch").innerHTML="select by point tool is active";
+
 		}
 		, modePolygon: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='polygon';
 			this.drawToolbar.activate(Draw.POLYGON);
+			document.getElementById("active_mapsearch").innerHTML="select by polygon tool is active<br><p style='color:red'>double click the mouse to finish drawing";
  		}
 		, modePolyline: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='polyline';
 			this.drawToolbar.activate(Draw.POLYLINE);
+			document.getElementById("active_mapsearch").innerHTML="select by polyline tool is active<br><p style='color:red'>double click the mouse to finish drawing</p>";
 		}
 		,modeFreehandLine: function () {
 		    this.disconnectMapClick();
 		    this.mapSearchMode='polyline';
 		    this.drawToolbar.activate(Draw.FREEHAND_POLYLINE);
+		    document.getElementById("active_mapsearch").innerHTML="select by freehand polyline tool is active";
         }
         ,modeFreehandPolygon: function () {
             this.disconnectMapClick();
             this.mapSearchMode='polygon';
             this.drawToolbar.activate(Draw.FREEHAND_POLYGON);
+            document.getElementById("active_mapsearch").innerHTML="select by freehand polygon tool is active";
         }
 		, modeBox: function (e) {
 			this.disconnectMapClick();
 			this.mapSearchMode='polygon';
 			this.drawToolbar.activate(Draw.EXTENT);
+			document.getElementById("active_mapsearch").innerHTML="select by box tool is active";
  		}
 		, disconnectMapClick: function () {
 			this.map.setMapCursor('crosshair');
@@ -936,6 +946,7 @@ define([
 			//console.log("connectMapClick ",this.mapsearch_auto);
 			this.map.setMapCursor('auto');
 			topic.publish('mapClickMode/setDefault');
+			document.getElementById("active_mapsearch").innerHTML="click one of the spatial selection tools below to get started";
 		}
 		, clearGraphics: function () {
 			this.pointGraphics.clear();
@@ -986,7 +997,6 @@ define([
 		,mapqRes: function(results) {
 			//console.log(arguments.callee," ",results);
 
-
 			// check if result count exceeded threshhold
 			if (results.exceededTransferLimit) {
 				// notify the user that the result count exceeds the maximum threshhold
@@ -998,7 +1008,6 @@ define([
 					opacity: 0.8
 				});
 			}
-
 
 			//console.log("mapqRes");
 			//console.log("mapqRes",results);
@@ -1712,6 +1721,7 @@ define([
           });
 
           //_this.mapSearch(bufferedGeometries[0]);
+          this.doSearch();
 
         }
 		,doSearch_Pins: function(pins){
