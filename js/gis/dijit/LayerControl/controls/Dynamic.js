@@ -86,6 +86,22 @@ define([
 		        });
 		        _this._setVisibleLayers();
             }));
+
+            // JCH 5-15-15 - Work around to toggle layer in the TOC
+            topic.subscribe('Dynamic/ToggleLayer', lang.hitch(this, function (obj) {
+
+				//console.log("Dynamic/ToggleLayer",obj );
+                array.forEach(_this._sublayerControls, function (control) {
+						// console.log("Dynamic sublayerControls ",control,control.labelNode.textContent);
+
+						 if (control.labelNode.textContent==obj.name) {
+							 control._setSublayerCheckbox(true);
+						 }
+
+		        });
+		        _this._setVisibleLayers();
+            }));
+
          },
         // called from LayerMenu plugin
         _dynamicToggleMenuItems: function (menu) {

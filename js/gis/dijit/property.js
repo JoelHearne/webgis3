@@ -61,6 +61,7 @@ define([
 	    isExtSel:false,
 	    showThisCount:0,
 	    //pSearchResults:null,
+	    qo:null,
 
 		postCreate: function () {
 			this.inherited(arguments);
@@ -327,18 +328,32 @@ define([
 
 
 			// handle querystring search
+			//TODO: Move all of the following into InitZoomer
 			 var query = document.location.search.substring(document.location.search.indexOf("?") + 1, document.location.search.length);
 			 var qo = dojo.queryToObject(query);
+			 this.qo=qo;
+
+
 			 if (qo.searchtype) {
+
 				 if (qo.searchtype=="address"){
 					 //console.log("this.searchAddr",this.searchAddr);
-
+					 //topic.publish('Dynamic/ToggleLayer',{name:"Evacuation Zones"});
 					 this.showThis();
 					 //this.searchAddr.textbox.value=qo.searchvalue;
 					 document.getElementById("af_tbAddr").value=qo.searchvalue;
 					 //registry.byId("af_tbAddr").textbox.value=qo.searchvalue;
 					 this.doSearch();
+				 } else if (qo.searchtype=="pin"){
+					  console.log("searching pin",qo.searchvalue);
+					 // document.getElementById("af_tbPIN").value=qo.searchvalue;
+
+					 this.showThis();
+					 //this.searchAddr.textbox.value=qo.searchvalue;
+					 document.getElementById("af_tbPIN").value=qo.searchvalue;
+					 this.doSearch();
 				 }
+
 			 }
 
 
@@ -380,8 +395,10 @@ define([
 					   if (subtbs) subtbs.resize();
 				    break;
 				  case "p":
-					   var  tbs=registry.byId("pSearchTabs");
-					   if (tbs) tbs.resize();
+				    console.log(charStr);
+				      topic.publish('Dynamic/ToggleLayer',{name:"Evacuation Zones"});
+					   //var  tbs=registry.byId("pSearchTabs");
+					   //if (tbs) tbs.resize();
 				    break;
 				  case "a":
 					   //_this.titleBar.style.setProperty("width", '350px', "important");
@@ -988,6 +1005,9 @@ define([
 
 			pMapBuffr.style.display="block";
 
+			console.log("mapqRes");
+			//this.PostResultActions();
+
            // Show info popup
 		   //var mapPoint = zoomExtent.getCenter();
 		   //this.map.infoWindow.setContent('<div class="loading"></div>');
@@ -1122,6 +1142,7 @@ define([
 		    });
 
 		    this.resizeContents();
+		    this.PostResultActions();
 		     this.zoomPIN(pinv,false);
 		}
       ,setautofill: function(inputobj_key) {
@@ -2218,6 +2239,18 @@ define([
 			 //console.trace();
 			 //console.groupEnd();
 			 //console.select(document.getElementById("pResultListTab"));
+
+
+
+		}
+		,PostResultActions:function(){
+
+              console.log("PostResultActions " );
+            //console.log("PostResultActions " ,this);
+			 if (this.qo && (this.qo.maptype)) {
+				 if (this.qo.maptype=="hurricane")  topic.publish('Dynamic/ToggleLayer',{name:"Evacuation Zones"});
+			 }
+
 		}
 		,Open_PRCFull:function(pin){
 			var puw=window.open( 'prc_full/prc.php?cl=paqry&pin=' + pin,"prcfull");

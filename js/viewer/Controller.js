@@ -64,6 +64,7 @@ define([
 		timerStart:null,
 		isMapInit:false,
 		mapInitCnt:0,
+		sessid:null,
 
 		startup: function (config) {
 			this.config = config;
@@ -80,6 +81,9 @@ define([
 					has.add('tablet', true);
 				}
 			}
+
+			this.generateSessionTracker();
+
 			if (config.titles) {
 				this.addTitles();
 			}
@@ -116,6 +120,16 @@ define([
 
           //console.log("finished loading loadtime.... ",sec," seconds");
 
+		}
+		,generateSessionTracker:function() {
+			var sessid='xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
+            this.sessid=sessid;
+            console.log("setting session id cookie",this.sessid);
+
+            document.cookie="sessid=" + sessid;
 		}
 		,showSpatialSearchMenu:function(){
 			console.log("showSpatialSearchMenu");
@@ -615,6 +629,9 @@ define([
 
 			}
 			//LayerControl LayerInfos array
+
+            console.log("layer",layer);
+
 
 			this.layerControlLayerInfos.unshift({ //unshift instead of push to keep layer ordering in LayerControl intact
 				layer: l,

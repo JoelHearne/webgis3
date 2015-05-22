@@ -83,12 +83,49 @@ define([
 
 		    if (qo.layers) {  // mod TOC state to reflect
 
+		    //topic.publish('Dynamic/ToggleLayer',{layers:qo.layers});
+		    //return;
+
 		      var layerqs=decodeURIComponent(qo.layers);
               var mlyrs = dojo.fromJson(layerqs);
+
+
+
+
+              var lyrs=qo.layers.split(",");
+
+              //console.log("parsing layer request",mlyrs);
 			  // set map visible layers accordingly
               var mscntr=0;
 			  array.forEach(this.map.layerIds, lang.hitch(this, function(id) {
 				  var mapService = this.map.getLayer(id);
+				 // console.log("analyzing mapService ",mapService);
+
+
+				  if (id=="WebGIS") {
+					  var lyrinfos=mapService.layerInfos;
+					  //console.log("processing WebGIS mapService ",lyrinfos);
+					  array.forEach(mapService.layerInfos, lang.hitch(this, function(li) {
+							 //console.log("   --------Layer Info ------------- "  );
+							 //console.log(li);
+
+							 // get layer and do something with it here
+
+							 // prep evacuation report
+							 if (li.name=="Evacuation Zones") {
+								// console.log("   --------Got evacuation zones ... getting layer",li  );
+								 var vl=mapService.visibleLayers;
+								 vl.push(li.id);
+								 //console.log("   --------adjusted visible layers",li  );
+
+								 //mapService.setVisibleLayers(vl);
+
+								 //console.log("   --------got layer",lyr  );
+
+							 }
+					  }));
+ 			  }
+
 				  /*
 				  array.forEach(mapService.layerInfos, lang.hitch(this, function(li) {
 						//console.log("   --------Layer Info ------------- "  );
@@ -96,11 +133,18 @@ define([
 				 }));
 				 */
 
-				  if (!mapService.hasOwnProperty('_basemapGalleryLayerType')) {
+				  if ((!mapService.hasOwnProperty('_basemapGalleryLayerType')) && (id=="WebGIS")) {
 						  //mapService.setVisibility(true);
 						  //mapService.setOpacity(0.5);
 						   if (mapService.declaredClass === 'esri.layers.ArcGISDynamicMapServiceLayer') {
-                               mapService.setVisibleLayers(mlyrs[mscntr]);
+
+                               //mapService.setVisibleLayers(mlyrs[mscntr]);
+							   var vl=mapService.visibleLayers;
+							   //vl.push(lyrs[0]);
+							   //vl.push(lyrs[1]);
+
+							   //mapService.setVisibleLayers(vl);
+
 						       mscntr++;
 						   }
 				  }
