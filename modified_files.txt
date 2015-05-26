@@ -1,10 +1,8 @@
-App_Code\WebGIS.cs
-App_Code\clsSalesData.cs
+js\config\viewer.js
 js\gis\dijit\InitZoomer.js
 js\gis\dijit\LayerControl\controls\Dynamic.js
-js\gis\dijit\Measurement.js
+js\gis\dijit\NavTools.js
 js\gis\dijit\property.js
-js\gis\dijit\property\css\property.css
 js\gis\dijit\property\templates\PropertyDialog.html
 js\viewer\Controller.js
 modified_files.txt

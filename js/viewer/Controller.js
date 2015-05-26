@@ -630,7 +630,7 @@ define([
 			}
 			//LayerControl LayerInfos array
 
-            console.log("layer",layer);
+            //console.log("layer",layer);
 
 
 			this.layerControlLayerInfos.unshift({ //unshift instead of push to keep layer ordering in LayerControl intact

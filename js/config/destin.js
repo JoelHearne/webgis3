@@ -113,8 +113,9 @@ define([
 			 */
 
 
-			,center: [-86.59987, 30.68192]
-			,zoom: 10
+			//,center: [-86.469734, 30.404409]
+			,center: [-86.453221, 30.404409]
+			,zoom: 14
 
 			,fadeOnZoom: true
 			,force3DTransforms: true
@@ -189,8 +190,8 @@ define([
         {
 			type: 'dynamic',
 			//url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
-			url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis2/MapServer',
-			title: 'Okaloosa WebGIS',
+			url: 'http://204.49.20.75:6080/arcgis/rest/services/destin/destin/MapServer',
+			title: 'Destin WebGIS',
 			slider: true,
 			noLegend: false,
 			collapsed: false,

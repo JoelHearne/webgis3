@@ -439,6 +439,7 @@ define([
 		   */
 
 
+            this.showThis();
 			//this.resizeContents();
  			 return this.pshowAtStartup;
         }
@@ -821,6 +822,16 @@ define([
                 this.doSearch();
                 this.activeMenu=prev_actmenu;
 		}
+		,resetSearchMode: function(){
+				this.mapsearch_auto=false;
+				this.isExtSel=false;
+				this.activeMenu='property';	 // TODO: make this whatever it really is
+				this.drawToolbar.deactivate();
+				this.clearGraphics();
+				this.connectMapClick();
+				// TODO: deactivate tool on NavTools menu
+
+		}
 		,external_setMapSrchMode: function(mode,state) {
 			if (state) {
 				// uncomment to make the map menu automatically appear
@@ -1198,6 +1209,7 @@ define([
 					 if (evt.keyCode === keys.ENTER) _this.doSearch();
 					 if(dojo.byId( tbID).value.length > _this.queries[qryidx].minChars )
 												dijit.byId(tbID).set("store", _this.afStore_list[flidx]);
+												_this.resetSearchMode();
 
 					 if(dojo.byId( tbID).value.length <= _this.queries[qryidx].minChars )
 							dijit.byId(tbID).set("store",testStore);

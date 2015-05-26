@@ -276,6 +276,9 @@ define([
 				this.navTools.deactivate();
 				topic.publish('property/toggleSpatial', {mode:"point",state:this.select_on });
 				this.mngActiveTool("btn_selpoint");
+
+
+
 				//topic.publish('identify/proxySelect', 'select');
 				//this.map.setMapCursor('pointer');
 				//this.navTools.activate(Navigation.PAN);
