@@ -1,7 +1,6 @@
-js\config\destin.js
+js\config\viewer.js
 js\gis\dijit\NavTools.js
+js\gis\dijit\NavTools\templates\NavTools.html
 js\gis\dijit\prcmin\templates\prcmin.html
 js\gis\dijit\property.js
-js\gis\dijit\property\templates\PropertyDialog.html
-js\viewer\Controller.js
 modified_files.txt

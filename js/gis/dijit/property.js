@@ -87,7 +87,26 @@ define([
 
 
 			window.addEventListener('resize', function(event){
-                //console.log("window resized ",event);
+                 //console.log("window resized ",event,document.body.clientWidth);
+
+                 // Reposition and restyle top menu to remain visible at map width decreases
+
+                 var ntf=document.getElementById("navtools_form");
+                 var mld=document.getElementById("headerLinksDiv");
+
+                 var ntfl=document.body.clientWidth-(ntf.offsetLeft + ntf.offsetWidth);
+                 var dSpc=(ntfl-ntf.offsetWidth)-75;
+
+                 //console.log("window resized ",dSpc);
+
+                 //if (document.body.clientWidth < 1080) {
+				 if (dSpc <=0) {
+					 // pop the menu out
+					  document.getElementById("headerLinksDiv").className = "headerLinksOut";
+				 } else {
+					 // pop the menu back in
+					  document.getElementById("headerLinksDiv").className = "headerLinks";
+				 }
 
                  //_this.resizeContents();
                  _this.fixWidth();
