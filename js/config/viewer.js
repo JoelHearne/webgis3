@@ -189,7 +189,7 @@ define([
         {
 			type: 'dynamic',
 			//url: 'http://gisvm101:6080/arcgis/rest/services/internet_webgis/MapServer',
-			url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis2/MapServer',
+			url: 'http://204.49.20.75/arcgis/rest/services/internet_webgis/MapServer',
 			title: 'Okaloosa WebGIS',
 			slider: true,
 			noLegend: false,

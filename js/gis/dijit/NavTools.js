@@ -82,6 +82,17 @@ define([
 
 			}));
             */
+ 			topic.subscribe('NavTools/resetTools', lang.hitch(this, function (arg) {
+				console.log("NavTools/resetTools");
+
+				_this.mngActiveTool("none");
+
+
+
+			}));
+
+
+
 
 
 		}
@@ -214,7 +225,10 @@ define([
 				dom.byId(btnids[i]).style.setProperty('background-color', 'rgb(230, 230, 230)', "important");
             }
 
-            dom.byId(actv).style.setProperty('background-color', 'rgba(187, 7, 7,0.2)', "important");
+            if (actv !="none")
+                 dom.byId(actv).style.setProperty('background-color', 'rgba(187, 7, 7,0.2)', "important");
+
+
 
 
 			//var b_id=document.getElementById("btn_identify");

@@ -621,7 +621,22 @@ define([
 
 		     this.lastWidth=actbr.offsetWidth;
 		}
-        ,showThis:function(){
+        ,showThis:function(e){
+
+			console.log("showThis",e);
+
+			if (e) {
+				console.log("showThis event exists this.activeMenu",this.activeMenu);
+
+				if (this.activeMenu=='map') {
+					this.resetSearchMode();
+					this.changeSearchForm(null,"property");
+
+
+				}
+
+			}
+
 
 
 			this.parentWidget.show();
@@ -829,7 +844,9 @@ define([
 				this.drawToolbar.deactivate();
 				this.clearGraphics();
 				this.connectMapClick();
-				// TODO: deactivate tool on NavTools menu
+
+				// deactivate tool on NavTools menu
+				topic.publish('NavTools/resetTools', {mode:"clear"});
 
 		}
 		,external_setMapSrchMode: function(mode,state) {
