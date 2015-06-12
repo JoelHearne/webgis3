@@ -131,3 +131,19 @@ text-align:justify;
 	margin:0;
 	padding:0;
 }
+
+
+@media print {
+    #tablist {
+        display: none;
+    }
+    
+    #tab_Parcel {
+        display: block;
+    }
+    
+    #tab_Extra {
+        display: block;
+    }
+}
+

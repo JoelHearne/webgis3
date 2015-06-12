@@ -52,7 +52,7 @@ define([
 		    });
             this.measure.startup();
             aspect.after(this.measure, 'setTool', lang.hitch(this, 'checkMeasureTool'));
-            aspect.after(this.measure, 'closeTool', lang.hitch(this, 'checkMeasureTool'));
+            //aspect.after(this.measure, 'closeTool', lang.hitch(this, 'checkMeasureTool'));
             //aspect.after(this.measure, 'measure-start', lang.hitch(this, 'measure_start'));
 
 
@@ -99,20 +99,21 @@ define([
 
         ,showThis: function(){
            this.parentWidget.show();
-           if (!isRes) {
+           if (!this.isRes) {
               this.parentWidget.set('style', 'margin:15px;width:' + (this.parentWidget.domNode.offsetWidth + 150) + 'px;height:' + (this.parentWidget.domNode.offsetHeight + 50) + 'px');
 	          this.isRes=true;
 	       }
            //this.parentWidget.set('style', 'left:0px');
            // turn off any selection tools or any other tools
            topic.publish('property/toggleSpatial', {mode:"point",state:false });
+           topic.publish('NavTools/resetTools', {mode:"pan",state:false });
            // TODO: prevent selection from getting cleared so user can measure the selection
            // TODO: remember what tool was active before measure started and toggle it back on after measure finishes
 		}
 	   , measure_start:function(){
 			////console.log("...measure_start ",this.measure);
 			//topic.publish('property/toggleSpatial', {mode:"box",state:false });
-			//this.map.setMapCursor('default');
+			 this.map.setMapCursor('default');
 			this.measure.resultValue.style="font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;";
             /*
             try {
@@ -143,7 +144,7 @@ define([
             // no measurement tool is active
             if (!this.measure.activeTool || this.measure.activeTool === '') {
                 if (this.mapClickMode === 'measure') {
-                    this.connectMapClick();
+                    //this.connectMapClick();
                 }
                 // a measurement tool is active
             } else {
@@ -162,6 +163,12 @@ define([
 		  //   this.resultValue.set("style","font-size:20px;font-weight:bold;text-shadow: 0 0 0.2em blue, 0 0 0.2em yellow,0 0 0.2em green;");
         },
         disconnectMapClick: function () {
+
+			// reset NavTool bar state
+
+			// set pointer
+
+
             topic.publish('mapClickMode/setCurrent', 'measure');
         },
         connectMapClick: function () {

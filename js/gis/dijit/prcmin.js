@@ -145,7 +145,6 @@ define([
 				}
 		    } catch (exc) { console.log("error",exc); }
 
-
 		}
  		,ebClick:function(e){
 			//console.log("ebClick",e,"   ",e.target.parentElement.textContent);

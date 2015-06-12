@@ -49,51 +49,10 @@ define([
 			this.inherited(arguments);
 
 			var _this=this;
-			//parser.parse();
-			//this.selecttool();  // Dan wants the select tool to be on by default
 
-/*
-            var sel= new Select({
-				name: "selWTool",
-				id: "selWTool",
-				class:"selTool",
-				options: [
-					{ label: "Print", value: "print" }
-					//,{ label: "Bookmarks", value: "bookmarks", selected: true }
-					,{ label: "Bookmarks", value: "bookmarks"  }
-					,{ label: "Draw", value: "draw" }
-					,{ label: "Measure", value: "measure" }
-					,{ label: "Identify", value: "identify" }
-					,{ label: "Goto", value: "goto" }
-
-				]
-           }).placeAt(dijit.byId("ntWidgSel")).startup();
-*/
-
-            //console.log("selWTool",selWTool);
-
- 			/*
- 			topic.subscribe('NavTools/resetSel', lang.hitch(this, function (arg) {
-				console.log("FYDYSMF");
-
-				//_this.selWTool.setValue("draw");
-
-
-
-			}));
-            */
  			topic.subscribe('NavTools/resetTools', lang.hitch(this, function (arg) {
-				console.log("NavTools/resetTools");
-
 				_this.mngActiveTool("none");
-
-
-
 			}));
-
-
-
-
 
 		}
         ,addRightClickMenu: function () {
@@ -169,7 +128,6 @@ define([
 			 */
 			  topic.publish('property/clearSpatial', {mode:"clear"  });
 
-
         },
         zoomIn: function() {
 			this.dieselecttool();
@@ -201,7 +159,7 @@ define([
             this.mngActiveTool("btn_pan");
         }
         ,identify:function(){
-			this.dieselecttool();
+			//this.dieselecttool();
             //this.map.setMapCursor("url('js/gis/dijit/NavTools/images/hand.cur'),auto");
             //this.map.setMapCursor('default');
             topic.publish('identify/makeActive', "button");
@@ -225,8 +183,12 @@ define([
 				dom.byId(btnids[i]).style.setProperty('background-color', 'rgb(230, 230, 230)', "important");
             }
 
-            if (actv !="none")
+            if (actv !="none") {
                  dom.byId(actv).style.setProperty('background-color', 'rgba(187, 7, 7,0.2)', "important");
+			 } else {
+                 this.connectMapClick();
+                 this.navTools.deactivate();
+			 }
 
 
 

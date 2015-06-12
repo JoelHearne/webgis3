@@ -457,6 +457,20 @@ define([
 		   });
 		   */
 
+             var ntf=document.getElementById("navtools_form");
+             var mld=document.getElementById("headerLinksDiv");
+
+             var ntfl=document.body.clientWidth-(ntf.offsetLeft + ntf.offsetWidth);
+             var dSpc=(ntfl-ntf.offsetWidth)-75;
+
+			 if (dSpc <=0) {
+				// pop the menu out
+				document.getElementById("headerLinksDiv").className = "headerLinksOut";
+			 } else {
+				// pop the menu back in
+				document.getElementById("headerLinksDiv").className = "headerLinks";
+			 }
+
 
             this.showThis();
 			//this.resizeContents();
@@ -642,10 +656,10 @@ define([
 		}
         ,showThis:function(e){
 
-			console.log("showThis",e);
+			//console.log("showThis",e);
 
 			if (e) {
-				console.log("showThis event exists this.activeMenu",this.activeMenu);
+				//console.log("showThis event exists this.activeMenu",this.activeMenu);
 
 				if (this.activeMenu=='map') {
 					this.resetSearchMode();
@@ -1052,7 +1066,7 @@ define([
 
 			pMapBuffr.style.display="block";
 
-			console.log("mapqRes");
+			//console.log("mapqRes");
 			//this.PostResultActions();
 
            // Show info popup
@@ -1625,7 +1639,7 @@ define([
 		   if (wi) {
 			   wi.parentNode.removeChild(wi);
 		   } else {
-			   console.log("cant hide the wait");
+			   //console.log("cant hide the wait");
 		   }
 		}
 		,preBuffer:function(){
@@ -2293,7 +2307,7 @@ define([
 		}
 		,PostResultActions:function(){
 
-              console.log("PostResultActions " );
+            // console.log("PostResultActions " );
             //console.log("PostResultActions " ,this);
 			 if (this.qo && (this.qo.maptype)) {
 				 if (this.qo.maptype=="hurricane")  topic.publish('Dynamic/ToggleLayer',{name:"Evacuation Zones"});

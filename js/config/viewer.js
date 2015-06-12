@@ -199,6 +199,8 @@ define([
 				opacity: 1,
 				visible: true,
 				imageParameters: imageParameters
+				,disableClientCaching:true
+				,refreshInterval:30
 				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
 			},
 			layerControlLayerInfos: {

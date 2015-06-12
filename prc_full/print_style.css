@@ -91,4 +91,62 @@ td.sketch_main
 .ui-tabs .ui-tabs-nav li a { font-size:7pt !important;}
 
 
+ @media print {
+     #tablist {
+         display: none  !important;
+     }
+     #tab_Extra {
+         display: block !important;
+         z-index:99999;
+     }     
+     #tab_Parcel {
+         display: block  !important;
+     }
+     #btnClose {
+         display: none  !important;
+     }
+     #footer {
+          display: none  !important;
+     }
+     /*
+     #tab_BldSketch {
+         display: block  !important;
+     }
+     */
+
+ }
+
+
+
+  @media print {
+      #tablist {
+          display: none  !important;
+      }
+      #tab_Extra {
+          display: block !important;
+          z-index:99999;
+      }     
+      #tab_Parcel {
+          display: block  !important;
+      }
+      #btnClose {
+          display: none  !important;
+      }
+      #footer {
+           display: none  !important;
+      }
+      #top_menubar {
+           display: none  !important;
+      }
+      
+      #bottom_menubar {
+          display: none  !important;
+      }
+      
+      /*
+      #tab_BldSketch {
+          display: block  !important;
+      }
+      */
  
+  }

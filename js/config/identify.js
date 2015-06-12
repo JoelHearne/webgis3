@@ -32,8 +32,8 @@ define({
 						"type": "image",
 						"value": {
 						  //"sourceURL": "http://gisvm109/webgis3_dev/images/happy.png",
-						  "sourceURL": "http://gisvm109/webgis3_dev/img/attributes_1.gif",
-						  "linkURL": "http://gisvm109/webgis3_dev/prc_full/prc.php?cl=paqry&pin={PIN}"
+						  "sourceURL": "http://webgis.okaloosafl.com/webgis/img/attributes_1.gif",
+						  "linkURL": "http://webgis.okaloosafl.com/webgis/prc_full/prc.php?cl=paqry&pin={PIN}"
 						}
 				   }
 				  /* ,{
@@ -72,12 +72,12 @@ define({
 					visible: true
 				}
  				,{
- 					fieldName: 'PATPCL_City',
+ 					fieldName: 'PATPCL_CITY',
  					label:'City',
  					visible: true
  				}
  				,{
- 					fieldName: 'PATPCL_State',
+ 					fieldName: 'PATPCL_STATE',
  					label:'State',
  					visible: true
  				}

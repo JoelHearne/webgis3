@@ -34,7 +34,7 @@ TD        {padding:2px; color: black; font-size: 10px; font-family: Calibri,Verd
 .table_header2 {text-align: center; font-size: 10px; background-color: #FFFFFF; font-weight:bold}
 .table_header3 {text-align: center; font-size: 11px; background-color: #FFFFFF; font-weight:bold; color: #27408B;}
 .header_link  {text-align: center; background-color: #E0E5FF; font-weight:bold}
-.cell_header {color: black; font-weight:bold}
+.cell_header {color: black; font-weight:bold;color:#27408B;}
 .cell_value  {font-size: 10px}
 .cell_value2
 {

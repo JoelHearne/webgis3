@@ -1,8 +1,8 @@
  	  <?php
-          //ini_set('display_errors', 1);
-          // ini_set('log_errors', 1);
-          // ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
-           //error_reporting(E_ALL);
+         // ini_set('display_errors', 1);
+         //ini_set('log_errors', 1);
+         //ini_set('error_log', dirname(__FILE__) . '/error_log.txt');
+         //error_reporting(E_ALL);
 
           include("config.php");
           //include("..\support.php");
@@ -31,7 +31,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
       <link rel="stylesheet" href="dw_style.css" type="text/css" media="screen">
-      <link rel="stylesheet" href="./print_style.css" type="text/css"  media="print" />
+      <link rel="stylesheet" href="print_style.css" type="text/css"  media="print" />
 
 
 
@@ -1550,6 +1550,91 @@ WHERE o.PIN_DSP= '".$pin."' ";
                        }
                     ?>
          </table>
+         <BR>
+
+
+           <!-- Permitting and Zoning Info -->
+
+<?php
+                       $sql_pmt = "SELECT TOP 1 pin,PRPROP,owner,PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY,PEFLCONF,
+			   taxable_value,exempt_value,ag_value,land_value,bldg_value,xtra_value,just_value,assd_value,HMSTD,
+			   COMMISSION,commissioner,ZONING,FLUPY,TRACT,WETLAND,FLDWY,FLDZ_BFE,WATER,POWER,SUBDIVISION,FIRE,COBRA,
+			   acres,propertyuse,landuse,lu_code,SITE_ADDR
+			   FROM CENTRAL_GIS.dbo.CAMVIEW_MinParcelDetail
+			   WHERE pin='".$pin."'";
+
+
+                       $stmt = sqlsrv_query( $conn, $sql_pmt);
+
+                       if( $stmt === false )
+                       {
+                          echo "Error in statement preparation/execution.\n";
+                          die( print_r( sqlsrv_errors(), true));
+                       }
+
+                       while($row = sqlsrv_fetch_array($stmt))
+                       {
+							$COMMISSION = $row['COMMISSION'];
+							$commissioner = $row['commissioner'];
+							$ZONING = $row['ZONING'];
+							$FLUPY = $row['FLUPY'];
+							$TRACT = $row['TRACT'];
+							$WETLAND = $row['WETLAND'];
+							$FLDWY = $row['FLDWY'];
+							$FLDZ_BFE = $row['FLDZ_BFE'];
+							$WATER = $row['WATER'];
+							$POWER = $row['POWER'];
+							$SUBDIVISION = $row['SUBDIVISION'];
+							$FIRE = $row['FIRE'];
+							$COBRA = $row['COBRA'];
+
+                       }
+?>
+
+
+
+
+           <table class="table_class"><tr><td align="center" class="table_header" colspan="7">County Permit Information</td></tr>
+
+
+ <tr>
+  <td class="cell_header" align="center" width=142 style='width:107pt'>County
+  Future Landuse</td>
+  <td class="cell_header" align="center" width=133 style='width:100pt'>County Zoning</td>
+  <td class="cell_header" align="center" width=134 style='width:101pt'>FEMA Flood Zone-Base</td>
+  <td class="cell_header" align="center" width=190 style='width:143pt'>Resources System (COBRA)
+  Area</td>
+  <td class="cell_header" align="center" width=103 style='width:77pt'>In a Floodway</td>
+  <td class="cell_header" align="center" width=146 style='width:110pt'>Potential Wetlands On</td>
+ </tr>
+ <tr>
+  <td class="cell_value" align="center"><a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-FLU.pdf" target="_blank"><?php echo $FLUPY; ?></a></td>
+  <td class="cell_value" align="center"><a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-LDC.pdf" target="_blank"><?php echo $ZONING; ?></a></td>
+  <td class="cell_value" align="center"><a href="https://www.fema.gov/floodplain-management/flood-zones" target="_blank"><?php echo $FLDZ_BFE; ?></a></td>
+  <td class="cell_value" align="center"><a href="http://www.fema.gov/national-flood-insurance-program-2/coastal-barrier-resources-system" target="_blank"><?php echo $COBRA; ?></a></td>
+  <td class="cell_value" align="center"><a href="https://suite.io/david-a-todd/23rd2j6" target="_blank"><?php echo $FLDWY; ?></a></td>
+  <td class="cell_value" align="center"><?php echo $WETLAND; ?></td>
+ </tr>
+ <tr style='height:21.0pt'>
+  <td class="cell_header" align="center" width=142 style='width:107pt'>Power
+  Service Provider</td>
+  <td class="cell_header" align="center" width=133 style='width:100pt'>Water Service Provider</td>
+  <td class="cell_header" align="center" width=134 style='width:101pt'>Subdivision Name</td>
+  <td class="cell_header" align="center" width=190 style='width:143pt'>Commissioner District</td>
+  <td class="cell_header" align="center" width=103 style='width:77pt'>Fire District</td>
+  <td class="cell_header" align="center" width=146 style='width:110pt'>Census Tract</td>
+ </tr>
+ <tr>
+  <td class="cell_value" align="center" ><?php echo $POWER; ?></td>
+  <td class="cell_value" align="center"><?php echo $WATER; ?></td>
+  <td class="cell_value" align="center"><?php echo $SUBDIVISION; ?></td>
+  <td class="cell_value" align="center"><a href="http://www.okaloosafl.com/bcc/home" target="_blank"><?php echo $commissioner." (".$COMMISSION.")"; ?></a></td>
+  <td class="cell_value" align="center"><a href="http://www.firedepartments.net/county/FL/OkaloosaCounty.html" target="_blank"><?php echo $FIRE; ?></a></td>
+  <td class="cell_value" align="center"><?php echo $TRACT; ?></td>
+ </tr>
+
+ </table>
+
 
 
   </div><!--  end Extra div -->

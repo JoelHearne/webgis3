@@ -9,8 +9,8 @@
         <title>OkaloosaGIS Map Viewer</title>
         <link rel="stylesheet" type="text/css" href="//js.arcgis.com/3.11compact/esri/css/esri.css">
 
-       <!--<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">-->
-      <link rel="stylesheet" type="text/css" href="//gisvm109/font-awesome-4.3.0/css/font-awesome.min.css">
+     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+     <!-- <link rel="stylesheet" type="text/css" href="//gisvm109/font-awesome-4.3.0/css/font-awesome.min.css">-->
         <!--
         <link rel="stylesheet" type="text/css" href="//gisvm101/arcgis_js_api/library/3.12/3.12/esri/css/esri.css">
 
@@ -23,6 +23,7 @@
    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.0/js/esri/dijit/css/Popup.css" />
   <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.0/js/dojo/dojox/layout/resources/FloatingPane.css" />
   -->
+  <!--  <link rel="stylesheet" type="text/css" href="http://gisvm101/arcgis_js_api/library/3.12/3.12compact/js/dojo/dojox/layout/resources/ResizeHandle.css" />  -->
   <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/3.0/js/dojo/dojox/layout/resources/ResizeHandle.css" />
 
     </head>
@@ -47,12 +48,12 @@
                 </div>
             </div>
 
-            <div class="headerLinks">
-
-               <div id="spatialDijit" style="float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;"> </div>
-
-                <div id="propertyDijit" style="float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;">
+            <div id="headerLinksDiv" class="headerLinks">
+               <div id="propertyDijit" style="float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;">
                 </div>
+               <div id="spatialDijit" style="cursor:pointer;float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;"> </div>
+
+
                 <div id="drawDijit" style="display:none;float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;">
                 </div>
                 <div id="measureDijit" style="display:none;float: left;margin: 3px 4px 2px 5px;padding:0px 15px 0px 0px;">
@@ -122,8 +123,7 @@
 		}());
 
 
-
-            var dojoConfig = {
+        var dojoConfig = {
                 async: true,
                 //tlmSiblingOfDojo: false,
                 //parseOnLoad: false,

@@ -61,6 +61,12 @@ namespace WebGIS
         {
             PropertySearchList2 pl = new PropertySearchList2();
 
+
+            if (searchString.Contains("'"))
+            {
+                searchString = searchString.Replace("'", "''");
+            }
+
             if (searchtype == "pin")
             {
                 pl.ExecuteSearch(searchString, searchtype,startrec,endrec);
@@ -91,6 +97,8 @@ namespace WebGIS
             }
 
             Session["rawSQL"] = pl.rawSQLQuery;
+            pl.rawSQLQuery = "";
+
             Session["rawSQLCount"] = pl.rec_count;
  
             JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -263,6 +271,7 @@ namespace WebGIS
             sl.ExecuteSearchByYearMonth(year, month);
 
             Session["rawSQL"] = sl.rawSQLQuery;
+            sl.rawSQLQuery = "";
             Session["rawSQLCount"] = sl.rec_count;
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -288,6 +297,7 @@ namespace WebGIS
             sl.ExecuteSearch(so);
 
             Session["rawSQL"] = sl.rawSQLQuery;
+            sl.rawSQLQuery = "";
             Session["rawSQLCount"] = sl.rec_count;
 
             String res = serializer.Serialize(sl.CAMVIEW_Sales_list);
@@ -326,6 +336,7 @@ namespace WebGIS
             sl.proplist.search_type = "sales";
 
             Session["rawSQL"] = sl.rawSQLQuery;
+            sl.rawSQLQuery = "";
             Session["rawSQLCount"] = sl.rec_count;
 
 
@@ -768,6 +779,29 @@ namespace WebGIS
  
         public PropertySearchList2() { }
 
+
+        private bool isAddr(String sval)
+        {
+            bool isAddy = false;
+
+            try
+            {
+                // split it by spaces
+                String[] strarr = sval.Split(' ');
+                if (strarr[0] != null)
+                {
+                    // see if it's a number
+                    int n;
+                    isAddy = int.TryParse(strarr[0], out n);
+                }
+            } catch(Exception ex)
+            {
+
+            }
+
+            return isAddy;
+        }
+
         public void ExecuteSearch(String sqlWhereVal, String searchtype, int rowstart, int rowend)
         {
             search_type = searchtype;
@@ -791,15 +825,15 @@ namespace WebGIS
             }
 
             String sqlStr = "";
-            //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, GIS_site_address,site_address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
+            //sqlStr = sqlStr + "SELECT PRPROP,PIN,owner,PRUSE,PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD ";
+            sqlStr = sqlStr + "SELECT DISTINCT PRPROP,PIN,owner,PRUSE,PACONF, GIS_site_address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLZIP5,PEFLCNTRY ";
 
-            sqlStr = sqlStr + " FROM CAMVIEW_PropertyList ";
+            sqlStr = sqlStr + " FROM PA_WebGISPropLookup ";
 
 
 
             String osqlStr = sqlStr;
-            String csqlStr = "SELECT distinct PIN FROM CAMVIEW_PropertyList ";
+            String csqlStr = "SELECT distinct PIN FROM PA_WebGISPropLookup ";
             //sqlStr = sqlStr + "where c.pin='13-2S-24-0150-0003-0070'";
             //sqlStr = sqlStr + "and l.lerecn=1";
 
@@ -850,18 +884,26 @@ namespace WebGIS
             }
             else if (searchtype == "address")
             {
+
+                // detect if this is an address or a street
+                String pre_wildcard = "%";
+                bool isAdd = isAddr(sqlWhereVal);
+                if (isAdd) pre_wildcard = "";
+
+
+
                 sqlStr = "";
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
                 sqlStr = sqlStr + osqlStr;
-                sqlStr = sqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%' ";
+                sqlStr = sqlStr + " WHERE GIS_Site_Address like '" + pre_wildcard + sqlWhereVal + "%' ";
                 sqlStr = sqlStr + "  ) a";
                 sqlStr = sqlStr + "  ) AS RowConstrainedResult  ";
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString();
 
-                csqlStr = csqlStr + " WHERE Site_Address like '%" + sqlWhereVal + "%'";
+                csqlStr = csqlStr + " WHERE GIS_Site_Address like '" + pre_wildcard + sqlWhereVal + "%'";
 
-                rawSQLQuery = osqlStr + " WHERE GIS_Site_Address like '%" + sqlWhereVal + "%' ";
+                rawSQLQuery = osqlStr + " WHERE GIS_Site_Address like '" + pre_wildcard + sqlWhereVal + "%' ";
 
             }
             else if (searchtype == "owner")
@@ -883,7 +925,7 @@ namespace WebGIS
             else if (searchtype == "sub")
             {
                 sqlStr = "";
-                /*sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD FROM CAMVIEW_PropertyList FROM CAMVIEW_PropertyList  p";
+                /*sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD FROM PA_WebGISPropLookup FROM PA_WebGISPropLookup  p";
                 sqlStr = sqlStr + "  JOIN  PA_CAMPA c ON p.PRPROP=c.PAPROP";
                 sqlStr = sqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 sqlStr = sqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
@@ -893,13 +935,13 @@ namespace WebGIS
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
                 /*
-                 sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD FROM CAMVIEW_PropertyList  p";
+                 sqlStr = sqlStr + " SELECT  PRPROP,PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD FROM PA_WebGISPropLookup  p";
                 sqlStr = sqlStr + "  JOIN  PA_CAMPA c ON p.PRPROP=c.PAPROP";
                 sqlStr = sqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 sqlStr = sqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
                 */
-                sqlStr = sqlStr + "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD  ";
-                sqlStr = sqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                sqlStr = sqlStr + "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD  ";
+                sqlStr = sqlStr + " FROM PA_WebGISPropLookup  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 sqlStr = sqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
                 sqlStr = sqlStr + "  ) a";
@@ -908,7 +950,7 @@ namespace WebGIS
 
 
                /* csqlStr = "";
-                csqlStr = csqlStr + " SELECT  Count(pin) FROM CAMVIEW_PropertyList  p";
+                csqlStr = csqlStr + " SELECT  Count(pin) FROM PA_WebGISPropLookup  p";
                 csqlStr = csqlStr + "  JOIN  PA_CAMPA c ON p.PRPROP=c.PAPROP";
                 csqlStr = csqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 csqlStr = csqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
@@ -916,12 +958,12 @@ namespace WebGIS
 
                 csqlStr = "";
                 csqlStr = csqlStr + "SELECT  distinct p.pin ";
-                csqlStr = csqlStr + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                csqlStr = csqlStr + " FROM PA_WebGISPropLookup  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 csqlStr = csqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
                 //rawSQLQuery = osqlStr + " WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
-                rawSQLQuery = "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5  ";
-                rawSQLQuery = rawSQLQuery + " FROM CAMVIEW_PropertyList  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
+                rawSQLQuery = "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD, PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5  ";
+                rawSQLQuery = rawSQLQuery + " FROM PA_WebGISPropLookup  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 rawSQLQuery = rawSQLQuery + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
             }
@@ -931,12 +973,12 @@ namespace WebGIS
                 sqlStr = sqlStr + "  SELECT   * FROM    ( SELECT ROW_NUMBER() OVER ( ORDER BY PIN ) AS RowNum, * FROM  ";
                 sqlStr = sqlStr + "  (";
                 /*
-                sqlStr = sqlStr + "  SELECT   PRPROP,PIN,owner,PRUSE,PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD  FROM  CAMVIEW_PropertyList  p";
+                sqlStr = sqlStr + "  SELECT   PRPROP,PIN,owner,PRUSE,PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD  FROM  PA_WebGISPropLookup  p";
                 sqlStr = sqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 sqlStr = sqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
                  */
-                sqlStr = sqlStr + "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD ";
-                sqlStr = sqlStr + "FROM CAMVIEW_PropertyList  p  ";
+                sqlStr = sqlStr + "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD ";
+                sqlStr = sqlStr + "FROM PA_WebGISPropLookup  p  ";
                 sqlStr = sqlStr + "JOIN PA_WBusName b  ON p.PRPROP=b.OWFLPROP";
                 sqlStr = sqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
 
@@ -946,13 +988,13 @@ namespace WebGIS
                 sqlStr = sqlStr + "  WHERE   RowNum >= " + rowstart.ToString() + " AND RowNum <= " + rowend.ToString() ;
                 
                 csqlStr = "";
-                csqlStr = csqlStr + "  SELECT   distinct p.pin  FROM  CAMVIEW_PropertyList  p";
+                csqlStr = csqlStr + "  SELECT   distinct p.pin  FROM  PA_WebGISPropLookup  p";
                 csqlStr = csqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 csqlStr = csqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
 
                 //rawSQLQuery = osqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
-                rawSQLQuery = "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Site_Address,Owner_Address,LEDESC,Last_Sale,HMSTD , PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5";
-                rawSQLQuery = rawSQLQuery + " FROM CAMVIEW_PropertyList  p  ";
+                rawSQLQuery = "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD , PEFLADDR1,PEFLADDR2,PEFLADDR3,PEFLCITY,PEFLST,PEFLCNTRY,PEFLZIP5";
+                rawSQLQuery = rawSQLQuery + " FROM PA_WebGISPropLookup  p  ";
                 rawSQLQuery = rawSQLQuery + " JOIN PA_WBusName b  ON p.PRPROP=b.OWFLPROP";
                 rawSQLQuery = rawSQLQuery + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
             }
@@ -977,8 +1019,8 @@ namespace WebGIS
 
             csqlStr = "Select Count(*) FROM (" + csqlStr + ") c";
 
-            rawSQLQuery = rawSQLQuery + " ORDER BY site_address";
-            sqlStr = sqlStr + " ORDER BY site_address";
+            rawSQLQuery = rawSQLQuery + " ORDER BY gis_site_address";
+            sqlStr = sqlStr + " ORDER BY gis_site_address";
 
 
             SqlCommand ccmd = new SqlCommand(csqlStr, cn);
@@ -1047,7 +1089,7 @@ namespace WebGIS
                 pr.legal = legl;
 
                 String pa_SiteAddr  = "";
-                try
+              /*  try
                 {
                     pa_SiteAddr = (String)dt.Rows[i]["Site_Address"];
                     pr.SiteAddr = pa_SiteAddr;
@@ -1056,6 +1098,7 @@ namespace WebGIS
                 {
 
                 }
+               */
                 
                 String gis_SiteAddr = "";
                 try

@@ -116,6 +116,27 @@ font-size: 15pt;
  // text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
    //text-shadow: 0 0 0.7em rgba(1,114,139,0.2), 0 0 0.2em rgba(1,114,139,0.7),0 0 0.2em rgba(1,114,139,0.8);
 }
+.appHeader .headerLinksOut {
+    
+    color: #FFFFFF;
+    position: absolute;
+    top: 40px;
+    right: 310px;
+    text-align: right;
+    background-color:rgba(220, 220, 220, 0.7);
+    border:1px solid rgb(1, 109, 138);
+    z-index:999;
+ 
+    //font-family: Papyrus,Pristina,Vivaldi,Gigi,Gabriola,Chiller,Broadway, Batang,Calibri,Verdana, sans-serif;
+    //font-family:Garamond,Calibri,Verdana, sans-serif;
+    font-size:15px;
+    //text-shadow: 0.1em 0.1em 0.2em green;
+ // text-shadow: 0 0 0.2em green, 0 0 0.2em green,0 0 0.2em green;
+   //text-shadow: 0 0 0.7em rgba(1,114,139,0.2), 0 0 0.2em rgba(1,114,139,0.7),0 0 0.2em rgba(1,114,139,0.8);
+}
+
+
+
 .appHeader .headerLinks a {
     color: #FFFFFF;
     text-decoration: none;
