@@ -49,8 +49,8 @@ define([
 			this.inherited(arguments);
 
 			var _this=this;
-
  			topic.subscribe('NavTools/resetTools', lang.hitch(this, function (arg) {
+
 				_this.mngActiveTool("none");
 			}));
 
@@ -144,7 +144,8 @@ define([
 
         },
         fullExtent: function () {
-            this.navTools.zoomToFullExtent();
+            //this.navTools.zoomToFullExtent();
+            topic.publish('viewer/zoomFull', {usedef: 'no'});
         },
         prevExtent: function () {
             this.navTools.zoomToPrevExtent();

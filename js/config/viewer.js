@@ -113,7 +113,8 @@ define([
 			 */
 
 
-			,center: [-86.59987, 30.68192]
+			 ,center: [-86.59987, 30.68192]
+
 			,zoom: 10
 
 			,fadeOnZoom: true

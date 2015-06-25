@@ -2,18 +2,18 @@
 
 
 <div class="gis_PRCMinDijit" >
-	<div  data-dojo-type="dijit/form/Form" data-dojo-attach-point="pcForm" class="formContainer"  style="height:725px;font-size:9px;padding:0px;margin:0px">
+	<div  id="prcmin_frm" data-dojo-type="dijit/form/Form" data-dojo-attach-point="pcForm" class="formContainer"  style="height:725px;font-size:9px;padding:0px;margin:0px">
 
 
-		 <table data-dojo-attach-point="tbTable" data-dojo-attach-event="onClick:tbClick"  class="CSSTableGenerator"  >
+		 <table id="pcmn_mnu" data-dojo-attach-point="tbTable" data-dojo-attach-event="onClick:tbClick"  class="CSSTableGenerator"  >
 			  <tr >
 				<td><img id="pc_zoom"  alt="zoom to parcel and view moredetails"  title="zoom to parcel"  src="img/zoom_in_1.gif" /></td>
 				<td><img id="pc_fulldet"   alt="full parcel details"  title="Open new window with full parcel details" src="img/attributes_1.gif" /></td>
 				<td><img id="pc_save"  alt="Add Parcel To Saved Results List" title="Add Parcel To Saved Results List"  src="img/SaveSearch1.gif" /></td>
 				<td><img id="pc_print"  alt="Print Parcel Property Card" title="Print Parcel Property Card" src="img/Print_1.gif" /></td>
 			  </tr>
-			  </table>
-         <table data-dojo-attach-point="generalTable"  class="CSSTableGenerator"  >
+		 </table>
+         <table id="prcmin" data-dojo-attach-point="generalTable"  class="CSSTableGenerator"  >
 			  <tr>
 				<td></td>
 				<td></td>
@@ -59,7 +59,7 @@
  	    </table>
 
           <!--<table data-dojo-attach-point="znTable"  class="CSSTableGenerator pcSubTable" style="display:none;height:0px;"  >-->
-           <table data-dojo-attach-point="znTable"  class="CSSTableGenerator pcSubTable" >
+           <table id="prcmin_zn"  data-dojo-attach-point="znTable"  class="CSSTableGenerator pcSubTable" >
 				<tr>
 				   <td></td>
 				   <td></td>
@@ -127,7 +127,7 @@
 		 </tr>
  	    </table>
 
-          <table data-dojo-attach-point="slTable"  class="CSSTableGenerator" style="display:none;height:0px"  >
+          <table id="prcmin_val" data-dojo-attach-point="slTable"  class="CSSTableGenerator" style="display:none;height:0px"  >
 				<tr>
 				   <td></td>
 				   <td></td>
@@ -180,7 +180,7 @@
 		 </tr>
  	    </table>
 
-          <table data-dojo-attach-point="slsTable"  class="CSSTableGenerator" style="display:none;height:0px"  >
+          <table id="prcmin_sl"  data-dojo-attach-point="slsTable"  class="CSSTableGenerator" style="display:none;height:0px"  >
 				<tr>
 				   <td>Date</td>
 				   <td>Price</td>
@@ -202,7 +202,7 @@
 
  		</table>
  		<br><br><br>
- 		<div style="height:50px"></div>
+ 		<div id="pcmin_spcr" style="height:50px"></div>
 
 
 	</div>

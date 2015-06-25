@@ -533,6 +533,10 @@ define([
 		}
         ,resizeContents:function(){
 
+
+			//console.log("resizeContents");
+			// return;
+
 		    var actbr=dom.byId("propSrchActnBar");
 		    var ab_ohgt=actbr.offsetHeight + 28;
 			var psr=document.getElementById("pSearchResults");
@@ -629,9 +633,11 @@ define([
  				  psr.style.setProperty("height", calc_ht + 'px', "important");
 				  //odocument.getElementById("propertyNode").style.setProperty("height", calc_ht + 'px', "important");
 			 }
+
 			 var pw=document.getElementById("property_widget");
 			 if (pw)
 			     pw.style.setProperty("height", pw.parentNode.offsetHeight + 'px', "important");
+
 
 			 if (pcmin && (pcmin !=null)) {
 				 //console.log("resizing pcmin ",pcmin);
@@ -877,17 +883,14 @@ define([
 				this.drawToolbar.deactivate();
 				this.clearGraphics();
 				this.connectMapClick();
-
 				// deactivate tool on NavTools menu
 				topic.publish('NavTools/resetTools', {mode:"clear"});
-
 		}
 		,external_setMapSrchMode: function(mode,state) {
 			if (state) {
 				// uncomment to make the map menu automatically appear
 				 if (!this.parentWidget.open) this.showThis();
 				//this.changeSearchForm(null,"map");
-
 				this.activateMapSearch();
 				this.mapsearch_auto=true;
 				this.isExtSel=true;
@@ -910,7 +913,6 @@ define([
 			this.mapSearchMode='point';
             this.drawToolbar.activate(Draw.POINT);
             document.getElementById("active_mapsearch").innerHTML="select by point tool is active";
-
 		}
 		, modePolygon: function (e) {
 			this.disconnectMapClick();
@@ -1012,7 +1014,6 @@ define([
 					opacity: 0.8
 				});
 			}
-
 			//console.log("mapqRes");
 			//console.log("mapqRes",results);
 			//this.clearGraphics();
@@ -1029,7 +1030,6 @@ define([
 				  if (feature.attributes && feature.attributes.PATPCL_PIN) {
 					   _this.mapsearchpins.push(feature.attributes.PATPCL_PIN);
 				  }
-
 				  switch (feature.geometry.type) {
 						case 'point':
 						    // TODO: Add point graphics
@@ -1063,7 +1063,6 @@ define([
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
 			this.resPage=1;
 			this.doSearch_Pins(this.mapsearchpins);
-
 			pMapBuffr.style.display="block";
 
 			//console.log("mapqRes");
@@ -1121,17 +1120,14 @@ define([
 						}
 				  }
 			}); // end array.forEach
-
 			if (zoomExtent)  this.map.setExtent(zoomExtent.expand(5.2));
 			pMapBuffr.style.display="block";
-
 			if (this.printPIN!=null) {
 				var pinv=this.printPIN;
 				this.printPIN=null;
 				//topic.publish('print/showMe', {pin:pinv });
                 topic.publish('print/printmap', {pin:pinv });
 			}
-
 		}
 		,activateMapSearch: function(){
 			//this.createGraphicsLayer();
@@ -1140,9 +1136,7 @@ define([
 			this.disconnectMapClick();
 		}
         ,addPRC_Min: function(pinv){
-
 			this.hideWait();
-
 			// check if detail tab has been created and create it if not
 			try {
 				if (dijit.byId("pResultDetailTab")==null || dijit.byId("pResultDetailTab")===undefined) {
@@ -1159,10 +1153,8 @@ define([
 				console.log("error adding min detail tab", ex);
 			}
 
-
-			 dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
+			dijit.byId("pSearchTabs").selectChild(dijit.byId("pResultsTab"));
             dijit.byId("pResultsSubTabs").selectChild(dijit.byId("pResultDetailTab"));
-
 			domConstruct.empty("pcMinDet");
 			var _this=this;
 			var srmd=dom.byId("pcMinDet");
@@ -1173,8 +1165,6 @@ define([
 			tpcmd.startup();
 			tpcmd.placeAt(srmd);
 
-
-
 			tpcmd.on("click", function (e) {
 			    var actntype=e.target.id;
 				  if ((actntype == "pc_zoom") || (actntype == "pc_fulldet") || (actntype == "pc_mindet")
@@ -1182,7 +1172,6 @@ define([
 
 					  var prcob=registry.byId(this.id);
 					  var pin=prcob.pin.trim();
-
 					  if (pin) {
 							 var ownr=prcob.owner.trim();
 							 var addrr=prcob.address.trim();
@@ -1242,9 +1231,7 @@ define([
 
 			this.filteringSelect_list.push(fs);
 			this.filteringSelect_list[flidx].startup();
-
 			dijit.byId(tbID).set("store", this.afStore_list[flidx]);
-
 			var _this=this;
 			this.afStore_list[flidx].query().then(function(response) {
 				testStore.setData(response.slice(0));
@@ -1266,7 +1253,6 @@ define([
 				 })));
 		   }
  		}
-
         ,changeSearchForm:function(evt,selForm){
 			//this.clearSearch();
 
@@ -1307,7 +1293,6 @@ define([
 
 			//this.mapsearch_auto=false;
 
-
 			// hide all the forms then only show the active form
 			dijit.byId("pSubForm").set("style", "display:none");
 			dijit.byId("pBusForm").set("style", "display:none");
@@ -1336,7 +1321,6 @@ define([
 				this.drawToolbar.deactivate();
 				topic.publish('mapClickMode/setDefault');
 			}
-
 		}
 		,salesDataPopType: function(){
 			var select = document.getElementById('selSaleDataType');
@@ -1404,7 +1388,6 @@ define([
 		,createResultsTab:function(){
 
 			//console.log("createResultsTab-----");
-
              // create the Results tab
 			 try {
 			   if (dijit.byId("pResultsTab")==null || dijit.byId("pResultsTab")===undefined) {
@@ -1430,9 +1413,6 @@ define([
 						//,style: "margin-top:0px !important"
 					}, dijit.byId("pResultsTab").containerNode);
 
-
-
-
 					this.pResultsSubTabs.startup();
 
 					// add jump list tab to resultssubtabs
@@ -1447,13 +1427,8 @@ define([
 
 					dojo.place('<div id="pPageSelDiv" style="display:none;padding: 0px; font-size: 9px"><div style="float:left; padding:0px;margin;0px;">jump to page: </div><div style="padding: 0px; float: left; padding:0px;margin;0px;"><select id="selResPage" style="font-size:9pt;padding:0px;margin;0px"><option value="1" selected="true">1</option></select></div></div>', rlt,"last");
 					dojo.place('<center><div id="pPageSelDiv3" style="display:none;margin:5px 0px 5px 0px;padding: 0px; font-size: 8px"><a id="pPagePrev" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center>', rlt,"last");
-
-
 					//dojo.place('<div id="pZmDv" style="float:center; padding:0px;margin;0px;"><input id="btnZoomAlllIST" data-dojo-attach-point="btnZoomAll" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:left;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="zoom to these records" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:zoomAllList"></input><input id="btnPrLbls" data-dojo-attach-point="btnPrLbls" type="button" style="z-index: 900;font-size:10px;margin:0px;padding:0px;height:20px;float:right;display:block" data-dojo-type="dijit/form/Button" intermediateChanges="false" label="export/mailing labels" iconClass="dijitNoIcon" data-dojo-attach-event="onClick:printMailLblsMenu"></input></div><br>', rlt,"last");
-
 					dojo.place('<div id="pZmDv" style="padding:9px 0px 0px 0px;margin:0px 0px 10px 0px;width:335px;height:10px;border-bottom:1pz solid black"></div> ', rlt,"last");
-
-
 
 					 // create buttons programmatically
 					 var _this=this;
@@ -1492,7 +1467,6 @@ define([
 
 
 					//dojo.place('<center><div id="pPageSelDiv2" style="display:none;margin:3px 0px 0px 0px;padding: 0px;font-size:9px; z-index: 900;height:15px;"><a id="pPagePrev2" title="previous page" data-dojo-attach-event="onClick:changePage">previous 50 records</a><a id="pPageNext2" title="next page" data-dojo-attach-event="onClick:changePage">more records</a></div></center><br>', rlt,"last");
-
 
                     var _this=this;
 					var cp = document.getElementById("pPageNext");

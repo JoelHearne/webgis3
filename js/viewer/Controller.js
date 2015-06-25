@@ -223,9 +223,17 @@ define([
 				topic.publish('mapClickMode/setCurrent', this.mapClickMode.defaultMode);
 			}));
 
+
+			topic.subscribe('viewer/zoomFull', lang.hitch(this, function (args) {
+				this.zoomFull();
+			}));
+
 		},
+		zoomFull: function(){
+			 this.map.centerAndZoom(this.config.mapOptions.center, this.config.mapOptions.zoom);
+		}
 		// set titles (if any)
-		addTitles: function () {
+		,addTitles: function () {
 			var titles = this.config.titles;
 			if (titles.header) {
 				var headerTitleNode = dom.byId('headerTitleSpan');

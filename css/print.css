@@ -1,0 +1,196 @@
+  @media print {    
+  
+  
+ body, html {
+        width: 11in;
+        height: 8.3in;
+        margin: 0px;
+        padding: 0px;
+}
+ 
+table {
+ background-color: white !important;
+}
+
+ /*
+ Expand all of the tables
+ */
+  
+ #prcmin_zn {
+   display:inline-table !important;
+    
+ }
+  
+ #prcmin_val {
+   display:inline-table !important;
+    
+ }
+ #prcmin_sl {
+   display:inline-table !important;
+    
+}
+ 
+ 
+ 
+ 
+#property_parent {
+  height: 8.2in !important;
+  position:absolute;
+  top:0px !important;
+  left:0px !important;
+   display: inline ;
+ 
+}
+#pSearchTabs {
+  height: 8.2in !important;
+  top:0px !important;
+}
+
+
+#property_widget {
+   height: 8.2in !important;
+  top:0px !important;
+  left:0px ;
+   display: inline ;
+   overflow: visible !important;
+}
+
+#pcMinDet {
+   height: 8.2in !important;
+  top:0px !important;
+  left:0px ;
+   display: inline ;
+   overflow: visible !important;
+}
+
+ 
+#pcMinDet ~ div {
+   height: 8.2in !important;
+  top:0px !important;
+  left:0px ;
+   display: inline ;
+}
+
+
+/*
+  Resize the top level elements
+*/
+
+#mapCenter {
+   width:500px ;
+   height:400px ;
+   display:inline;
+}
+ 
+.propertyDijit.propertyTabContainer {
+     height: 8.2in !important;
+     top:0px !important;
+}
+
+.dijitDialogPaneContent.dijitAlignCenter {
+  height: 8.2in !important;
+  top:0px !important;
+}
+.ContentTab.dijitTabPane.dijitTabContainerTop-child.dijitTabContainerTop-dijitContentPane.dijitContentPaneSingleChild {
+  height: 8.2in  !important;
+  top:0px !important;
+   
+}
+.dijitTabPaneWrapper.dijitTabContainerTop-container.dijitTabPaneWrapperNested {
+  height: 8.2in  !important;
+  top:0px !important;
+   
+}
+.dijitTabContainer.dijitTabContainerTop.dijitContainer.dijitLayoutContainer.dijitTabContainerNoLayout.dijitTabContainerNested.resTabs {
+  height: 8.2in  !important;
+  top:0px !important;
+   
+}
+.dijitTabContainerTopChildWrapper.dijitVisible {
+  height: 8.2in  !important;
+  top:0px !important;
+   
+}
+.dijitTabPaneWrapper.dijitTabContainerTop-container.dijitAlignCenter {
+  height: 8.2in  !important;
+  top:0px !important;
+   
+}
+.dijitContentPane.propertyContainer {
+  height: 8.2in  !important;
+   
+   top:0px !important;
+   overflow: hidden !important;
+}
+
+.dijitTabPaneWrapper.dijitTabContainerTop-container.dijitTabPaneWrapperNested {
+ height: 8.2in  !important;
+overflow: hidden !important;
+}
+
+.dijitDialogPaneContent {
+  height: 8.2in  !important;
+
+}
+
+.propertyNode {
+  height: 8.2in  !important;
+}
+
+.gis_PRCMinDijit {
+  height: 8.2in  !important;
+}
+
+#pResultDetailTab {
+  height: 8.2in  !important;
+}
+
+#pResultsSubTabs {
+  height: 8.2in  !important;
+}
+
+/*
+  Hide the items that we don't want displayed
+*/
+
+#pcmn_mnu {
+   display:none ;
+}
+#pResultsSubTabs_tablist {
+
+ display:none ;
+}
+#pSearchTabs_tablist {
+
+ display:none ;
+}
+#propSrchActnBar {
+   display:none ;
+}
+
+#pcmin_spcr {
+   display:none ;
+}
+
+#pSearchTab {
+   display:none ;
+}
+#pLayersTab {
+   display:none ;
+}
+#pLegendTab {
+   display:none ;
+}
+.appHeader {
+   display:none ;
+}
+.dijitDialogTitleBar {
+   display:none ;
+}
+
+
+
+
+
+ 
+}  

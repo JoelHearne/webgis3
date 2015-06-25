@@ -2,12 +2,13 @@ App_Code\WebGIS.cs
 css\main.css
 default.htm
 js\config\identify.js
+js\config\ocws.js
 js\config\viewer.js
 js\gis\dijit\Measurement.js
 js\gis\dijit\NavTools.js
-js\gis\dijit\NavTools\templates\NavTools.html
 js\gis\dijit\prcmin.js
 js\gis\dijit\property.js
+js\viewer\Controller.js
 modified_files.txt
 prc_full\dw_style.css
 prc_full\prc.php
