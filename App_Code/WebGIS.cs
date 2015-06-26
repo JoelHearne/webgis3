@@ -940,7 +940,7 @@ namespace WebGIS
                 sqlStr = sqlStr + "  JOIN  PA_CAMSUBD  s  ON c.PASUBD=s.SUBDCD";
                 sqlStr = sqlStr + "  WHERE SUBDDS LIKE '%" + sqlWhereVal + "%'";
                 */
-                sqlStr = sqlStr + "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD  ";
+                sqlStr = sqlStr + "SELECT  PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,GIS_site_address,LEDESC,Last_Sale,HMSTD  ";
                 sqlStr = sqlStr + " FROM PA_WebGISPropLookup  p  JOIN PA_SubList s ON p.PIN=s.PIN ";
                 sqlStr = sqlStr + "WHERE SUBNAME LIKE '%" + sqlWhereVal + "%'";
 
@@ -977,7 +977,7 @@ namespace WebGIS
                 sqlStr = sqlStr + "  JOIN PA_WBusName b ON p.PRPROP=b.OWFLPROP";
                 sqlStr = sqlStr + "  WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%'";
                  */
-                sqlStr = sqlStr + "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,LEDESC,Last_Sale,HMSTD ";
+                sqlStr = sqlStr + "SELECT OWFLNAME,PRPROP,p.PIN,owner,PRUSE,p.PACONF,Owner_Address,GIS_site_address,LEDESC,Last_Sale,HMSTD ";
                 sqlStr = sqlStr + "FROM PA_WebGISPropLookup  p  ";
                 sqlStr = sqlStr + "JOIN PA_WBusName b  ON p.PRPROP=b.OWFLPROP";
                 sqlStr = sqlStr + " WHERE OWFLNAME LIKE '%" + sqlWhereVal + "%' ";
