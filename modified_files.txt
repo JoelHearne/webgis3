@@ -1,10 +1,4 @@
 App_Code\WebGIS.cs
-css\print.css
-js\config\ocws.js
-js\config\viewer.js
-js\gis\dijit\NavTools.js
-js\gis\dijit\prcmin\css\prcmin.css
 js\gis\dijit\prcmin\templates\prcmin.html
 js\gis\dijit\property.js
-js\viewer\Controller.js
 modified_files.txt

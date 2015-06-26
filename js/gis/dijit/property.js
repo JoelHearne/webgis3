@@ -1254,8 +1254,15 @@ define([
 		   }
  		}
         ,changeSearchForm:function(evt,selForm){
-			//this.clearSearch();
 
+			//this.clearSearch();
+           var dobj=dijit.byId("pane1").domNode;
+           var iboxes=dobj.getElementsByTagName('input');
+           for (var i=0;i<iboxes.length;i++){
+			    if (iboxes[i].type=="text"){
+                    iboxes[i].value="";
+				}
+		   }
 			var SearchPane  = registry.byId("psearchForm");
 			//var selForm=evt.target.value;
 			if (typeof selForm == "undefined")  selForm=evt.target.value;
