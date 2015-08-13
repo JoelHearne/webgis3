@@ -36,7 +36,7 @@ define([
       }
     },
     addWMSLayer: function() {
-      esriConfig.defaults.io.proxyUrl = "http://gisvm109/viewer_dev/proxy/proxy.ashx";
+      esriConfig.defaults.io.proxyUrl = "http://gisvm109/webgis3_dev/proxy/proxy.ashx";
       var wmsLayerUrl = this.wmsLayerTextBox.get('value');
       var numberOfLayer = this.numberOfLayerTextBox.get('value');
       var wmsLayer = new WMSLayer(wmsLayerUrl, {
@@ -44,6 +44,7 @@ define([
         format: "png",
         visibleLayers: [numberOfLayer]
       });
+
       this.map.addLayer(wmsLayer);
     }
   });

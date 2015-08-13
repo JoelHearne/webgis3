@@ -457,19 +457,21 @@ define([
 		   });
 		   */
 
+             // TODO: Is this more appropriate somewhere else?
              var ntf=document.getElementById("navtools_form");
              var mld=document.getElementById("headerLinksDiv");
+             if (ntf) {
+				 var ntfl=document.body.clientWidth-(ntf.offsetLeft + ntf.offsetWidth);
+				 var dSpc=(ntfl-ntf.offsetWidth)-75;
 
-             var ntfl=document.body.clientWidth-(ntf.offsetLeft + ntf.offsetWidth);
-             var dSpc=(ntfl-ntf.offsetWidth)-75;
-
-			 if (dSpc <=0) {
-				// pop the menu out
-				document.getElementById("headerLinksDiv").className = "headerLinksOut";
-			 } else {
-				// pop the menu back in
-				document.getElementById("headerLinksDiv").className = "headerLinks";
-			 }
+				 if (dSpc <=0) {
+					// pop the menu out
+					document.getElementById("headerLinksDiv").className = "headerLinksOut";
+				 } else {
+					// pop the menu back in
+					document.getElementById("headerLinksDiv").className = "headerLinks";
+				 }
+		     }
 
 
             this.showThis();

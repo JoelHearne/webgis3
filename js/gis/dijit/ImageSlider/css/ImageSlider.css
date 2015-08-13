@@ -1,37 +1,36 @@
  
+.gis_ImageSlider {
+   width:840px;
+   height:110px;
+   float:center;
+}
 
 #bottomPanel {
-        left: 50%;
+        /*left: 50%;*/
         //margin: 2 auto;
-        margin: 0px 0px 0px -500px;
-        padding: 0px 0px 8px 0px;
-        //margin-left: -500px;
-        position: absolute;
+        /*margin: 0px 0px 0px -500px;*/
+        padding: 5px 0px 8px 10px;
+        /*margin-left: -500px;
+        position: absolute;*/
         bottom: 1.5em;
-        opacity:0.85;
+        /*opacity:0.85;*/
         z-index: 98;
         font-size:10pt;
-      }
+}
 #imgInfo{
-        //border-radius: 2px;
-        //border: solid 1px #ccc;
-        //background-color: #fff;
-        //background-color: #3fe99f;
-        //border-width: 1px;
-        //border-color: rgb(187, 187, 87) rgb(87, 187, 187) rgb(168, 68, 168);    
+      
          display: block;
          
-        //border: 1px solid #e42f2f;
-        //border-color: rgb(187, 187, 87) rgb(87, 187, 187) rgb(168, 68, 168);  
+      
         padding: 0px 0px 0px 0px;
         margin: 0px 0px 0px 0px;
-        position: relative;
+        /*position: relative;*/
         text-align: center;
         font-size:10pt;
         width: 100%;
         height:12px;
         z-index: 99;
-      }
+}
  
 #timeInfo{
         //border-radius: 8px;
@@ -43,27 +42,16 @@
         //padding: 2px;
         padding: 0px 0px 7px 0px;
         margin: 0px 0px 0px 0px;
-        position: relative;
+        /*position: relative;*/
+ 
         text-align: center;
         font-size:10pt;
         width: 800px;
         z-index: 99;
       }
- 
- 
-/*#bottomPanel span  {
-//#timeSliderDiv   {
-// #bottomPanel [role="button"] {
-*/
-/*
-#timeSliderDiv .dbootstrap .dijitButton .dijitButtonNode, .dbootstrap .dijitDropDownButton .dijitButtonNode, .dbootstrap .dijitComboButton .dijitButtonNode, .dbootstrap .dijitToggleButton .dijitButtonNode, .dbootstrap .dijitComboBox .dijitButtonNode, .dbootstrap .dijitSpinnerButtonContainer.dijitButtonNode, .dbootstrap .dijitSelect .dijitButtonNode {
-    padding: 2px 2px;
- 
-}
-*/
-
+      
 #timeSliderDiv span {
-    
+       display: none;
     padding: 0px 0px 0px 0px;
     margin : 0px 0px 0px 0px;
     //border-radius: 3px;
@@ -86,7 +74,71 @@
     border-radius: 4px;
     box-shadow: 0px 1px 0px rgba(255, 255, 255, 0.2) inset, 0px 1px 2px rgba(0, 0, 0, 0.05);
     */
+}      
+      
+      
+    
+#dijit_form_Button_25 {
+   display: none;
 }
+/*   
+#dijit_form_Button_27 {
+   display: none;
+}
+#dijit_form_Button_26 {
+   display: none;
+}
+*/
+
+
+ 
+/*
+.fuDojo .dijit .dijitReset .dijitInline .dijitButton     
+    display: none;
+}
+*/
+ 
+ 
+.fuDojo  table:nth-of-type(1) td:nth-child(1)  {
+
+      /* background-color: rgb(247, 7, 47) ; */    
+} 
+ /*
+.fuDojo  table:nth-of-type(1) tr:nth-child(1) > td {
+
+      background-color: rgb(247, 7, 47) ;     
+}  
+*/
+ 
+.fuDojo  table:nth-of-type(1) table:first-child {
+     /* display: none; */
+     /* background-color: rgb(7, 7, 247) ;   */
+}
+
+
+.fuDojo  table:nth-of-type(1) td:nth-child(1) {
+     /* display: none; */
+     /* background-color: rgb(7, 7, 247) ; */
+}
+.fuDojo  table:nth-of-type(1)  td:nth-child(4) {
+     /* display: none; */
+     /* background-color: rgb(197, 7, 7) ; */
+}
+ 
+ 
+ 
+/*#bottomPanel span  {
+//#timeSliderDiv   {
+// #bottomPanel [role="button"] {
+*/
+/*
+#timeSliderDiv .dbootstrap .dijitButton .dijitButtonNode, .dbootstrap .dijitDropDownButton .dijitButtonNode, .dbootstrap .dijitComboButton .dijitButtonNode, .dbootstrap .dijitToggleButton .dijitButtonNode, .dbootstrap .dijitComboBox .dijitButtonNode, .dbootstrap .dijitSpinnerButtonContainer.dijitButtonNode, .dbootstrap .dijitSelect .dijitButtonNode {
+    padding: 2px 2px;
+ 
+}
+*/
+
+
 
 /*
  #sfs .dbootstrap .dijitButton .dijitButtonNode, .dbootstrap .dijitDropDownButton .dijitButtonNode, .dbootstrap .dijitComboButton .dijitButtonNode, .dbootstrap .dijitToggleButton .dijitButtonNode, .dbootstrap .dijitComboBox .dijitButtonNode, .dbootstrap .dijitSpinnerButtonContainer.dijitButtonNode, .dbootstrap .dijitSelect .dijitButtonNode {

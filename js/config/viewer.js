@@ -29,6 +29,8 @@ define([
     esriConfig.defaults.io.corsEnabledServers.push("204.49.20.75:6080");
     esriConfig.defaults.io.corsEnabledServers.push("204.49.20.76");
     esriConfig.defaults.io.corsEnabledServers.push("204.49.20.76:6080");
+    esriConfig.defaults.io.corsEnabledServers.push("webgis.okaloosafl.com");
+
 
 	// url to your geometry server.
 	esriConfig.defaults.geometryService = new GeometryService('http://204.49.20.75/arcgis/rest/services/Utilities/Geometry/GeometryServer');
@@ -40,16 +42,16 @@ define([
 	//image parameters for dynamic services, set to png32 for higher quality exports.
 	var imageParameters = new ImageParameters();
 	imageParameters.format = 'png32';
-/*
+
     var webLods = [
             //{ "level" : 0, "resolution" : 156543.033928, "scale" : 591657527.591555 },
             //{ "level" : 1, "resolution" : 78271.5169639999, "scale" : 295828763.795777 },
             //{ "level" : 2, "resolution" : 39135.7584820001, "scale" : 147914381.897889 },
-            //{ "level" : 3, "resolution" : 19567.8792409999, "scale" : 73957190.948944 },
-            //{ "level" : 4, "resolution" : 9783.93962049996, "scale" : 36978595.474472 },
-            //{ "level" : 5, "resolution" : 4891.96981024998, "scale" : 18489297.737236 },
-            //{ "level" : 6, "resolution" : 2445.98490512499, "scale" : 9244648.868618 },
-            //{ "level" : 7, "resolution" : 1222.99245256249, "scale" : 4622324.434309 },
+            { "level" : 3, "resolution" : 19567.8792409999, "scale" : 73957190.948944 },
+            { "level" : 4, "resolution" : 9783.93962049996, "scale" : 36978595.474472 },
+            { "level" : 5, "resolution" : 4891.96981024998, "scale" : 18489297.737236 },
+            { "level" : 6, "resolution" : 2445.98490512499, "scale" : 9244648.868618 },
+            { "level" : 7, "resolution" : 1222.99245256249, "scale" : 4622324.434309 },
             { "level" : 8, "resolution" : 611.49622628138, "scale" : 2311162.217155 },
             { "level" : 9, "resolution" : 305.748113140558, "scale" : 1155581.108577 },
             { "level" : 10, "resolution" : 152.874056570411, "scale" : 577790.554289 },
@@ -61,9 +63,14 @@ define([
             { "level" : 16, "resolution" : 2.38865713397468, "scale" : 9027.977411 },
             { "level" : 17, "resolution" : 1.19432856685505, "scale" : 4513.988705 },
             { "level" : 18, "resolution" : 0.597164283559817, "scale" : 2256.994353 },
-            { "level" : 19, "resolution" : 0.298582141647617, "scale" : 1128.497176 }
+            { "level" : 19, "resolution" : 0.298582141647617, "scale" : 1128.497176 },
+            { "level" : 20, "resolution" : 0.149291071000000, "scale" : 564.2485880 },
+            { "level" : 21, "resolution" : 0.074645535000000, "scale" : 282.1242940 },
+            { "level" : 22, "resolution" : 0.037322768000000, "scale" : 141.0621470 }
+            //,{ "level" : 23, "resolution" : 0.018661384000000, "scale" : 70.53107350 }
+
         ];
-*/
+
 	return {
 		// used for debugging your app
 		isDebug: true,
@@ -74,7 +81,7 @@ define([
 
 		//default mapClick mode, mapClickMode lets widgets know what mode the map is in to avoid multipult map click actions from taking place (ie identify while drawing).
 		defaultMapClickMode: 'identify',
-		mouseWheelSensitivity: 2,
+		mouseWheelSensitivity: 4,
 		panFloatSensitivity: 4, // 1-10
 		// map options, passed to map constructor. see: https://developers.arcgis.com/javascript/jsapi/map-amd.html#map1
 		mapOptions: {
@@ -83,40 +90,36 @@ define([
 		    // basemap:  new esri.dijit.Basemap({
 			  logo:false
 			  //nav:true,
-			  ,minZoom:8
-			  ,maxZoom:19
+			  ,minZoom:3
+			  ,maxZoom:22
 			//sliderStyle: 'small',
 			//sliderPosition: "top-right",
-			 //,lods:webLods
+			 ,lods:webLods
             //slider: true,
 			//sliderStyle: 'large'
             //,sliderLabels: webLods
 			    ,basemap:  new  Basemap({
 				id: 'hybrid',
 				title: 'Hybrid',
-				layers: [
 
-                     //new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
-                     new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
+				/*layers: [
+				  //, new BasemapLayer({ url: 'https://services.arcgisonline.com/arcgis/rest/services/Canvas/World_Light_Gray_Base/MapServer',  displayLevels: [8, 9, 10, 11,12] } )
+                  new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20,21,22 ] ,copyright:"Okaloosa County WebGIS"   })
+                  ,new BasemapLayer({ url: 'http://gisvm101:6080/arcgis/rest/services/imagery/ortho_2013/MapServer',  displayLevels: [ 9, 10, 11,12] } )
+                  ,new BasemapLayer({ url: 'http://204.49.20.75:6080/arcgis/rest/services/basemaps/background/MapServer',  displayLevels: [6,7,8  ] } )
 				]
-				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
+				*/
+
+   				 layers: [
+                     new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20,21,22 ] ,copyright:"Okaloosa County WebGIS"   })
+                    ,new BasemapLayer({ url: 'http://204.49.20.75:6080/arcgis/rest/services/basemaps/background/MapServer',  displayLevels: [6,7,8,9, 10, 11,12  ] } )
+                 ]
+
 			})
 
-			 /*
-			 ,basemap:  new  Basemap({
-								id: 'ortho_2013',
-								title: 'ortho_2013',
-								layers: [
-				new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  ,copyright:"Okaloosa County WebGIS"   })
-				]
-			 })
-			 */
-
-
-			 ,center: [-86.59987, 30.68192]
-
-			,zoom: 10
-
+			,center: [-86.59987, 30.68192]
+			//,zoom: 10
+			,zoom: 7
 			,fadeOnZoom: true
 			,force3DTransforms: true
 			,navigationMode: "css-transforms"
@@ -504,11 +507,7 @@ define([
 		  }
 */
 
-
-
-
-/*
-		   ,ModBasemaps: {
+            ,ModBasemaps: {
 				include: true,
 				id: 'modbasemaps',
 				title: 'ModBasemaps',
@@ -518,6 +517,18 @@ define([
 				srcNodeRef: 'basemapsDijit',
 				options: 'config/modbasemaps'
 			}
+
+			,ImageSlider: {
+				include: true,
+				id: 'imageslider',
+				title: 'Image Slider',
+				type: 'floating',
+				path: 'gis/dijit/ImageSlider',
+				srcNodeRef: 'imagesliderDijit',
+				options: 'config/modbasemaps'
+			}
+
+/*
 			,ImageSlider: {
 				include: true,
 				id: 'imageslider',
@@ -528,6 +539,10 @@ define([
 				options: 'config/modbasemaps'
 			}
 */
+
+
+
+
 
 			,mapInfo: {
 				include: true,
@@ -784,7 +799,7 @@ define([
 				}
 			}
 
-
+/*
 			 ,basemaps: {
 				include: true,
 				id: 'basemaps',
@@ -795,7 +810,7 @@ define([
 				srcNodeRef: 'basemapsDijit',
 				options: 'config/basemaps'
 			}
-
+*/
 			/*,PINSearch: {
 				include: true,
 				id: 'PINSearch',

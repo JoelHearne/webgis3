@@ -67,17 +67,25 @@ define([
                         label: this.basemaps[basemap].title,
                         iconClass: (basemap == this.mapStartBasemap) ? 'selectedIcon' : 'emptyIcon',
                         onClick: lang.hitch(this, function () {
-                            console.log("dropdown clickeddd",basemap,this.basemap);
+                            console.log("dropdown clickeddd",basemap, this.currentBasemap);
                             if (basemap !== this.currentBasemap) {
+								console.log("dropdown clickeddd  1"  );
 								if (this.basemaps[basemap].ms_url) {
+									console.log("dropdown clickeddd  2"  );
+								   this.currentBasemap = basemap;
                                    this.toggleCustomBasemap(this.basemaps[basemap],basemap);
 								} else {
+									console.log("dropdown clickeddd  3"  );
 									this.currentBasemap = basemap;
+									this.toggleAGSBasemap(basemap);
+
+									/*
 									if (this.mode === 'custom') {
 										this.gallery.select(basemap);
 									} else {
 										this.map.setBasemap(basemap);
 									}
+									*/
 							    }
                                 var ch = this.menu.getChildren();
                                 array.forEach(ch, function (c) {
@@ -105,6 +113,14 @@ define([
                  });
 			});
 
+			topic.subscribe('ModBasemaps/initImageSlider', function (r) {
+				 topic.publish('ImageSlider/initImageSlider', {
+					     basemaps:_this.availableWMSBasemaps,
+				         activeBasemap:_this.basemaps[_this.activeBasemap],
+				         currentBasemap:_this.basemaps[_this.activeBasemap]
+                 });
+			});
+
 			// listen for request to toggle basemap
 			topic.subscribe('ModBasemaps/setCurrentBasemap', function (r) {
 				//console.log("ModBasemaps/setCurrentBasemap",r);
@@ -112,7 +128,7 @@ define([
 			});
         }
         ,autoCheckDropdownItem:function(bm_title) {
-			//console.log("autoCheckDropdownItem",bm_title,this.activeBasemap);
+		  //console.log("autoCheckDropdownItem",bm_title,this.activeBasemap);
 	       var _this=this;
            var ch = this.menu.getChildren();
            array.forEach(ch, function (c) {
@@ -132,6 +148,7 @@ define([
           //console.log(" finished autoCheckDropdownItem",bm_title,this.activeBasemap);
 		}
         ,checkbasemapextent:function(ext,basemapid){
+			//console.log("checkbasemapextent" );
             var isIn=true;
             var bm=this.basemaps[basemapid];
             var exitms=bm.ms_bounds.split(",");
@@ -147,9 +164,12 @@ define([
 		  //console.log("updateLocation",evt,"  this.activeBasemap",this.activeBasemap);
 
 		  var isBMOutOfBounds=false; // Handle scenario where the current basemap is no longer in the extent view
-
+		  var isBMListChanged=false; // If the list of mapservices within the current extent does not change then nothing else really needs to happen
 
 		  var extnt=evt.extent;
+
+		  var BMList_Count=this.availableWMSBasemaps.length;
+
 	      this.availableWMSBasemaps=[];
           var _this=this;
            // This handles removing basemaps that are not within the map extent
@@ -160,16 +180,18 @@ define([
 					 var isin=this.checkbasemapextent(extnt,mi.id);
 					 if (!isin) {
 						 mi.destroyRecursive(false);
-
-						 if (mi.id==this.activeBasemap)	 isBMOutOfBounds=true; // check if current basemap is out of bounds
-
+						 isBMListChanged=true;
+						 if (mi.id==this.activeBasemap)	  isBMOutOfBounds=true; // check if current basemap is out of bounds
 					 } else {
 						 this.availableWMSBasemaps.push(this.basemaps[mi.id]);
 					 }
 				 }
             }, this);
 
+            if (BMList_Count != this.availableWMSBasemaps.length) isBMListChanged=true;
+
             var isAdded=false;
+
             // This handles adding basemaps that are within the map extent but had been previously removed
             array.forEach(this.basemapsToShow, function (basemap) {
                 if (this.basemaps.hasOwnProperty(basemap)) {
@@ -181,6 +203,7 @@ define([
 					 if (isin && cidx==-1) { // if isin and not in dropdown add basemap to dropdown
 
  						this.availableWMSBasemaps.push(this.basemaps[basemap]);
+ 						isBMListChanged=true;
 
  						var menuItem = new MenuItem({
 							id: basemap,
@@ -227,7 +250,7 @@ define([
 
             // change the basemap to the next available timeslot if current basemap is out of bounds
             if (isBMOutOfBounds) {
-
+                //console.log("updateLocation  isBMOutOfBounds: ",isBMOutOfBounds);
 				var diffdate=new Date(this.basemaps[this.activeBasemap].ms_date);
 
                 var arr=[];
@@ -268,20 +291,29 @@ define([
 
               if (newActvBM !=null)  this.activeBasemap=newActvBM.basemap.id;
 
+
 			}
 
-            // set the dropdown selection to the current basemap
-            this.autoCheckDropdownItem(this.basemaps[this.activeBasemap].title) ;
+			if (isBMListChanged ) {
 
-            var _this=this;
-		    topic.publish('ImageSlider/recieveBasemaps', {
-					     basemaps:_this.availableWMSBasemaps,
-				         activeBasemap:_this.basemaps[_this.activeBasemap],
-				         currentBasemap:_this.basemaps[_this.activeBasemap]
-            });
+				this.autoCheckDropdownItem(this.basemaps[this.activeBasemap].title);
+
+				// set the dropdown selection to the current basemap
+				// TODO: reduce the number of times this gets executed by checking if it needs to be changed at.
+				//console.log("updateLocation  ..calling autoCheckDropdownItem  ",this.activeBasemap,this.basemaps[this.activeBasemap] );
+				//this.autoCheckDropdownItem(this.basemaps[this.activeBasemap].title) ;
+
+				var _this=this;
+				topic.publish('ImageSlider/recieveBasemaps', {
+							 basemaps:_this.availableWMSBasemaps,
+							 activeBasemap:_this.basemaps[_this.activeBasemap],
+							 currentBasemap:_this.basemaps[_this.activeBasemap]
+				});
+		   }
 
 		}
         ,uniq: function (a) {
+			//console.log("uniq" );
 			var seen = {};
 			return a.filter(function(item) {
 				return seen.hasOwnProperty(item) ? false : (seen[item] = true);
@@ -289,6 +321,7 @@ define([
 		}
 
 		,getSortedIdx: function(basemapid){
+			// console.log("getSortedIdx: ",basemapid);
             var idx=-1;
             var srtarry=new Array();
 
@@ -305,6 +338,7 @@ define([
              return idx;
 		}
 		,sortMenuItems: function(){
+			 //console.log("sortMenuItems");
              var srtarry=new Array();
              var cntr=0;
              var _this=this;
@@ -331,7 +365,7 @@ define([
 							label: this.basemaps[basemap].title,
 							iconClass: (basemap == this.mapStartBasemap) ? 'selectedIcon' : 'emptyIcon',
 							onClick: lang.hitch(this, function () {
-								console.log("dropdown clickedd",basemap,this.basemap);
+								//console.log("dropdown clickedd",basemap,this.basemap);
 								if (basemap !== this.currentBasemap) {
 									_this.activeBasemap=this.basemap;
 									if (this.basemaps[basemap].ms_url) {
@@ -363,10 +397,13 @@ define([
             }, this);
 		}
         ,toggleCustomBasemap : function(bm,bm_id){
+           //console.log("toggleCustomBasemap basemap id changing from to",this.activeBasemap,bm_id);
 		   this.activeBasemap=bm_id;
 		   //console.log("toggleCustomBasemap",bm,bm_id);
 
            this.hideBaseMap();
+
+           console.log("toggleCustomBasemap 1");
             var mslyr=new MapservLayer({
 				 ms_url: bm.ms_url,
 				 ms_map:bm.ms_map,
@@ -375,29 +412,37 @@ define([
 				});
 
              mslyr.id="layer0";
-		     this.map.addLayer(mslyr)
+
+             console.log("toggleCustomBasemap 2");
+		     this.map.addLayer(mslyr);
+		     console.log("toggleCustomBasemap 3");
 		     this.map.reorderLayer(mslyr, 0);
+		     console.log("toggleCustomBasemap 4");
 
             var _this=this;
 		    topic.publish('ImageSlider/changeBasemap', {
-					     basemap:_this.basemaps[_this.activeBasemap]
+				  basemap:_this.basemaps[_this.activeBasemap]
             });
+
+            console.log("toggleCustomBasemap 5");
 
 		},
 		toggleAGSBasemap: function(bm_id){
-			// console.log("toggleAGSBasemap",bm_id);
+           //console.log("toggleAGSBasemap: this.activeBasemap: ",this.activeBasemap,"bm_id: ",bm_id);
+           if (this.activeBasemap!=bm_id) {
 
-			 this.activeBasemap=bm_id;
-
-
-		   if (this.mode === 'custom') {
-    		     this.gallery.select(bm_id);
-
-		    } else {
-			     this.map.setBasemap(bm_id);
-            }
+			  console.log("toggleAGSBasemap   2: this.activeBasemap: ",this.activeBasemap,"bm_id: ",bm_id);
+		      this.activeBasemap=bm_id;
+		      this.hideBaseMap();
+		      if (this.mode === 'custom') {
+    		      this.gallery.select(bm_id);
+		      } else {
+			      this.map.setBasemap(bm_id);
+              }
+		   }
 		},
 		toggleCustomBasemapByDate: function(ms_date) {
+           //console.log("toggleCustomBasemapByDate",ms_date);
 
            var layers=[];
            var menuitms= this.menu.getDescendants();
@@ -415,6 +460,7 @@ define([
 
 		},
 	     hideBaseMap: function(){
+			//console.log("hideBaseMap");
 			var _this = this;
 			var lyrs2rem=new Array();
 			dojo.forEach(this.map.layerIds, function(id){
@@ -422,7 +468,7 @@ define([
 
 			if (layer.id.indexOf('layer') !=-1){
 				  var ltr=_this.map.getLayer(layer.id);
-				  lyrs2rem.push(ltr);
+		    	  lyrs2rem.push(ltr);
 			  }
 		    });
             _this.map.removeLayer(lyrs2rem[0]);
@@ -430,7 +476,9 @@ define([
         startup: function () {
            this.inherited(arguments);
            this.activeBasemap=this.mapStartBasemap;
-           //console.log("startup",this.activeBasemap);
+           //console.log("startup args: ",this.activeBasemap);
+           //console.log("startup active basemap: ",arguments);
+
 
            if (this.mode === 'custom') {
                 if (this.map.getBasemap() !== this.mapStartBasemap) { //based off the title of custom basemaps in viewer.js config

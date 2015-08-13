@@ -101,9 +101,9 @@ define([
 			//this.pcTaxVal.innerHTML='<a href="https://www.okaloosa.county-taxes.com/public/real_estate/parcels/042N24000000040000" target="_blank">' +dobj.taxable_value + '</a>';
 			this.pcHomestead.innerHTML=dobj.HMSTD;
 			//this.pcFLU.innerHTML=dobj.FLUPY;
-			this.pcFLU.innerHTML='<a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-FLU.pdf" target="_blank">' + dobj.FLUPY + '</a>';
+			this.pcFLU.innerHTML='<a href="http://gis.okaloosafl.com/gis/maps/chapter2-FLU.pdf" target="_blank">' + dobj.FLUPY + '</a>';
 			//this.pcCtyZn.innerHTML=dobj.ZONING;
-			this.pcCtyZn.innerHTML='<a href="http://webgis.co.okaloosa.fl.us/website/okaloosagis/gm/chapter2-LDC.pdf" target="_blank">' + dobj.ZONING + '</a>';
+			this.pcCtyZn.innerHTML='<a href="http://gis.okaloosafl.com/gis/maps/chapter2-LDC.pdf" target="_blank">' + dobj.ZONING + '</a>';
 			//this.pcFEMAFlood.innerHTML=dobj.FLDZ_BFE;
 			this.pcFEMAFlood.innerHTML='<a href="https://www.fema.gov/floodplain-management/flood-zones" target="_blank">' + dobj.FLDZ_BFE + '</a>';
 			//this.pcCobra.innerHTML=dobj.COBRA;

@@ -1,150 +1,46 @@
 define([
-    'esri/map'
-	,'esri/units'
-	,'esri/geometry/Extent'
-	,'esri/config'
-	,'esri/tasks/GeometryService'
-	,'esri/layers/ImageParameters'
-	//,'esri/layers/WMSLayer'
-	//,'esri/layers/WMSLayerInfo'
-	,"esri/SpatialReference"
-	,'esri/dijit/Basemap'
-	,'esri/dijit/BasemapLayer'
-	,'../gis/dijit/mapservLayer'
-    //,'esri/layers/ArcGISTiledMapServiceLayer'
-    //,'esri/map'
-    //,'esri/geometry/Point'
-], function (Map,units, Extent, esriConfig, GeometryService, ImageParameters
-//, WMSLayer,WMSLayerInfo
-,SpatialReference,Basemap, BasemapLayer,MapservLayer ) {
+	'esri/units',
+	'esri/geometry/Extent',
+	'esri/config',
+	'esri/tasks/GeometryService',
+	'esri/layers/ImageParameters'
+], function (units, Extent, esriConfig, GeometryService, ImageParameters) {
 
 	// url to your proxy page, must be on same machine hosting you app. See proxy folder for readme.
 	esriConfig.defaults.io.proxyUrl = 'proxy/proxy.ashx';
 	esriConfig.defaults.io.alwaysUseProxy = false;
-    esriConfig.defaults.io.corsDetection=true;
-    esriConfig.defaults.io.useCors=true;
-    esriConfig.defaults.io.corsEnabledServers.push("gisvm101");
-    esriConfig.defaults.io.corsEnabledServers.push("gisvm101:6080");
-    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.75");
-    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.75:6080");
-    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.76");
-    esriConfig.defaults.io.corsEnabledServers.push("204.49.20.76:6080");
-
 	// url to your geometry server.
-	esriConfig.defaults.geometryService = new GeometryService('http://204.49.20.75/arcgis/rest/services/Utilities/Geometry/GeometryServer');
-	esriConfig.defaults.map.panDuration = 1000; // time in milliseconds, default panDuration: 250
-	esriConfig.defaults.map.panRate = 1; // default panRate: 25
-	esriConfig.defaults.map.zoomDuration = 100; // default zoomDuration: 500
-	esriConfig.defaults.map.zoomRate = 1; // default zoomRate: 25
+	esriConfig.defaults.geometryService = new GeometryService('http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer');
 
 	//image parameters for dynamic services, set to png32 for higher quality exports.
 	var imageParameters = new ImageParameters();
 	imageParameters.format = 'png32';
-/*
-    var webLods = [
-            //{ "level" : 0, "resolution" : 156543.033928, "scale" : 591657527.591555 },
-            //{ "level" : 1, "resolution" : 78271.5169639999, "scale" : 295828763.795777 },
-            //{ "level" : 2, "resolution" : 39135.7584820001, "scale" : 147914381.897889 },
-            //{ "level" : 3, "resolution" : 19567.8792409999, "scale" : 73957190.948944 },
-            //{ "level" : 4, "resolution" : 9783.93962049996, "scale" : 36978595.474472 },
-            //{ "level" : 5, "resolution" : 4891.96981024998, "scale" : 18489297.737236 },
-            //{ "level" : 6, "resolution" : 2445.98490512499, "scale" : 9244648.868618 },
-            //{ "level" : 7, "resolution" : 1222.99245256249, "scale" : 4622324.434309 },
-            { "level" : 8, "resolution" : 611.49622628138, "scale" : 2311162.217155 },
-            { "level" : 9, "resolution" : 305.748113140558, "scale" : 1155581.108577 },
-            { "level" : 10, "resolution" : 152.874056570411, "scale" : 577790.554289 },
-            { "level" : 11, "resolution" : 76.4370282850732, "scale" : 288895.277144 },
-            { "level" : 12, "resolution" : 38.2185141425366, "scale" : 144447.638572 },
-            { "level" : 13, "resolution" : 19.1092570712683, "scale" : 72223.819286 },
-            { "level" : 14, "resolution" : 9.55462853563415, "scale" : 36111.909643 },
-            { "level" : 15, "resolution" : 4.77731426794937, "scale" : 18055.954822 },
-            { "level" : 16, "resolution" : 2.38865713397468, "scale" : 9027.977411 },
-            { "level" : 17, "resolution" : 1.19432856685505, "scale" : 4513.988705 },
-            { "level" : 18, "resolution" : 0.597164283559817, "scale" : 2256.994353 },
-            { "level" : 19, "resolution" : 0.298582141647617, "scale" : 1128.497176 }
-        ];
-*/
+
 	return {
 		// used for debugging your app
-		isDebug: true,
-		titles: {
-		   header:'Okaloosa County IS/GIS'
-           //,subHeader:'WebBGIS'
-		},
+		isDebug: false,
 
 		//default mapClick mode, mapClickMode lets widgets know what mode the map is in to avoid multipult map click actions from taking place (ie identify while drawing).
 		defaultMapClickMode: 'identify',
-		mouseWheelSensitivity: 2,
-		panFloatSensitivity: 4, // 1-10
 		// map options, passed to map constructor. see: https://developers.arcgis.com/javascript/jsapi/map-amd.html#map1
 		mapOptions: {
-		     //basemap: 'streets',
-		     // basemap: 'ortho_2013',
-		    // basemap:  new esri.dijit.Basemap({
-			  logo:false
-			  //nav:true,
-			  ,minZoom:8
-			  ,maxZoom:19
-			//sliderStyle: 'small',
-			//sliderPosition: "top-right",
-			 //,lods:webLods
-            //slider: true,
-			//sliderStyle: 'large'
-            //,sliderLabels: webLods
-			    ,basemap:  new  Basemap({
-				id: 'hybrid',
-				title: 'Hybrid',
-				layers: [
-
-                     //new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
-                     new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20] ,copyright:"Okaloosa County WebGIS"   })
-				]
-				//layers: [ new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer" })]
-			})
-
-			 /*
-			 ,basemap:  new  Basemap({
-								id: 'ortho_2013',
-								title: 'ortho_2013',
-								layers: [
-				new  BasemapLayer({ url: "http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer"  ,copyright:"Okaloosa County WebGIS"   })
-				]
-			 })
-			 */
-
-
-			 ,center: [-86.59987, 30.68192]
-
-			,zoom: 10
-
-			,fadeOnZoom: true
-			,force3DTransforms: true
-			,navigationMode: "css-transforms"
-			,isScrollWheelZoom:true
-
-			//,spatialReference: new esri.SpatialReference({ wkid: 102100 })
-			//minZoom:10,
-			//maxZoom:19,
-			//sliderStyle: 'small',
-			//sliderPosition: "top-right",
-			//lods:webLods,
-            //slider: true,
-			//sliderStyle: 'large'
-            //,sliderLabels: webLods
-		}
-
+			basemap: 'satellite',
+			center: [-86.59987, 30.68192],
+			zoom: 10,
+			sliderStyle: 'small'
+		},
 		// panes: {
 		// 	left: {
 		// 		splitter: true
 		// 	},
-		//  	right: {
-		//  		id: 'sidebarRight',
-		//  		placeAt: 'outer',
-		 // 		region: 'right',
-		 // 		splitter: true,
-		 // 		collapsible: true
-		 // 	}
-		// 	, bottom: {
+		// 	right: {
+		// 		id: 'sidebarRight',
+		// 		placeAt: 'outer',
+		// 		region: 'right',
+		// 		splitter: true,
+		// 		collapsible: true
+		// 	},
+		// 	bottom: {
 		// 		id: 'sidebarBottom',
 		// 		placeAt: 'outer',
 		// 		splitter: true,
@@ -158,106 +54,143 @@ define([
 		// 		splitter: true,
 		// 		region: 'top'
 		// 	}
-		 // },
-		 //collapseButtonsPane: 'center', //center or outer
+		// },
+		// collapseButtonsPane: 'center', //center or outer
 
 		// operationalLayers: Array of Layers to load on top of the basemap: valid 'type' options: 'dynamic', 'tiled', 'feature'.
 		// The 'options' object is passed as the layers options for constructor. Title will be used in the legend only. id's must be unique and have no spaces.
 		// 3 'mode' options: MODE_SNAPSHOT = 0, MODE_ONDEMAND = 1, MODE_SELECTION = 2
-		,operationalLayers: [
-
-        /*{
-			type: 'dynamic',
-			url: 'http://wrecks.nauticalcharts.noaa.gov/arcgis/rest/services/public_wrecks/Wrecks_And_Obstructions/MapServer',
-			title: 'NOAA Wrecks and Obstructions',
-			slider: true,
-			noLegend: false,
-			collapsed: true,
-			options: {
-				id: 'NOAAOB',
-				opacity: 1,
-				visible: false,
-				imageParameters: imageParameters
-				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
-			},
-			layerControlLayerInfos: {
-				swipe: true,
-				metadataUrl: true,
-				expanded: false
-			}
-			//,identifyLayerInfos: { layerIds: [11] }
-		},*/
+		operationalLayers: [
         {
 			type: 'dynamic',
-			 
+			//url: 'http://gisvm101:6080/arcgis/rest/services/ocws/ocws/MapServer',
 			url: 'http://204.49.20.75:6080/arcgis/rest/services/OCWS/ocws/MapServer',
-			title: 'Okaloosa WebGIS',
+			title: 'OCWS',
 			slider: true,
 			noLegend: false,
 			collapsed: false,
 			options: {
-				id: 'WebGIS',
-				opacity: 1,
+				id: 'IGIS',
+				opacity: 0.75,
 				visible: true,
 				imageParameters: imageParameters
-				,disableClientCaching:true
-				,refreshInterval:30
-				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
 			},
 			layerControlLayerInfos: {
-				swipe: true,
-				metadataUrl: true,
-				expanded: true
+				swipe: true
 			}
-			//,identifyLayerInfos: { layerIds: [11] }
 		}
-	/*	,{
+		/*{
 			type: 'feature',
-			url: 'http://204.49.20.75:6080/arcgis/rest/services/fs_test/FeatureServer/4',
-			title: 'Test FS',
+			url: 'http://services1.arcgis.com/g2TonOxuRkIqSOFx/arcgis/rest/services/MeetUpHomeTowns/FeatureServer/0',
+			title: 'STLJS Meetup Home Towns',
 			options: {
-			id: 'test_edit',
-			opacity: 1.0,
-			visible: true,
-			outFields: ['*'],
-			mode: 0
+				id: 'meetupHometowns',
+				opacity: 1.0,
+				visible: true,
+				outFields: ['*'],
+				mode: 0
 			},
 			editorLayerInfos: {
-			   disableGeometryUpdate: false
+				disableGeometryUpdate: false
 			}
-		 }
-*/
-
-
-
-
-
-
-      /*,{
+		}, {
+			type: 'feature',
+			url: 'http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/SanFrancisco/311Incidents/FeatureServer/0',
+			title: 'San Francisco 311 Incidents',
+			options: {
+				id: 'sf311Incidents',
+				opacity: 1.0,
+				visible: true,
+				outFields: ['req_type', 'req_date', 'req_time', 'address', 'district'],
+				mode: 0
+			}
+		},*/
+		/*{
 			type: 'dynamic',
-			url: 'http://gisvm101:6080/arcgis/rest/services/background/MapServer',
-			title: 'Demo_Basemap',
+			url: 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/PublicSafety/PublicSafetyOperationalLayers/MapServer',
+			title: 'Louisville Public Safety',
+			slider: true,
+			noLegend: false,
+			collapsed: false,
+			sublayerToggle: false, //true to automatically turn on sublayers
+			options: {
+				id: 'louisvillePubSafety',
+				opacity: 1.0,
+				visible: true,
+				imageParameters: imageParameters
+			},
+			identifyLayerInfos: {
+				layerIds: [2, 4, 5, 8, 12, 21]
+			}
+		},*/
+      /*{
+			type: 'dynamic',
+			url: 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/PublicSafety/PublicSafetyOperationalLayers/MapServer',
+			title: 'Louisville Public Safety',
+			slider: true,
+			noLegend: false,
+			collapsed: false,
+			sublayerToggle: false, //true to automatically turn on sublayers
+			options: {
+				id: 'louisvillePubSafety',
+				opacity: 1.0,
+				visible: true,
+				imageParameters: imageParameters
+			},
+			identifyLayerInfos: {
+				layerIds: [2, 4, 5, 8, 12, 21]
+			}
+		} ,*/
+		/* {
+			type: 'dynamic',
+			url: 'http://204.49.20.75:6080/arcgis/rest/services/internet_webgis/MapServer',
+			title: 'WebGIS',
 			slider: true,
 			noLegend: false,
 			collapsed: false,
 			options: {
-				id: 'Demo_Basemap',
-				opacity: 1,
-				visible: true,
+				id: 'webgis',
+				opacity: 1.0,
+				visible: false,
 				imageParameters: imageParameters
-				//spatialReference: new esri.SpatialReference({ wkid: 102100 })
 			},
 			layerControlLayerInfos: {
-				swipe: true,
-				metadataUrl: true,
-				expanded: true
+				swipe: true
 			}
-			//,identifyLayerInfos: { layerIds: [11] }
-		}
-		*/
-
-
-
+		},
+		{
+					type: 'dynamic',
+					url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Parcels/MapServer',
+					title: 'parcels',
+					slider: true,
+					noLegend: false,
+					collapsed: false,
+					options: {
+						id: 'parcels',
+						opacity: 1.0,
+						visible: true,
+						imageParameters: imageParameters
+					},
+					layerControlLayerInfos: {
+						swipe: true
+					}
+		} , {
+					type: 'dynamic',
+					url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/2013Images/MapServer',
+					title: '2013Imagery',
+					slider: true,
+					noLegend: false,
+					collapsed: false,
+					options: {
+						id: '2013Imagery',
+						opacity: 1.0,
+						visible: true,
+						imageParameters: imageParameters
+					},
+					layerControlLayerInfos: {
+						swipe: true
+					}
+		}*/
 
 
 

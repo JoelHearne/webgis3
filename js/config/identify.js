@@ -22,7 +22,7 @@ define({
 
 	identifies: {
 		WebGIS: {
-			1: {
+			140: {
 				title: 'Property Info',
 				  mediaInfos: [
 

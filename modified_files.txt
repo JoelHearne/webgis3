@@ -1,4 +1,8 @@
-App_Code\WebGIS.cs
+js\config\find.js
+js\config\identify.js
+js\config\ocws.js
+js\config\property.js
+js\gis\dijit\prcmin.js
 js\gis\dijit\prcmin\templates\prcmin.html
 js\gis\dijit\property.js
 modified_files.txt

@@ -294,7 +294,7 @@ define([
 
 		}
 		,selectToolWdgt:function(e){
-			 //console.log("selectToolWdgt",e.target.value,e.target);
+			 console.log("selectToolWdgt",e.target.value,e.target);
 
 			 if (e.target.value=="print") topic.publish('print/showMe', "sel");
 			 if (e.target.value=="bookmarks") topic.publish('bookmarks/showMe', "sel");
@@ -303,6 +303,7 @@ define([
 			 if (e.target.value=="identify") topic.publish('identify/showMe', "sel");
              if (e.target.value=="goto") topic.publish('goto/showMe', "sel");
              if (e.target.value=="editor") topic.publish('editor/showMe', "sel");
+             if (e.target.value=="ImageSlider")  topic.publish('ImageSlider/showMe', "sel");
 
              e.target.value="";
 

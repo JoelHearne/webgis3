@@ -24,17 +24,12 @@ define([
 
  basemapsToShow: [ 'ortho_2013'
  //,'ortho_ms'
- //,'o_okaloosa_north_mosaic_01_1993_4800_10p','o_okaloosa_destin_mosiac_1994','o_okaloosa_north_rgb_03_2002_47p','o_okaloosa_fwb_mosiac_02_1999_5p','o_okaloosa_niceville_mosiac_02_1999_5p'
- ,'o_FWB_Mosaic1955_SP'
-//,'o_okaloosa_destin_mosiac_09_2001','o_NorthOkaloosa10_06_03','o_okaloosa_rgb_fwb_nv_05_2004_20p'
-,'o_okaloosa_rgb_04_2005_20p'
-//,'o_02072007_OkaloosaBeach'
-,'o_OKaloosa_25p'
+ ,'o_okaloosa_north_mosaic_01_1993_4800_10p','o_okaloosa_destin_mosiac_1994','o_okaloosa_north_rgb_03_2002_47p','o_okaloosa_fwb_mosiac_02_1999_5p','o_okaloosa_niceville_mosiac_02_1999_5p' ,'o_FWB_Mosaic1955_SP'
+,'o_okaloosa_destin_mosiac_09_2001','o_NorthOkaloosa10_06_03','o_okaloosa_rgb_fwb_nv_05_2004_20p','o_okaloosa_rgb_04_2005_20p','o_02072007_OkaloosaBeach','o_OKaloosa_25p'
 //,'flood_2009'
 /*,'o_001_69765_a_RGBMosaic','o_002_69759_a_RGBMosaic','o_003_69764_b_RGBMosaic','o_004_69760_a_RGBMosaic','o_005_69761_A_RGBMosaic','o_006_69762_b_RGBMosaic','o_007_69763_A_RGBMosaic','o_008_69766_b_RGBMosaic','o_009_69767_a_RGBMosaic','o_010_69768_a_RGBMosaic','o_011_69770_b_RGBMosaic','o_012_69769_a_RGBMosaic','o_013_69771_a_RGBMosaic','o_014_69772_a_RGBMosaic','o_015_69773_a_RGBMosaic','o_016_69774_a_RGBMosaic'
 */
-,'o_destin_rgb_02_2010_20p','o_fwb_rgb_02_2010_20p','o_niceville_rgb_02_2010_20p'
-//,'o_mbb_10_14_2011_20p'
+,'o_destin_rgb_02_2010_20p','o_fwb_rgb_02_2010_20p','o_niceville_rgb_02_2010_20p','o_mbb_10_14_2011_20p'
  //, 'esri_terrain','esri_streets','esri_topo','esri_imagery','nav_charts'
  ],
 
@@ -48,21 +43,9 @@ define([
  					title:'ortho_2013',
  					//basemapGallery:,
                      //thumbnailUrl: '../../igis_thumb.png',
-
-
- 					/*
- 					layers: [
-                     new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20,21,22 ] ,copyright:"Okaloosa County WebGIS"   })
-                    ,new BasemapLayer({ url: 'http://gisvm101:6080/arcgis/rest/services/imagery/ortho_2013/MapServer',  displayLevels: [ 9, 10, 11,12] } )
-                    ,new BasemapLayer({ url: 'http://204.49.20.75:6080/arcgis/rest/services/basemaps/background/MapServer',  displayLevels: [6,7,8  ] } )
-                    ]
-                    */
-   					layers: [
-                     new  BasemapLayer({ url: "http://204.49.20.75/arcgis/rest/services/imagery/Pictometry2013OrthMosaic/MapServer",  displayLevels: [ 13, 14, 15, 16, 17, 18, 19,20,21,22 ] ,copyright:"Okaloosa County WebGIS"   })
-                    ,new BasemapLayer({ url: 'http://204.49.20.75:6080/arcgis/rest/services/basemaps/background/MapServer',  displayLevels: [6,7,8,9, 10, 11,12  ] } )
-                    ]
-
-
+ 					layers: [new esri.dijit.BasemapLayer({
+ 						url: 'http://gisvm101:6080/arcgis/rest/services/imagery/Pictometry_2013_OrthoMosaic/MapServer'
+ 					})]
  				}),
  				//ms_url: "",
  				//ms_layers:"",
@@ -71,8 +54,7 @@ define([
  				ms_date:"09/01/2013",
  				ms_year:"2013"
             }
-
- /*,o_okaloosa_north_mosaic_01_1993_4800_10p: {
+       ,o_okaloosa_north_mosaic_01_1993_4800_10p: {
 				title: '1993 North Okaloosa',
 				basemap: new esri.dijit.Basemap({
 					id: 'o_okaloosa_north_mosaic_01_1993_4800_10p',
@@ -146,7 +128,7 @@ define([
 				ms_date:"2/1/1999",
 				ms_year:"1999"
 	    }
-*/
+
       ,o_FWB_Mosaic1955_SP: {
 				title: '1955 Fort Walton beach',
 				basemap: new esri.dijit.Basemap({
@@ -154,12 +136,9 @@ define([
 					title:'o_FWB_Mosaic1955_SP',
 					layers: []
 				}),
-				//ms_url: "http://gisvm101/ms/cgi/mapserv.exe?",
-				//ms_map:"f:\\ms\\data\\orthos\\img.map",
-
-				ms_url: "http://204.49.20.75/ms/cgi/mapserv.exe?",
-				ms_map:"d:\\inetpub\\wwwroot\\ms6\\data\\orthos\\img.map",
+				ms_url: "http://gisvm101/ms/cgi/mapserv.exe?",
 				ms_layers:"FWB_Mosaic1955_SP",
+				ms_map:"f:\\ms\\data\\orthos\\img.map",
 				ms_bounds:"-9646889.32115,3554128.39055,-9636557.41255,3565796.82375",
 				ms_date:" 4/1/1955",
 				ms_year:"1955"
@@ -178,7 +157,7 @@ define([
  				ms_layers:"aerials",
  				ms_map:"d:\\inetpub\\wwwroot\\ms6\\data\\pa\\map.map"
             },*/
-/*
+
      ,  o_okaloosa_destin_mosiac_09_2001: {
  				title: '2001 Destin',
  				basemap: new esri.dijit.Basemap({
@@ -223,7 +202,7 @@ define([
  				ms_date:"04/01/2004",
  				ms_year:"2004"
  	    }
-*/
+
         ,o_okaloosa_rgb_04_2005_20p: {
  				title: '2005 Okaloosa',
  				basemap: new esri.dijit.Basemap({
@@ -239,7 +218,7 @@ define([
  				ms_year:"2005"
  	    }
 
-   /*     ,o_02072007_OkaloosaBeach: {
+        ,o_02072007_OkaloosaBeach: {
  				title: '2007 Feb Coastline',
  				basemap: new esri.dijit.Basemap({
  					id: 'o_02072007_OkaloosaBeach',
@@ -253,7 +232,7 @@ define([
  				ms_date:"02/07/2007",
  				ms_year:"2007"
  	    }
-*/
+
         ,o_OKaloosa_25p: {
  				title: '2009 Okaloosa',
  				basemap: new esri.dijit.Basemap({
@@ -334,7 +313,7 @@ define([
  				ms_year:"2010"
  	    }
 
-    /*    ,o_mbb_10_14_2011_20p: {
+        ,o_mbb_10_14_2011_20p: {
  				title: '2011 Mid-Bay Bridge',
  				basemap: new esri.dijit.Basemap({
  					id: 'o_mbb_10_14_2011_20p',
@@ -348,7 +327,7 @@ define([
  				ms_date:"10/14/2011",
  				ms_year:"2011"
  	    }
-*/
+
 
 
         }

@@ -21,9 +21,9 @@ define([ "dojo/_base/declare", "esri/layers/agsdynamic", "esri/tasks/geometry" ]
         });
 
         if ( this.wkid != ext.spatialReference.wkid ) {
-			console.log("special wkid");
-			console.log(this.wkid);
-			console.log( ext.spatialReference.wkid);
+			//console.log("special wkid");
+			//console.log(this.wkid);
+			//console.log( ext.spatialReference.wkid);
           // project extent for contiguous US to the supplied wkid
           var gs = new esri.tasks.GeometryService("http://sampleserver3.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"),
               that = this;
@@ -46,7 +46,8 @@ define([ "dojo/_base/declare", "esri/layers/agsdynamic", "esri/tasks/geometry" ]
               request:"GetMap",
               SERVICE:"WMS",
               transparent:true,
-              format:"image/png",
+              //format:"image/png",
+              format:"image/jpeg",
               bgcolor:"ffffff",
               version:"1.3.0",
               layers:this.ms_layers,

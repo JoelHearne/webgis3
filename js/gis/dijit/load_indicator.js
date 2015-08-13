@@ -27,7 +27,7 @@ define([
 			this.map.on('update-start', function (layer) {
 			   //console.log("load_indicator update-start");
 				dojo.byId("waitdiv").style.visibility="visible";
-				//setTimeout( function(){   dojo.byId("waitdiv").style.visibility="hidden"; } , 7000);
+				setTimeout( function(){ dojo.byId("waitdiv").style.visibility="hidden"; } , 7000);
 			});
 			this.map.on('update-end', function (layer) {
 				//console.log("update-end");

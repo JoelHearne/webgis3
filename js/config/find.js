@@ -4,7 +4,7 @@ define({
 		{
 			description: 'Find Address',
 			//url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Streets_Address/MapServer',
-			url:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
+			url:'http://204.49.20.75/arcgis/rest/services/IGIS/MapServer',
 			autofill_url:'http://gisvm109/viewer_dev/street_name_lookup.php?',
 			//layerIds: [2],
 			layerIds: [81],
@@ -14,7 +14,7 @@ define({
 		{
 			description: 'Find Street',
 			//url: 'http://204.49.20.76:6080/arcgis/rest/services/PA_Services/Streets_Address/MapServer',
-			url:'http://gisvm101:6080/arcgis/rest/services/IGIS/MapServer',
+			url:'http://204.49.20.75/arcgis/rest/services/IGIS/MapServer',
 			autofill_url:'http://gisvm109/viewer_dev/street_name_lookup.php?',
 			layerIds: [82],
 			searchFields: ['MSAGNAME'],

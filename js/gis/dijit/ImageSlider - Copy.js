@@ -18,19 +18,14 @@ define([
     'esri/dijit/TimeSlider',
     './mapservLayer',
     'dijit/form/DropDownButton',
-    'xstyle/css!./ImageSlider/css/ImageSlider.css'
-    ,'dojo/domReady!'
-], function (declare,lang,on,connect,topic,ready,parser,registry,_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,  arrayUtils, dom,functional, template,Extent,SpatialReference
-,TimeExtent, TimeSlider
-,MapservLayer) {
+    'xstyle/css!./ImageSlider/css/ImageSlider.css',
+    'dojo/domReady!'
+], function (declare,lang,on,connect,topic,ready,parser,registry,_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin,  arrayUtils, dom,functional, template,Extent,SpatialReference,TimeExtent, TimeSlider,MapservLayer) {
 
     // main basemap widget
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplateMixin], {
         templateString: template,
         widgetsInTemplate: true,
-		title: 'Historic Imagery Tool',
-        declaredClass: 'gis.dijit.ImageSlider',
-        isInit:true,
         timeStepIntervals:null,
         timeSlider:null,
         labels:null,
@@ -40,14 +35,18 @@ define([
         ts_ocbm_event:null,
         postCreate: function () {
             this.inherited(arguments);
+
         }
         ,startup: function () {
             this.inherited(arguments);
 
-            var _this=this;
             this.timeSlider = new TimeSlider({
              style: "width: 100%;"
             }, dom.byId("timeSliderDiv"));
+
+            //var timeExtent = new TimeExtent();
+            //timeExtent.startTime = new Date("1/1/2001 UTC");
+            //timeExtent.endTime = new Date("12/31/2012 UTC");
 
             this.timeSlider.setThumbCount(1);
             this.timeStepIntervals = [new Date("01/01/2004") , new Date("01/01/2005"), new Date("01/01/2010"),new Date("01/01/2013")];
@@ -58,12 +57,14 @@ define([
             this.timeSlider.setThumbMovingRate(3000);
             this.timeSlider.startup();
 
+            //add labels for every other time stop
             this.labels = arrayUtils.map(this.timeSlider.timeStops, function(timeStop, i) {
                 return timeStop.getUTCFullYear();
             });
 
             this.timeSlider.setLabels(this.labels);
 
+            var _this=this;
             ready(function(){
                 _this.ts_ocbm_event=on(_this.timeSlider, 'time-extent-change', lang.hitch(_this, 'changeBasemap'));
                 _this.own(_this.ts_ocbm_event);
@@ -73,7 +74,6 @@ define([
 			topic.subscribe('ImageSlider/recieveBasemaps', function (r) {
 				_this.availableWMSBasemaps=r.basemaps;
 				_this.activeBasemap=r.activeBasemap;
-				//console.log("receivebasemaps",r);
 				_this.updateRanges();
 
 			});
@@ -86,29 +86,13 @@ define([
 				_this.own(_this.ts_ocbm_event);
 			});
 
-
-			topic.subscribe('ImageSlider/showMe', lang.hitch(this, function (arg) {
-				_this.showThis();
-			}));
-
+			// Send request to get the active basemaps from the ModBasemaps widget
 			topic.publish('ModBasemaps/getCurrentBasemaps', {
 			       id:'startup'
             });
-
-            this.isInit=false;
         }
-        ,showThis: function(){
-            this.parentWidget.show();
-            this.updateRanges();
-			connect.disconnect(this.ts_ocbm_event);
-            this.updateSliderIndex(this.activeBasemap);
-			this.ts_ocbm_event=on(this.timeSlider, 'time-extent-change', lang.hitch(this, 'changeBasemap'));
-            this.own(this.ts_ocbm_event);
-		}
         ,updateSliderIndex: function(bm){
-          if (!this.parentWidget.open && !this.isInit) return;
           //console.log("updateSliderIndex",bm);
-
           this.disableChangeBasemap=true;  // we want to suppress changebasemap from publishing request to modbasemaps
           var newidx=-1;
 
@@ -123,15 +107,13 @@ define([
 
             if (newidx !=-1) this.timeSlider.setThumbIndexes([newidx]);
 
-            dom.byId("imgInfo").innerHTML =  bm.title  ;
-            //dom.byId("imgName").innerHTML =  bm.title  ;
+            //dom.byId("imgInfo").innerHTML =  bm.title  ;
+            dom.byId("imgName").innerHTML =  bm.title  ;
 
 
 			this.disableChangeBasemap=false;
 	    }
         ,updateRanges: function () {  // updates the date ranges for image datasets that are within the visual map extent
-
-            if (!this.parentWidget.open && !this.isInit) return;
 
             //console.log("updateRanges  this.activeBasemap",this.activeBasemap);
 
@@ -186,6 +168,7 @@ define([
 		}
 
         ,changeBasemap: function (evt) {  // changes the basemap to the selected image dataset
+
             //console.log("changeBasemap",evt," this.disableChangeBasemap",this.disableChangeBasemap);
 
             if (!this.disableChangeBasemap) {
